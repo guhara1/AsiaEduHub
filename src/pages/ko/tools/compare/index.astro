@@ -1,0 +1,23 @@
+---
+import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import { COMPARE_TOOLS } from '~/lib/locations';
+
+const categories = COMPARE_TOOLS.map((t) => ({
+  id: t.id,
+  label: t.ko,
+  highlight: t.id === 'track-simulator' ? '킬러 도구' : undefined,
+  description:
+    t.id === 'track-simulator'
+      ? '예: "내국인 자녀가 송도 채드윅 → 미국 아이비리그 가려면" 시나리오를 단계별 학년·시험·서류·예산으로 시뮬레이션. 학부모 카페 공유용 핵심 도구.'
+      : undefined,
+}));
+---
+<CategoryIndexPage
+  locale="ko"
+  pageTitle="학교 비교 · 학비 계산기 · 진학 트랙 시뮬레이터 | AsiaEduHub"
+  metaDescription="국제학교 비교 도구 모음. 학교 4개 동시 비교, 환율·기숙·항공권 포함 총비용 계산기, 제주 NLCS → 옥스브리지 같은 진학 트랙 시뮬레이터."
+  h1="비교 / 도구"
+  intro="단순 정보가 아닌 학부모가 직접 입력·시뮬레이션할 수 있는 인터랙티브 도구로 의사결정을 돕습니다. 진학 트랙 시뮬레이터는 사이트 차별화의 핵심입니다."
+  breadcrumbName="비교 / 도구"
+  categories={categories}
+/>

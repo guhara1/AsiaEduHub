@@ -312,14 +312,15 @@ const guides = defineCollection({
     z.object({
       title: z.string(),
       locale: localeSchema,
+      // 가이드 6개 카테고리 (사용자 결정).
+      // YMYL 사이트 신뢰도 핵심: expert-columns 는 현직 교사·입학사정관·컨설턴트 인터뷰.
       category: z.enum([
         'admission',
-        'tuition',
-        'visa',
-        'mm2h',
-        'thai-elite-visa',
-        'life',
+        'tuition-scholarship',
+        'visa-residence',
         'curriculum-compare',
+        'track-reviews',
+        'expert-columns',
       ]),
       author: z.string().default('데이비드'),
       hero_image: image().optional(),

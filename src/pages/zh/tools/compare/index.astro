@@ -1,0 +1,23 @@
+---
+import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import { COMPARE_TOOLS } from '~/lib/locations';
+
+const categories = COMPARE_TOOLS.map((t) => ({
+  id: t.id,
+  label: t.zh,
+  highlight: t.id === 'track-simulator' ? '核心工具' : undefined,
+  description:
+    t.id === 'track-simulator'
+      ? '示例:"本国学生从松岛 Chadwick → 美国常春藤" 路径,按年级·考试·文件·预算逐步模拟。家长群分享的核心工具。'
+      : undefined,
+}));
+---
+<CategoryIndexPage
+  locale="zh"
+  pageTitle="学校对比 · 学费计算器 · 升学路径模拟 | AsiaEduHub"
+  metaDescription="国际学校对比工具集合。4 所学校同时对比、含汇率·寄宿·机票的总费用计算器、济州 NLCS → 牛剑 等升学路径模拟器。"
+  h1="对比 / 工具"
+  intro="不是单纯信息,而是家长可亲手输入·模拟的交互工具,辅助决策。升学路径模拟器是本站差异化的核心。"
+  breadcrumbName="对比 / 工具"
+  categories={categories}
+/>

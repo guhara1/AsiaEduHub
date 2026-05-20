@@ -5,25 +5,128 @@ const pathname = Astro.url.pathname;
 const locale: Locale = resolveLocale(Astro.currentLocale, pathname);
 const t = getMessages(locale);
 
-const footerLinks = [
+const T = {
+  ko: {
+    aboutTitle: '운영자 · 정책',
+    aboutDesc: '말레이시아 거주 학부모(데이비드)가 직접 운영하는 1인 미디어. 학교 2회 이전 경험 기반.',
+    siteTitle: '사이트',
+    advertiseTitle: '광고주 / 제휴',
+    legalTitle: '법적 정보',
+    snsTitle: 'SNS · 채널',
+    sitemap: '사이트맵',
+    snsTodo: '인스타그램·유튜브 채널은 운영자 확정 후 노출됩니다',
+  },
+  zh: {
+    aboutTitle: '站长 · 政策',
+    aboutDesc: '居住马来西亚的家长 David 独立运营。两次转校的真实经验。',
+    siteTitle: '本站',
+    advertiseTitle: '广告 / 合作',
+    legalTitle: '法律信息',
+    snsTitle: 'SNS · 频道',
+    sitemap: '站点地图',
+    snsTodo: 'Instagram · YouTube 频道开通后于此显示',
+  },
+}[locale];
+
+const aboutLinks = [
   { label: t.footer.about, href: `/${locale}/about/` },
   { label: t.footer.editorial_policy, href: `/${locale}/editorial-policy/` },
   { label: t.footer.contact, href: `/${locale}/contact/` },
+];
+
+const siteLinks = [
+  { label: locale === 'ko' ? '국내 국제학교' : '韩国国际学校', href: `/${locale}/domestic/` },
+  { label: locale === 'ko' ? '해외 유학' : '海外留学', href: `/${locale}/abroad/` },
+  { label: locale === 'ko' ? '비교 / 도구' : '对比 / 工具', href: `/${locale}/tools/compare/` },
+  { label: locale === 'ko' ? 'MM2H · 이주' : 'MM2H · 移居', href: `/${locale}/mm2h/` },
+  { label: locale === 'ko' ? '가이드' : '指南', href: `/${locale}/guide/` },
+  { label: T.sitemap, href: '/sitemap-index.xml' },
+];
+
+const advertiseLinks = [
   { label: t.footer.advertise, href: `/${locale}/advertise/` },
+];
+
+const legalLinks = [
   { label: t.footer.privacy, href: `/${locale}/privacy/` },
   { label: t.footer.terms, href: `/${locale}/terms/` },
+];
+
+// SNS — 운영자 결정 시 href 채움. 빈 상태에선 비활성 표시.
+const snsLinks: { label: string; href: string; icon: 'instagram' | 'youtube' | 'kakao' | 'wechat' }[] = [
+  // 예: { label: 'Instagram', href: 'https://instagram.com/...', icon: 'instagram' },
 ];
 
 const year = new Date().getFullYear();
 ---
 <footer class="mt-16 border-t" style="border-color: var(--color-border-light); background: var(--color-bg-secondary)">
-  <div class="container-content py-10 text-sm text-[color:var(--color-text-secondary)]">
-    <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
-      {footerLinks.map((l) => (
-        <a href={l.href} class="hover:text-primary-700">{l.label}</a>
-      ))}
+  <div class="container-content py-12">
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 text-sm">
+      <div>
+        <div class="flex items-center gap-2 text-primary-900" style="font-weight:500">
+          <span aria-hidden="true" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary-900 text-white text-sm">D</span>
+          <span>{t.site.name}</span>
+        </div>
+        <p class="mt-3 text-xs text-[color:var(--color-text-secondary)]">{T.aboutDesc}</p>
+        <div class="mt-4 flex flex-col gap-2">
+          {aboutLinks.map((l) => (
+            <a href={l.href} class="text-[color:var(--color-text-secondary)] hover:text-primary-700">{l.label}</a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{T.siteTitle}</div>
+        <ul class="mt-3 space-y-2">
+          {siteLinks.map((l) => (
+            <li><a href={l.href} class="text-[color:var(--color-text-secondary)] hover:text-primary-700">{l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{T.advertiseTitle}</div>
+        <ul class="mt-3 space-y-2">
+          {advertiseLinks.map((l) => (
+            <li><a href={l.href} class="text-[color:var(--color-text-secondary)] hover:text-primary-700">{l.label}</a></li>
+          ))}
+        </ul>
+        <div class="mt-6 text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{T.legalTitle}</div>
+        <ul class="mt-3 space-y-2">
+          {legalLinks.map((l) => (
+            <li><a href={l.href} class="text-[color:var(--color-text-secondary)] hover:text-primary-700">{l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{T.snsTitle}</div>
+        {snsLinks.length > 0 ? (
+          <div class="mt-3 flex flex-wrap gap-3">
+            {snsLinks.map((s) => (
+              <a href={s.href} target="_blank" rel="noopener" aria-label={s.label} class="rounded-md border p-2 text-[color:var(--color-text-secondary)] hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
+                {s.icon === 'instagram' && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+                )}
+                {s.icon === 'youtube' && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M10 9.5l5 2.5-5 2.5z" fill="currentColor"/></svg>
+                )}
+                {s.icon === 'kakao' && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4C7 4 3 7.1 3 11c0 2.4 1.5 4.5 3.9 5.7L6 21l4.3-2.6c.6.1 1.1.1 1.7.1 5 0 9-3.1 9-7s-4-7-9-7z" stroke="currentColor" stroke-width="1.5"/></svg>
+                )}
+                {s.icon === 'wechat' && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="10" r="6" stroke="currentColor" stroke-width="1.5"/><circle cx="16" cy="15" r="5" stroke="currentColor" stroke-width="1.5"/></svg>
+                )}
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">{T.snsTodo}</p>
+        )}
+      </div>
     </div>
-    <p class="mt-6 text-xs text-[color:var(--color-text-tertiary)]">
+
+    <p class="mt-10 text-xs text-[color:var(--color-text-tertiary)]">
       © {year} AsiaEduHub. {t.site.tagline}
     </p>
   </div>

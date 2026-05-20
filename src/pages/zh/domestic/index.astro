@@ -1,0 +1,24 @@
+---
+import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import { DOMESTIC_KOREA } from '~/lib/locations';
+
+const categories = DOMESTIC_KOREA.flatMap((g) => {
+  const groupLabel = g.zh_sub ? `${g.zh}(${g.zh_sub})` : g.zh;
+  if (!g.regions || g.regions.length === 0) {
+    return [{ id: g.id, label: groupLabel }];
+  }
+  return [
+    { id: g.id, label: groupLabel, description: '按地区分类 — 见下方城市分组' },
+    ...g.regions.map((r) => ({ id: `${g.id}--${r.id}`, label: `${groupLabel} · ${r.zh}` })),
+  ];
+});
+---
+<CategoryIndexPage
+  locale="zh"
+  pageTitle="韩国国际学校 — 外国人学校 · 济州·松岛国际学校 · 英语幼儿园 | AsiaEduHub"
+  metaDescription="韩国的「外国人学校」与「国际学校」法律地位与入学资格不同。家长视角分类整理。"
+  h1="韩国国际学校"
+  intro="韩国的「外国人学校」与「国际学校」在法律地位与入学资格上有本质区别。分类整理是家长视角下最值得信任的呈现方式。仅累积站长亲自核实的数据。"
+  breadcrumbName="韩国国际学校"
+  categories={categories}
+/>

@@ -1,0 +1,24 @@
+---
+import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import { DOMESTIC_KOREA } from '~/lib/locations';
+
+const categories = DOMESTIC_KOREA.flatMap((g) => {
+  const groupLabel = g.ko_sub ? `${g.ko} (${g.ko_sub})` : g.ko;
+  if (!g.regions || g.regions.length === 0) {
+    return [{ id: g.id, label: groupLabel }];
+  }
+  return [
+    { id: g.id, label: groupLabel, description: '지역별 학교 — 아래 도시 섹션 참고' },
+    ...g.regions.map((r) => ({ id: `${g.id}--${r.id}`, label: `${groupLabel} · ${r.ko}` })),
+  ];
+});
+---
+<CategoryIndexPage
+  locale="ko"
+  pageTitle="국내 국제학교 — 외국인학교 · 제주·송도 국제학교 · 영어유치원 | AsiaEduHub"
+  metaDescription="외국인학교(SFS · YISS · KIS · 채드윅 송도 등)와 국제학교(NLCS · BHA · SJA · 채드윅 송도)는 법적 지위·입학 자격이 다릅니다. 학부모 관점 정리."
+  h1="국내 국제학교"
+  intro="'외국인학교'와 '국제학교'는 법적 지위와 입학 자격이 다릅니다. 분리해 정리한 자료가 학부모에게 가장 신뢰받는 형식입니다. 운영자가 직접 검증한 데이터만 누적합니다."
+  breadcrumbName="국내 국제학교"
+  categories={categories}
+/>

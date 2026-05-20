@@ -1,54 +1,144 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import SchoolCard from '../../../components/SchoolCard.astro';
-import { loadSchools, getRegion, REGION_LABEL, type Region } from '../../../lib/schools';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import SchoolCard from '~/components/SchoolCard.astro';
+import { loadSchools } from '~/lib/schools';
+import { SOUTHEAST_ASIA, ANGLOSPHERE, SCHOOL_TYPES, countryName, cityName } from '~/lib/locations';
 
 const schools = await loadSchools('zh');
 
-const byRegion = new Map<Region, typeof schools>();
-for (const s of schools) {
-  const r = getRegion(s.data.country);
-  if (!byRegion.has(r)) byRegion.set(r, []);
-  byRegion.get(r)!.push(s);
-}
-
-const title = '海外国际学校 — 东南亚 · 英美澳加 | AsiaEduHub';
+const title = '各国国际学校 — 东南亚(马来西亚 · 泰国 · 新加坡 · 越南)| AsiaEduHub';
 const description =
-  '马来西亚、泰国、新加坡、越南等东南亚,以及美国、英国、加拿大、澳大利亚的国际学校。优先收录站长亲自走访的学校。';
+  '马来西亚吉隆坡·槟城·新山,泰国曼谷·清迈,新加坡,越南的国际学校。优先收录站长 David 亲自走访·核实的学校。';
 
 const breadcrumb = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
-    { '@type': 'ListItem', position: 2, name: '海外国际学校' },
+    { '@type': 'ListItem', position: 2, name: '各国学校' },
   ],
 };
 ---
 <BaseLayout title={title} description={description} jsonLd={breadcrumb}>
-  <section class="container-content py-12">
-    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · 海外国际学校</nav>
-    <h1 class="mt-2 text-2xl sm:text-3xl">海外国际学校</h1>
-    <p class="mt-2 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
-      东南亚学校中站长亲自走访的标注 ⭐ 徽章。英美澳加以寄宿制学校为主。
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · 各国学校</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">各国国际学校</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      站长亲自走访的学校颁发 ⭐ 实地确认徽章。学校数据每季度复核,标注来源与更新日期。
     </p>
 
-    {(['southeast-asia', 'anglosphere'] as Region[]).map((region) => {
-      const list = byRegion.get(region) ?? [];
+    <div class="mt-6 space-y-2">
+      <div class="flex flex-wrap gap-2">
+        <span class="text-xs text-[color:var(--color-text-tertiary)] self-center">🌏 东南亚(高性价比):</span>
+        {SOUTHEAST_ASIA.map((c) => (
+          <a href={`#${c.id}`} class="rounded-full bg-accent-100 px-3 py-1 text-xs text-accent-700 hover:bg-accent-500 hover:text-white" style="font-weight:500">
+            {c.flag} {countryName(c, 'zh')}
+          </a>
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="text-xs text-[color:var(--color-text-tertiary)] self-center">🌎 英美澳加(高端):</span>
+        {ANGLOSPHERE.map((c) => (
+          <a href={`#${c.id}`} class="rounded-full bg-primary-100 px-3 py-1 text-xs text-primary-900 hover:bg-primary-900 hover:text-white" style="font-weight:500">
+            {c.flag} {countryName(c, 'zh')}
+          </a>
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="text-xs text-[color:var(--color-text-tertiary)] self-center">📚 按类型:</span>
+        {SCHOOL_TYPES.map((t) => (
+          <a href={`#type-${t.id}`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
+            {t.zh}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    {/* 东南亚 — 高性价比(金色调) */}
+    <div class="mt-10 rounded-lg border-l-4 border-accent-500 bg-accent-100 px-4 py-3">
+      <h2 class="text-lg text-accent-700" style="font-weight:500">🌏 东南亚 — 高性价比国际学校</h2>
+      <p class="mt-1 text-xs text-accent-700">学费相对友好,设施与课程质量均衡。站长居住吉隆坡 — 走访比例高。</p>
+    </div>
+
+    {SOUTHEAST_ASIA.map((country) => {
+      const countrySchools = schools.filter((s) => s.data.country === country.id);
       return (
-        <div class="mt-10">
-          <h2 class="text-xl">{REGION_LABEL.zh[region]}</h2>
-          {list.length === 0 ? (
-            <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">
-              暂未收录学校。站长亲自走访、核实后陆续上架。
-            </p>
-          ) : (
-            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {list.map((entry) => <SchoolCard entry={entry} locale="zh" />)}
+        <section id={country.id} class="mt-12 scroll-mt-24">
+          <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
+            <h2 class="text-xl">{country.flag} {countryName(country, 'zh')}</h2>
+            <span class="text-xs text-[color:var(--color-text-tertiary)]">已收录 {countrySchools.length} 所</span>
+          </div>
+
+          {country.cities.length > 0 ? (
+            country.cities.map((city) => {
+              const cityList = schools.filter((s) => s.data.city === city.id);
+              return (
+                <div id={city.id} class="mt-8 scroll-mt-24">
+                  <h3 class="text-base text-primary-900" style="font-weight:500">{cityName(city, 'zh')}</h3>
+                  {cityList.length > 0 ? (
+                    <div class="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {cityList.map((entry) => <SchoolCard entry={entry} locale="zh" />)}
+                    </div>
+                  ) : (
+                    <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">
+                      暂未收录学校。站长亲自走访·核实后陆续上架。
+                    </p>
+                  )}
+                </div>
+              );
+            })
+          ) : countrySchools.length > 0 ? (
+            <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {countrySchools.map((entry) => <SchoolCard entry={entry} locale="zh" />)}
             </div>
+          ) : (
+            <p class="mt-4 text-sm text-[color:var(--color-text-secondary)]">
+              暂未收录学校。站长亲自走访·核实后陆续上架。
+            </p>
           )}
-        </div>
+        </section>
       );
     })}
+
+    {/* 英美澳加 — 高端(深蓝调) */}
+    <div class="mt-16 rounded-lg border-l-4 border-primary-900 bg-primary-100 px-4 py-3">
+      <h2 class="text-lg text-primary-900" style="font-weight:500">🌎 英美澳加 — 高端寄宿学校</h2>
+      <p class="mt-1 text-xs text-primary-900">面向计划从东南亚衔接英美澳加名校的家长,提供升学路径与成本分析。</p>
+    </div>
+
+    {ANGLOSPHERE.map((country) => {
+      const countrySchools = schools.filter((s) => s.data.country === country.id);
+      return (
+        <section id={country.id} class="mt-10 scroll-mt-24">
+          <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
+            <h2 class="text-xl">{country.flag} {countryName(country, 'zh')}</h2>
+            <span class="text-xs text-[color:var(--color-text-tertiary)]">已收录 {countrySchools.length} 所</span>
+          </div>
+          {countrySchools.length > 0 ? (
+            <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {countrySchools.map((entry) => <SchoolCard entry={entry} locale="zh" />)}
+            </div>
+          ) : (
+            <p class="mt-4 text-sm text-[color:var(--color-text-secondary)]">
+              英美澳加学校由站长从东南亚家长视角累积升学路径与费用分析。咨询请前往 <a href="/zh/contact/" class="text-primary-700">免费咨询</a>。
+            </p>
+          )}
+        </section>
+      );
+    })}
+
+    {/* 按学校类型 */}
+    <div class="mt-16 rounded-lg border px-4 py-3" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">📚 按学校类型</h2>
+      <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">按寄宿·课程筛选。学校数据累积后自动展示。</p>
+    </div>
+    {SCHOOL_TYPES.map((t) => (
+      <section id={`type-${t.id}`} class="mt-8 scroll-mt-24">
+        <h3 class="text-base text-primary-900" style="font-weight:500">{t.zh}</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+          相应类型学校由站长核实后陆续上架。
+        </p>
+      </section>
+    ))}
   </section>
 </BaseLayout>

@@ -1,0 +1,23 @@
+---
+import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import { GUIDE_CATEGORIES } from '~/lib/locations';
+
+const categories = GUIDE_CATEGORIES.map((g) => ({
+  id: g.id,
+  label: g.zh,
+  highlight: g.id === 'expert-columns' ? 'YMYL 信任资产' : undefined,
+  description:
+    g.id === 'expert-columns'
+      ? '现职教师·招生官·留学顾问的访谈合集。本站信任度的核心。「谁来写」比「写什么」更重要。'
+      : undefined,
+}));
+---
+<CategoryIndexPage
+  locale="zh"
+  pageTitle="留学指南 — 入学 · 学费 · 签证 · 课程 · 升学案例 · 专家专栏 | AsiaEduHub"
+  metaDescription="国际学校入学准备、学费与奖学金、签证与居住、课程对比(IB·AP·A-Level)、升学案例、专家专栏。站长亲自审核。"
+  h1="指南"
+  intro="SEO 流量引擎。入学、学费、签证、课程、升学案例、专家访谈按分类累积。每篇文章标注作者署名与最后更新时间。"
+  breadcrumbName="指南"
+  categories={categories}
+/>

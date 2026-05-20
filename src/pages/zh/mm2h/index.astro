@@ -1,0 +1,15 @@
+---
+import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import { MM2H_TOPICS } from '~/lib/locations';
+
+const categories = MM2H_TOPICS.map((t) => ({ id: t.id, label: t.zh }));
+---
+<CategoryIndexPage
+  locale="zh"
+  pageTitle="MM2H · 东南亚移居签证 — 马来 · 泰国 Elite · 新加坡 | AsiaEduHub"
+  metaDescription="东南亚子女教育·退休移居签证整理。马来西亚 MM2H、泰国 Elite·LTR、新加坡 PR·EP。推荐中介与房产指南。"
+  h1="MM2H · 移居"
+  intro="国际学校家长(30~40 岁)与资产·退休移居(50~60 岁)的目标人群不同。独立分类整理,并与东南亚学校页面自然联动。"
+  breadcrumbName="MM2H · 移居"
+  categories={categories}
+/>

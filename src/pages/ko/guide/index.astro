@@ -1,0 +1,23 @@
+---
+import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import { GUIDE_CATEGORIES } from '~/lib/locations';
+
+const categories = GUIDE_CATEGORIES.map((g) => ({
+  id: g.id,
+  label: g.ko,
+  highlight: g.id === 'expert-columns' ? 'YMYL 신뢰 자산' : undefined,
+  description:
+    g.id === 'expert-columns'
+      ? '현직 교사·입학사정관·유학 컨설턴트 인터뷰 모음. 사이트 신뢰도의 핵심. "누가 쓰는가"가 "무엇을 쓰는가"보다 중요합니다.'
+      : undefined,
+}));
+---
+<CategoryIndexPage
+  locale="ko"
+  pageTitle="유학 가이드 — 입학 · 학비 · 비자 · 커리큘럼 · 진학 사례 · 전문가 칼럼 | AsiaEduHub"
+  metaDescription="국제학교 입학 준비, 학비·장학금, 비자·거주, 커리큘럼 비교(IB·AP·A-Level), 진학 사례, 전문가 칼럼. 운영자 검수 콘텐츠."
+  h1="가이드"
+  intro="SEO 트래픽 엔진. 입학·학비·비자·커리큘럼·진학 사례·전문가 인터뷰가 카테고리별로 누적됩니다. 모든 글에 저자 바이라인과 마지막 업데이트 표기."
+  breadcrumbName="가이드"
+  categories={categories}
+/>

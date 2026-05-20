@@ -1,0 +1,15 @@
+---
+import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import { MM2H_TOPICS } from '~/lib/locations';
+
+const categories = MM2H_TOPICS.map((t) => ({ id: t.id, label: t.ko }));
+---
+<CategoryIndexPage
+  locale="ko"
+  pageTitle="MM2H · 동남아 이주 비자 — 말레이시아 · 태국 엘리트 · 싱가포르 | AsiaEduHub"
+  metaDescription="동남아 자녀 교육·은퇴 이주 비자 정리. 말레이시아 MM2H, 태국 엘리트·LTR, 싱가포르 영주권·EP. 추천 에이전시와 부동산 가이드."
+  h1="MM2H · 이주"
+  intro="국제학교 학부모(30~40대)와 자산·은퇴 이주(50~60대)는 타겟이 다릅니다. 별도 카테고리로 분리해 동남아 학교 페이지와 자연스럽게 연결합니다."
+  breadcrumbName="MM2H · 이주"
+  categories={categories}
+/>

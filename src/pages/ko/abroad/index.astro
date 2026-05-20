@@ -1,54 +1,146 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import SchoolCard from '../../../components/SchoolCard.astro';
-import { loadSchools, getRegion, REGION_LABEL, COUNTRY_LABEL, type Region } from '../../../lib/schools';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import SchoolCard from '~/components/SchoolCard.astro';
+import { loadSchools } from '~/lib/schools';
+import { SOUTHEAST_ASIA, ANGLOSPHERE, SCHOOL_TYPES, countryName, cityName } from '~/lib/locations';
 
 const schools = await loadSchools('ko');
 
-const byRegion = new Map<Region, typeof schools>();
-for (const s of schools) {
-  const r = getRegion(s.data.country);
-  if (!byRegion.has(r)) byRegion.set(r, []);
-  byRegion.get(r)!.push(s);
-}
-
-const title = '해외 국제학교 — 동남아·영미권 | AsiaEduHub';
+const title = '국가별 국제학교 — 동남아 (말레이시아 · 태국 · 싱가포르 · 베트남) | AsiaEduHub';
 const description =
-  '말레이시아·태국·싱가포르·베트남 등 동남아와 미국·영국·캐나다·호주 영미권 국제학교. 운영자가 직접 방문한 학교 우선 등록.';
+  '말레이시아 쿠알라룸푸르·페낭·조호바루, 태국 방콕·치앙마이, 싱가포르, 베트남 국제학교. 운영자(데이비드)가 직접 방문·검증한 학교 우선.';
 
 const breadcrumb = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'ko/' },
-    { '@type': 'ListItem', position: 2, name: '해외 국제학교' },
+    { '@type': 'ListItem', position: 2, name: '국가별 학교' },
   ],
 };
 ---
 <BaseLayout title={title} description={description} jsonLd={breadcrumb}>
-  <section class="container-content py-12">
-    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/ko/">홈</a> · 해외 국제학교</nav>
-    <h1 class="mt-2 text-2xl sm:text-3xl">해외 국제학교</h1>
-    <p class="mt-2 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
-      동남아는 운영자가 직접 방문한 학교에 ⭐ 배지를 부여합니다. 영미권은 보딩스쿨 위주.
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/ko/">홈</a> · 국가별 학교</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">국가별 국제학교</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      운영자가 직접 방문한 학교에 ⭐ "운영자 방문 확인" 배지를 부여합니다.
+      학교 데이터는 분기별 검증, 출처·업데이트 날짜 표기 원칙으로 운영합니다.
     </p>
 
-    {(['southeast-asia', 'anglosphere'] as Region[]).map((region) => {
-      const list = byRegion.get(region) ?? [];
+    {/* 빠른 이동 */}
+    <div class="mt-6 space-y-2">
+      <div class="flex flex-wrap gap-2">
+        <span class="text-xs text-[color:var(--color-text-tertiary)] self-center">🌏 동남아 (가성비):</span>
+        {SOUTHEAST_ASIA.map((c) => (
+          <a href={`#${c.id}`} class="rounded-full bg-accent-100 px-3 py-1 text-xs text-accent-700 hover:bg-accent-500 hover:text-white" style="font-weight:500">
+            {c.flag} {countryName(c, 'ko')}
+          </a>
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="text-xs text-[color:var(--color-text-tertiary)] self-center">🌎 영미권 (프리미엄):</span>
+        {ANGLOSPHERE.map((c) => (
+          <a href={`#${c.id}`} class="rounded-full bg-primary-100 px-3 py-1 text-xs text-primary-900 hover:bg-primary-900 hover:text-white" style="font-weight:500">
+            {c.flag} {countryName(c, 'ko')}
+          </a>
+        ))}
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="text-xs text-[color:var(--color-text-tertiary)] self-center">📚 유형별:</span>
+        {SCHOOL_TYPES.map((t) => (
+          <a href={`#type-${t.id}`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
+            {t.ko}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    {/* 동남아 — 가성비 톤 (골드) */}
+    <div class="mt-10 rounded-lg border-l-4 border-accent-500 bg-accent-100 px-4 py-3">
+      <h2 class="text-lg text-accent-700" style="font-weight:500">🌏 동남아 — 가성비 국제학교</h2>
+      <p class="mt-1 text-xs text-accent-700">학비 대비 시설·커리큘럼이 우수한 시장. 운영자 현지 거주(쿠알라룸푸르) — 직접 방문 비중 ↑</p>
+    </div>
+
+    {SOUTHEAST_ASIA.map((country) => {
+      const countrySchools = schools.filter((s) => s.data.country === country.id);
       return (
-        <div class="mt-10">
-          <h2 class="text-xl">{REGION_LABEL.ko[region]}</h2>
-          {list.length === 0 ? (
-            <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">
-              등록된 학교가 아직 없습니다. 운영자가 직접 방문·검증한 학교부터 순차 등록합니다.
-            </p>
-          ) : (
-            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {list.map((entry) => <SchoolCard entry={entry} locale="ko" />)}
+        <section id={country.id} class="mt-12 scroll-mt-24">
+          <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
+            <h2 class="text-xl">{country.flag} {countryName(country, 'ko')}</h2>
+            <span class="text-xs text-[color:var(--color-text-tertiary)]">등록 {countrySchools.length}곳</span>
+          </div>
+
+          {country.cities.length > 0 ? (
+            country.cities.map((city) => {
+              const cityList = schools.filter((s) => s.data.city === city.id);
+              return (
+                <div id={city.id} class="mt-8 scroll-mt-24">
+                  <h3 class="text-base text-primary-900" style="font-weight:500">{cityName(city, 'ko')}</h3>
+                  {cityList.length > 0 ? (
+                    <div class="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {cityList.map((entry) => <SchoolCard entry={entry} locale="ko" />)}
+                    </div>
+                  ) : (
+                    <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">
+                      등록된 학교가 아직 없습니다. 운영자 직접 방문·검증한 학교부터 누적합니다.
+                    </p>
+                  )}
+                </div>
+              );
+            })
+          ) : countrySchools.length > 0 ? (
+            <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {countrySchools.map((entry) => <SchoolCard entry={entry} locale="ko" />)}
             </div>
+          ) : (
+            <p class="mt-4 text-sm text-[color:var(--color-text-secondary)]">
+              등록된 학교가 아직 없습니다. 운영자 직접 방문·검증한 학교부터 누적합니다.
+            </p>
           )}
-        </div>
+        </section>
       );
     })}
+
+    {/* 영미권 — 프리미엄 톤 (네이비) */}
+    <div class="mt-16 rounded-lg border-l-4 border-primary-900 bg-primary-100 px-4 py-3">
+      <h2 class="text-lg text-primary-900" style="font-weight:500">🌎 영미권 — 프리미엄 보딩스쿨</h2>
+      <p class="mt-1 text-xs text-primary-900">미·영·캐·호 명문 학교. 동남아 학교를 거쳐 영미권 진학을 목표하는 학부모용 진학 트랙 안내.</p>
+    </div>
+
+    {ANGLOSPHERE.map((country) => {
+      const countrySchools = schools.filter((s) => s.data.country === country.id);
+      return (
+        <section id={country.id} class="mt-10 scroll-mt-24">
+          <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
+            <h2 class="text-xl">{country.flag} {countryName(country, 'ko')}</h2>
+            <span class="text-xs text-[color:var(--color-text-tertiary)]">등록 {countrySchools.length}곳</span>
+          </div>
+          {countrySchools.length > 0 ? (
+            <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {countrySchools.map((entry) => <SchoolCard entry={entry} locale="ko" />)}
+            </div>
+          ) : (
+            <p class="mt-4 text-sm text-[color:var(--color-text-secondary)]">
+              영미권 학교는 운영자가 동남아 학부모 관점에서 진학 트랙·비용 분석을 누적합니다. 직접 상담은 <a href="/ko/contact/" class="text-primary-700">상담신청</a>.
+            </p>
+          )}
+        </section>
+      );
+    })}
+
+    {/* 학교 유형별 */}
+    <div class="mt-16 rounded-lg border px-4 py-3" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">📚 학교 유형별</h2>
+      <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">기숙·커리큘럼 기준 필터. 학교 데이터 누적 시 자동 필터링 노출.</p>
+    </div>
+    {SCHOOL_TYPES.map((t) => (
+      <section id={`type-${t.id}`} class="mt-8 scroll-mt-24">
+        <h3 class="text-base text-primary-900" style="font-weight:500">{t.ko}</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+          해당 유형 학교는 운영자 검증 후 누적됩니다.
+        </p>
+      </section>
+    ))}
   </section>
 </BaseLayout>

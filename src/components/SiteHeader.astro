@@ -1,48 +1,410 @@
 ---
 import { resolveLocale, alternateUrlFor, getMessages, type Locale } from '../lib/i18n';
+import {
+  SOUTHEAST_ASIA,
+  ANGLOSPHERE,
+  SCHOOL_TYPES,
+  COMPARE_TOOLS,
+  MM2H_TOPICS,
+  GUIDE_CATEGORIES,
+  DOMESTIC_KOREA,
+  countryName,
+  cityName,
+} from '../lib/locations';
 
 const pathname = Astro.url.pathname;
 const locale: Locale = resolveLocale(Astro.currentLocale, pathname);
 const t = getMessages(locale);
-const otherLocale: Locale = locale === 'ko' ? 'zh' : 'ko';
-const otherUrl = alternateUrlFor(pathname, otherLocale);
 
-const navItems = [
-  { label: t.nav.domestic, href: `/${locale}/domestic/` },
-  { label: t.nav.abroad, href: `/${locale}/abroad/` },
-  { label: t.nav.compare, href: `/${locale}/tools/compare/` },
-  { label: t.nav.guide, href: `/${locale}/guide/` },
-  { label: t.nav.experience, href: `/${locale}/experience/` },
+type ChildLink = { kind: 'link'; label: string; href: string };
+type ChildHeader = { kind: 'header'; label: string };
+type DropdownChild = ChildLink | ChildHeader;
+
+type MenuItem =
+  | { type: 'link'; label: string; href: string }
+  | {
+      type: 'dropdown';
+      label: string;
+      children: DropdownChild[];
+      viewAll?: ChildLink;
+    };
+
+// 국내(한국) 국제학교 드롭다운
+const domesticChildren: DropdownChild[] = [];
+for (const g of DOMESTIC_KOREA) {
+  const headerLabel = locale === 'ko'
+    ? `${g.ko}${g.ko_sub ? ` · ${g.ko_sub}` : ''}`
+    : `${g.zh}${g.zh_sub ? ` · ${g.zh_sub}` : ''}`;
+  if (g.regions && g.regions.length > 0) {
+    domesticChildren.push({ kind: 'header', label: headerLabel });
+    for (const r of g.regions) {
+      domesticChildren.push({
+        kind: 'link',
+        label: locale === 'ko' ? r.ko : r.zh,
+        href: `/${locale}/domestic/#${g.id}--${r.id}`,
+      });
+    }
+  } else {
+    domesticChildren.push({
+      kind: 'link',
+      label: locale === 'ko' ? g.ko : g.zh,
+      href: `/${locale}/domestic/#${g.id}`,
+    });
+  }
+}
+
+// 해외 유학 드롭다운: 동남아(가성비) / 영미권(프리미엄) / 학교 유형별
+const countryChildren: DropdownChild[] = [];
+// 1) 동남아 그룹
+countryChildren.push({
+  kind: 'header',
+  label: '🌏 ' + (locale === 'ko' ? '동남아 (가성비)' : '东南亚(高性价比)'),
+});
+for (const c of SOUTHEAST_ASIA) {
+  const cityTrail = c.cities.length > 0
+    ? ` (${c.cities.map((city) => cityName(city, locale)).join(' / ')})`
+    : '';
+  countryChildren.push({
+    kind: 'link',
+    label: `${c.flag} ${countryName(c, locale)}${cityTrail}`,
+    href: `/${locale}/abroad/#${c.id}`,
+  });
+}
+// 2) 영미권 그룹
+countryChildren.push({
+  kind: 'header',
+  label: '🌎 ' + (locale === 'ko' ? '영미권 (프리미엄)' : '英美澳加(高端)'),
+});
+for (const c of ANGLOSPHERE) {
+  countryChildren.push({
+    kind: 'link',
+    label: `${c.flag} ${countryName(c, locale)}`,
+    href: `/${locale}/abroad/#${c.id}`,
+  });
+}
+// 3) 학교 유형별
+countryChildren.push({
+  kind: 'header',
+  label: '📚 ' + (locale === 'ko' ? '학교 유형별' : '按学校类型'),
+});
+for (const t of SCHOOL_TYPES) {
+  countryChildren.push({
+    kind: 'link',
+    label: locale === 'ko' ? t.ko : t.zh,
+    href: `/${locale}/abroad/#type-${t.id}`,
+  });
+}
+
+const compareChildren: DropdownChild[] = COMPARE_TOOLS.map((t) => ({
+  kind: 'link',
+  label: locale === 'ko' ? t.ko : t.zh,
+  href: `/${locale}/tools/compare/#${t.id}`,
+}));
+
+const mm2hChildren: DropdownChild[] = MM2H_TOPICS.map((t) => ({
+  kind: 'link',
+  label: locale === 'ko' ? t.ko : t.zh,
+  href: `/${locale}/mm2h/#${t.id}`,
+}));
+
+const guideChildren: DropdownChild[] = GUIDE_CATEGORIES.map((g) => ({
+  kind: 'link',
+  label: locale === 'ko' ? g.ko : g.zh,
+  href: `/${locale}/guide/#${g.id}`,
+}));
+
+const menu: MenuItem[] = [
+  {
+    type: 'dropdown',
+    label: locale === 'ko' ? '국내 국제학교' : '韩国国际学校',
+    children: domesticChildren,
+    viewAll: {
+      kind: 'link',
+      label: locale === 'ko' ? '국내 학교 전체 →' : '查看全部 →',
+      href: `/${locale}/domestic/`,
+    },
+  },
+  {
+    type: 'dropdown',
+    label: locale === 'ko' ? '해외 유학' : '海外留学',
+    children: countryChildren,
+    viewAll: {
+      kind: 'link',
+      label: locale === 'ko' ? '해외 학교 전체 →' : '查看全部 →',
+      href: `/${locale}/abroad/`,
+    },
+  },
+  {
+    type: 'dropdown',
+    label: locale === 'ko' ? '비교 / 도구' : '对比 / 工具',
+    children: compareChildren,
+    viewAll: {
+      kind: 'link',
+      label: locale === 'ko' ? '비교 도구 전체 →' : '查看全部对比工具 →',
+      href: `/${locale}/tools/compare/`,
+    },
+  },
+  {
+    type: 'dropdown',
+    label: locale === 'ko' ? 'MM2H · 이주' : 'MM2H · 移居',
+    children: mm2hChildren,
+    viewAll: {
+      kind: 'link',
+      label: locale === 'ko' ? '전체 보기 →' : '查看全部 →',
+      href: `/${locale}/mm2h/`,
+    },
+  },
+  {
+    type: 'dropdown',
+    label: locale === 'ko' ? '가이드' : '指南',
+    children: guideChildren,
+    viewAll: {
+      kind: 'link',
+      label: locale === 'ko' ? '전체 가이드 보기 →' : '查看全部指南 →',
+      href: `/${locale}/guide/`,
+    },
+  },
+  { type: 'link', label: locale === 'ko' ? '상담신청' : '免费咨询', href: `/${locale}/contact/` },
 ];
+
+const koUrl = alternateUrlFor(pathname, 'ko');
+const zhUrl = alternateUrlFor(pathname, 'zh');
+const menuLabel = locale === 'ko' ? '메뉴' : '菜单';
+const closeLabel = locale === 'ko' ? '닫기' : '关闭';
+const langLabel = locale === 'ko' ? '언어' : '语言';
 ---
-<header class="border-b" style="border-color: var(--color-border-light)">
-  <div class="container-content flex h-16 items-center justify-between gap-4">
-    <a href={`/${locale}/`} class="flex items-center gap-2 text-primary-900" style="font-weight:500">
-      {/* D 모노그램 — 사양 사이트 로고 */}
+<header class="border-b bg-white" style="border-color: var(--color-border-light)">
+  <div class="container-content flex h-16 items-center justify-between gap-3">
+    <a href={`/${locale}/`} class="flex items-center gap-2 text-primary-900 shrink-0" style="font-weight:500" aria-label="AsiaEduHub">
       <span aria-hidden="true" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary-900 text-white text-sm">D</span>
-      <span class="text-base">{t.site.name}</span>
+      <span class="text-base hidden lg:inline">{t.site.name}</span>
+      <span class="text-base lg:hidden">AsiaEduHub</span>
     </a>
 
-    <nav class="hidden items-center gap-6 text-sm md:flex">
-      {navItems.map((item) => (
-        <a href={item.href} class="text-[color:var(--color-text-primary)] hover:text-primary-700">
-          {item.label}
-        </a>
-      ))}
+    {/* PC 메뉴 (md+) */}
+    <nav class="hidden md:flex items-center gap-1 lg:gap-2 text-sm" aria-label={menuLabel}>
+      {menu.map((item) =>
+        item.type === 'link' ? (
+          <a href={item.href} class="px-2 py-2 text-[color:var(--color-text-primary)] hover:text-primary-700 whitespace-nowrap">
+            {item.label}
+          </a>
+        ) : (
+          <details class="dropdown relative">
+            <summary class="dropdown-summary list-none cursor-pointer px-2 py-2 inline-flex items-center gap-1 text-[color:var(--color-text-primary)] hover:text-primary-700 whitespace-nowrap">
+              {item.label}
+              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" class="opacity-60"><path d="M1 3l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+            </summary>
+            <div
+              class="dropdown-panel absolute left-0 top-full z-30 mt-1 min-w-[220px] rounded-md border bg-white py-2 shadow-lg"
+              style="border-color: var(--color-border-light)"
+            >
+              {item.children.map((c) =>
+                c.kind === 'header' ? (
+                  <div class="px-3 pt-2 pb-1 text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{c.label}</div>
+                ) : (
+                  <a href={c.href} class="block px-3 py-1.5 text-sm text-[color:var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)] hover:text-primary-700">
+                    {c.label}
+                  </a>
+                )
+              )}
+              {item.viewAll && (
+                <>
+                  <div class="my-1 border-t" style="border-color: var(--color-border-light)"></div>
+                  <a
+                    href={item.viewAll.href}
+                    class="block px-3 py-1.5 text-sm text-primary-900 hover:bg-[var(--color-bg-secondary)]"
+                    style="font-weight:500"
+                  >
+                    {item.viewAll.label}
+                  </a>
+                </>
+              )}
+            </div>
+          </details>
+        )
+      )}
     </nav>
 
-    <div class="flex items-center gap-3">
-      <a href={`/${locale}/contact/`} class="cta-primary text-sm py-2 px-3 hidden sm:inline-flex">
-        {t.nav.consultation}
-      </a>
+    <div class="flex items-center gap-2">
+      {/* 모바일 상담 CTA — 햄버거 밖 항상 노출 (전환율 ↑) */}
       <a
-        href={otherUrl}
-        aria-label={t.nav.language}
-        class="rounded-md border px-2.5 py-1 text-xs text-[color:var(--color-text-secondary)]"
-        style="border-color: var(--color-border-light)"
+        href={`/${locale}/contact/`}
+        class="md:hidden inline-flex items-center justify-center rounded-md bg-primary-900 px-3 py-1.5 text-xs text-white"
+        style="font-weight:500"
+        aria-label={locale === 'ko' ? '무료 상담 신청' : '免费咨询'}
       >
-        {otherLocale === 'ko' ? '한국어' : '中文'}
+        {locale === 'ko' ? '상담' : '咨询'}
       </a>
+
+      {/* 언어 토글 */}
+      <div
+        class="inline-flex items-center rounded-md border text-xs"
+        style="border-color: var(--color-border-light)"
+        role="group"
+        aria-label={langLabel}
+      >
+        <a
+          href={koUrl}
+          aria-current={locale === 'ko' ? 'true' : undefined}
+          class:list={[
+            'px-2 py-1 rounded-l-md inline-flex items-center gap-1',
+            locale === 'ko' ? 'bg-primary-100 text-primary-900' : 'text-[color:var(--color-text-secondary)] hover:text-primary-700',
+          ]}
+          style={locale === 'ko' ? 'font-weight:500' : ''}
+        >
+          <span aria-hidden="true">🇰🇷</span>
+          <span class="hidden sm:inline">한국어</span>
+        </a>
+        <span class="text-[color:var(--color-text-tertiary)]" aria-hidden="true">|</span>
+        <a
+          href={zhUrl}
+          aria-current={locale === 'zh' ? 'true' : undefined}
+          class:list={[
+            'px-2 py-1 rounded-r-md inline-flex items-center gap-1',
+            locale === 'zh' ? 'bg-primary-100 text-primary-900' : 'text-[color:var(--color-text-secondary)] hover:text-primary-700',
+          ]}
+          style={locale === 'zh' ? 'font-weight:500' : ''}
+        >
+          <span aria-hidden="true">🇨🇳</span>
+          <span class="hidden sm:inline">中文</span>
+        </a>
+      </div>
+
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        class="md:hidden inline-flex items-center justify-center rounded-md p-2 text-[color:var(--color-text-primary)] hover:bg-[var(--color-bg-tertiary)]"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label={menuLabel}
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+        </svg>
+      </button>
     </div>
   </div>
 </header>
+
+{/* 모바일 풀스크린 메뉴 */}
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-50 overflow-y-auto bg-white md:hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label={menuLabel}
+  hidden
+>
+  <div class="flex h-16 items-center justify-between px-4 border-b" style="border-color: var(--color-border-light)">
+    <div class="flex items-center gap-2 text-primary-900" style="font-weight:500">
+      <span aria-hidden="true" class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary-900 text-white text-sm">D</span>
+      <span>AsiaEduHub</span>
+    </div>
+    <button
+      id="mobile-menu-close"
+      type="button"
+      class="inline-flex items-center justify-center rounded-md p-2 text-[color:var(--color-text-primary)] hover:bg-[var(--color-bg-tertiary)]"
+      aria-label={closeLabel}
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+      </svg>
+    </button>
+  </div>
+
+  <nav class="px-4 py-4" aria-label={menuLabel}>
+    <ul class="space-y-1">
+      {menu.map((item) =>
+        item.type === 'link' ? (
+          <li>
+            <a href={item.href} class="block rounded-md px-3 py-3 text-base text-[color:var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]" style="font-weight:500">
+              {item.label}
+            </a>
+          </li>
+        ) : (
+          <li>
+            <details class="rounded-md">
+              <summary class="dropdown-summary list-none cursor-pointer rounded-md px-3 py-3 text-base hover:bg-[var(--color-bg-secondary)] flex items-center justify-between" style="font-weight:500">
+                {item.label}
+                <svg width="12" height="12" viewBox="0 0 10 10" aria-hidden="true" class="opacity-60"><path d="M1 3l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+              </summary>
+              <div class="ml-2 mt-1 mb-2 border-l pl-3" style="border-color: var(--color-border-light)">
+                {item.children.map((c) =>
+                  c.kind === 'header' ? (
+                    <div class="px-2 pt-2 pb-1 text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{c.label}</div>
+                  ) : (
+                    <a href={c.href} class="block rounded-md px-2 py-2 text-sm text-[color:var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]">{c.label}</a>
+                  )
+                )}
+                {item.viewAll && (
+                  <a href={item.viewAll.href} class="mt-1 block rounded-md px-2 py-2 text-sm text-primary-900" style="font-weight:500">
+                    {item.viewAll.label}
+                  </a>
+                )}
+              </div>
+            </details>
+          </li>
+        )
+      )}
+    </ul>
+
+    <div class="mt-6 px-3">
+      <div class="text-xs text-[color:var(--color-text-tertiary)]">{langLabel}</div>
+      <div class="mt-2 inline-flex items-center rounded-md border text-sm" style="border-color: var(--color-border-light)">
+        <a href={koUrl} aria-current={locale === 'ko' ? 'true' : undefined}
+           class:list={['px-3 py-2 rounded-l-md', locale === 'ko' ? 'bg-primary-100 text-primary-900' : '']}
+           style={locale === 'ko' ? 'font-weight:500' : ''}>🇰🇷 한국어</a>
+        <span class="text-[color:var(--color-text-tertiary)] px-1" aria-hidden="true">|</span>
+        <a href={zhUrl} aria-current={locale === 'zh' ? 'true' : undefined}
+           class:list={['px-3 py-2 rounded-r-md', locale === 'zh' ? 'bg-primary-100 text-primary-900' : '']}
+           style={locale === 'zh' ? 'font-weight:500' : ''}>🇨🇳 中文</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<style>
+  /* details/summary 기본 디스클로저 아이콘 제거 */
+  .dropdown-summary::-webkit-details-marker { display: none; }
+  .dropdown-summary::marker { content: ''; }
+</style>
+
+<script>
+  // 1) PC 드롭다운: 외부 클릭 / Esc 로 닫기
+  document.addEventListener('click', (e) => {
+    const target = e.target as Node;
+    document.querySelectorAll<HTMLDetailsElement>('details.dropdown[open]').forEach((d) => {
+      if (!d.contains(target)) d.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll<HTMLDetailsElement>('details.dropdown[open]').forEach((d) => d.removeAttribute('open'));
+      // 모바일 메뉴도 Esc 로 닫기
+      const m = document.getElementById('mobile-menu');
+      const t = document.getElementById('mobile-menu-toggle');
+      if (m && t && !m.hidden) {
+        m.hidden = true;
+        t.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+    }
+  });
+
+  // 2) 모바일 햄버거
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menuEl = document.getElementById('mobile-menu');
+  const closeBtn = document.getElementById('mobile-menu-close');
+  toggle?.addEventListener('click', () => {
+    if (!menuEl) return;
+    menuEl.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  });
+  closeBtn?.addEventListener('click', () => {
+    if (!menuEl || !toggle) return;
+    menuEl.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  });
+</script>
