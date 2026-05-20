@@ -38,8 +38,9 @@ export const SOUTHEAST_ASIA: CountryRef[] = [
     zh: '泰国',
     cities: [
       { id: 'bangkok', flag: '🇹🇭', ko: '방콕', zh: '曼谷' },
-      { id: 'chiang-mai', flag: '🇹🇭', ko: '치앙마이', zh: '清迈' },
       { id: 'pattaya', flag: '🇹🇭', ko: '파타야', zh: '芭提雅' },
+      { id: 'phuket', flag: '🇹🇭', ko: '푸켓', zh: '普吉' },
+      { id: 'chiang-mai', flag: '🇹🇭', ko: '치앙마이', zh: '清迈' },
     ],
   },
   {

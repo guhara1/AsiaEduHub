@@ -654,6 +654,201 @@ export const DAEGU_CONDOS: NearbyCondo[] = [
   },
 ];
 
+// ─── 태국 ────────────────────────────────────────────────────────
+
+/** 방콕 Sukhumvit — STA S107·ASB·Bangkok Prep·KIS·Anglo Singapore 한·중·일 가족 1순위. */
+export const BANGKOK_SUKHUMVIT_CONDOS: NearbyCondo[] = [
+  {
+    name: 'The Lumpini 24 (Phrom Phong)',
+    distance_minutes: 5,
+    tier: 'premium',
+    rent_2br_usd: [1100, 1600],
+    rent_3br_usd: [1800, 2600],
+    korean_parents: 'high',
+    chinese_parents: 'mid',
+    note_ko: 'Phrom Phong BTS 도보권. 한국 슈퍼·식당·미용실 밀집(Sukhumvit 26 한인타운).',
+    note_zh: 'Phrom Phong BTS 步行可达。韩国超市 · 餐厅 · 美容院密集 (Sukhumvit 26 韩国城)。',
+  },
+  {
+    name: 'Noble BE19 (Asoke)',
+    distance_minutes: 8,
+    tier: 'premium',
+    rent_2br_usd: [1300, 1800],
+    rent_3br_usd: [2100, 3000],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: 'Asoke·Sukhumvit BTS 환승역. KIS·Bangkok Prep 차량 10분.',
+    note_zh: 'Asoke · Sukhumvit BTS 换乘站。KIS · Bangkok Prep 车程 10 分钟。',
+  },
+  {
+    name: 'Aspire Sukhumvit 48',
+    distance_minutes: 8,
+    tier: 'mid',
+    rent_2br_usd: [700, 1000],
+    rent_3br_usd: [1100, 1500],
+    korean_parents: 'high',
+    chinese_parents: 'mid',
+    note_ko: 'Sukhumvit 한인타운 인접. 가성비. ASB·STA S107 셔틀권.',
+    note_zh: 'Sukhumvit 韩国城邻近。性价比。ASB · STA S107 校车圈。',
+  },
+];
+
+/** 방콕 Riverside — Shrewsbury Riverside 학부모 거주. 차오프라야 강변. */
+export const BANGKOK_RIVERSIDE_CONDOS: NearbyCondo[] = [
+  {
+    name: 'The River (Charoennakorn)',
+    distance_minutes: 5,
+    tier: 'luxury',
+    rent_2br_usd: [1500, 2200],
+    rent_3br_usd: [2400, 3500],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: '강변 럭셔리 타워. STA Riverside 도보·셔틀권. 외교관 가족.',
+    note_zh: '河畔豪华塔楼。STA Riverside 步行 · 校车圈。外交家庭。',
+  },
+  {
+    name: 'Magnolias Waterfront Residences',
+    distance_minutes: 7,
+    tier: 'luxury',
+    rent_2br_usd: [1800, 2500],
+    rent_3br_usd: [3000, 4500],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: 'IconSiam 인접. STA Riverside 차량 10분. 럭셔리.',
+    note_zh: 'IconSiam 邻近。STA Riverside 车程 10 分钟。豪华。',
+  },
+];
+
+/** 방콕 Bang Na — ASB Green Valley·D-PREP 학부모 거주. 동부 신도시. */
+export const BANGKOK_BANGNA_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Ideo Mobi Bangna',
+    distance_minutes: 8,
+    tier: 'mid',
+    rent_2br_usd: [550, 800],
+    rent_3br_usd: [800, 1200],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: 'Bang Na BTS 도보권. ASB GV·D-PREP 셔틀권. 한·중 가족 다수.',
+    note_zh: 'Bang Na BTS 步行可达。ASB GV · D-PREP 校车圈。韩中家庭众多。',
+  },
+  {
+    name: 'Whizdom Connect Sukhumvit (Punnawithi)',
+    distance_minutes: 10,
+    tier: 'mid',
+    rent_2br_usd: [650, 900],
+    rent_3br_usd: [950, 1400],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'Punnawithi BTS. Sukhumvit·Bang Na 사이 통근권.',
+    note_zh: 'Punnawithi BTS。Sukhumvit · Bang Na 中间通勤圈。',
+  },
+];
+
+/** 파타야 — Regents·Rugby·TPIS 학부모 거주. 해변 리조트형. */
+export const PATTAYA_CONDOS: NearbyCondo[] = [
+  {
+    name: 'The Riviera Wongamat',
+    distance_minutes: 10,
+    tier: 'premium',
+    rent_2br_usd: [800, 1200],
+    rent_3br_usd: [1300, 1900],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: '나끌루아 해변. Regents·TPIS 차량 10~15분. 한·중·러 가족 클러스터.',
+    note_zh: '纳格鲁阿海滩。Regents · TPIS 车程 10-15 分钟。韩中俄家庭聚集。',
+  },
+  {
+    name: 'Centric Sea Pattaya',
+    distance_minutes: 12,
+    tier: 'mid',
+    rent_2br_usd: [550, 800],
+    rent_3br_usd: [800, 1200],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: '파타야 중심. 해변 도보권. 가성비 + 인테리어 양호.',
+    note_zh: '芭提雅中心。海滩步行可达。性价比 + 装修良好。',
+  },
+];
+
+/** Rayong / Green Valley — St. Andrews GV·Rugby Thailand 학부모 거주. EEC 산업단지. */
+export const RAYONG_GREEN_VALLEY_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Green Valley Resort Villas',
+    distance_minutes: 3,
+    tier: 'premium',
+    rent_2br_usd: [700, 1000],
+    rent_3br_usd: [1100, 1600],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'Green Valley 골프 리조트 단지 내 빌라. 학교 도보·자전거 권.',
+    note_zh: 'Green Valley 高尔夫度假村内别墅。学校步行 · 自行车可达。',
+  },
+  {
+    name: 'Rayong 도심 콘도',
+    distance_minutes: 20,
+    tier: 'mid',
+    rent_2br_usd: [400, 600],
+    rent_3br_usd: [600, 900],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'Rayong 도심. EEC 산업단지 한·일 가족 다수.',
+    note_zh: 'Rayong 市区。EEC 工业区韩日家庭众多。',
+  },
+];
+
+/** 푸켓 — BCIS·BISP·HeadStart 학부모 거주. */
+export const PHUKET_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Phuket Town 콘도',
+    distance_minutes: 5,
+    tier: 'mid',
+    rent_2br_usd: [500, 750],
+    rent_3br_usd: [800, 1200],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: '푸켓 타운 도심. BCIS·BISP 셔틀권. 프랑스·유럽·아시아 가족 혼합.',
+    note_zh: '普吉镇市区。BCIS · BISP 校车圈。法国 · 欧洲 · 亚洲家庭混合。',
+  },
+  {
+    name: '라구나 푸켓 (Laguna Phuket) 빌라',
+    distance_minutes: 25,
+    tier: 'luxury',
+    rent_2br_usd: [1200, 1800],
+    rent_3br_usd: [2000, 3500],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: '리조트 단지 빌라. 럭셔리 + 해변. 학교 셔틀 차량 25분.',
+    note_zh: '度假村别墅。豪华 + 海滨。校车车程 25 分钟。',
+  },
+];
+
+/** 치앙마이 — APIS·CMIS·Lanna·Prem 학부모 거주. 산악·올드시티. */
+export const CHIANG_MAI_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Mae Rim 단독·테라스',
+    distance_minutes: 5,
+    tier: 'mid',
+    rent_2br_usd: [450, 700],
+    rent_3br_usd: [700, 1100],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'APIS 인근 산악 지역. 한·중·일 가족 + 디지털 노마드.',
+    note_zh: 'APIS 附近山地。韩中日家庭 + 数字游牧族。',
+  },
+  {
+    name: '치앙마이 Nimman 콘도',
+    distance_minutes: 20,
+    tier: 'mid',
+    rent_2br_usd: [400, 650],
+    rent_3br_usd: [650, 1000],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: '치앙마이 핫스팟 Nimmanhaemin. 학교 차량 20~30분. 카페·식당 풍부.',
+    note_zh: '清迈热门区 Nimmanhaemin。学校车程 20-30 分钟。咖啡馆 · 餐厅丰富。',
+  },
+];
+
 export const PYEONGTAEK_CONDOS: NearbyCondo[] = [
   {
     name: '평택 험프리스 인근 군 가족 주택',
@@ -915,6 +1110,105 @@ export const SCHOOL_NEIGHBORHOODS: Record<string, SchoolNeighborhood[]> = {
         { name: 'PJ Section 13 콘도', distance_minutes: 5, tier: 'mid', rent_2br_usd: [550, 800], rent_3br_usd: [800, 1200], korean_parents: 'mid', chinese_parents: 'high', note_ko: 'PJ 도심. MRT·LRT 접근 우수. 한·중 가족 다수.', note_zh: 'PJ 市区。MRT · LRT 接驳良好。韩中家庭众多。' },
         ...TROPICANA_PJ_CONDOS,
       ] },
+  ],
+
+  // ── 태국 ──────────────────────────────────────────────────
+  'shrewsbury-riverside': [
+    { area_ko: '방콕 차오프라야 강변 (Charoennakorn · Sathorn)', area_zh: '曼谷湄南河畔 (Charoennakorn · Sathorn)',
+      overview_ko: 'STA Riverside 학부모 거주 1순위. 강변 럭셔리 + IconSiam 인접.',
+      overview_zh: 'STA Riverside 家长居住首选。河畔豪华 + IconSiam 邻近。',
+      condos: BANGKOK_RIVERSIDE_CONDOS },
+    { area_ko: '방콕 Sathorn · Silom (BTS 통근권)', area_zh: '曼谷 Sathorn · Silom (BTS 通勤圈)',
+      overview_ko: 'STA Riverside 셔틀권. 외국계 임원 가족.',
+      overview_zh: 'STA Riverside 校车圈。外企高管家庭。',
+      condos: BANGKOK_SUKHUMVIT_CONDOS.slice(0, 2) },
+  ],
+  'shrewsbury-city': [
+    { area_ko: '방콕 Sukhumvit (Soi 71~107)', area_zh: '曼谷 Sukhumvit (Soi 71-107)',
+      overview_ko: 'STA S107 — Sukhumvit Soi 107. BTS Bearing·Punnawithi 도보권.',
+      overview_zh: 'STA S107 — Sukhumvit Soi 107。BTS Bearing · Punnawithi 步行可达。',
+      condos: BANGKOK_SUKHUMVIT_CONDOS },
+  ],
+  'asb-sukhumvit': [
+    { area_ko: '방콕 Sukhumvit (Phrom Phong·Thonglor)', area_zh: '曼谷 Sukhumvit (Phrom Phong · Thonglor)',
+      overview_ko: 'ASB Sukhumvit — Phrom Phong 도심. 한·일·중 가족 클러스터.',
+      overview_zh: 'ASB Sukhumvit — Phrom Phong 市区。韩日中家庭聚集。',
+      condos: BANGKOK_SUKHUMVIT_CONDOS },
+  ],
+  'asb-green-valley': [
+    { area_ko: '방콕 Bang Na · 동부', area_zh: '曼谷 Bang Na · 东部',
+      overview_ko: 'ASB Green Valley — Bang Na-Trad KM7. 동부 신도시 가족.',
+      overview_zh: 'ASB Green Valley — Bang Na-Trad KM7。东部新城家庭。',
+      condos: BANGKOK_BANGNA_CONDOS },
+  ],
+  'bangkok-prep': [
+    { area_ko: '방콕 Sukhumvit (Phrom Phong·Asoke)', area_zh: '曼谷 Sukhumvit (Phrom Phong · Asoke)',
+      overview_ko: 'Bangkok Prep — Sukhumvit 53. Phrom Phong BTS 도보권. 한·일 가족 다수.',
+      overview_zh: 'Bangkok Prep — Sukhumvit 53。Phrom Phong BTS 步行可达。韩日家庭众多。',
+      condos: BANGKOK_SUKHUMVIT_CONDOS },
+  ],
+  'dulwich-bangkok': [
+    { area_ko: '방콕 Sukhumvit (정확 위치는 학교 확인)', area_zh: '曼谷 Sukhumvit (具体位置请咨询学校)',
+      overview_ko: 'Dulwich Bangkok — 신규 캠퍼스. 정확 위치는 학교 공식 사이트 확인.',
+      overview_zh: 'Dulwich Bangkok — 新校区。准确位置请查阅学校官网。',
+      condos: BANGKOK_SUKHUMVIT_CONDOS },
+  ],
+  'kis-bangkok': [
+    { area_ko: '방콕 Huai Khwang · Ratchadaphisek', area_zh: '曼谷 Huai Khwang · Ratchadaphisek',
+      overview_ko: 'KIS Bangkok — Huai Khwang MRT 도보권. 중심부 + 한·중 가족.',
+      overview_zh: 'KIS Bangkok — Huai Khwang MRT 步行可达。市中心 + 韩中家庭。',
+      condos: [
+        { name: 'The Esse Asoke (MRT Phetchaburi)', distance_minutes: 8, tier: 'premium', rent_2br_usd: [1100, 1600], rent_3br_usd: [1800, 2500], korean_parents: 'mid', chinese_parents: 'high', note_ko: 'KIS·Bangkok Prep 모두 차량 8~10분. 도심 중앙.', note_zh: 'KIS · Bangkok Prep 车程均 8-10 分钟。市中心。' },
+        { name: 'Centric Ratchada-Huai Khwang', distance_minutes: 5, tier: 'mid', rent_2br_usd: [650, 950], rent_3br_usd: [1000, 1450], korean_parents: 'mid', chinese_parents: 'high', note_ko: 'KIS 도보 5분. 가성비 + 중국 학부모 다수.', note_zh: 'KIS 步行 5 分钟。性价比 + 中国家长众多。' },
+      ] },
+  ],
+  'd-prep': [
+    { area_ko: '방콕 Bang Na · 동부', area_zh: '曼谷 Bang Na · 东部',
+      overview_ko: 'D-PREP — Bang Na-Trad KM8. 동부 신도시 가족 1순위.',
+      overview_zh: 'D-PREP — Bang Na-Trad KM8。东部新城家庭首选。',
+      condos: BANGKOK_BANGNA_CONDOS },
+  ],
+  'anglo-singapore': [
+    { area_ko: '방콕 Sukhumvit 31 (Phrom Phong 인근)', area_zh: '曼谷 Sukhumvit 31 (Phrom Phong 邻近)',
+      overview_ko: 'Anglo Singapore — Sukhumvit 31. 한·중 가족 + 싱가포르 수학 학부모 클러스터.',
+      overview_zh: 'Anglo Singapore — Sukhumvit 31。韩中家庭 + 新加坡数学家长聚集。',
+      condos: BANGKOK_SUKHUMVIT_CONDOS },
+  ],
+  'rugby-thailand': [
+    { area_ko: '촌부리 · Bang Bong (파타야 북부)', area_zh: '春武里 · Bang Bong (芭提雅北部)',
+      overview_ko: 'Rugby School Thailand — 보딩 중심. Day 학생은 파타야 북부 거주.',
+      overview_zh: 'Rugby School Thailand — 寄宿为主。走读学生居芭提雅北部。',
+      condos: PATTAYA_CONDOS },
+  ],
+  'regents-pattaya': [
+    { area_ko: '파타야 · 나끌루아 (Wongamat)', area_zh: '芭提雅 · 纳格鲁阿 (Wongamat)',
+      overview_ko: 'Regents Pattaya — 보딩 + Day. Wongamat 해변 학부모 거주.',
+      overview_zh: 'Regents Pattaya — 寄宿 + 走读。Wongamat 海滨家长居住。',
+      condos: PATTAYA_CONDOS },
+  ],
+  'st-andrews-green-valley': [
+    { area_ko: 'Rayong · Green Valley · EEC', area_zh: '罗勇 · Green Valley · EEC',
+      overview_ko: 'St. Andrews GV — Green Valley 골프 단지 내. EEC 산업단지 가족.',
+      overview_zh: 'St. Andrews GV — Green Valley 高尔夫园区内。EEC 工业区家庭。',
+      condos: RAYONG_GREEN_VALLEY_CONDOS },
+  ],
+  'tara-pattana': [
+    { area_ko: '파타야 도심 · Sukhumvit Rd', area_zh: '芭提雅市区 · Sukhumvit Rd',
+      overview_ko: 'TPIS — 파타야 도심. 한·중·러 가족 클러스터.',
+      overview_zh: 'TPIS — 芭提雅市区。韩中俄家庭聚集。',
+      condos: PATTAYA_CONDOS },
+  ],
+  'bcis-phuket': [
+    { area_ko: '푸켓 타운 · 도심', area_zh: '普吉镇 · 市区',
+      overview_ko: 'BCIS — Phuket Town. 프랑스·유럽·아시아 가족 혼합.',
+      overview_zh: 'BCIS — Phuket Town。法国 · 欧洲 · 亚洲家庭混合。',
+      condos: PHUKET_CONDOS },
+  ],
+  'apis-chiang-mai': [
+    { area_ko: '치앙마이 · Mae Rim (북부 산악)', area_zh: '清迈 · Mae Rim (北部山地)',
+      overview_ko: 'APIS — Mae Rim. 보딩 + Day. 산악·자연 친화. 한·중·일 가족.',
+      overview_zh: 'APIS — Mae Rim。寄宿 + 走读。山地 · 自然友好。韩中日家庭。',
+      condos: CHIANG_MAI_CONDOS },
   ],
   'oasis': [
     { area_ko: 'Kajang (KL 남쪽)', area_zh: 'Kajang (吉隆坡南部)',

@@ -1,0 +1,225 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import Flag from '~/components/Flag.astro';
+import SchoolFinancialDetails from '~/components/SchoolFinancialDetails.astro';
+import SchoolNeighborhood from '~/components/SchoolNeighborhood.astro';
+import { THAILAND_SCHOOLS, REGION_LABELS } from '~/lib/thailand-schools';
+import { deriveFinance } from '~/lib/school-finance';
+import { SCHOOL_NEIGHBORHOODS } from '~/lib/school-neighborhood';
+
+export async function getStaticPaths() {
+  return THAILAND_SCHOOLS.map((s) => ({
+    params: { region: s.region, slug: s.slug },
+    props: { school: s },
+  }));
+}
+
+const { school: s } = Astro.props;
+const regionLabel = REGION_LABELS[s.region];
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = `${s.name_ko} (${s.name_en}) — 태국 ${regionLabel.ko} 국제학교 입학·학비·커리큘럼 | AsiaEduHub`;
+const description = s.summary_ko;
+
+const siteRoot = Astro.site?.toString() ?? '';
+const eduOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: s.name_en,
+  alternateName: [s.name_ko, s.name_zh].filter(Boolean),
+  url: s.website,
+  sameAs: [s.website].filter(Boolean),
+  foundingDate: s.founded_year ? `${s.founded_year}` : undefined,
+  address: { '@type': 'PostalAddress', addressLocality: s.city_ko, addressCountry: 'TH' },
+  description: s.summary_ko,
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: `${s.name_ko} 학비 (연)`,
+    itemListElement: [{
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      priceSpecification: {
+        '@type': 'PriceSpecification',
+        minPrice: s.tuition_range_usd[0],
+        maxPrice: s.tuition_range_usd[1],
+        priceCurrency: 'USD',
+      },
+      category: '연 학비',
+    }],
+  },
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '해외 유학', item: siteRoot + 'ko/abroad/' },
+    { '@type': 'ListItem', position: 3, name: '태국', item: siteRoot + 'ko/abroad/thailand/' },
+    { '@type': 'ListItem', position: 4, name: regionLabel.ko, item: siteRoot + `ko/abroad/thailand/${s.region}/` },
+    { '@type': 'ListItem', position: 5, name: s.name_ko },
+  ],
+};
+
+const finance = deriveFinance(s);
+const neighborhoods = SCHOOL_NEIGHBORHOODS[s.slug] ?? [];
+
+const sameRegion = THAILAND_SCHOOLS.filter((o) => o.region === s.region && o.slug !== s.slug).slice(0, 4);
+
+const curriculumLabel = {
+  British: '영국식 (IGCSE · A-Level)',
+  American: '미국식 (American · AP)',
+  IB: 'IB 전 단계 (PYP · MYP · DP)',
+  Singaporean: '싱가포르식 (수학 강점)',
+  French: '프랑스·국제 이중',
+  Mixed: '복합 커리큘럼',
+}[s.curriculum.type];
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[eduOrg, breadcrumb]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="hero-gradient school-hero-wrap">
+    <div class="container-content pt-10 sm:pt-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/abroad/">해외 유학</a> · <a href="/ko/abroad/thailand/"><Flag country="TH" />태국</a> · <a href={`/ko/abroad/thailand/${s.region}/`}>{regionLabel.ko}</a> · <span style="color: var(--color-text-primary)">{s.name_ko}</span>
+      </nav>
+
+      <div class="mt-4 flex flex-wrap items-center gap-2">
+        <span class="badge-navy"><Flag country="TH" />태국 · {regionLabel.ko}</span>
+        {s.founded_year && <span class="badge-navy">{s.founded_year} 설립</span>}
+        <span class="badge-navy">{curriculumLabel}</span>
+        {s.boarding && <span class="badge-navy">보딩 옵션</span>}
+      </div>
+
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.02em">{s.name_ko}</h1>
+      <p class="mt-2 text-base" style="color: var(--color-text-secondary); font-weight:500">
+        {s.name_en}{s.abbreviation ? ` · ${s.abbreviation}` : ''}
+      </p>
+      <p class="mt-5 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">{s.summary_ko}</p>
+
+      <div class="mt-6">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources={`${s.name_ko} 공식 사이트, 학교 입학 안내, 학부모 커뮤니티 청취`} />
+      </div>
+
+      <div class="mt-5">
+        <a href={s.website} target="_blank" rel="noopener" class="official-site-button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20" stroke="currentColor" stroke-width="1.7"/></svg>
+          공식 사이트 방문
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M7 7h10v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container-content school-stats-overlap">
+    <dl class="stat-grid grid-cols-2 lg:grid-cols-4">
+      <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-7.5-7-12a7 7 0 1114 0c0 4.5-7 12-7 12z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.8"/></svg>
+        </span>
+        <dt>위치</dt>
+        <dd>{s.city_ko}{s.district_ko && <><br/><span class="text-sm" style="color:var(--color-text-secondary); font-weight:500">{s.district_ko}</span></>}</dd>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M2 7l10-4 10 4-10 4L2 7zM6 9v5c0 2 3 3 6 3s6-1 6-3V9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </span>
+        <dt>학년</dt>
+        <dd>{s.grade_range}</dd>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4zM4 9h16M9 5v14" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </span>
+        <dt>커리큘럼</dt>
+        <dd class="text-sm" style="font-weight:600">{s.curriculum.programs_en.join(' · ')}</dd>
+      </div>
+      <div class="stat-card stat-card-tuition">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </span>
+        <dt>연 학비 (추정)</dt>
+        <dd>${s.tuition_range_usd[0].toLocaleString()}~${s.tuition_range_usd[1].toLocaleString()}</dd>
+        <p class="tuition-note">학교 공식 발표 확인</p>
+      </div>
+    </dl>
+  </div>
+
+  <article class="container-content pt-6 pb-12 max-w-3xl">
+    <section class="mt-10">
+      <h2 class="text-xl">{s.name_ko} 핵심 특징</h2>
+      <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">학교 공식 자료 기반 객관 정리</p>
+      <ul class="mt-4 space-y-2 text-sm">
+        {s.highlights_ko.map((h) => <li>✓ {h}</li>)}
+      </ul>
+    </section>
+
+    <SchoolFinancialDetails details={finance} locale="ko" schoolName={s.name_ko} />
+
+    {neighborhoods.length > 0 && <SchoolNeighborhood neighborhoods={neighborhoods} locale="ko" />}
+
+    <section class="mt-10">
+      <h2 class="text-xl">입학 자격 (태국 국제학교 공통)</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        태국 국제학교는 외국 국적·태국 국민 모두 입학 가능. 학생 비자 또는 보호자의 장기 비자(LTR·태국 엘리트 등) 필요.
+      </p>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li>• 자녀: Education Visa (ED) 또는 부모의 LTR·태국 엘리트·Non-B 등 Dependant</li>
+        <li>• 학교별 영어 능력 시험 (CAT4·MAP 등) + 인터뷰</li>
+        <li>• 이전 학교 성적증명서 (영문 번역 공증)</li>
+        <li>• 출생증명서·여권 사본·예방접종 기록</li>
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        보호자 비자는 <a href="/ko/mm2h/" class="text-primary-700 hover:underline">학부모 비자 가이드</a> 참고 (태국 엘리트 · LTR 포함).
+      </p>
+    </section>
+
+    <section class="mt-10 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-5">
+      <div class="text-xs uppercase tracking-wide text-accent-700">운영자 한마디 (작성 예정)</div>
+      <p class="mt-2 text-sm text-accent-700">
+        운영자(데이비드)는 KL 거주 — 태국은 단기 출장·체류로 학교 방문 누적 중. {s.name_ko} 입학설명회·재학생 인터뷰·캠퍼스 방문 후 학부모 관점 분석 추가 예정.
+        한국·중국 학생 비율, 교사 국적 구성, 시설 디테일 등 학교 공식 자료에 없는 정보는
+        <a href="/ko/contact/" class="underline">운영자에게 직접 문의</a> 가능.
+      </p>
+    </section>
+
+    {sameRegion.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl">{regionLabel.ko} 다른 학교</h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+          {sameRegion.map((o) => (
+            <a href={`/ko/abroad/thailand/${o.region}/${o.slug}/`} class="card text-sm">
+              <div class="text-primary-900" style="font-weight:500">{o.name_ko}</div>
+              <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">{o.curriculum.programs_en.join(' · ')}</div>
+              <div class="mt-1 text-xs" style="color: var(--color-text-tertiary)">연 ${o.tuition_range_usd[0].toLocaleString()}–${o.tuition_range_usd[1].toLocaleString()}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">{s.name_ko} 입학 상담</h2>
+      <p class="mt-3 text-sm opacity-95">
+        자녀 학년 · 영어 수준 · 거주 지역 · 보호자 비자(LTR·태국 엘리트) · 예산을 알려주시면 {s.name_ko}와 비교 가능한 학교까지 1:1 답변.
+      </p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 본 페이지는 {s.name_ko} 공식 자료 기반으로 운영자(데이비드)가 정리한 정보 페이지. 학교 정책 · 학비 · 자격은 매년 변경 — 학교 공식 사이트(<a href={s.website} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.website}</a>)에서 최신 정보 확인.
+    </p>
+  </article>
+</BaseLayout>

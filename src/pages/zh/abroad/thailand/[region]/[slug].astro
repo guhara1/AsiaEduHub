@@ -1,0 +1,225 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import Flag from '~/components/Flag.astro';
+import SchoolFinancialDetails from '~/components/SchoolFinancialDetails.astro';
+import SchoolNeighborhood from '~/components/SchoolNeighborhood.astro';
+import { THAILAND_SCHOOLS, REGION_LABELS } from '~/lib/thailand-schools';
+import { deriveFinance } from '~/lib/school-finance';
+import { SCHOOL_NEIGHBORHOODS } from '~/lib/school-neighborhood';
+
+export async function getStaticPaths() {
+  return THAILAND_SCHOOLS.map((s) => ({
+    params: { region: s.region, slug: s.slug },
+    props: { school: s },
+  }));
+}
+
+const { school: s } = Astro.props;
+const regionLabel = REGION_LABELS[s.region];
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = `${s.name_zh} (${s.name_en}) — 泰国 ${regionLabel.zh} 国际学校入学 · 学费 · 课程 | AsiaEduHub`;
+const description = s.summary_zh;
+
+const siteRoot = Astro.site?.toString() ?? '';
+const eduOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: s.name_en,
+  alternateName: [s.name_ko, s.name_zh].filter(Boolean),
+  url: s.website,
+  sameAs: [s.website].filter(Boolean),
+  foundingDate: s.founded_year ? `${s.founded_year}` : undefined,
+  address: { '@type': 'PostalAddress', addressLocality: s.city_zh, addressCountry: 'TH' },
+  description: s.summary_zh,
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: `${s.name_zh} 年学费`,
+    itemListElement: [{
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      priceSpecification: {
+        '@type': 'PriceSpecification',
+        minPrice: s.tuition_range_usd[0],
+        maxPrice: s.tuition_range_usd[1],
+        priceCurrency: 'USD',
+      },
+      category: '年学费',
+    }],
+  },
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '海外留学', item: siteRoot + 'zh/abroad/' },
+    { '@type': 'ListItem', position: 3, name: '泰国', item: siteRoot + 'zh/abroad/thailand/' },
+    { '@type': 'ListItem', position: 4, name: regionLabel.zh, item: siteRoot + `zh/abroad/thailand/${s.region}/` },
+    { '@type': 'ListItem', position: 5, name: s.name_zh },
+  ],
+};
+
+const finance = deriveFinance(s);
+const neighborhoods = SCHOOL_NEIGHBORHOODS[s.slug] ?? [];
+
+const sameRegion = THAILAND_SCHOOLS.filter((o) => o.region === s.region && o.slug !== s.slug).slice(0, 4);
+
+const curriculumLabel = {
+  British: '英式 (IGCSE · A-Level)',
+  American: '美式 (American · AP)',
+  IB: 'IB 全阶段 (PYP · MYP · DP)',
+  Singaporean: '新加坡课程(数学优势)',
+  French: '法语 · 国际双轨',
+  Mixed: '混合课程',
+}[s.curriculum.type];
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[eduOrg, breadcrumb]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="hero-gradient school-hero-wrap">
+    <div class="container-content pt-10 sm:pt-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/zh/abroad/">海外留学</a> · <a href="/zh/abroad/thailand/"><Flag country="TH" />泰国</a> · <a href={`/zh/abroad/thailand/${s.region}/`}>{regionLabel.zh}</a> · <span style="color: var(--color-text-primary)">{s.name_zh}</span>
+      </nav>
+
+      <div class="mt-4 flex flex-wrap items-center gap-2">
+        <span class="badge-navy"><Flag country="TH" />泰国 · {regionLabel.zh}</span>
+        {s.founded_year && <span class="badge-navy">{s.founded_year} 创立</span>}
+        <span class="badge-navy">{curriculumLabel}</span>
+        {s.boarding && <span class="badge-navy">寄宿选项</span>}
+      </div>
+
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.02em">{s.name_zh}</h1>
+      <p class="mt-2 text-base" style="color: var(--color-text-secondary); font-weight:500">
+        {s.name_en}{s.abbreviation ? ` · ${s.abbreviation}` : ''}
+      </p>
+      <p class="mt-5 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">{s.summary_zh}</p>
+
+      <div class="mt-6">
+        <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources={`${s.name_zh} 官网,学校招生资料,家长社群`} />
+      </div>
+
+      <div class="mt-5">
+        <a href={s.website} target="_blank" rel="noopener" class="official-site-button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20" stroke="currentColor" stroke-width="1.7"/></svg>
+          访问官方网站
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M7 7h10v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container-content school-stats-overlap">
+    <dl class="stat-grid grid-cols-2 lg:grid-cols-4">
+      <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-7.5-7-12a7 7 0 1114 0c0 4.5-7 12-7 12z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.8"/></svg>
+        </span>
+        <dt>位置</dt>
+        <dd>{s.city_zh}{s.district_zh && <><br/><span class="text-sm" style="color:var(--color-text-secondary); font-weight:500">{s.district_zh}</span></>}</dd>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M2 7l10-4 10 4-10 4L2 7zM6 9v5c0 2 3 3 6 3s6-1 6-3V9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </span>
+        <dt>年级</dt>
+        <dd>{s.grade_range}</dd>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4zM4 9h16M9 5v14" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </span>
+        <dt>课程</dt>
+        <dd class="text-sm" style="font-weight:600">{s.curriculum.programs_en.join(' · ')}</dd>
+      </div>
+      <div class="stat-card stat-card-tuition">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </span>
+        <dt>年学费(估算)</dt>
+        <dd>${s.tuition_range_usd[0].toLocaleString()}~${s.tuition_range_usd[1].toLocaleString()}</dd>
+        <p class="tuition-note">学校官网为准</p>
+      </div>
+    </dl>
+  </div>
+
+  <article class="container-content pt-6 pb-12 max-w-3xl">
+    <section class="mt-10">
+      <h2 class="text-xl">{s.name_zh} 核心特点</h2>
+      <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">基于学校官方资料整理</p>
+      <ul class="mt-4 space-y-2 text-sm">
+        {s.highlights_zh.map((h) => <li>✓ {h}</li>)}
+      </ul>
+    </section>
+
+    <SchoolFinancialDetails details={finance} locale="zh" schoolName={s.name_zh} />
+
+    {neighborhoods.length > 0 && <SchoolNeighborhood neighborhoods={neighborhoods} locale="zh" />}
+
+    <section class="mt-10">
+      <h2 class="text-xl">入学资格(泰国国际学校通用)</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        泰国国际学校大多接受外籍及泰国国民,需学生签证或监护人长期签证(LTR · 泰国精英签等)。
+      </p>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li>• 子女:Education Visa (ED) 或随父母 LTR · 泰国精英 · Non-B 的 Dependant</li>
+        <li>• 各校英语能力测试(CAT4 · MAP 等)+ 面试</li>
+        <li>• 此前学校成绩单(英文翻译公证)</li>
+        <li>• 出生证 · 护照 · 疫苗接种记录</li>
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        监护人签证请参考 <a href="/zh/mm2h/" class="text-primary-700 hover:underline">家长签证指南</a>(含泰国精英 · LTR)。
+      </p>
+    </section>
+
+    <section class="mt-10 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-5">
+      <div class="text-xs uppercase tracking-wide text-accent-700">站长一句话(待补充)</div>
+      <p class="mt-2 text-sm text-accent-700">
+        站长 David 居住 KL — 泰国为短期出差 · 体验中积累校访。{s.name_zh} 招生说明会 · 在校生访谈 · 校园走访后将补充家长视角分析。
+        韩国 · 中国学生比例 · 教师国籍 · 设施细节等学校公开资料未涉及的信息可
+        <a href="/zh/contact/" class="underline">直接向站长咨询</a>。
+      </p>
+    </section>
+
+    {sameRegion.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl">{regionLabel.zh} 其他学校</h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+          {sameRegion.map((o) => (
+            <a href={`/zh/abroad/thailand/${o.region}/${o.slug}/`} class="card text-sm">
+              <div class="text-primary-900" style="font-weight:500">{o.name_zh}</div>
+              <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">{o.curriculum.programs_en.join(' · ')}</div>
+              <div class="mt-1 text-xs" style="color: var(--color-text-tertiary)">年 ${o.tuition_range_usd[0].toLocaleString()}–${o.tuition_range_usd[1].toLocaleString()}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">{s.name_zh} 入学咨询</h2>
+      <p class="mt-3 text-sm opacity-95">
+        告知孩子年级 · 英语水平 · 居住区 · 监护人签证 · 预算,可获 {s.name_zh} 与可比学校 1:1 答复。
+      </p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        WeChat 咨询
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 本页基于 {s.name_zh} 公开资料整理。学校政策 · 学费 · 资格每年可能变更,最新信息请以学校官网(<a href={s.website} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.website}</a>)为准。
+    </p>
+  </article>
+</BaseLayout>

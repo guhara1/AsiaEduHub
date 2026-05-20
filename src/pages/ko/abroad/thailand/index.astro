@@ -1,0 +1,118 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import Flag from '~/components/Flag.astro';
+import { THAILAND_SCHOOLS, REGION_LABELS, type ThaiRegion } from '~/lib/thailand-schools';
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = '태국 국제학교 15곳 — 방콕 · 파타야 · 푸켓 · 치앙마이 학교별 상세 | AsiaEduHub';
+const description =
+  'Shrewsbury · Bangkok Prep · KIS · Dulwich · ASB · Rugby School · Regents · St. Andrews · BCIS · APIS 등 태국 국제학교 15곳의 커리큘럼·학비·위치·공식 사이트를 학교별 상세 페이지로 정리.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '해외 유학', item: siteRoot + 'ko/abroad/' },
+    { '@type': 'ListItem', position: 3, name: '태국' },
+  ],
+};
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '태국 국제학교 15곳',
+  numberOfItems: THAILAND_SCHOOLS.length,
+  itemListElement: THAILAND_SCHOOLS.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: s.name_ko,
+    url: siteRoot + `ko/abroad/thailand/${s.region}/${s.slug}/`,
+  })),
+};
+
+const regions: { id: ThaiRegion; ko: string; zh: string }[] = [
+  { id: 'bangkok', ...REGION_LABELS.bangkok },
+  { id: 'pattaya', ...REGION_LABELS.pattaya },
+  { id: 'phuket', ...REGION_LABELS.phuket },
+  { id: 'chiang-mai', ...REGION_LABELS['chiang-mai'] },
+];
+
+const byRegion: Record<ThaiRegion, typeof THAILAND_SCHOOLS> = {
+  'bangkok': THAILAND_SCHOOLS.filter((s) => s.region === 'bangkok'),
+  'pattaya': THAILAND_SCHOOLS.filter((s) => s.region === 'pattaya'),
+  'phuket': THAILAND_SCHOOLS.filter((s) => s.region === 'phuket'),
+  'chiang-mai': THAILAND_SCHOOLS.filter((s) => s.region === 'chiang-mai'),
+};
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[breadcrumb, itemList]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · <a href="/ko/abroad/">해외 유학</a> · <Flag country="TH" />태국
+      </nav>
+
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.02em">
+        🇹🇭 태국 국제학교 15곳
+      </h1>
+      <p class="mt-3 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        방콕 · 파타야 · 푸켓 · 치앙마이 4개 지역 영국식 · 미국식 · IB · 보딩 학교 종합 정리. Shrewsbury · Rugby · Regents · Bangkok Prep 등 글로벌 명문 자매학교 다수.
+      </p>
+
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="각 학교 공식 사이트, 학교 입학 안내, 학부모 커뮤니티 청취" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-4xl">
+    {regions.map((r) => byRegion[r.id].length > 0 && (
+      <section class="mt-10" id={r.id}>
+        <h2 class="text-xl sm:text-2xl" style="font-weight:700; letter-spacing:-0.01em">
+          <Flag country="TH" />{r.ko} <span style="color: var(--color-text-tertiary); font-weight:500; font-size: 0.85em">({byRegion[r.id].length}곳)</span>
+        </h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+          {byRegion[r.id].map((s) => (
+            <a href={`/ko/abroad/thailand/${s.region}/${s.slug}/`} class="card text-sm block">
+              <div class="text-primary-900" style="font-weight:600">{s.name_ko}</div>
+              <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">
+                {s.name_en}{s.abbreviation ? ` · ${s.abbreviation}` : ''}
+              </div>
+              <div class="mt-2 flex flex-wrap gap-1">
+                <span class="badge-outlined">{s.curriculum.type}</span>
+                {s.boarding && <span class="badge-navy">보딩</span>}
+                {s.founded_year && <span class="badge-outlined">{s.founded_year}</span>}
+              </div>
+              <div class="mt-2 text-xs" style="color: var(--color-text-tertiary)">
+                연 ${s.tuition_range_usd[0].toLocaleString()}~${s.tuition_range_usd[1].toLocaleString()}
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">태국 국제학교 입학 상담</h2>
+      <p class="mt-3 text-sm opacity-95">
+        자녀 학년 · 영어 수준 · 지역(방콕·파타야·푸켓·치앙마이) · 보딩 여부 · 예산을 알려주시면 1:1 답변. 운영자가 동남아 거주.
+      </p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+  </article>
+</BaseLayout>
