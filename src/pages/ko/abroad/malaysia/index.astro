@@ -1,0 +1,138 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { MALAYSIA_SCHOOLS } from '~/lib/malaysia-schools';
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = '말레이시아 국제학교 22곳 — KL · Selangor · Putrajaya · Negeri Sembilan 학교별 상세 | AsiaEduHub';
+const description =
+  'Alice Smith · ISKL · Mont\'Kiara · Garden International · Epsom · BSKL · IGB · SJI · Nexus · Sunway · ISP · AISM · UCSI 등 말레이시아 국제학교 22곳의 커리큘럼·학비·위치·공식 사이트를 학교별 상세 페이지로 정리.';
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '해외 유학', item: (Astro.site?.toString() ?? '') + 'ko/abroad/' },
+    { '@type': 'ListItem', position: 3, name: '🇲🇾 말레이시아' },
+  ],
+};
+
+// 커리큘럼별 그룹화
+const byCurriculum = {
+  British: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'British'),
+  American: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'American'),
+  IB: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'IB'),
+  Australian: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'Australian'),
+  Canadian: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'Canadian'),
+  Mixed: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'Mixed'),
+};
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={breadcrumb}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/ko/">홈</a> · <a href="/ko/abroad/">해외 유학</a> · 🇲🇾 말레이시아
+    </nav>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">🇲🇾 말레이시아 국제학교 22곳</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      쿠알라룸푸르 · 셀랑고르 · 푸트라자야 · 네그리 셈빌란에 분포한 말레이시아 국제학교 22곳을 학교별로 정리.
+      운영자(데이비드)가 쿠알라룸푸르 거주 — 직접 방문 검증한 학교에는 ⭐ "운영자 방문 확인" 배지가 부여됩니다.
+    </p>
+
+    <div class="mt-4">
+      <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources="각 학교 공식 사이트, COBIS · WASC · IB World School 인증 목록, 학교 입학 안내 자료" />
+    </div>
+
+    {/* 커리큘럼별 빠른 이동 */}
+    <div class="mt-6 flex flex-wrap gap-2">
+      <a href="#british" class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">🇬🇧 영국식 ({byCurriculum.British.length})</a>
+      <a href="#american" class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">🇺🇸 미국식 ({byCurriculum.American.length})</a>
+      <a href="#ib" class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">🌐 IB 전 단계 ({byCurriculum.IB.length})</a>
+      <a href="#australian" class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">🇦🇺 호주식 ({byCurriculum.Australian.length})</a>
+      <a href="#canadian" class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">🇨🇦 캐나다식 ({byCurriculum.Canadian.length})</a>
+    </div>
+
+    {/* 커리큘럼별 섹션 */}
+    {(['British', 'American', 'IB', 'Australian', 'Canadian', 'Mixed'] as const).map((cur) => {
+      const list = byCurriculum[cur];
+      if (list.length === 0) return null;
+      const label = {
+        British: { id: 'british', flag: '🇬🇧', title: '영국식 학교 (IGCSE · A-Level)' },
+        American: { id: 'american', flag: '🇺🇸', title: '미국식 학교 (American · AP)' },
+        IB: { id: 'ib', flag: '🌐', title: 'IB 전 단계 (PYP · MYP · DP)' },
+        Australian: { id: 'australian', flag: '🇦🇺', title: '호주식 학교 (NSW · VCE)' },
+        Canadian: { id: 'canadian', flag: '🇨🇦', title: '캐나다식 학교 (OSSD)' },
+        Mixed: { id: 'mixed', flag: '🔀', title: '복합 커리큘럼' },
+      }[cur];
+      return (
+        <section id={label.id} class="mt-12 scroll-mt-24">
+          <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
+            <h2 class="text-xl">{label.flag} {label.title}</h2>
+            <span class="text-xs text-[color:var(--color-text-tertiary)]">{list.length}곳</span>
+          </div>
+          <div class="mt-4 grid gap-5 md:grid-cols-2">
+            {list.map((s) => (
+              <a href={`/ko/abroad/malaysia/${s.slug}/`} class="block rounded-lg border p-5 transition-colors hover:border-primary-700" style="border-color: var(--color-border-light)">
+                <div class="flex items-baseline justify-between gap-2">
+                  <h3 class="text-lg text-primary-900" style="font-weight:500">{s.name_ko}</h3>
+                  {s.founded_year && <span class="text-xs text-[color:var(--color-text-tertiary)]">{s.founded_year}</span>}
+                </div>
+                <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_en}{s.abbreviation ? ` (${s.abbreviation})` : ''}</p>
+                <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">
+                  {s.city_ko}{s.district_ko ? ` · ${s.district_ko}` : ''}
+                </p>
+                {s.operator_note_ko && <p class="mt-2 badge-gold text-[10px] inline-flex">⭐ {s.operator_note_ko.split('.')[0]}</p>}
+                <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">{s.summary_ko}</p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {s.curriculum.programs_en.slice(0, 4).map((p) => (
+                    <span class="rounded-full bg-[color:var(--color-bg-tertiary)] px-2 py-0.5 text-[10px] text-[color:var(--color-text-secondary)]">{p}</span>
+                  ))}
+                  {s.boarding && <span class="rounded-full bg-primary-100 px-2 py-0.5 text-[10px] text-primary-900" style="font-weight:500">보딩</span>}
+                </div>
+                <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+                  연 학비 (추정): ${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}
+                </p>
+              </a>
+            ))}
+          </div>
+        </section>
+      );
+    })}
+
+    {/* 일반 정보 + MM2H 연결 */}
+    <section class="mt-16 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">말레이시아 국제학교 진입 전 알아야 할 것</h2>
+      <ul class="mt-3 space-y-2 text-sm text-[color:var(--color-text-secondary)]">
+        <li>• 학부모 비자: 자녀 국제학교 입학과 별개로 <a href="/ko/mm2h/" class="text-primary-700 hover:underline">MM2H 비자</a> 검토 권장 (5년 + 자녀·부모 동반)</li>
+        <li>• 학교 학비 외 부대 비용: 입학금 · 시설비 · 교복 · 식비 · 스쿨버스 등 연 학비의 15~25% 추가</li>
+        <li>• 학교 선택 후 비자 신청 권장 — 학교 위치에 따라 거주 도시 결정</li>
+        <li>• 운영자 거주(쿠알라룸푸르) — 직접 방문 검증 학교부터 ⭐ 배지 부여, 운영자 1차 후기 누적</li>
+      </ul>
+    </section>
+
+    <section class="mt-10 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">22곳 중 우리 자녀에게 맞는 학교가?</h2>
+      <p class="mt-2 text-sm opacity-90">
+        자녀 학년 · 영어 수준 · 거주 희망 지역 (KL · Selangor · Putrajaya · 보딩) · 예산을 알려주시면 학교별 비교 1:1 답변.
+      </p>
+      <div class="mt-4">
+        <a href="/ko/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">카카오톡 · 이메일 상담 →</a>
+      </div>
+    </section>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 본 페이지는 공개 자료 + 학교 공식 사이트 기반으로 운영자(데이비드)가 정리. 학비·커리큘럼·시설은 매년 변경될 수 있으므로 정확한 최신 정보는 각 학교 공식 사이트에서 확인하세요. 운영자 직접 방문·검증 데이터(시설 자체/공유·교사 국적·실제 학비 등)는 학교별 상세 페이지에 누적됩니다.
+    </p>
+  </section>
+</BaseLayout>

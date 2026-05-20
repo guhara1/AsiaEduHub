@@ -1,0 +1,200 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { MALAYSIA_SCHOOLS } from '~/lib/malaysia-schools';
+
+export async function getStaticPaths() {
+  return MALAYSIA_SCHOOLS.map((s) => ({
+    params: { slug: s.slug },
+    props: { school: s },
+  }));
+}
+
+const { school: s } = Astro.props;
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = `${s.name_zh} (${s.name_en}) — 马来西亚 ${s.city_zh} 国际学校入学·学费·课程 | AsiaEduHub`;
+const description = s.summary_zh;
+
+const eduOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: s.name_en,
+  alternateName: [s.name_ko, s.name_zh].filter(Boolean),
+  url: s.website,
+  foundingDate: s.founded_year ? `${s.founded_year}` : undefined,
+  address: { '@type': 'PostalAddress', addressLocality: s.city_zh, addressCountry: 'MY' },
+  description: s.summary_zh,
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '海外留学', item: (Astro.site?.toString() ?? '') + 'zh/abroad/' },
+    { '@type': 'ListItem', position: 3, name: '🇲🇾 马来西亚', item: (Astro.site?.toString() ?? '') + 'zh/abroad/malaysia/' },
+    { '@type': 'ListItem', position: 4, name: s.name_zh },
+  ],
+};
+
+const sameCurriculum = MALAYSIA_SCHOOLS.filter((o) => o.curriculum.type === s.curriculum.type && o.slug !== s.slug).slice(0, 4);
+
+const curriculumLabel = {
+  British: '英式(IGCSE · A-Level)',
+  American: '美式(American · AP)',
+  IB: 'IB 全阶段(PYP · MYP · DP)',
+  Australian: '澳式(NSW · VCE)',
+  Canadian: '加式(OSSD)',
+  Mixed: '混合课程',
+}[s.curriculum.type];
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[eduOrg, breadcrumb]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <article class="container-content py-10 max-w-3xl">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/zh/abroad/">海外留学</a> · <a href="/zh/abroad/malaysia/">🇲🇾 马来西亚</a> · {s.name_zh}
+    </nav>
+
+    <div class="mt-4 flex flex-wrap items-center gap-2">
+      <span class="badge-navy">🇲🇾 马来西亚 · {s.city_zh}</span>
+      {s.founded_year && <span class="badge-navy">{s.founded_year} 创立</span>}
+      <span class="badge-navy">{curriculumLabel}</span>
+      {s.boarding && <span class="badge-navy">寄宿选项</span>}
+      {s.operator_note_zh && <span class="badge-gold">⭐ 站长子女在读</span>}
+    </div>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">{s.name_zh}</h1>
+    <p class="mt-1 text-sm text-[color:var(--color-text-secondary)]">
+      {s.name_en}{s.abbreviation ? ` (${s.abbreviation})` : ''}
+    </p>
+    <p class="mt-3 text-base text-[color:var(--color-text-secondary)]">{s.summary_zh}</p>
+
+    <div class="mt-4">
+      <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources={`${s.name_zh} 官网,学校招生资料,站长本地居住(吉隆坡)`} />
+    </div>
+
+    <section class="mt-8 grid gap-4 sm:grid-cols-2">
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">位置</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">{s.city_zh}{s.district_zh && ` · ${s.district_zh}`}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">年级</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">{s.grade_range}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">课程</dt>
+        <dd class="mt-1 text-sm" style="font-weight:500">{s.curriculum.programs_en.join(' · ')}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">年学费(估算)</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</dd>
+        <p class="mt-1 text-[11px] text-[color:var(--color-text-tertiary)]">准确学费请查阅学校官网</p>
+      </div>
+    </section>
+
+    <p class="mt-4 text-xs text-[color:var(--color-text-tertiary)]">
+      官方网站:<a href={s.website} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.website} ↗</a>
+    </p>
+
+    {s.operator_note_zh && (
+      <div class="mt-4 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-4 text-sm text-accent-700">
+        <strong style="font-weight:500">⭐ 站长特别说明:</strong>{s.operator_note_zh}
+      </div>
+    )}
+
+    <section class="mt-10">
+      <h2 class="text-xl">{s.name_zh} 核心特点</h2>
+      <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">基于学校官方资料整理</p>
+      <ul class="mt-4 space-y-2 text-sm">
+        {s.highlights_zh.map((h) => <li>✓ {h}</li>)}
+      </ul>
+    </section>
+
+    <section class="mt-10 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">学费 + 附加费用</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        年学费估算:<strong style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</strong>(因年级不同)
+        {s.boarding && <>,选择寄宿另计</>}。
+      </p>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">学费之外:</p>
+      <ul class="mt-2 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
+        <li>• 申请费 · 注册费(年学费的 10~30%)</li>
+        <li>• 设施分摊费 · 校服 · 教材</li>
+        <li>• 校车 · 餐费</li>
+        <li>• 考试报名费(IGCSE · A-Level · IB · SAT)</li>
+        {s.boarding && <li>• 寄宿费(年学费的 30~50% 附加)</li>}
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        建议在学费基础上预留 15~25%(不含寄宿)。
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl">入学资格(马来西亚国际学校通用)</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        马来西亚国际学校大多接受外籍与马来本地学生,需办理学生签证或随父母长期签证。
+      </p>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li>• 子女:Student Pass 或随父母 MM2H · EP 的 Dependant 签证</li>
+        <li>• 各校英语测试(CAT4 · MAP · WIDA · 自有)+ 面试</li>
+        <li>• 此前学校成绩单(英文翻译公证)</li>
+        <li>• 出生证 · 护照 · 监护人无犯罪证明 等</li>
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        家长签证请参考 <a href="/zh/mm2h/" class="text-primary-700 hover:underline">MM2H 签证指南</a>。
+      </p>
+    </section>
+
+    <section class="mt-10 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-5">
+      <div class="text-xs uppercase tracking-wide text-accent-700">站长一句话(待补充)</div>
+      <p class="mt-2 text-sm text-accent-700">
+        站长 David 居住吉隆坡 — 将在参加 {s.name_zh} 招生说明会 · 校园走访后从家长视角补充分析。
+        韩国 · 中国学生比例 · 教师国籍 · 设施自有/共用 · 餐饮选项等学校公开资料未涉及的细节可
+        <a href="/zh/contact/" class="underline">直接向站长咨询</a>。
+      </p>
+    </section>
+
+    {sameCurriculum.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl">同课程的其他学校</h2>
+        <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">
+          {curriculumLabel} 路径的其他马来西亚国际学校
+        </p>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+          {sameCurriculum.map((o) => (
+            <a href={`/zh/abroad/malaysia/${o.slug}/`} class="block rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+              <div class="text-primary-900" style="font-weight:500">{o.name_zh}</div>
+              <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{o.city_zh}{o.district_zh ? ` · ${o.district_zh}` : ''}</div>
+              <div class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">年 ${o.tuition_range_usd[0].toLocaleString()}–${o.tuition_range_usd[1].toLocaleString()}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mt-12 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">{s.name_zh} 入学咨询</h2>
+      <p class="mt-2 text-sm opacity-90">
+        告知孩子年级 · 英语水平 · 居住区 · 是否办理 MM2H · 预算,可获 {s.name_zh} 与可比学校 1:1 答复。站长本地居住吉隆坡。
+      </p>
+      <div class="mt-4">
+        <a href="/zh/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">WeChat 咨询 →</a>
+      </div>
+    </section>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 本页基于 {s.name_zh} 公开资料,由站长 David 整理。学校政策 · 学费 · 资格每年可能变更,最新信息请以学校官网(<a href={s.website} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.website}</a>)为准。站长亲自走访 · 核实数据后续累积。
+    </p>
+  </article>
+</BaseLayout>

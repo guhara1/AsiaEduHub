@@ -1,0 +1,207 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { MALAYSIA_SCHOOLS } from '~/lib/malaysia-schools';
+
+export async function getStaticPaths() {
+  return MALAYSIA_SCHOOLS.map((s) => ({
+    params: { slug: s.slug },
+    props: { school: s },
+  }));
+}
+
+const { school: s } = Astro.props;
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = `${s.name_ko} (${s.name_en}) — 말레이시아 ${s.city_ko} 국제학교 입학·학비·커리큘럼 | AsiaEduHub`;
+const description = s.summary_ko;
+
+const eduOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: s.name_en,
+  alternateName: [s.name_ko, s.name_zh].filter(Boolean),
+  url: s.website,
+  foundingDate: s.founded_year ? `${s.founded_year}` : undefined,
+  address: { '@type': 'PostalAddress', addressLocality: s.city_ko, addressCountry: 'MY' },
+  description: s.summary_ko,
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '해외 유학', item: (Astro.site?.toString() ?? '') + 'ko/abroad/' },
+    { '@type': 'ListItem', position: 3, name: '🇲🇾 말레이시아', item: (Astro.site?.toString() ?? '') + 'ko/abroad/malaysia/' },
+    { '@type': 'ListItem', position: 4, name: s.name_ko },
+  ],
+};
+
+// 같은 커리큘럼 다른 학교
+const sameCurriculum = MALAYSIA_SCHOOLS.filter((o) => o.curriculum.type === s.curriculum.type && o.slug !== s.slug).slice(0, 4);
+
+const curriculumLabel = {
+  British: '영국식 (IGCSE · A-Level)',
+  American: '미국식 (American · AP)',
+  IB: 'IB 전 단계 (PYP · MYP · DP)',
+  Australian: '호주식 (NSW · VCE)',
+  Canadian: '캐나다식 (OSSD)',
+  Mixed: '복합 커리큘럼',
+}[s.curriculum.type];
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[eduOrg, breadcrumb]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <article class="container-content py-10 max-w-3xl">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/ko/abroad/">해외 유학</a> · <a href="/ko/abroad/malaysia/">🇲🇾 말레이시아</a> · {s.name_ko}
+    </nav>
+
+    <div class="mt-4 flex flex-wrap items-center gap-2">
+      <span class="badge-navy">🇲🇾 말레이시아 · {s.city_ko}</span>
+      {s.founded_year && <span class="badge-navy">{s.founded_year} 설립</span>}
+      <span class="badge-navy">{curriculumLabel}</span>
+      {s.boarding && <span class="badge-navy">보딩 옵션</span>}
+      {s.operator_note_ko && <span class="badge-gold">⭐ 운영자 자녀 재학</span>}
+    </div>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">{s.name_ko}</h1>
+    <p class="mt-1 text-sm text-[color:var(--color-text-secondary)]">
+      {s.name_en}{s.abbreviation ? ` (${s.abbreviation})` : ''}
+    </p>
+    <p class="mt-3 text-base text-[color:var(--color-text-secondary)]">{s.summary_ko}</p>
+
+    <div class="mt-4">
+      <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources={`${s.name_ko} 공식 사이트, 학교 입학 안내, 운영자 거주(쿠알라룸푸르)`} />
+    </div>
+
+    {/* 핵심 정보 박스 */}
+    <section class="mt-8 grid gap-4 sm:grid-cols-2">
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">위치</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">{s.city_ko}{s.district_ko && ` · ${s.district_ko}`}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">학년</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">{s.grade_range}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">커리큘럼</dt>
+        <dd class="mt-1 text-sm" style="font-weight:500">{s.curriculum.programs_en.join(' · ')}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">연 학비 (추정)</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</dd>
+        <p class="mt-1 text-[11px] text-[color:var(--color-text-tertiary)]">정확한 학비는 학교 공식 발표 확인</p>
+      </div>
+    </section>
+
+    <p class="mt-4 text-xs text-[color:var(--color-text-tertiary)]">
+      공식 사이트: <a href={s.website} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.website} ↗</a>
+    </p>
+
+    {s.operator_note_ko && (
+      <div class="mt-4 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-4 text-sm text-accent-700">
+        <strong style="font-weight:500">⭐ 운영자 특이사항:</strong> {s.operator_note_ko}
+      </div>
+    )}
+
+    {/* 핵심 특징 */}
+    <section class="mt-10">
+      <h2 class="text-xl">{s.name_ko} 핵심 특징</h2>
+      <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">학교 공식 자료 기반 객관 정리</p>
+      <ul class="mt-4 space-y-2 text-sm">
+        {s.highlights_ko.map((h) => <li>✓ {h}</li>)}
+      </ul>
+    </section>
+
+    {/* 학비 + 부대 비용 */}
+    <section class="mt-10 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">학비 + 부대 비용</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        연 학비 추정: <strong style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</strong> (학년별 상이)
+        {s.boarding && <>, 보딩(기숙) 선택 시 별도 추가</>}.
+      </p>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">학비 외 추가:</p>
+      <ul class="mt-2 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
+        <li>• 신청금 · 등록금 (연 학비의 10~30%)</li>
+        <li>• 시설 분담금 · 교복 · 교재</li>
+        <li>• 스쿨버스 · 식비</li>
+        <li>• 시험 응시료 (IGCSE · A-Level · IB · SAT)</li>
+        {s.boarding && <li>• 기숙비 (연 학비의 30~50% 추가)</li>}
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        연 학비의 15~25% 추가로 보는 것이 안전 (보딩 미선택 기준).
+      </p>
+    </section>
+
+    {/* 입학 자격 (말레이시아 국제학교 공통) */}
+    <section class="mt-10">
+      <h2 class="text-xl">입학 자격 (말레이시아 국제학교 공통)</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        말레이시아 국제학교는 대부분 외국 국적·말레이시아인 모두 입학 가능합니다. 학생 비자 또는 보호자의 장기 비자가 필요합니다.
+      </p>
+      <ul class="mt-4 space-y-2 text-sm">
+        <li>• 자녀: 학생 비자 (Student Pass) 또는 부모의 장기 비자(MM2H·EP 등) 자녀 동반(Dependant)</li>
+        <li>• 학교별 영어 능력 시험 (CAT4 · MAP · WIDA · 자체 시험) + 인터뷰</li>
+        <li>• 이전 학교 성적증명서 (영문 번역 공증)</li>
+        <li>• 출생증명서·여권 사본·범죄 경력 증명(보호자) 등</li>
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        학부모 비자는 <a href="/ko/mm2h/" class="text-primary-700 hover:underline">MM2H 비자 가이드</a> 참고.
+      </p>
+    </section>
+
+    {/* 운영자 한마디 영역 */}
+    <section class="mt-10 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-5">
+      <div class="text-xs uppercase tracking-wide text-accent-700">운영자 한마디 (작성 예정)</div>
+      <p class="mt-2 text-sm text-accent-700">
+        운영자(데이비드)는 쿠알라룸푸르 거주 — {s.name_ko} 입학설명회 참석·캠퍼스 방문 후 학부모 관점 분석을 추가합니다.
+        한국·중국 학생 비율, 교사 국적 구성, 시설 자체/공유 여부, 식사 옵션 등 학교 공식 자료에 없는 디테일은
+        <a href="/ko/contact/" class="underline">운영자에게 직접 문의</a> 가능합니다.
+      </p>
+    </section>
+
+    {/* 같은 커리큘럼 다른 학교 */}
+    {sameCurriculum.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl">같은 커리큘럼 다른 학교</h2>
+        <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">
+          {curriculumLabel} 트랙의 다른 말레이시아 국제학교
+        </p>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+          {sameCurriculum.map((o) => (
+            <a href={`/ko/abroad/malaysia/${o.slug}/`} class="block rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+              <div class="text-primary-900" style="font-weight:500">{o.name_ko}</div>
+              <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{o.city_ko}{o.district_ko ? ` · ${o.district_ko}` : ''}</div>
+              <div class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">연 ${o.tuition_range_usd[0].toLocaleString()}–${o.tuition_range_usd[1].toLocaleString()}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mt-12 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">{s.name_ko} 입학 상담</h2>
+      <p class="mt-2 text-sm opacity-90">
+        자녀 학년 · 영어 수준 · 거주 지역 · MM2H 비자 여부 · 예산을 알려주시면 {s.name_ko}와 비교 가능한 학교까지 1:1 답변. 운영자가 KL 현지 거주.
+      </p>
+      <div class="mt-4">
+        <a href="/ko/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">카카오톡 · 이메일 상담 →</a>
+      </div>
+    </section>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 본 페이지는 {s.name_ko} 공식 자료 기반으로 운영자(데이비드)가 정리한 정보 페이지입니다. 학교 정책 · 학비 · 자격은 매년 변경될 수 있으므로 학교 공식 사이트(<a href={s.website} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.website}</a>)에서 최신 정보 확인. 운영자 직접 방문·검증 데이터는 추후 누적됩니다.
+    </p>
+  </article>
+</BaseLayout>

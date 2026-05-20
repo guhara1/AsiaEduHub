@@ -12,6 +12,7 @@ import {
   cityName,
 } from '../lib/locations';
 import { FOREIGN_SCHOOLS, INTERNATIONAL_SCHOOLS } from '../lib/domestic-schools';
+import { MALAYSIA_SCHOOLS } from '../lib/malaysia-schools';
 
 const pathname = Astro.url.pathname;
 const locale: Locale = resolveLocale(Astro.currentLocale, pathname);
@@ -94,14 +95,33 @@ countryChildren.push({
   label: '🌏 ' + (locale === 'ko' ? '동남아 (가성비)' : '东南亚(高性价比)'),
 });
 for (const c of SOUTHEAST_ASIA) {
-  const cityTrail = c.cities.length > 0
-    ? ` (${c.cities.map((city) => cityName(city, locale)).join(' / ')})`
-    : '';
-  countryChildren.push({
-    kind: 'link',
-    label: `${c.flag} ${countryName(c, locale)}${cityTrail}`,
-    href: `/${locale}/abroad/#${c.id}`,
-  });
+  // 말레이시아는 학교별 sub-menu 로 펼침 (22개 학교)
+  if (c.id === 'malaysia') {
+    countryChildren.push({
+      kind: 'submenu',
+      label: `${c.flag} ${countryName(c, locale)}`,
+      href: `/${locale}/abroad/malaysia/`,
+      children: [
+        ...MALAYSIA_SCHOOLS.map((s) => ({
+          label: locale === 'ko' ? s.name_ko : s.name_zh,
+          href: `/${locale}/abroad/malaysia/${s.slug}/`,
+        })),
+        {
+          label: locale === 'ko' ? '🇲🇾 말레이시아 전체 →' : '🇲🇾 马来西亚全部 →',
+          href: `/${locale}/abroad/malaysia/`,
+        },
+      ],
+    });
+  } else {
+    const cityTrail = c.cities.length > 0
+      ? ` (${c.cities.map((city) => cityName(city, locale)).join(' / ')})`
+      : '';
+    countryChildren.push({
+      kind: 'link',
+      label: `${c.flag} ${countryName(c, locale)}${cityTrail}`,
+      href: `/${locale}/abroad/#${c.id}`,
+    });
+  }
 }
 // 2) 영미권 그룹
 countryChildren.push({
@@ -454,7 +474,7 @@ const langLabel = locale === 'ko' ? '언어' : '语言';
   .dropdown-summary::marker { content: ''; }
 
   /* PC submenu: 평소 숨김, 부모 hover 또는 focus-within 시 표시 */
-  .submenu-panel { display: none; }
+  .submenu-panel { display: none; max-height: 80vh; overflow-y: auto; }
   .submenu-wrap:hover > .submenu-panel,
   .submenu-wrap:focus-within > .submenu-panel { display: block; }
 

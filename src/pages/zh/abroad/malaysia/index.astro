@@ -1,0 +1,134 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { MALAYSIA_SCHOOLS } from '~/lib/malaysia-schools';
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = '马来西亚国际学校 22 所 — 吉隆坡 · 雪兰莪 · 布城 · 森美兰 学校详情 | AsiaEduHub';
+const description =
+  'Alice Smith · ISKL · Mont\'Kiara · Garden · Epsom · BSKL · IGB · SJI · Nexus · Sunway · ISP · AISM · UCSI 等马来西亚国际学校 22 所的课程 · 学费 · 位置 · 官网,按校详整理。';
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '海外留学', item: (Astro.site?.toString() ?? '') + 'zh/abroad/' },
+    { '@type': 'ListItem', position: 3, name: '🇲🇾 马来西亚' },
+  ],
+};
+
+const byCurriculum = {
+  British: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'British'),
+  American: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'American'),
+  IB: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'IB'),
+  Australian: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'Australian'),
+  Canadian: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'Canadian'),
+  Mixed: MALAYSIA_SCHOOLS.filter((s) => s.curriculum.type === 'Mixed'),
+};
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={breadcrumb}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/zh/">首页</a> · <a href="/zh/abroad/">海外留学</a> · 🇲🇾 马来西亚
+    </nav>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">🇲🇾 马来西亚国际学校 22 所</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      分布于吉隆坡 · 雪兰莪 · 布城 · 森美兰的马来西亚国际学校 22 所,按校整理。
+      站长 David 居住吉隆坡 — 已亲自走访核实的学校颁发 ⭐ "站长实地确认" 徽章。
+    </p>
+
+    <div class="mt-4">
+      <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources="各校官网、COBIS · WASC · IB World School 认证名录、各校招生资料" />
+    </div>
+
+    <div class="mt-6 flex flex-wrap gap-2">
+      <a href="#british" class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">🇬🇧 英式 ({byCurriculum.British.length})</a>
+      <a href="#american" class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">🇺🇸 美式 ({byCurriculum.American.length})</a>
+      <a href="#ib" class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">🌐 IB 全阶段 ({byCurriculum.IB.length})</a>
+      <a href="#australian" class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">🇦🇺 澳式 ({byCurriculum.Australian.length})</a>
+      <a href="#canadian" class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">🇨🇦 加式 ({byCurriculum.Canadian.length})</a>
+    </div>
+
+    {(['British', 'American', 'IB', 'Australian', 'Canadian', 'Mixed'] as const).map((cur) => {
+      const list = byCurriculum[cur];
+      if (list.length === 0) return null;
+      const label = {
+        British: { id: 'british', flag: '🇬🇧', title: '英式学校(IGCSE · A-Level)' },
+        American: { id: 'american', flag: '🇺🇸', title: '美式学校(American · AP)' },
+        IB: { id: 'ib', flag: '🌐', title: 'IB 全阶段(PYP · MYP · DP)' },
+        Australian: { id: 'australian', flag: '🇦🇺', title: '澳式学校(NSW · VCE)' },
+        Canadian: { id: 'canadian', flag: '🇨🇦', title: '加式学校(OSSD)' },
+        Mixed: { id: 'mixed', flag: '🔀', title: '混合课程' },
+      }[cur];
+      return (
+        <section id={label.id} class="mt-12 scroll-mt-24">
+          <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
+            <h2 class="text-xl">{label.flag} {label.title}</h2>
+            <span class="text-xs text-[color:var(--color-text-tertiary)]">{list.length} 所</span>
+          </div>
+          <div class="mt-4 grid gap-5 md:grid-cols-2">
+            {list.map((s) => (
+              <a href={`/zh/abroad/malaysia/${s.slug}/`} class="block rounded-lg border p-5 transition-colors hover:border-primary-700" style="border-color: var(--color-border-light)">
+                <div class="flex items-baseline justify-between gap-2">
+                  <h3 class="text-lg text-primary-900" style="font-weight:500">{s.name_zh}</h3>
+                  {s.founded_year && <span class="text-xs text-[color:var(--color-text-tertiary)]">{s.founded_year}</span>}
+                </div>
+                <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_en}{s.abbreviation ? ` (${s.abbreviation})` : ''}</p>
+                <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">
+                  {s.city_zh}{s.district_zh ? ` · ${s.district_zh}` : ''}
+                </p>
+                {s.operator_note_zh && <p class="mt-2 badge-gold text-[10px] inline-flex">⭐ {s.operator_note_zh.split('。')[0]}</p>}
+                <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">{s.summary_zh}</p>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {s.curriculum.programs_en.slice(0, 4).map((p) => (
+                    <span class="rounded-full bg-[color:var(--color-bg-tertiary)] px-2 py-0.5 text-[10px] text-[color:var(--color-text-secondary)]">{p}</span>
+                  ))}
+                  {s.boarding && <span class="rounded-full bg-primary-100 px-2 py-0.5 text-[10px] text-primary-900" style="font-weight:500">寄宿</span>}
+                </div>
+                <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+                  年学费(估算):${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}
+                </p>
+              </a>
+            ))}
+          </div>
+        </section>
+      );
+    })}
+
+    <section class="mt-16 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">在马来西亚就读国际学校前需了解的</h2>
+      <ul class="mt-3 space-y-2 text-sm text-[color:var(--color-text-secondary)]">
+        <li>• 家长签证:除子女学校外,建议查看 <a href="/zh/mm2h/" class="text-primary-700 hover:underline">MM2H 签证</a>(5 年 + 子女 · 父母随行)</li>
+        <li>• 学费之外:注册费 · 设施费 · 校服 · 餐费 · 校车 等约 15~25% 附加</li>
+        <li>• 建议先定学校再办签证 — 学校位置决定居住城市</li>
+        <li>• 站长本地居住(吉隆坡)— 走访核实的学校颁发 ⭐ 徽章,亲身经验累积</li>
+      </ul>
+    </section>
+
+    <section class="mt-10 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">22 所中哪所适合您家孩子?</h2>
+      <p class="mt-2 text-sm opacity-90">
+        告知孩子年级 · 英语水平 · 居住偏好(吉隆坡 · 雪兰莪 · 布城 · 寄宿)· 预算,可获学校对比 1:1 答复。
+      </p>
+      <div class="mt-4">
+        <a href="/zh/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">WeChat 咨询 →</a>
+      </div>
+    </section>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 本页基于公开资料 + 各校官网,由站长 David 整理。学费 · 课程 · 设施每年都可能变化,最新信息请以各校官网为准。站长亲自走访 · 核实的数据(设施自有/共用 · 教师国籍 · 实际学费 等)持续累积于各校详情页。
+    </p>
+  </section>
+</BaseLayout>
