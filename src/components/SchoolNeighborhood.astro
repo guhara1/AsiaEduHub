@@ -1,0 +1,243 @@
+---
+import type { SchoolNeighborhood } from '~/lib/school-neighborhood';
+import { CROWD_LABEL_KO, CROWD_LABEL_ZH, TIER_LABEL_KO, TIER_LABEL_ZH } from '~/lib/school-neighborhood';
+
+export interface Props {
+  neighborhoods: SchoolNeighborhood[];
+  locale: 'ko' | 'zh';
+}
+
+const { neighborhoods, locale } = Astro.props;
+
+const T = {
+  ko: {
+    title: '학교 주변 거주지 · 한·중 학부모 선호 콘도',
+    subtitle: '운영자(데이비드) KL 거주 + 학부모 커뮤니티(카카오톡 · WeChat) 청취 기반',
+    tier: '등급',
+    distance: '학교까지',
+    rent2br: '2룸 월세',
+    rent3br: '3룸 월세',
+    korean: '한국 학부모',
+    chinese: '중국·화교 학부모',
+    schoolBus: '학교 셔틀 운행',
+    distanceUnit: (n: number) => `차량 ${n}분`,
+    disclaimer: '※ 임대료는 2025-2026 시점 시장 시세 추정 (USD/월 · unfurnished 기준). 가구·관리비·전기 별도. 실제 계약 전 PropertyGuru · iProperty 등 매물 확인 권장.',
+    crowdLabel: CROWD_LABEL_KO,
+    tierLabel: TIER_LABEL_KO,
+  },
+  zh: {
+    title: '学校周边居住区 · 韩中家长偏好公寓',
+    subtitle: '站长(David)居住吉隆坡 + 家长社群(WeChat · KakaoTalk)信息整理',
+    tier: '档次',
+    distance: '至学校',
+    rent2br: '2 房月租',
+    rent3br: '3 房月租',
+    korean: '韩国家长',
+    chinese: '中国 · 华人家长',
+    schoolBus: '校车运行',
+    distanceUnit: (n: number) => `车程 ${n} 分钟`,
+    disclaimer: '※ 租金为 2025-2026 市场行情估算 (USD/月 · 无家具基础)。家具 · 物业费 · 电费另计。签约前建议在 PropertyGuru · iProperty 等核实房源。',
+    crowdLabel: CROWD_LABEL_ZH,
+    tierLabel: TIER_LABEL_ZH,
+  },
+}[locale];
+
+const fmtRange = (r: [number, number]) =>
+  r[0] === r[1] ? `$${r[0].toLocaleString()}` : `$${r[0].toLocaleString()}~$${r[1].toLocaleString()}`;
+---
+<section class="mt-10 school-neighborhood">
+  <header class="nh-header">
+    <h2 class="text-xl" style="font-weight:700; letter-spacing:-0.01em">{T.title}</h2>
+    <p class="nh-subtitle">{T.subtitle}</p>
+  </header>
+
+  {neighborhoods.map((nb) => (
+    <div class="nh-area-block">
+      <div class="nh-area-head">
+        <h3 class="nh-area-title">📍 {locale === 'ko' ? nb.area_ko : nb.area_zh}</h3>
+        {(locale === 'ko' ? nb.overview_ko : nb.overview_zh) && (
+          <p class="nh-area-overview">{locale === 'ko' ? nb.overview_ko : nb.overview_zh}</p>
+        )}
+      </div>
+
+      <div class="nh-condo-list">
+        {nb.condos.map((c) => (
+          <div class="nh-condo-card">
+            <div class="nh-condo-head">
+              <h4 class="nh-condo-name">{c.name}</h4>
+              <div class="nh-condo-badges">
+                <span class={`nh-tier nh-tier-${c.tier}`}>{T.tierLabel[c.tier]}</span>
+                <span class="nh-distance">{T.distanceUnit(c.distance_minutes)}</span>
+              </div>
+            </div>
+
+            <div class="nh-rent-grid">
+              <div class="nh-rent-cell">
+                <dt>{T.rent2br}</dt>
+                <dd>{fmtRange(c.rent_2br_usd)}</dd>
+              </div>
+              <div class="nh-rent-cell">
+                <dt>{T.rent3br}</dt>
+                <dd>{fmtRange(c.rent_3br_usd)}</dd>
+              </div>
+            </div>
+
+            <div class="nh-crowd-row">
+              <span class="nh-crowd-pill">
+                🇰🇷 <span class="nh-crowd-label">{T.korean}</span>
+                <strong class={`nh-crowd-level ${c.korean_parents}`}>{T.crowdLabel[c.korean_parents]}</strong>
+              </span>
+              <span class="nh-crowd-pill">
+                🇨🇳 <span class="nh-crowd-label">{T.chinese}</span>
+                <strong class={`nh-crowd-level ${c.chinese_parents}`}>{T.crowdLabel[c.chinese_parents]}</strong>
+              </span>
+              {c.school_bus && <span class="nh-bus-pill">🚌 {T.schoolBus}</span>}
+            </div>
+
+            {(locale === 'ko' ? c.note_ko : c.note_zh) && (
+              <p class="nh-condo-note">{locale === 'ko' ? c.note_ko : c.note_zh}</p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+
+  <p class="nh-disclaimer">{T.disclaimer}</p>
+</section>
+
+<style is:global>
+  .school-neighborhood .nh-header {
+    margin-bottom: 1.25rem;
+  }
+  .school-neighborhood .nh-subtitle {
+    margin-top: 0.375rem;
+    font-size: 0.8rem; color: var(--color-text-tertiary); line-height: 1.5;
+  }
+  .school-neighborhood .nh-area-block {
+    margin-bottom: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--color-border-light);
+    background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%);
+    overflow: hidden;
+  }
+  :root[data-theme="dark"] .school-neighborhood .nh-area-block { background: var(--color-bg-elevated); }
+  .school-neighborhood .nh-area-head {
+    padding: 1rem 1.25rem;
+    background: linear-gradient(180deg, var(--color-primary-50) 0%, transparent 100%);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .school-neighborhood .nh-area-title {
+    font-size: 1rem; font-weight: 700; color: var(--color-primary-900);
+    letter-spacing: -0.01em;
+  }
+  .school-neighborhood .nh-area-overview {
+    margin-top: 0.375rem;
+    font-size: 0.85rem; color: var(--color-text-secondary); line-height: 1.55;
+  }
+  .school-neighborhood .nh-condo-list {
+    display: grid; gap: 0.625rem;
+    padding: 0.875rem;
+  }
+  @media (min-width: 720px) {
+    .school-neighborhood .nh-condo-list { grid-template-columns: 1fr 1fr; }
+  }
+  .school-neighborhood .nh-condo-card {
+    padding: 0.875rem 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--color-border-light);
+    background: #fff;
+    transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  }
+  :root[data-theme="dark"] .school-neighborhood .nh-condo-card { background: rgba(255,255,255,0.02); }
+  .school-neighborhood .nh-condo-card:hover {
+    border-color: var(--color-primary-400); transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.08);
+  }
+  .school-neighborhood .nh-condo-head {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem;
+    margin-bottom: 0.625rem; flex-wrap: wrap;
+  }
+  .school-neighborhood .nh-condo-name {
+    font-size: 0.95rem; font-weight: 700; color: var(--color-primary-900);
+    line-height: 1.35;
+  }
+  .school-neighborhood .nh-condo-badges {
+    display: flex; gap: 0.375rem; flex-shrink: 0; flex-wrap: wrap;
+  }
+  .school-neighborhood .nh-tier {
+    display: inline-flex; align-items: center;
+    padding: 0.2rem 0.5rem; border-radius: 4px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .school-neighborhood .nh-tier-budget { background: #d1fae5; color: #047857; }
+  .school-neighborhood .nh-tier-mid { background: #dbeafe; color: #1e40af; }
+  .school-neighborhood .nh-tier-premium { background: #fde68a; color: #92400e; }
+  .school-neighborhood .nh-tier-luxury { background: #fce7f3; color: #9f1239; }
+  :root[data-theme="dark"] .school-neighborhood .nh-tier-budget { background: rgba(4, 120, 87, 0.2); color: #6EE7B7; }
+  :root[data-theme="dark"] .school-neighborhood .nh-tier-mid { background: rgba(30, 64, 175, 0.2); color: #93C5FD; }
+  :root[data-theme="dark"] .school-neighborhood .nh-tier-premium { background: rgba(146, 64, 14, 0.25); color: #FCD34D; }
+  :root[data-theme="dark"] .school-neighborhood .nh-tier-luxury { background: rgba(159, 18, 57, 0.25); color: #FBCFE8; }
+
+  .school-neighborhood .nh-distance {
+    display: inline-flex; align-items: center;
+    padding: 0.2rem 0.5rem; border-radius: 4px;
+    font-size: 0.7rem; color: var(--color-text-secondary);
+    background: var(--color-bg-tertiary); font-weight: 500;
+  }
+  .school-neighborhood .nh-rent-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+    margin: 0.5rem 0 0.625rem 0;
+  }
+  .school-neighborhood .nh-rent-cell {
+    padding: 0.5rem 0.625rem; border-radius: 8px;
+    background: var(--color-bg-soft); border: 1px solid var(--color-border-light);
+  }
+  .school-neighborhood .nh-rent-cell dt {
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--color-text-tertiary); font-weight: 600;
+  }
+  .school-neighborhood .nh-rent-cell dd {
+    margin-top: 0.2rem; font-size: 0.85rem; font-weight: 700;
+    color: var(--color-primary-900); font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
+  }
+  .school-neighborhood .nh-crowd-row {
+    display: flex; flex-wrap: wrap; gap: 0.375rem; align-items: center;
+  }
+  .school-neighborhood .nh-crowd-pill {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    padding: 0.2rem 0.5rem; border-radius: 999px;
+    background: var(--color-bg-tertiary);
+    font-size: 0.7rem; color: var(--color-text-secondary);
+  }
+  .school-neighborhood .nh-crowd-label { font-weight: 500; }
+  .school-neighborhood .nh-crowd-level {
+    margin-left: 0.125rem; font-weight: 700;
+    padding: 0 0.25rem; border-radius: 3px;
+  }
+  .school-neighborhood .nh-crowd-level.high { color: #047857; background: #d1fae5; }
+  .school-neighborhood .nh-crowd-level.mid { color: #1e40af; background: #dbeafe; }
+  .school-neighborhood .nh-crowd-level.low { color: var(--color-text-tertiary); background: var(--color-bg-tertiary); }
+  :root[data-theme="dark"] .school-neighborhood .nh-crowd-level.high { background: rgba(4, 120, 87, 0.25); color: #6EE7B7; }
+  :root[data-theme="dark"] .school-neighborhood .nh-crowd-level.mid { background: rgba(30, 64, 175, 0.25); color: #93C5FD; }
+  .school-neighborhood .nh-bus-pill {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    padding: 0.2rem 0.5rem; border-radius: 999px;
+    background: var(--color-accent-100); color: var(--color-accent-700);
+    font-size: 0.7rem; font-weight: 600;
+  }
+  .school-neighborhood .nh-condo-note {
+    margin-top: 0.5rem; padding: 0.5rem 0.625rem; border-radius: 8px;
+    background: var(--color-bg-soft);
+    font-size: 0.75rem; color: var(--color-text-secondary); line-height: 1.5;
+    border-left: 3px solid var(--color-primary-400);
+  }
+  .school-neighborhood .nh-disclaimer {
+    margin-top: 0.75rem;
+    font-size: 0.7rem; color: var(--color-text-tertiary); line-height: 1.5;
+    padding: 0.75rem 1rem; border-radius: 10px;
+    background: var(--color-bg-secondary);
+    border: 1px dashed var(--color-border-light);
+  }
+</style>

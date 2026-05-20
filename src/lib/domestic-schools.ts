@@ -11,11 +11,12 @@
  * 정확한 최신 정보는 반드시 각 학교 공식 사이트에서 확인.
  */
 import type { Locale } from './i18n';
+import type { FinanceOverride } from './school-finance';
 
 export type DomesticCategory = 'foreign-schools' | 'international-schools';
 export type DomesticRegion = 'seoul' | 'gyeonggi-incheon' | 'regional' | 'jeju' | 'songdo' | 'daegu-other';
 
-export interface DomesticSchool {
+export interface DomesticSchool extends FinanceOverride {
   slug: string;
   category: DomesticCategory;
   region: DomesticRegion;
@@ -36,6 +37,14 @@ export interface DomesticSchool {
   highlights_zh: string[];
   summary_ko: string;
   summary_zh: string;
+}
+
+/** DomesticSchool 에 curriculum.type 어댑터 (school-finance 호출용) */
+export function domesticToFinanceInput(s: DomesticSchool) {
+  // 첫 커리큘럼 키워드로 type 추정
+  const c = s.curriculum_en[0] ?? '';
+  const type = c.includes('IB') ? 'IB' : c.includes('British') || c.includes('A-Level') ? 'British' : c.includes('Canadian') ? 'Canadian' : 'American';
+  return { ...s, curriculum: { type } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────

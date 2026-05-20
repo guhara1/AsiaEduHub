@@ -10,13 +10,14 @@
  * "⭐ 운영자 방문 확인" 배지 부여 예정.
  */
 import type { Locale } from './i18n';
+import type { FinanceOverride } from './school-finance';
 
 export interface MyCurriculum {
   type: 'British' | 'American' | 'IB' | 'Australian' | 'Canadian' | 'Mixed';
   programs_en: string[]; // 예: ["IGCSE", "A-Level", "IB Diploma"]
 }
 
-export interface MalaysiaSchool {
+export interface MalaysiaSchool extends FinanceOverride {
   slug: string;
   name_en: string;
   name_ko: string;

@@ -2,6 +2,11 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import AuthorByline from '~/components/AuthorByline.astro';
 import Flag from '~/components/Flag.astro';
+import SchoolFinancialDetails from '~/components/SchoolFinancialDetails.astro';
+import SchoolNeighborhood from '~/components/SchoolNeighborhood.astro';
+import { deriveFinance } from '~/lib/school-finance';
+import { SCHOOL_NEIGHBORHOODS } from '~/lib/school-neighborhood';
+import { domesticToFinanceInput } from '~/lib/domestic-schools';
 import { INTERNATIONAL_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS } from '~/lib/domestic-schools';
 
 export async function getStaticPaths() {
@@ -62,6 +67,8 @@ const elig = COMMON_ELIGIBILITY['international-schools'].ko;
 const proc = COMMON_ADMISSION_PROCESS.ko;
 
 const otherSchools = INTERNATIONAL_SCHOOLS.filter((o) => o.region === s.region && o.slug !== s.slug);
+const finance = deriveFinance(domesticToFinanceInput(s));
+const neighborhoods = SCHOOL_NEIGHBORHOODS[s.slug] ?? [];
 ---
 <BaseLayout
   title={title}
@@ -165,20 +172,9 @@ const otherSchools = INTERNATIONAL_SCHOOLS.filter((o) => o.region === s.region &
       </p>
     </section>
 
-    <section class="mt-10 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
-      <h2 class="text-lg" style="font-weight:500">학비 + 부대 비용 안내</h2>
-      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
-        연 학비 추정: <strong style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</strong>.
-        제주 국제학교는 보딩(기숙) 옵션 있음 — 기숙비 별도.
-      </p>
-      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">학비 외:</p>
-      <ul class="mt-2 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
-        <li>• 입학금 (연 학비의 10~30%)</li>
-        <li>• 기숙비 (보딩 선택 시) — 학교별 큰 차이</li>
-        <li>• 시설비 · 교복 · 교재 · 식비</li>
-        <li>• 시험 응시료</li>
-      </ul>
-    </section>
+    <SchoolFinancialDetails details={finance} locale="ko" schoolName={s.name_ko} />
+
+    {neighborhoods.length > 0 && <SchoolNeighborhood neighborhoods={neighborhoods} locale="ko" />}
 
     <section class="mt-10">
       <h2 class="text-xl">입학 절차</h2>

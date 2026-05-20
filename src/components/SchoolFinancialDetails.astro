@@ -1,0 +1,319 @@
+---
+import type { FinancialDetails } from '~/lib/school-finance';
+import { formatUSDRange } from '~/lib/school-finance';
+
+export interface Props {
+  details: FinancialDetails;
+  locale: 'ko' | 'zh';
+  schoolName: string;
+}
+
+const { details, locale, schoolName } = Astro.props;
+
+const T = {
+  ko: {
+    title: '학비 + 부대 비용 상세',
+    estimated: '추정 — 학교 공식 발표 확인 필수',
+    verified: '✓ 운영자가 학교 공식 등록비 안내 확인 완료',
+    byLevel: '학년별 연 학비 (USD)',
+    levels: { kindergarten: '유치원', primary: '초등', secondary: '중등', highSchool: '고등' },
+    perTerm: '학기당 비용',
+    termsPerYear: (n: number) => `연 ${n}학기 · 학기당`,
+    initialFees: '입학 시 일회성 비용',
+    application: '지원료 (환불 불가)',
+    registration: '등록금 (일회성 또는 매년)',
+    deposit: '환불 가능 보증금',
+    depositNote: '졸업·전학 시 환불',
+    facility: '시설 분담금',
+    teacher: '원어민 교사 비율',
+    teacherNote: '영·미·호·캐 등 영어 모국어 국적',
+    cca: 'CCA · 방과후 활동',
+    ccaYes: '학비에 기본 포함',
+    ccaNo: '별도 비용',
+    disclaimer: (n: string) => `※ 위 수치는 ${n} 공개 정보 기반 추정. 정확한 금액·환불 정책·할인은 학교 공식 등록비 안내에서 확인.`,
+  },
+  zh: {
+    title: '学费 + 附加费用详情',
+    estimated: '估算 — 学校官网为准',
+    verified: '✓ 站长已核实学校官方注册费指南',
+    byLevel: '各年级年学费 (USD)',
+    levels: { kindergarten: '幼儿园', primary: '小学', secondary: '初中', highSchool: '高中' },
+    perTerm: '学期费用',
+    termsPerYear: (n: number) => `年 ${n} 学期 · 每学期`,
+    initialFees: '入学一次性费用',
+    application: '申请费(不退还)',
+    registration: '注册费(一次性或每年)',
+    deposit: '可退保证金',
+    depositNote: '毕业 · 转学时退还',
+    facility: '设施费',
+    teacher: '英语母语教师比例',
+    teacherNote: '英 · 美 · 澳 · 加等英语母语国家',
+    cca: 'CCA · 课外活动',
+    ccaYes: '学费已含',
+    ccaNo: '另计',
+    disclaimer: (n: string) => `※ 上述数字基于 ${n} 公开信息估算。准确金额 · 退费政策 · 折扣以学校官方注册费指南为准。`,
+  },
+}[locale];
+
+const levelRows: Array<[string, [number, number]]> = [
+  [T.levels.kindergarten, details.tuition_kindergarten],
+  [T.levels.primary, details.tuition_primary],
+  [T.levels.secondary, details.tuition_secondary],
+  [T.levels.highSchool, details.tuition_high_school],
+];
+---
+<section class="mt-10 school-finance">
+  <div class="finance-card">
+    <header class="finance-header">
+      <h2 class="text-xl" style="font-weight:700; letter-spacing:-0.01em">{T.title}</h2>
+      <span class={details.verified ? 'finance-badge verified' : 'finance-badge estimated'}>
+        {details.verified ? T.verified : T.estimated}
+      </span>
+    </header>
+
+    {/* 학년별 학비 */}
+    <div class="finance-section">
+      <h3 class="finance-section-title">{T.byLevel}</h3>
+      <div class="finance-table">
+        {levelRows.map(([label, range]) => (
+          <div class="finance-row">
+            <span class="finance-row-label">{label}</span>
+            <span class="finance-row-value">{formatUSDRange(range)}</span>
+            <span class="finance-row-bar">
+              <span class="finance-row-bar-fill" style={`--p: ${Math.min(100, (range[1] / 50000) * 100)}%`}></span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* 학기당 */}
+    <div class="finance-section">
+      <h3 class="finance-section-title">{T.perTerm}</h3>
+      <div class="finance-mini">
+        <span class="finance-mini-label">{T.termsPerYear(details.terms_per_year)}</span>
+        <strong class="finance-mini-value">{formatUSDRange(details.per_term)}</strong>
+      </div>
+    </div>
+
+    {/* 입학 시 일회성 */}
+    <div class="finance-section">
+      <h3 class="finance-section-title">{T.initialFees}</h3>
+      <div class="finance-grid">
+        <div class="finance-cell">
+          <dt>{T.application}</dt>
+          <dd>${details.application_fee.toLocaleString()}</dd>
+        </div>
+        <div class="finance-cell">
+          <dt>{T.registration}</dt>
+          <dd>{formatUSDRange(details.registration_fee)}</dd>
+        </div>
+        <div class="finance-cell finance-cell-refund">
+          <dt>{T.deposit} <span class="finance-cell-note">↩</span></dt>
+          <dd>{formatUSDRange(details.refundable_deposit)}</dd>
+          <p class="finance-cell-note-text">{T.depositNote}</p>
+        </div>
+        {details.facility_fee !== undefined && (
+          <div class="finance-cell">
+            <dt>{T.facility}</dt>
+            <dd>${details.facility_fee.toLocaleString()}</dd>
+          </div>
+        )}
+      </div>
+    </div>
+
+    {/* CCA + 원어민 비율 */}
+    <div class="finance-section finance-section-row">
+      <div class={`finance-info-card ${details.cca_included ? 'pos' : 'neg'}`}>
+        <div class="finance-info-icon" aria-hidden="true">{details.cca_included ? '✓' : '+'}</div>
+        <div class="finance-info-content">
+          <div class="finance-info-label">{T.cca}</div>
+          <div class="finance-info-value">{details.cca_included ? T.ccaYes : T.ccaNo}</div>
+          {(locale === 'ko' ? details.cca_note_ko : details.cca_note_zh) && (
+            <p class="finance-info-note">{locale === 'ko' ? details.cca_note_ko : details.cca_note_zh}</p>
+          )}
+        </div>
+      </div>
+      <div class="finance-info-card">
+        <div class="finance-info-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+        <div class="finance-info-content">
+          <div class="finance-info-label">{T.teacher}</div>
+          <div class="finance-info-value">{details.native_teacher_ratio}%
+            <span class="finance-info-bar">
+              <span class="finance-info-bar-fill" style={`width: ${details.native_teacher_ratio}%`}></span>
+            </span>
+          </div>
+          <p class="finance-info-note">{T.teacherNote}</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="finance-disclaimer">{T.disclaimer(schoolName)}</p>
+  </div>
+</section>
+
+<style is:global>
+  .school-finance .finance-card {
+    border-radius: 20px;
+    border: 1px solid var(--color-border-light);
+    background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%);
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.04);
+  }
+  :root[data-theme="dark"] .school-finance .finance-card {
+    background: var(--color-bg-elevated);
+  }
+  .school-finance .finance-header {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+    background: linear-gradient(180deg, var(--color-primary-50) 0%, transparent 100%);
+    flex-wrap: wrap;
+  }
+  .school-finance .finance-badge {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .school-finance .finance-badge.verified {
+    background: var(--color-success-bg); color: var(--color-success);
+  }
+  .school-finance .finance-badge.estimated {
+    background: var(--color-bg-tertiary); color: var(--color-text-secondary);
+  }
+  .school-finance .finance-section {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .school-finance .finance-section:last-of-type { border-bottom: 0; }
+  .school-finance .finance-section-title {
+    font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.75rem;
+  }
+  .school-finance .finance-table {
+    display: grid; gap: 0.5rem;
+  }
+  .school-finance .finance-row {
+    display: grid; grid-template-columns: 80px 140px 1fr; gap: 1rem;
+    align-items: center;
+    padding: 0.625rem 0.75rem;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid var(--color-border-light);
+  }
+  :root[data-theme="dark"] .school-finance .finance-row {
+    background: rgba(255,255,255,0.02);
+  }
+  .school-finance .finance-row-label {
+    font-size: 0.875rem; font-weight: 600; color: var(--color-text-primary);
+  }
+  .school-finance .finance-row-value {
+    font-size: 0.95rem; font-weight: 700; color: var(--color-primary-900);
+    font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
+  }
+  .school-finance .finance-row-bar {
+    position: relative; height: 6px; background: var(--color-bg-tertiary); border-radius: 3px; overflow: hidden;
+  }
+  .school-finance .finance-row-bar-fill {
+    position: absolute; inset: 0; width: var(--p);
+    background: linear-gradient(90deg, var(--color-primary-600) 0%, var(--color-primary-400) 100%);
+  }
+  .school-finance .finance-mini {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.75rem 1rem; border-radius: 10px;
+    background: var(--color-primary-50);
+    border: 1px solid var(--color-primary-100);
+    flex-wrap: wrap;
+  }
+  .school-finance .finance-mini-label { font-size: 0.85rem; color: var(--color-text-secondary); font-weight: 500; }
+  .school-finance .finance-mini-value { font-size: 1.05rem; color: var(--color-primary-900); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .school-finance .finance-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem;
+  }
+  .school-finance .finance-cell {
+    padding: 0.875rem 1rem; border-radius: 10px;
+    background: #fff;
+    border: 1px solid var(--color-border-light);
+  }
+  :root[data-theme="dark"] .school-finance .finance-cell {
+    background: rgba(255,255,255,0.02);
+  }
+  .school-finance .finance-cell-refund {
+    background: linear-gradient(135deg, var(--color-success-bg) 0%, #fff 100%);
+    border-color: rgba(4, 120, 87, 0.2);
+  }
+  .school-finance .finance-cell dt {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--color-text-tertiary); font-weight: 600;
+  }
+  .school-finance .finance-cell dd {
+    margin-top: 0.375rem; font-size: 1rem; font-weight: 700;
+    color: var(--color-text-primary); font-variant-numeric: tabular-nums;
+  }
+  .school-finance .finance-cell-note { color: var(--color-success); }
+  .school-finance .finance-cell-note-text {
+    margin-top: 0.25rem; font-size: 0.7rem; color: var(--color-success); font-weight: 500;
+  }
+  .school-finance .finance-section-row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem;
+  }
+  .school-finance .finance-info-card {
+    display: flex; gap: 0.875rem;
+    padding: 1rem; border-radius: 12px;
+    border: 1px solid var(--color-border-light);
+    background: #fff;
+  }
+  :root[data-theme="dark"] .school-finance .finance-info-card { background: rgba(255,255,255,0.02); }
+  .school-finance .finance-info-card.pos {
+    background: linear-gradient(135deg, var(--color-success-bg) 0%, #fff 100%);
+    border-color: rgba(4, 120, 87, 0.2);
+  }
+  .school-finance .finance-info-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--color-primary-100); color: var(--color-primary-800);
+    font-weight: 800; font-size: 1.125rem;
+    flex-shrink: 0;
+  }
+  .school-finance .finance-info-card.pos .finance-info-icon {
+    background: var(--color-success); color: #fff;
+  }
+  .school-finance .finance-info-content { min-width: 0; flex: 1; }
+  .school-finance .finance-info-label {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--color-text-tertiary); font-weight: 600;
+  }
+  .school-finance .finance-info-value {
+    margin-top: 0.25rem; font-size: 1rem; font-weight: 700; color: var(--color-text-primary);
+    display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+  }
+  .school-finance .finance-info-bar {
+    flex: 1; min-width: 80px; position: relative; height: 5px; background: var(--color-bg-tertiary); border-radius: 3px; overflow: hidden;
+  }
+  .school-finance .finance-info-bar-fill {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--color-primary-700) 0%, var(--color-primary-500) 100%);
+  }
+  .school-finance .finance-info-note {
+    margin-top: 0.25rem; font-size: 0.75rem; color: var(--color-text-secondary); line-height: 1.4;
+  }
+  .school-finance .finance-disclaimer {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.75rem; color: var(--color-text-tertiary); line-height: 1.5;
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border-light);
+  }
+  /* 모바일 */
+  @media (max-width: 640px) {
+    .school-finance .finance-row { grid-template-columns: 70px 1fr; }
+    .school-finance .finance-row-bar { grid-column: 1 / -1; }
+    .school-finance .finance-header { padding: 1rem; }
+    .school-finance .finance-section { padding: 1rem; }
+  }
+</style>

@@ -2,6 +2,11 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import AuthorByline from '~/components/AuthorByline.astro';
 import Flag from '~/components/Flag.astro';
+import SchoolFinancialDetails from '~/components/SchoolFinancialDetails.astro';
+import SchoolNeighborhood from '~/components/SchoolNeighborhood.astro';
+import { deriveFinance } from '~/lib/school-finance';
+import { SCHOOL_NEIGHBORHOODS } from '~/lib/school-neighborhood';
+import { domesticToFinanceInput } from '~/lib/domestic-schools';
 import { FOREIGN_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS } from '~/lib/domestic-schools';
 
 export async function getStaticPaths() {
@@ -62,6 +67,8 @@ const elig = COMMON_ELIGIBILITY['foreign-schools'].zh;
 const proc = COMMON_ADMISSION_PROCESS.zh;
 
 const otherSchools = FOREIGN_SCHOOLS.filter((o) => o.region === s.region && o.slug !== s.slug);
+const finance = deriveFinance(domesticToFinanceInput(s));
+const neighborhoods = SCHOOL_NEIGHBORHOODS[s.slug] ?? [];
 ---
 <BaseLayout
   title={title}
@@ -164,21 +171,9 @@ const otherSchools = FOREIGN_SCHOOLS.filter((o) => o.region === s.region && o.sl
       </p>
     </section>
 
-    <section class="mt-10 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
-      <h2 class="text-lg" style="font-weight:500">学费 + 附加费用指南</h2>
-      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
-        年学费估算:<strong style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</strong>(因年级 · 学年而异)。
-      </p>
-      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">学费之外:</p>
-      <ul class="mt-2 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
-        <li>• 注册费(年学费的 10~30%)</li>
-        <li>• 设施分摊费</li>
-        <li>• 校服 · 教材</li>
-        <li>• 校车 · 餐费 · 课外活动</li>
-        <li>• 考试报名费(IB · AP · SAT)</li>
-      </ul>
-      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">建议在学费基础上预留 15~25%。准确金额请参阅学校官方注册费指南。</p>
-    </section>
+    <SchoolFinancialDetails details={finance} locale="zh" schoolName={s.name_zh} />
+
+    {neighborhoods.length > 0 && <SchoolNeighborhood neighborhoods={neighborhoods} locale="zh" />}
 
     <section class="mt-10">
       <h2 class="text-xl">入学流程(秋季学期)</h2>

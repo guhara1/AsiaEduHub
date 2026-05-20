@@ -2,7 +2,11 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import AuthorByline from '~/components/AuthorByline.astro';
 import Flag from '~/components/Flag.astro';
+import SchoolFinancialDetails from '~/components/SchoolFinancialDetails.astro';
+import SchoolNeighborhood from '~/components/SchoolNeighborhood.astro';
 import { MALAYSIA_SCHOOLS } from '~/lib/malaysia-schools';
+import { deriveFinance } from '~/lib/school-finance';
+import { SCHOOL_NEIGHBORHOODS } from '~/lib/school-neighborhood';
 
 export async function getStaticPaths() {
   return MALAYSIA_SCHOOLS.map((s) => ({
@@ -56,6 +60,10 @@ const breadcrumb = {
     { '@type': 'ListItem', position: 4, name: s.name_ko },
   ],
 };
+
+// 학비·재무 상세 + 주변 거주지
+const finance = deriveFinance(s);
+const neighborhoods = SCHOOL_NEIGHBORHOODS[s.slug] ?? [];
 
 // 같은 커리큘럼 다른 학교
 const sameCurriculum = MALAYSIA_SCHOOLS.filter((o) => o.curriculum.type === s.curriculum.type && o.slug !== s.slug).slice(0, 4);
@@ -179,25 +187,11 @@ const curriculumLabel = {
       </ul>
     </section>
 
-    {/* 학비 + 부대 비용 */}
-    <section class="mt-10 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
-      <h2 class="text-lg" style="font-weight:500">학비 + 부대 비용</h2>
-      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
-        연 학비 추정: <strong style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</strong> (학년별 상이)
-        {s.boarding && <>, 보딩(기숙) 선택 시 별도 추가</>}.
-      </p>
-      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">학비 외 추가:</p>
-      <ul class="mt-2 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
-        <li>• 신청금 · 등록금 (연 학비의 10~30%)</li>
-        <li>• 시설 분담금 · 교복 · 교재</li>
-        <li>• 스쿨버스 · 식비</li>
-        <li>• 시험 응시료 (IGCSE · A-Level · IB · SAT)</li>
-        {s.boarding && <li>• 기숙비 (연 학비의 30~50% 추가)</li>}
-      </ul>
-      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
-        연 학비의 15~25% 추가로 보는 것이 안전 (보딩 미선택 기준).
-      </p>
-    </section>
+    {/* 학비 상세 + 부대 비용 + CCA + 원어민 비율 */}
+    <SchoolFinancialDetails details={finance} locale="ko" schoolName={s.name_ko} />
+
+    {/* 주변 한·중 학부모 선호 콘도 */}
+    {neighborhoods.length > 0 && <SchoolNeighborhood neighborhoods={neighborhoods} locale="ko" />}
 
     {/* 입학 자격 (말레이시아 국제학교 공통) */}
     <section class="mt-10">
