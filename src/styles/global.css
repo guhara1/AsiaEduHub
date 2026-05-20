@@ -159,13 +159,18 @@
 @layer base {
   html {
     font-weight: 400;
+    /* 학부모 30~50대 노안 대응 — base font-size 17~18px 반응형 */
+    font-size: 17px;
     color: var(--color-text-primary);
     background: var(--color-bg-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: 'cv11', 'ss01', 'ss03', 'kern', 'liga';
-    word-break: keep-all; /* 한글 단어 단위 줄바꿈 — 어색한 단어 중간 분리 방지 */
+    word-break: keep-all;
+  }
+  @media (min-width: 1024px) {
+    html { font-size: 18px; }
   }
 
   /* 폰트 패밀리에 emoji 폰트 명시 — 🇰🇷·🇲🇾 등 국기 정상 렌더링 */
@@ -179,19 +184,24 @@
   }
 
   body {
-    line-height: 1.65;
-    font-size: 16px;
-    /* Pretendard Variable — 정밀 weight 450 (Regular ~ Medium 사이) — 한글 시인성 강화 */
+    line-height: 1.7;
+    /* font-size 는 html 에서 17~18px 반응형 적용 (1rem) */
     font-weight: 450;
-    -webkit-text-stroke: 0.01em currentColor; /* 미세한 stroke 로 한글 또렷하게 */
+    -webkit-text-stroke: 0.01em currentColor;
   }
   p {
-    line-height: 1.75;
+    line-height: 1.8;
     color: var(--color-text-primary);
     font-weight: 450;
   }
-  li { line-height: 1.7; font-weight: 450; }
+  li { line-height: 1.75; font-weight: 450; }
   strong, b { font-weight: 600; }
+
+  /* 최소 텍스트 사이즈 보장 — 학부모 노안 대응
+     text-xs(0.75rem = 13.5px)·text-[10px]·text-[11px] 등 너무 작은 글자가 11px 아래로 안 떨어지게 */
+  .text-\[10px\], .text-\[11px\] { font-size: 0.7rem !important; } /* ~12.6px */
+  .text-xs { font-size: 0.8125rem !important; line-height: 1.5 !important; } /* 13.8~14.6px */
+  .text-sm { line-height: 1.65; }
 
   h1, h2, h3, h4, h5, h6 {
     color: var(--color-primary-900);
