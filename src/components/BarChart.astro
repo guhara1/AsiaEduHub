@@ -1,0 +1,40 @@
+---
+/**
+ * 가로 바 차트 — 학생 국적·교사 국적·예산 비율 시각화.
+ * 각 행: 라벨 + 진행 바 + 퍼센트 값.
+ */
+export interface BarRow {
+  label: string;
+  value: number;        // 0~100
+  tone?: 'primary' | 'accent' | 'success' | 'rose' | 'violet';
+  note?: string;
+}
+
+export interface Props {
+  rows: BarRow[];
+  /** 최대값(스케일 기준). 미지정 시 100 또는 max(rows) */
+  max?: number;
+  /** 값 표시 형식 (예: "%", "명") */
+  unit?: string;
+}
+
+const { rows, max, unit = '%' } = Astro.props;
+const scaleMax = max ?? Math.max(100, ...rows.map((r) => r.value));
+---
+<div class="space-y-3">
+  {rows.map((r) => {
+    const pct = scaleMax > 0 ? Math.min(100, (r.value / scaleMax) * 100) : 0;
+    return (
+      <div class="bar-chart-row">
+        <div>
+          <div class="text-[color:var(--color-text-primary)]" style="font-weight:500">{r.label}</div>
+          {r.note && <div class="text-[11px] mt-0.5" style="color: var(--color-text-tertiary)">{r.note}</div>}
+        </div>
+        <div class="bar-track" role="progressbar" aria-valuenow={r.value} aria-valuemin="0" aria-valuemax={scaleMax}>
+          <div class="bar-fill" data-tone={r.tone ?? 'primary'} style={`width: ${pct}%`}></div>
+        </div>
+        <div class="text-right tabular-nums" style="font-weight:500; min-width: 3rem">{r.value}{unit}</div>
+      </div>
+    );
+  })}
+</div>

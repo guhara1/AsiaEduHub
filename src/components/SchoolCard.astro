@@ -12,11 +12,7 @@ const t = getMessages(locale);
 const url = schoolUrl(entry);
 const d = entry.data;
 ---
-<a
-  href={url}
-  class="block rounded-lg border p-5 transition-colors hover:border-primary-700"
-  style="border-color: var(--color-border-light)"
->
+<a href={url} class="card-school block group" data-accent={d.visited_by_operator ? 'gold' : undefined}>
   <div class="flex flex-wrap items-center gap-2">
     {d.visited_by_operator && (
       <span class="badge-gold">⭐ {t.badges.operator_visited}</span>
@@ -25,23 +21,28 @@ const d = entry.data;
     <span class="badge-navy">{BUDGET_LABEL[locale][d.budget_tier]}</span>
   </div>
 
-  <h3 class="mt-3 text-lg text-primary-900" style="font-weight:500">{d.name}</h3>
-  <p class="mt-1 text-sm text-[color:var(--color-text-secondary)]">
+  <h3 class="mt-3 text-lg text-primary-900 transition-colors group-hover:text-primary-700" style="font-weight:500">{d.name}</h3>
+  <p class="mt-1 text-sm" style="color: var(--color-text-secondary)">
     {COUNTRY_LABEL[locale][d.country] ?? d.country} · {d.city}
   </p>
 
-  <dl class="mt-4 grid grid-cols-2 gap-2 text-xs text-[color:var(--color-text-secondary)]">
+  <dl class="mt-4 grid grid-cols-2 gap-3 text-xs" style="color: var(--color-text-secondary)">
     <div>
-      <dt>{locale === 'ko' ? '연 학비' : '年学费'}</dt>
-      <dd class="text-[color:var(--color-text-primary)]" style="font-weight:500">
+      <dt class="uppercase tracking-wide" style="font-size: 0.65rem; letter-spacing: 0.06em;">{locale === 'ko' ? '연 학비' : '年学费'}</dt>
+      <dd class="mt-1 text-[color:var(--color-text-primary)]" style="font-weight:500">
         {formatUsd(d.tuition_annual_usd, locale)}
       </dd>
     </div>
     <div>
-      <dt>{locale === 'ko' ? '커리큘럼' : '课程'}</dt>
-      <dd class="text-[color:var(--color-text-primary)]" style="font-weight:500">
+      <dt class="uppercase tracking-wide" style="font-size: 0.65rem; letter-spacing: 0.06em;">{locale === 'ko' ? '커리큘럼' : '课程'}</dt>
+      <dd class="mt-1 text-[color:var(--color-text-primary)]" style="font-weight:500">
         {d.curriculum.primary_curriculum}
       </dd>
     </div>
   </dl>
+
+  <div class="mt-4 inline-flex items-center gap-1 text-xs text-primary-700 transition-transform group-hover:translate-x-1" style="font-weight:500">
+    {locale === 'ko' ? '자세히 보기' : '查看详情'}
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
 </a>

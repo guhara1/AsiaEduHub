@@ -1,4 +1,4 @@
-/* Pretendard (한국어 1순위) — @import 는 모든 규칙보다 먼저 와야 함 */
+/* Pretendard (한국어 1순위) */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css');
 
 @tailwind base;
@@ -6,38 +6,74 @@
 @tailwind utilities;
 
 :root {
-  /* 사양서 색상 토큰 — Tailwind theme 와 동기화. CSS 변수는 동적 스타일·인라인 SVG 용. */
-  --color-primary-900: #1E3A8A;
-  --color-primary-700: #1D4ED8;
-  --color-primary-500: #3B82F6; /* 보조 강조 (호버·링크) */
+  /* ─── 메인 컬러 시스템 ─── */
+  --color-primary-50:  #EFF6FF;
   --color-primary-100: #DBEAFE;
-  --color-primary-50:  #EFF6FF; /* 매우 옅은 배경 */
+  --color-primary-200: #BFDBFE;
+  --color-primary-300: #93C5FD;
+  --color-primary-400: #60A5FA;
+  --color-primary-500: #3B82F6;
+  --color-primary-600: #2563EB;
+  --color-primary-700: #1D4ED8;
+  --color-primary-800: #1E40AF;
+  --color-primary-900: #1E3A8A;
 
-  --color-accent-700: #92400E;
-  --color-accent-500: #F59E0B;
-  --color-accent-100: #FEF3C7;
   --color-accent-50:  #FFFBEB;
+  --color-accent-100: #FEF3C7;
+  --color-accent-200: #FDE68A;
+  --color-accent-300: #FCD34D;
+  --color-accent-400: #FBBF24;
+  --color-accent-500: #F59E0B;
+  --color-accent-600: #D97706;
+  --color-accent-700: #92400E;
 
-  --color-text-primary: #111827;
-  --color-text-secondary: #4B5563; /* AA 대비 강화 (#6B7280 → #4B5563) */
-  --color-text-tertiary: #6B7280;  /* AA 대비 강화 */
+  /* ─── 텍스트 ─── */
+  --color-text-primary: #0F172A;     /* slate-900 — 더 깊은 대비 */
+  --color-text-secondary: #475569;   /* slate-600 */
+  --color-text-tertiary: #64748B;    /* slate-500 */
+  --color-text-muted: #94A3B8;       /* slate-400 */
 
+  /* ─── 배경 ─── */
   --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #F9FAFB;
-  --color-bg-tertiary: #F3F4F6;
+  --color-bg-soft: #FAFBFC;
+  --color-bg-secondary: #F8FAFC;
+  --color-bg-tertiary: #F1F5F9;
+  --color-bg-elevated: #FFFFFF;
 
-  --color-border-light: rgba(30, 58, 138, 0.10);
-  --color-border-medium: rgba(30, 58, 138, 0.18);
+  /* ─── 보더 ─── */
+  --color-border-light: rgba(15, 23, 42, 0.06);
+  --color-border-medium: rgba(15, 23, 42, 0.10);
+  --color-border-strong: rgba(15, 23, 42, 0.16);
 
-  --color-success: #047857;
+  /* ─── 시맨틱 ─── */
+  --color-success: #059669;
+  --color-success-bg: #D1FAE5;
   --color-warning: #D97706;
+  --color-warning-bg: #FEF3C7;
   --color-danger: #DC2626;
+  --color-danger-bg: #FEE2E2;
+  --color-info: #2563EB;
+  --color-info-bg: #DBEAFE;
 
-  /* 그림자 — 학부모 정보 사이트 톤에 맞춰 부드럽게 */
-  --shadow-sm: 0 1px 2px 0 rgba(17, 24, 39, 0.04);
-  --shadow-md: 0 4px 12px -2px rgba(17, 24, 39, 0.06), 0 2px 4px -1px rgba(17, 24, 39, 0.04);
-  --shadow-lg: 0 12px 28px -8px rgba(30, 58, 138, 0.12), 0 4px 12px -4px rgba(17, 24, 39, 0.06);
-  --shadow-hero: 0 24px 60px -20px rgba(30, 58, 138, 0.18);
+  /* ─── 그림자 — 4단계 + 강조 ─── */
+  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 2px 4px -1px rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+  --shadow-md: 0 6px 16px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 18px 36px -12px rgba(15, 23, 42, 0.14), 0 6px 16px -6px rgba(15, 23, 42, 0.06);
+  --shadow-xl: 0 28px 56px -16px rgba(15, 23, 42, 0.18), 0 12px 24px -10px rgba(15, 23, 42, 0.08);
+  --shadow-glow-primary: 0 0 0 4px rgba(59, 130, 246, 0.12);
+  --shadow-glow-accent: 0 0 0 4px rgba(245, 158, 11, 0.16);
+
+  /* ─── 라운드 ─── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+
+  /* ─── 트랜지션 ─── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @layer base {
@@ -47,227 +83,447 @@
     background: var(--color-bg-primary);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
   }
 
-  /* 중국어 페이지에서만 Noto Sans SC 우선 */
   html[lang^='zh'] body {
     font-family: 'Noto Sans SC', Pretendard, 'Noto Sans KR', Inter, system-ui, sans-serif;
   }
 
-  /* 본문 행간 — 학부모 정보 사이트는 긴 텍스트 가독성이 중요 */
-  body { line-height: 1.65; }
-  p { line-height: 1.7; }
+  body { line-height: 1.65; font-size: 16px; }
+  p { line-height: 1.7; color: var(--color-text-primary); }
   li { line-height: 1.65; }
 
-  /* 제목 — 700 금지, 500 최대, 글자 살짝 좁게 */
   h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
     color: var(--color-primary-900);
     line-height: 1.25;
     letter-spacing: -0.015em;
   }
-  h1 { line-height: 1.12; letter-spacing: -0.025em; }
-  h2 { line-height: 1.2; letter-spacing: -0.02em; }
+  h1 { line-height: 1.08; letter-spacing: -0.03em; font-size: clamp(1.875rem, 4vw, 3.25rem); }
+  h2 { line-height: 1.2; letter-spacing: -0.022em; }
+  h3 { letter-spacing: -0.015em; }
 
   a {
     color: var(--color-primary-700);
     text-underline-offset: 3px;
-    transition: color 0.15s ease;
+    transition: color 180ms var(--ease-out);
   }
-  a:hover { color: var(--color-primary-900); text-decoration: underline; }
+  a:hover { color: var(--color-primary-900); }
 
-  /* 포커스 가시성 — 키보드 접근성 */
   :focus-visible {
-    outline: 2px solid var(--color-primary-700);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-primary-600);
+    outline-offset: 3px;
     border-radius: 4px;
   }
 
-  /* 본문 텍스트 선택 */
-  ::selection { background: var(--color-primary-100); color: var(--color-primary-900); }
+  ::selection { background: var(--color-primary-200); color: var(--color-primary-900); }
+
+  /* 스크롤바 — 부드럽게 */
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-medium);
+    border-radius: 6px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-border-strong); background-clip: content-box; }
 }
 
 @layer components {
-  .container-content {
-    @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8;
-  }
+  .container-content { @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8; }
 
-  /* ─── 카드 시스템 ─── */
+  /* ─────────────────────────────────────────────────────────
+     카드 시스템 — 5개 variant
+     ───────────────────────────────────────────────────────── */
   .card {
-    @apply rounded-xl border bg-white p-5 sm:p-6 transition-all duration-200;
+    @apply relative rounded-xl border bg-white p-5 sm:p-6;
     border-color: var(--color-border-light);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-xs);
+    transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out), border-color 200ms var(--ease-out);
   }
   .card:hover {
-    border-color: var(--color-primary-500);
+    border-color: var(--color-primary-300);
     box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
   }
+  .card:focus-within { border-color: var(--color-primary-500); box-shadow: var(--shadow-glow-primary); }
 
-  /* 강조 카드 (골드) — 핵심 차별점 */
-  .card-feature {
-    @apply card;
-    background: linear-gradient(180deg, var(--color-accent-50) 0%, #fff 100%);
-    border-color: var(--color-accent-500);
-  }
-  .card-feature:hover {
-    box-shadow: var(--shadow-lg);
-    border-color: var(--color-accent-500);
-  }
-
-  /* 정보 카드 — 약간 옅은 네이비 톤 */
+  /* 정보 카드 (네이비 톤, 작은 그라데이션) */
   .card-info {
     @apply card;
-    background: linear-gradient(180deg, var(--color-primary-50) 0%, #fff 100%);
-    border-color: var(--color-primary-100);
+    background:
+      linear-gradient(135deg, var(--color-primary-50) 0%, #fff 60%);
+    border-color: var(--color-primary-200);
   }
-  .card-info:hover { border-color: var(--color-primary-700); }
+  .card-info:hover { border-color: var(--color-primary-600); box-shadow: var(--shadow-md); }
 
-  /* 큰 강조 CTA 카드 */
+  /* Feature 카드 (골드 톤, 강조) */
+  .card-feature {
+    @apply card relative overflow-hidden;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.10) 0%, transparent 50%),
+      linear-gradient(135deg, var(--color-accent-50) 0%, #fff 60%);
+    border-color: var(--color-accent-400);
+  }
+  .card-feature::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.16) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .card-feature:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+
+  /* CTA 카드 (네이비 그라데이션, 가장 강조) */
   .card-cta {
-    @apply rounded-2xl p-6 sm:p-8 text-white;
-    background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 100%);
-    box-shadow: var(--shadow-hero);
+    @apply rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden;
+    background:
+      radial-gradient(circle at 0% 100%, rgba(245, 158, 11, 0.20) 0%, transparent 50%),
+      radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.30) 0%, transparent 50%),
+      linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 60%, var(--color-primary-800) 100%);
+    box-shadow: var(--shadow-xl);
+  }
+  .card-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,0.04) 100%);
+    pointer-events: none;
   }
 
-  /* 배지 — 가독성 강화 */
+  /* 학교 카드 (목록용) — 좌측 색상 액센트 */
+  .card-school {
+    @apply card relative;
+    padding-left: 1.75rem;
+  }
+  .card-school::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 12%; bottom: 12%;
+    width: 4px;
+    background: linear-gradient(180deg, var(--color-primary-700) 0%, var(--color-primary-500) 100%);
+    border-radius: 0 4px 4px 0;
+    transition: width 300ms var(--ease-out), top 300ms var(--ease-out), bottom 300ms var(--ease-out);
+  }
+  .card-school:hover::before {
+    top: 0; bottom: 0;
+    width: 5px;
+  }
+  .card-school[data-accent="gold"]::before {
+    background: linear-gradient(180deg, var(--color-accent-600) 0%, var(--color-accent-400) 100%);
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     배지 시스템
+     ───────────────────────────────────────────────────────── */
   .badge-gold {
-    @apply inline-flex items-center gap-1 rounded-full bg-accent-100 px-2.5 py-0.5 text-xs text-accent-700;
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs;
+    background: linear-gradient(135deg, var(--color-accent-100) 0%, var(--color-accent-200) 100%);
+    color: var(--color-accent-700);
     font-weight: 500;
     letter-spacing: 0.01em;
+    box-shadow: inset 0 -1px 0 rgba(146, 64, 14, 0.08);
   }
   .badge-navy {
-    @apply inline-flex items-center gap-1 rounded-full bg-primary-100 px-2.5 py-0.5 text-xs text-primary-900;
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs;
+    background: linear-gradient(135deg, var(--color-primary-100) 0%, var(--color-primary-200) 100%);
+    color: var(--color-primary-900);
+    font-weight: 500;
+    box-shadow: inset 0 -1px 0 rgba(30, 58, 138, 0.08);
+  }
+  .badge-success {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs;
+    background: var(--color-success-bg);
+    color: var(--color-success);
     font-weight: 500;
   }
   .badge-sponsored {
-    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs uppercase tracking-wide;
-    background: #f3f4f6;
-    color: #6b7280;
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs uppercase tracking-wider;
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-tertiary);
+    font-weight: 500;
+  }
+  .badge-outlined {
+    @apply inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs;
+    border-color: var(--color-border-medium);
+    color: var(--color-text-secondary);
     font-weight: 500;
   }
 
-  /* ─── CTA 버튼 ─── */
+  /* ─────────────────────────────────────────────────────────
+     CTA 버튼 — 3 variant
+     ───────────────────────────────────────────────────────── */
   .cta-primary {
-    @apply inline-flex items-center justify-center rounded-lg bg-primary-900 px-5 py-3 text-white transition-all duration-150;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-white;
+    background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 100%);
     font-weight: 500;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.12);
+    transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out);
   }
   .cta-primary:hover {
-    background: var(--color-primary-700);
-    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, var(--color-primary-800) 0%, var(--color-primary-600) 100%);
+    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.16);
     transform: translateY(-1px);
     color: #fff;
     text-decoration: none;
   }
-  .cta-primary:active { transform: translateY(0); }
+  .cta-primary:active { transform: translateY(0); box-shadow: var(--shadow-xs); }
 
   .cta-secondary {
-    @apply inline-flex items-center justify-center rounded-lg border bg-white px-5 py-3 text-primary-900 transition-all duration-150;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border px-5 py-3;
+    background: #fff;
+    color: var(--color-primary-900);
     border-color: var(--color-border-medium);
     font-weight: 500;
+    transition: all 180ms var(--ease-out);
   }
   .cta-secondary:hover {
     border-color: var(--color-primary-700);
     background: var(--color-primary-50);
+    color: var(--color-primary-900);
     text-decoration: none;
+    transform: translateY(-1px);
   }
 
   .cta-accent {
-    @apply inline-flex items-center justify-center rounded-lg px-5 py-3 transition-all duration-150;
-    background: var(--color-accent-500);
-    color: #fff;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-white;
+    background: linear-gradient(135deg, var(--color-accent-600) 0%, var(--color-accent-500) 100%);
     font-weight: 500;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.16);
+    transition: all 180ms var(--ease-out);
   }
   .cta-accent:hover {
-    background: var(--color-accent-700);
+    background: linear-gradient(135deg, var(--color-accent-700) 0%, var(--color-accent-600) 100%);
     box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
     color: #fff;
     text-decoration: none;
   }
 
-  /* ─── Hero 영역 배경 ─── */
+  /* ─────────────────────────────────────────────────────────
+     Hero 영역 — 다층 배경
+     ───────────────────────────────────────────────────────── */
   .hero-gradient {
     background:
-      radial-gradient(circle at 20% 10%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 80% 30%, rgba(30, 58, 138, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 800px 400px at 15% 0%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse 700px 500px at 90% 30%, rgba(59, 130, 246, 0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 300px at 50% 100%, rgba(99, 102, 241, 0.05) 0%, transparent 60%),
+      linear-gradient(180deg, #FBFCFD 0%, #FFFFFF 100%);
+    position: relative;
+  }
+  .hero-gradient::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.02) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  .hero-gradient > * { position: relative; }
+
+  /* 카테고리별 Hero 변형 */
+  .hero-gradient-malaysia {
+    background:
+      radial-gradient(ellipse 700px 500px at 80% 20%, rgba(245, 158, 11, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 400px at 20% 80%, rgba(220, 38, 38, 0.06) 0%, transparent 60%),
+      linear-gradient(180deg, #FFFBF5 0%, #FFFFFF 100%);
+  }
+  .hero-gradient-korea {
+    background:
+      radial-gradient(ellipse 700px 500px at 20% 0%, rgba(220, 38, 38, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 400px at 80% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
       linear-gradient(180deg, #FAFBFD 0%, #FFFFFF 100%);
   }
 
   /* ─── 섹션 패딩 ─── */
-  .section-md { @apply py-12 sm:py-14; }
+  .section-sm { @apply py-8 sm:py-10; }
+  .section-md { @apply py-12 sm:py-16; }
   .section-lg { @apply py-16 sm:py-20; }
+  .section-xl { @apply py-20 sm:py-28; }
 
-  /* ─── 아이콘 원 ─── */
+  /* ─── 아이콘 시스템 ─── */
   .icon-circle {
     @apply inline-flex items-center justify-center rounded-xl;
     width: 44px; height: 44px;
-    background: var(--color-primary-100);
+    background: linear-gradient(135deg, var(--color-primary-100) 0%, var(--color-primary-50) 100%);
     color: var(--color-primary-900);
+    box-shadow: inset 0 -1px 0 rgba(30, 58, 138, 0.06);
   }
   .icon-circle-accent {
     @apply icon-circle;
-    background: var(--color-accent-100);
+    background: linear-gradient(135deg, var(--color-accent-100) 0%, var(--color-accent-50) 100%);
     color: var(--color-accent-700);
+    box-shadow: inset 0 -1px 0 rgba(146, 64, 14, 0.06);
+  }
+  .icon-circle-lg {
+    @apply icon-circle;
+    width: 56px; height: 56px;
+    border-radius: 16px;
   }
 
-  /* ─── 구분선 ─── */
-  .divider {
-    height: 1px;
-    background: var(--color-border-light);
-    margin: 1rem 0;
-  }
-
-  /* ─── 데이터 그리드 (학교 정보 박스 등) ─── */
+  /* ─── stat-card — 학교 핵심 정보 박스 ─── */
   .stat-grid {
     @apply grid gap-3 sm:gap-4;
   }
   .stat-card {
-    @apply rounded-lg border p-4;
+    @apply relative rounded-xl border bg-white p-4;
     border-color: var(--color-border-light);
-    background: #fff;
-    transition: border-color 0.15s ease;
+    background: linear-gradient(135deg, #fff 0%, var(--color-bg-soft) 100%);
+    transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
   }
-  .stat-card:hover { border-color: var(--color-primary-700); }
+  .stat-card:hover {
+    border-color: var(--color-primary-300);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
   .stat-card dt {
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-text-tertiary);
+    font-weight: 500;
   }
   .stat-card dd {
-    margin-top: 0.25rem;
-    font-size: 1.05rem;
+    margin-top: 0.5rem;
+    font-size: 1.125rem;
     font-weight: 500;
     color: var(--color-text-primary);
+    line-height: 1.3;
   }
 
-  /* ─── 콘텐츠 폭 (긴 글 가독성) ─── */
-  .prose-narrow {
-    max-width: 65ch;
+  /* ─── FAQ details 강화 ─── */
+  details.faq-item {
+    transition: border-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+    border-color: var(--color-border-light);
   }
-
-  /* ─── details/summary 펼침 화살표 ─── */
-  details > summary {
-    list-style: none;
+  details.faq-item:hover { border-color: var(--color-primary-400); }
+  details.faq-item[open] {
+    background: linear-gradient(180deg, var(--color-primary-50) 0%, #fff 100%);
+    border-color: var(--color-primary-600);
+    box-shadow: var(--shadow-sm);
   }
+  details > summary { list-style: none; cursor: pointer; }
   details > summary::-webkit-details-marker { display: none; }
   details > summary::marker { content: ''; }
 
-  /* FAQ details 호버 효과 */
-  details.faq-item {
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  /* ─── 가로 바 차트 (학생 국적 등 비율 시각화) ─── */
+  .bar-chart-row {
+    @apply grid gap-3 items-center text-sm;
+    grid-template-columns: minmax(120px, 1fr) 2fr auto;
   }
-  details.faq-item:hover { border-color: var(--color-primary-500); }
-  details.faq-item[open] {
-    background: var(--color-primary-50);
-    border-color: var(--color-primary-700);
+  .bar-track {
+    position: relative;
+    height: 8px;
+    background: var(--color-bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--color-primary-700) 0%, var(--color-primary-500) 100%);
+    border-radius: 4px;
+    transition: width 600ms var(--ease-out);
+  }
+  .bar-fill[data-tone="accent"] {
+    background: linear-gradient(90deg, var(--color-accent-600) 0%, var(--color-accent-400) 100%);
+  }
+  .bar-fill[data-tone="success"] {
+    background: linear-gradient(90deg, var(--color-success) 0%, #34D399 100%);
+  }
+  .bar-fill[data-tone="rose"] {
+    background: linear-gradient(90deg, #BE123C 0%, #F43F5E 100%);
+  }
+  .bar-fill[data-tone="violet"] {
+    background: linear-gradient(90deg, #6D28D9 0%, #A78BFA 100%);
+  }
+
+  /* ─── 콘텐츠 폭 ─── */
+  .prose-narrow { max-width: 65ch; }
+
+  /* ─── Hero 통계 카드 (메인 페이지) ─── */
+  .hero-stat {
+    @apply rounded-lg p-3;
+    background: var(--color-bg-soft);
+    transition: background 200ms var(--ease-out);
+  }
+  .hero-stat:hover { background: #fff; box-shadow: var(--shadow-xs); }
+  .hero-stat-highlight {
+    background: linear-gradient(135deg, var(--color-accent-100) 0%, var(--color-accent-50) 100%);
+    box-shadow: inset 0 -2px 0 rgba(245, 158, 11, 0.12);
+  }
+
+  /* ─── 인용 박스 (운영자 한마디 등) ─── */
+  .quote-box {
+    @apply relative rounded-xl p-5;
+    background: linear-gradient(135deg, var(--color-accent-50) 0%, #fff 80%);
+    border-left: 4px solid var(--color-accent-500);
+  }
+
+  /* ─── 페이지 nav (breadcrumb 아래 영역) ─── */
+  .page-nav {
+    @apply text-sm flex flex-wrap items-center gap-x-2 gap-y-1;
+    color: var(--color-text-secondary);
+  }
+  .page-nav a { color: var(--color-text-secondary); }
+  .page-nav a:hover { color: var(--color-primary-700); }
+  .page-nav-sep { color: var(--color-text-muted); }
+
+  /* ─── 페이지 헤더 메타 (작성자·날짜·출처) ─── */
+  .page-meta {
+    @apply flex flex-wrap items-center gap-x-3 gap-y-1 text-xs;
+    color: var(--color-text-tertiary);
   }
 }
 
 @layer utilities {
-  /* 텍스트 wrap balance — 제목 줄바꿈 미려화 */
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
+
+  /* 글래스모피즘 */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* 페이지 로드 fade-in */
+  .animate-fade-in {
+    animation: fadeIn 600ms var(--ease-out) backwards;
+  }
+  .animate-slide-up {
+    animation: slideUp 600ms var(--ease-out) backwards;
+  }
+
+  /* 스크롤 reveal — JS 없이 prefers-reduced-motion 존중 */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(12px); transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 그라데이션 텍스트 */
+  .text-gradient-primary {
+    background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-600) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .text-gradient-accent {
+    background: linear-gradient(135deg, var(--color-accent-700) 0%, var(--color-accent-500) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }

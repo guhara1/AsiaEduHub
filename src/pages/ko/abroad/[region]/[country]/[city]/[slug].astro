@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import SchoolDetailExtras from '~/components/SchoolDetailExtras.astro';
+import BarChart from '~/components/BarChart.astro';
 import { loadSchools, getRegion, COUNTRY_LABEL, REGION_LABEL, BUDGET_LABEL, formatUsd, formatDate, schoolUrl, basePairKey } from '~/lib/schools';
 import { alternateUrlFor } from '~/lib/i18n';
 
@@ -100,17 +101,21 @@ const stud = d.student_nationality;
     {stud && (
       <section class="mt-10">
         <h2 class="text-xl">학생 국적 구성</h2>
-        <p class="text-xs text-[color:var(--color-text-tertiary)]">
-          출처: {stud.source ?? '미표기'} · 업데이트 {stud.last_updated ? formatDate(stud.last_updated, 'ko') : '미표기'}
+        <p class="mt-1 page-meta">
+          <span>출처: {stud.source ?? '미표기'}</span>
+          <span class="page-nav-sep">·</span>
+          <span>업데이트 {stud.last_updated ? formatDate(stud.last_updated, 'ko') : '미표기'}</span>
         </p>
-        <dl class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm">
-          {stud.korean_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">한국</dt><dd style="font-weight:500">{stud.korean_ratio}%</dd></div>}
-          {stud.chinese_mainland_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">중국 본토</dt><dd style="font-weight:500">{stud.chinese_mainland_ratio}%</dd></div>}
-          {stud.chinese_overseas_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">화교 (현지 중국계)</dt><dd style="font-weight:500">{stud.chinese_overseas_ratio}%</dd></div>}
-          {stud.other_asian_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">기타 아시아</dt><dd style="font-weight:500">{stud.other_asian_ratio}%</dd></div>}
-          {stud.western_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">서구권</dt><dd style="font-weight:500">{stud.western_ratio}%</dd></div>}
-          {stud.local_host_country_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">현지</dt><dd style="font-weight:500">{stud.local_host_country_ratio}%</dd></div>}
-        </dl>
+        <div class="mt-5 rounded-xl border p-5" style="border-color: var(--color-border-light); background: linear-gradient(135deg, #fff 0%, var(--color-bg-soft) 100%);">
+          <BarChart rows={[
+            stud.korean_ratio !== undefined ? { label: '🇰🇷 한국', value: stud.korean_ratio, tone: 'primary' as const } : null,
+            stud.chinese_mainland_ratio !== undefined ? { label: '🇨🇳 중국 본토', value: stud.chinese_mainland_ratio, tone: 'rose' as const } : null,
+            stud.chinese_overseas_ratio !== undefined ? { label: '🌏 화교 (현지)', value: stud.chinese_overseas_ratio, tone: 'accent' as const, note: '말레이시아·싱가포르 등 현지 중국계' } : null,
+            stud.other_asian_ratio !== undefined ? { label: '🌐 기타 아시아', value: stud.other_asian_ratio, tone: 'violet' as const } : null,
+            stud.western_ratio !== undefined ? { label: '🌎 서구권', value: stud.western_ratio, tone: 'success' as const } : null,
+            stud.local_host_country_ratio !== undefined ? { label: '🏠 현지', value: stud.local_host_country_ratio, tone: 'primary' as const } : null,
+          ].filter(Boolean) as any} />
+        </div>
       </section>
     )}
 
@@ -118,25 +123,21 @@ const stud = d.student_nationality;
     {teach && (
       <section class="mt-10">
         <h2 class="text-xl">교사 구성</h2>
-        <p class="text-xs text-[color:var(--color-text-tertiary)]">
-          출처: {teach.source ?? '미표기'} · 업데이트 {teach.last_updated ? formatDate(teach.last_updated, 'ko') : '미표기'}
+        <p class="mt-1 page-meta">
+          <span>출처: {teach.source ?? '미표기'}</span>
+          <span class="page-nav-sep">·</span>
+          <span>업데이트 {teach.last_updated ? formatDate(teach.last_updated, 'ko') : '미표기'}</span>
         </p>
-        <dl class="mt-4 grid gap-3 sm:grid-cols-3 text-sm">
+        <div class="mt-5 rounded-xl border p-5" style="border-color: var(--color-border-light); background: linear-gradient(135deg, #fff 0%, var(--color-bg-soft) 100%);">
+          <BarChart rows={[
+            teach.native_english_speakers?.subtotal_ratio !== undefined ? { label: '🇺🇸 영어 모국어', value: teach.native_english_speakers.subtotal_ratio, tone: 'primary' as const, note: '미·영·캐·호·뉴·아일랜드' } : null,
+            teach.asian_english_teachers?.subtotal_ratio !== undefined ? { label: '🌏 영어 가능 아시아', value: teach.asian_english_teachers.subtotal_ratio, tone: 'accent' as const, note: '인·필·싱·말 등' } : null,
+            teach.other_teachers?.subtotal_ratio !== undefined ? { label: '🌐 기타', value: teach.other_teachers.subtotal_ratio, tone: 'violet' as const, note: '한·중·현지·유럽' } : null,
+          ].filter(Boolean) as any} />
+        </div>
+        <dl class="mt-4 hidden grid gap-3 sm:grid-cols-3 text-sm" style="display: none;">
           {teach.native_english_speakers?.subtotal_ratio !== undefined && (
-            <div class="rounded-lg border p-3" style="border-color: var(--color-border-light)">
-              <dt class="text-xs text-[color:var(--color-text-secondary)]">영어 모국어 (미·영·캐·호·뉴·아일랜드)</dt>
-              <dd class="mt-1 text-lg" style="font-weight:500">{teach.native_english_speakers.subtotal_ratio}%</dd>
-            </div>
-          )}
-          {teach.asian_english_teachers?.subtotal_ratio !== undefined && (
-            <div class="rounded-lg border p-3" style="border-color: var(--color-border-light)">
-              <dt class="text-xs text-[color:var(--color-text-secondary)]">영어 가능 아시아 (인·필·싱·말 등)</dt>
-              <dd class="mt-1 text-lg" style="font-weight:500">{teach.asian_english_teachers.subtotal_ratio}%</dd>
-            </div>
-          )}
-          {teach.other_teachers?.subtotal_ratio !== undefined && (
-            <div class="rounded-lg border p-3" style="border-color: var(--color-border-light)">
-              <dt class="text-xs text-[color:var(--color-text-secondary)]">기타 (한·중·현지·유럽)</dt>
+            <div>
               <dd class="mt-1 text-lg" style="font-weight:500">{teach.other_teachers.subtotal_ratio}%</dd>
             </div>
           )}
