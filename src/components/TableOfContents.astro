@@ -1,0 +1,105 @@
+---
+/**
+ * 가이드·정보 페이지용 사이드 인덱스 (Table of Contents).
+ * Astro 빌드 시점엔 본문 h2/h3 를 파악할 수 없으므로,
+ * 클라이언트에서 JS 로 article 내 h2/h3 를 추출해 목차 + ScrollSpy.
+ */
+import type { Locale } from '~/lib/i18n';
+export interface Props {
+  locale: Locale;
+  /** TOC가 스캔할 article 또는 영역의 선택자. 기본 'article' */
+  targetSelector?: string;
+}
+const { locale, targetSelector = 'article' } = Astro.props;
+const tocLabel = locale === 'ko' ? '목차' : '目录';
+const topLabel = locale === 'ko' ? '맨 위로' : '回到顶部';
+---
+<nav
+  aria-label={tocLabel}
+  class="toc"
+  data-toc-target={targetSelector}
+>
+  <div class="text-xs uppercase tracking-wider mb-3" style="color: var(--color-text-tertiary); font-weight: 500; letter-spacing: 0.08em;">
+    {tocLabel}
+  </div>
+  <ul class="toc-list" id="toc-list">
+    {/* JS 로 채워짐 */}
+  </ul>
+  <a href="#top" class="mt-4 inline-flex items-center gap-1 text-xs" style="color: var(--color-text-tertiary)">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    {topLabel}
+  </a>
+</nav>
+
+<script>
+  (function () {
+    document.querySelectorAll('[data-toc-target]').forEach((tocEl) => {
+      const targetSelector = (tocEl as HTMLElement).dataset.tocTarget || 'article';
+      const target = document.querySelector(targetSelector);
+      const list = tocEl.querySelector('#toc-list') as HTMLUListElement | null;
+      if (!target || !list) return;
+
+      const headings = Array.from(target.querySelectorAll('h2, h3')) as HTMLElement[];
+      if (headings.length === 0) {
+        (tocEl as HTMLElement).style.display = 'none';
+        return;
+      }
+
+      // 각 heading 에 id 자동 부여 (없으면)
+      headings.forEach((h, i) => {
+        if (!h.id) {
+          const text = (h.textContent || '').trim().toLowerCase();
+          const slug = text.replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
+          h.id = slug || `toc-${i}`;
+        }
+        // scroll-margin 으로 sticky header 가림 방지
+        h.style.scrollMarginTop = '96px';
+      });
+
+      // 목차 렌더링
+      const items = headings.map((h) => {
+        const li = document.createElement('li');
+        li.className = h.tagName === 'H2' ? 'toc-item toc-h2' : 'toc-item toc-h3';
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.className = 'toc-link';
+        a.dataset.tocId = h.id;
+        a.textContent = (h.textContent || '').trim();
+        li.appendChild(a);
+        return { li, link: a, heading: h };
+      });
+      items.forEach((it) => list.appendChild(it.li));
+
+      // ScrollSpy — 현재 보이는 heading 강조
+      if ('IntersectionObserver' in window) {
+        const linkMap = new Map(items.map((it) => [it.heading.id, it.link]));
+        let activeId: string | null = null;
+        const setActive = (id: string | null) => {
+          if (id === activeId) return;
+          if (activeId) linkMap.get(activeId)?.classList.remove('active');
+          activeId = id;
+          if (id) linkMap.get(id)?.classList.add('active');
+        };
+        const visible = new Set<string>();
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              const id = (e.target as HTMLElement).id;
+              if (e.isIntersecting) visible.add(id);
+              else visible.delete(id);
+            });
+            // 위쪽부터 보이는 첫 heading 활성
+            for (const it of items) {
+              if (visible.has(it.heading.id)) {
+                setActive(it.heading.id);
+                return;
+              }
+            }
+          },
+          { rootMargin: '-96px 0px -70% 0px' }
+        );
+        headings.forEach((h) => io.observe(h));
+      }
+    });
+  })();
+</script>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import AuthorByline from '~/components/AuthorByline.astro';
+import TableOfContents from '~/components/TableOfContents.astro';
 import { getCollection } from 'astro:content';
 import { formatDate } from '~/lib/schools';
 import { GUIDE_CATEGORIES } from '~/lib/locations';
@@ -53,7 +54,9 @@ const sourcesText = d.sources?.map((s) => s.label).join(', ');
     </div>
   </section>
 
-  <article class="container-content py-10 max-w-2xl">
+  <div class="container-content py-10">
+    <div class="grid gap-10 lg:grid-cols-[1fr_240px]">
+      <article class="max-w-2xl min-w-0">
 
     <section class="mt-8 prose prose-neutral max-w-none">
       <Content />
@@ -85,5 +88,14 @@ const sourcesText = d.sources?.map((s) => s.label).join(', ');
         <a href="/ko/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">카카오톡 · 이메일 상담 →</a>
       </div>
     </section>
-  </article>
+      </article>
+
+      {/* 사이드 TOC — lg 이상에서만 sticky */}
+      <aside class="hidden lg:block">
+        <div class="sticky top-24">
+          <TableOfContents locale="ko" />
+        </div>
+      </aside>
+    </div>
+  </div>
 </BaseLayout>

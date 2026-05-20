@@ -70,6 +70,17 @@ if (author && publishedAt) {
 <!doctype html>
 <html lang={htmlLang}>
   <head>
+    {/* FOUC 방지: 페이지 로드 전 테마 적용 */}
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('aeh-theme');
+          var prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var theme = saved || (prefers ? 'dark' : 'light');
+          if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        } catch (e) {}
+      })();
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
@@ -122,5 +133,27 @@ if (author && publishedAt) {
     </main>
     <SiteFooter />
     {/* <MobileStickyAd locale={locale} /> */}
+
+    {/* IntersectionObserver — data-reveal 요소 fade-in */}
+    <script>
+      (function () {
+        if (!('IntersectionObserver' in window)) {
+          document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('in-view'));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -80px 0px', threshold: 0.05 }
+        );
+        document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+      })();
+    </script>
   </body>
 </html>
