@@ -8,11 +8,17 @@ const description =
 const lastUpdated = '2026-05-20';
 ---
 <BaseLayout title={title} description={description}>
-  <article class="container-content py-12 max-w-2xl">
-    <h1 class="text-2xl sm:text-3xl">편집 원칙</h1>
-    <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
-      마지막 업데이트: {lastUpdated} · 책임자: 데이비드 (본명은 광고 미디어 키트·법적 페이지에 한해 공개)
-    </p>
+  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
+    <div class="container-content py-10 sm:py-12 max-w-2xl">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/ko/">홈</a> · 편집 원칙</nav>
+      <h1 class="mt-3 text-3xl sm:text-4xl text-balance">편집 원칙</h1>
+      <p class="mt-3 text-sm" style="color: var(--color-text-secondary)">
+        마지막 업데이트: {lastUpdated} · 책임자: 데이비드 (본명은 광고 미디어 키트 · 법적 페이지에 한해 공개)
+      </p>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-2xl">
 
     <section class="mt-8 space-y-6 text-[color:var(--color-text-primary)]">
       <div>

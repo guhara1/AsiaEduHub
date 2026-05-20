@@ -27,12 +27,13 @@ const cells = [
 ];
 ---
 <BaseLayout title={title} description={description} jsonLd={personSchema}>
-  <section class="container-content py-12">
+  <section class="hero-gradient">
+    <div class="container-content py-12 sm:py-16">
     <div class="flex items-center gap-4">
-      <span aria-hidden="true" class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary-900 text-white text-xl">D</span>
+      <span aria-hidden="true" class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary-900 text-white text-2xl" style="box-shadow: var(--shadow-md)">D</span>
       <div>
-        <h1 class="text-2xl sm:text-3xl">데이비드 <span class="text-[color:var(--color-text-tertiary)] text-base align-middle">[본명은 본문에]</span></h1>
-        <p class="mt-1 text-sm text-[color:var(--color-text-secondary)]">말레이시아 쿠알라룸푸르 거주 · 두 번 옮긴 학부모</p>
+        <h1 class="text-3xl sm:text-4xl text-balance">데이비드 <span class="text-base align-middle" style="color: var(--color-text-tertiary)">[본명은 본문에]</span></h1>
+        <p class="mt-2 text-sm" style="color: var(--color-text-secondary)">말레이시아 쿠알라룸푸르 거주 · 두 번 옮긴 학부모</p>
       </div>
     </div>
 
@@ -65,9 +66,10 @@ const cells = [
         직접 학교를 두 번 옮기며 배운 것을 학부모 관점으로 그대로 기록합니다."
       </p>
     </div>
+    </div>
   </section>
 
-  <article class="container-content pb-16 max-w-2xl">
+  <article class="container-content py-10 max-w-2xl">
     {/*
       본문 구조: 사양서 운영자 사실(본인 제공)을 절(節) 단위로 정리.
       각 절의 1인칭 일화·구체 사례는 운영자 작성 영역(TODO)으로 표시.

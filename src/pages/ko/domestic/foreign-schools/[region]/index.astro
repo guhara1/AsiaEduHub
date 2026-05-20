@@ -53,18 +53,21 @@ const faqSchema = faqs.length > 0 ? {
   publishedAt={publishedAt}
   updatedAt={updatedAt}
 >
-  <section class="container-content py-10">
-    <nav class="text-sm text-[color:var(--color-text-secondary)]">
-      <a href="/ko/">홈</a> · <a href="/ko/domestic/">국내 국제학교</a> · 외국인학교 · {meta.ko}
-    </nav>
-
-    <h1 class="mt-3 text-2xl sm:text-3xl">{meta.ko}</h1>
-    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">{meta.intro_ko}</p>
-
-    <div class="mt-4">
-      <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
-        sources="외국인학교법, 각 학교 공식 사이트, 학교별 입학 안내 자료" />
+  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · <a href="/ko/domestic/">국내 국제학교</a> · 외국인학교 · {meta.ko}
+      </nav>
+      <h1 class="mt-3 text-3xl sm:text-4xl text-balance">{meta.ko}</h1>
+      <p class="mt-4 max-w-2xl text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">{meta.intro_ko}</p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="외국인학교법, 각 학교 공식 사이트, 학교별 입학 안내 자료" />
+      </div>
     </div>
+  </section>
+
+  <section class="container-content py-10">
 
     {/* 학교 목록 */}
     <section class="mt-8">

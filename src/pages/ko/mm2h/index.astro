@@ -28,11 +28,34 @@ const faqSchema = {
     acceptedAnswer: { '@type': 'Answer', text: f.a_ko },
   })),
 };
+
+// HowTo schema — MM2H 신청 7단계 (말레이시아 MM2H 만, 다른 비자는 별도)
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: '말레이시아 MM2H 비자 신청 7단계',
+  description: '말레이시아 MM2H(My Second Home) 비자를 2024 개정 기준으로 신청하는 7단계 절차.',
+  totalTime: 'P9M', // 평균 6~12개월, 9개월 ISO 8601 duration
+  estimatedCost: {
+    '@type': 'MonetaryAmount',
+    currency: 'MYR',
+    value: '520000', // Silver 정기예금 + 부대 비용 합 추정
+  },
+  step: [
+    { '@type': 'HowToStep', position: 1, name: '사전 평가', text: '에이전시 또는 본인이 자격 요건 충족 여부 사전 평가. 정기예금 가능 금액·월 소득·자녀 동반 인원 정리. 1~2주 소요.' },
+    { '@type': 'HowToStep', position: 2, name: '에이전시 선정', text: '정부 라이선스 에이전시 비교 후 선정. 비용·서비스·이전 성공 사례 검토. 비용 RM 15,000~40,000.' },
+    { '@type': 'HowToStep', position: 3, name: '서류 준비', text: '여권·은행 잔고·소득·범죄 경력·건강 검진·아포스티유 등 서류 4~8주 준비.' },
+    { '@type': 'HowToStep', position: 4, name: '신청서 접수', text: '에이전시가 MM2H 사무국에 제출. 접수 번호 부여.' },
+    { '@type': 'HowToStep', position: 5, name: '정부 심사', text: '신원·재정·건강 검증. 3~6개월 소요. 추가 서류 요청 가능.' },
+    { '@type': 'HowToStep', position: 6, name: '조건부 승인', text: 'Approval Letter 수령 후 정기예금 개설 · 의료 보험 가입 · 말레이시아 지정 병원 건강 검진 완료.' },
+    { '@type': 'HowToStep', position: 7, name: '비자 발급 · 입국', text: '모든 조건 완료 후 비자 정식 발급. 5년 거주 시작.' },
+  ],
+};
 ---
 <BaseLayout
   title={title}
   description={description}
-  jsonLd={[breadcrumb, faqSchema]}
+  jsonLd={[breadcrumb, faqSchema, howToSchema]}
   author={{ name: '데이비드', url: '/ko/about/' }}
   publishedAt={publishedAt}
   updatedAt={updatedAt}

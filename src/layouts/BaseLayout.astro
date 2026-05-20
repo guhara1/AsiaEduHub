@@ -56,8 +56,14 @@ if (author && publishedAt) {
       '@type': 'Organization',
       name: t.site.name,
       url: siteUrl + '/',
+      logo: { '@type': 'ImageObject', url: siteUrl + '/favicon.svg' },
     },
     inLanguage: htmlLang,
+    // 음성 검색·Google Assistant 대응 (speakable)
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', 'article > p:first-of-type', '[data-speakable]'],
+    },
   });
 }
 ---

@@ -40,12 +40,17 @@ const webAppSchema = {
 };
 ---
 <BaseLayout title={title} description={description} jsonLd={webAppSchema}>
+  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · 对比 / 工具</nav>
+      <h1 class="mt-3 text-3xl sm:text-4xl text-balance">对比 / 工具 <span class="badge-gold ml-2 align-middle text-xs">⭐ 交互</span></h1>
+      <p class="mt-4 max-w-2xl text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
+        不是单纯信息,而是家长可亲手输入·模拟的交互工具。升学路径模拟器是本站差异化的核心。
+      </p>
+    </div>
+  </section>
+
   <section class="container-content py-10">
-    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · 对比 / 工具</nav>
-    <h1 class="mt-2 text-2xl sm:text-3xl">对比 / 工具</h1>
-    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
-      不是单纯信息,而是家长可亲手输入·模拟的交互工具。升学路径模拟器是本站差异化的核心。
-    </p>
 
     <div class="mt-6 flex flex-wrap gap-2">
       {COMPARE_TOOLS.map((tool) => (

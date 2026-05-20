@@ -28,11 +28,30 @@ const faqSchema = {
     acceptedAnswer: { '@type': 'Answer', text: f.a_zh },
   })),
 };
+
+// HowTo schema — 马来西亚 MM2H 申请 7 步
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: '马来西亚 MM2H 签证申请 7 步',
+  description: '依据 2024 修订申请马来西亚 MM2H(My Second Home)签证的 7 步流程。',
+  totalTime: 'P9M',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'MYR', value: '520000' },
+  step: [
+    { '@type': 'HowToStep', position: 1, name: '资格预评', text: '中介或本人自查资格,整理可定存金额、收入证明、随行人数。1~2 周。' },
+    { '@type': 'HowToStep', position: 2, name: '选定中介', text: '政府持牌中介对比后选定,费用 RM 15,000~40,000。' },
+    { '@type': 'HowToStep', position: 3, name: '准备文件', text: '护照、银行流水、收入、无犯罪、体检、海牙认证等文件 4~8 周准备。' },
+    { '@type': 'HowToStep', position: 4, name: '提交申请', text: '中介向 MM2H 办公室提交,获受理编号。' },
+    { '@type': 'HowToStep', position: 5, name: '政府审核', text: '身份·财务·健康审核,3~6 个月。可能要求补件。' },
+    { '@type': 'HowToStep', position: 6, name: '有条件批准', text: '批准信发放后开立定存账户、购买医疗保险、马来西亚指定医院体检。' },
+    { '@type': 'HowToStep', position: 7, name: '签证发放与入境', text: '所有条件完成后正式签证发放,5 年居留开始。' },
+  ],
+};
 ---
 <BaseLayout
   title={title}
   description={description}
-  jsonLd={[breadcrumb, faqSchema]}
+  jsonLd={[breadcrumb, faqSchema, howToSchema]}
   author={{ name: 'David', url: '/zh/about/' }}
   publishedAt={publishedAt}
   updatedAt={updatedAt}

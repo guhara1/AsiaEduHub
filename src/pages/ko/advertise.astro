@@ -8,13 +8,18 @@ const description =
 // 사양: 가격·트래픽은 운영자가 직접 입력. 공개 페이지는 닉네임만, 본명은 비공개 미디어 키트 PDF 에.
 ---
 <BaseLayout title={title} description={description} noindex={true}>
-  <section class="container-content py-12 max-w-3xl">
-    <h1 class="text-2xl sm:text-3xl">광고 문의 · 미디어 키트</h1>
-    <p class="mt-3 text-[color:var(--color-text-secondary)]">
-      AsiaEduHub 는 한국·중국 학부모가 동남아·국내 국제학교를 검토할 때 참고하는
-      운영자(데이비드) 1인 미디어입니다. 학교 방문기·학비 분석·옮긴 경험 등
-      1차 경험 콘텐츠가 자산이며, 광고는 콘텐츠와 분리된 영역에서만 노출됩니다.
-    </p>
+  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
+    <div class="container-content py-10 sm:py-12 max-w-3xl">
+      <h1 class="text-3xl sm:text-4xl text-balance">광고 문의 · 미디어 키트</h1>
+      <p class="mt-4 text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
+        AsiaEduHub 는 한국 · 중국 학부모가 동남아 · 국내 국제학교를 검토할 때 참고하는
+        운영자(데이비드) 1인 미디어입니다. 학교 방문기 · 학비 분석 · 옮긴 경험 등
+        1차 경험 콘텐츠가 자산이며, 광고는 콘텐츠와 분리된 영역에서만 노출됩니다.
+      </p>
+    </div>
+  </section>
+
+  <section class="container-content py-10 max-w-3xl">
 
     <h2 class="mt-10 text-xl">미디어 키트 다운로드</h2>
     <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
