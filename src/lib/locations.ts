@@ -55,7 +55,12 @@ export const SOUTHEAST_ASIA: CountryRef[] = [
     flag: '🇻🇳',
     ko: '베트남',
     zh: '越南',
-    cities: [],
+    cities: [
+      { id: 'hanoi', flag: '🇻🇳', ko: '하노이', zh: '河内' },
+      { id: 'ho-chi-minh', flag: '🇻🇳', ko: '호치민', zh: '胡志明市' },
+      { id: 'hai-phong', flag: '🇻🇳', ko: '하이퐁', zh: '海防' },
+      { id: 'da-nang', flag: '🇻🇳', ko: '다낭', zh: '岘港' },
+    ],
   },
 ];
 

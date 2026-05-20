@@ -50,7 +50,7 @@ export default defineConfig({
           item.changefreq = 'daily';
         }
         // 학교 detail 페이지 — 핵심 콘텐츠
-        else if (/\/(abroad\/(malaysia|thailand|singapore)|domestic\/(foreign|international)-schools)\/[^/]+\//.test(url)) {
+        else if (/\/(abroad\/(malaysia|thailand|singapore|vietnam)|domestic\/(foreign|international)-schools)\/[^/]+\//.test(url)) {
           item.priority = 0.9;
           item.changefreq = 'weekly';
         }

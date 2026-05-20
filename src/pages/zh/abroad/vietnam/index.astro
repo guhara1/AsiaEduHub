@@ -1,0 +1,99 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import Flag from '~/components/Flag.astro';
+import { VIETNAM_SCHOOLS, VN_REGION_LABELS, type VnRegion } from '~/lib/vietnam-schools';
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = '越南国际学校 22 所 — 河内 · 胡志明 · 海防 · 岘港学校详情 | AsiaEduHub';
+const description =
+  'BIS · Dwight · ISHCMC · EIS · BVIS · TAS · CIS · ABCIS · WIS · Dewey · Horizon · APU 等越南国际学校 22 所的课程 · 学费 · 位置 · 双语选项整理。';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '海外留学', item: siteRoot + 'zh/abroad/' },
+    { '@type': 'ListItem', position: 3, name: '越南' },
+  ],
+};
+
+const itemList = {
+  '@context': 'https://schema.org', '@type': 'ItemList',
+  name: '越南国际学校 22 所', numberOfItems: VIETNAM_SCHOOLS.length,
+  itemListElement: VIETNAM_SCHOOLS.map((s, i) => ({
+    '@type': 'ListItem', position: i + 1, name: s.name_zh,
+    url: siteRoot + `zh/abroad/vietnam/${s.region}/${s.slug}/`,
+  })),
+};
+
+const regions: VnRegion[] = ['hanoi', 'ho-chi-minh', 'hai-phong', 'da-nang'];
+const byRegion: Record<VnRegion, typeof VIETNAM_SCHOOLS> = {
+  'hanoi': VIETNAM_SCHOOLS.filter((s) => s.region === 'hanoi'),
+  'ho-chi-minh': VIETNAM_SCHOOLS.filter((s) => s.region === 'ho-chi-minh'),
+  'hai-phong': VIETNAM_SCHOOLS.filter((s) => s.region === 'hai-phong'),
+  'da-nang': VIETNAM_SCHOOLS.filter((s) => s.region === 'da-nang'),
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, itemList]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/zh/">首页</a> · <a href="/zh/abroad/">海外留学</a> · <Flag country="VN" />越南
+      </nav>
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.02em">
+        🇻🇳 越南国际学校 22 所
+      </h1>
+      <p class="mt-3 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        河内 · 胡志明 · 海防 · 岘港 4 个地区。英式 · 美式 · IB · 加拿大 · 双语(英 · 越)学校综合整理。ISHCMC · EIS · BIS · Dwight 等全球名校云集。
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="各校官网、学校招生资料、家长社群" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-4xl">
+    {regions.map((r) => byRegion[r].length > 0 && (
+      <section class="mt-10" id={r}>
+        <h2 class="text-xl sm:text-2xl" style="font-weight:700; letter-spacing:-0.01em">
+          <Flag country="VN" />{VN_REGION_LABELS[r].zh} <span style="color: var(--color-text-tertiary); font-weight:500; font-size: 0.85em">({byRegion[r].length} 所)</span>
+        </h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+          {byRegion[r].map((s) => (
+            <a href={`/zh/abroad/vietnam/${s.region}/${s.slug}/`} class="card text-sm block">
+              <div class="text-primary-900" style="font-weight:600">{s.name_zh}</div>
+              <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">{s.name_en}{s.abbreviation ? ` · ${s.abbreviation}` : ''}</div>
+              <div class="mt-2 flex flex-wrap gap-1">
+                <span class="badge-outlined">{s.curriculum.type}</span>
+                {s.boarding && <span class="badge-navy">寄宿</span>}
+                {s.founded_year && <span class="badge-outlined">{s.founded_year}</span>}
+              </div>
+              <div class="mt-2 text-xs" style="color: var(--color-text-tertiary)">
+                年 ${s.tuition_range_usd[0].toLocaleString()}~${s.tuition_range_usd[1].toLocaleString()}
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">越南国际学校入学咨询</h2>
+      <p class="mt-3 text-sm opacity-95">告知孩子年级 · 英语水平 · 地区 · 双语意愿 · 预算,1:1 答复。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        WeChat 咨询
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+  </article>
+</BaseLayout>

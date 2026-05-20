@@ -8,6 +8,7 @@ import { COUNTRIES, ABROAD_FAQS } from '~/lib/abroad-info';
 import { MALAYSIA_SCHOOLS } from '~/lib/malaysia-schools';
 import { THAILAND_SCHOOLS } from '~/lib/thailand-schools';
 import { SINGAPORE_SCHOOLS } from '~/lib/singapore-schools';
+import { VIETNAM_SCHOOLS } from '~/lib/vietnam-schools';
 
 const schools = await loadSchools('zh');
 const seaCountries = COUNTRIES.filter((c) => c.region === 'sea');
@@ -16,6 +17,13 @@ const angloCountries = COUNTRIES.filter((c) => c.region === 'anglo');
 const malaysiaCount = MALAYSIA_SCHOOLS.length;
 const thailandCount = THAILAND_SCHOOLS.length;
 const singaporeCount = SINGAPORE_SCHOOLS.length;
+const vietnamCount = VIETNAM_SCHOOLS.length;
+const vietnamByCity: Record<string, number> = {
+  'hanoi': VIETNAM_SCHOOLS.filter(s => s.region === 'hanoi').length,
+  'ho-chi-minh': VIETNAM_SCHOOLS.filter(s => s.region === 'ho-chi-minh').length,
+  'hai-phong': VIETNAM_SCHOOLS.filter(s => s.region === 'hai-phong').length,
+  'da-nang': VIETNAM_SCHOOLS.filter(s => s.region === 'da-nang').length,
+};
 const thailandByCity: Record<string, number> = {
   'bangkok': THAILAND_SCHOOLS.filter(s => s.region === 'bangkok').length,
   'pattaya': THAILAND_SCHOOLS.filter(s => s.region === 'pattaya').length,
@@ -198,8 +206,8 @@ const faqSchema = {
 
     {SOUTHEAST_ASIA.map((country) => {
       const countrySchools = schools.filter((s) => s.data.country === country.id);
-      const dedicatedCount = country.id === 'malaysia' ? malaysiaCount : country.id === 'thailand' ? thailandCount : country.id === 'singapore' ? singaporeCount : 0;
-      const dedicatedHref = country.id === 'malaysia' ? '/zh/abroad/malaysia/' : country.id === 'thailand' ? '/zh/abroad/thailand/' : country.id === 'singapore' ? '/zh/abroad/singapore/' : null;
+      const dedicatedCount = country.id === 'malaysia' ? malaysiaCount : country.id === 'thailand' ? thailandCount : country.id === 'singapore' ? singaporeCount : country.id === 'vietnam' ? vietnamCount : 0;
+      const dedicatedHref = country.id === 'malaysia' ? '/zh/abroad/malaysia/' : country.id === 'thailand' ? '/zh/abroad/thailand/' : country.id === 'singapore' ? '/zh/abroad/singapore/' : country.id === 'vietnam' ? '/zh/abroad/vietnam/' : null;
       return (
         <section id={country.id} class="mt-10 scroll-mt-24">
           <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
@@ -222,8 +230,8 @@ const faqSchema = {
               {country.cities.length > 0 && (
                 <div class="grid gap-2 sm:grid-cols-2">
                   {country.cities.map((city) => {
-                    const cityCount = country.id === 'thailand' ? (thailandByCity[city.id] ?? 0) : 0;
-                    const cityHref = country.id === 'thailand' ? `/zh/abroad/thailand/${city.id}/` : `${dedicatedHref}#${city.id}`;
+                    const cityCount = country.id === 'thailand' ? (thailandByCity[city.id] ?? 0) : country.id === 'vietnam' ? (vietnamByCity[city.id] ?? 0) : 0;
+                    const cityHref = country.id === 'thailand' ? `/zh/abroad/thailand/${city.id}/` : country.id === 'vietnam' ? `/zh/abroad/vietnam/${city.id}/` : `${dedicatedHref}#${city.id}`;
                     return (
                       <a href={cityHref} class="block rounded-md border px-3 py-2 text-sm hover:border-primary-700 transition-colors" style="border-color: var(--color-border-light)">
                         <span class="text-primary-900" style="font-weight:500">{cityName(city, 'zh')}</span>

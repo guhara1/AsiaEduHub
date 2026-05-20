@@ -1085,6 +1085,112 @@ export const SG_ALJUNIED_CONDOS: NearbyCondo[] = [
   },
 ];
 
+// ─── 베트남 ──────────────────────────────────────────────────────
+
+/** 하노이 Tay Ho · 서호 — 외국인 거주 1순위. Dwight·St. Paul·Dewey 학부모. */
+export const HANOI_TAY_HO_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Sun Grand City Ancora (Tay Ho)',
+    distance_minutes: 5, tier: 'premium',
+    rent_2br_usd: [900, 1300], rent_3br_usd: [1400, 2100],
+    korean_parents: 'high', chinese_parents: 'mid',
+    note_ko: '서호 외국인 클러스터. Dwight·St. Paul 셔틀권. 한국 가족 다수.',
+    note_zh: '西湖外国人聚集。Dwight · St. Paul 校车圈。韩国家庭众多。',
+  },
+  {
+    name: 'Sunshine Riverside (Tay Ho)',
+    distance_minutes: 8, tier: 'mid',
+    rent_2br_usd: [700, 1000], rent_3br_usd: [1100, 1600],
+    korean_parents: 'high', chinese_parents: 'mid',
+    note_ko: '서호 한국타운 인접. 한국 슈퍼·식당 도보권. 가성비.',
+    note_zh: '西湖韩国城邻近。韩国超市 · 餐厅步行可达。性价比。',
+  },
+];
+
+/** 하노이 Royal City · Vinhomes — BVIS·BIS Long Bien 학부모. 단지 일체. */
+export const HANOI_ROYAL_CITY_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Royal City Vinhomes (Thanh Xuan)',
+    distance_minutes: 3, tier: 'premium',
+    rent_2br_usd: [800, 1200], rent_3br_usd: [1300, 1900],
+    korean_parents: 'high', chinese_parents: 'mid',
+    note_ko: 'BVIS Hanoi 단지 내 도보권. 한국·중국 가족 1순위.',
+    note_zh: 'BVIS Hanoi 园区内步行可达。韩中家庭首选。',
+  },
+  {
+    name: 'Vinhomes Times City',
+    distance_minutes: 8, tier: 'premium',
+    rent_2br_usd: [700, 1100], rent_3br_usd: [1200, 1700],
+    korean_parents: 'high', chinese_parents: 'mid',
+    note_ko: 'Vinhomes Times City 단지. BVIS 차량 8분.',
+    note_zh: 'Vinhomes Times City 园区。BVIS 车程 8 分钟。',
+  },
+];
+
+/** 하노이 Long Bien — BIS Hanoi·WIS 학부모. Vinhomes Riverside. */
+export const HANOI_LONG_BIEN_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Vinhomes Riverside (Long Bien)',
+    distance_minutes: 3, tier: 'luxury',
+    rent_2br_usd: [1000, 1500], rent_3br_usd: [1600, 2500],
+    korean_parents: 'high', chinese_parents: 'mid',
+    note_ko: 'BIS Hanoi 단지 일체. 호수·골프 코스. 영국·한국 외교관.',
+    note_zh: 'BIS Hanoi 园区一体。湖泊 · 高尔夫。英国 · 韩国外交。',
+  },
+];
+
+/** 호치민 District 2 · Thao Dien — ISHCMC·EIS·TAS·AIS 외국인 거주 1순위. */
+export const HCMC_THAO_DIEN_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Masteri Thao Dien',
+    distance_minutes: 5, tier: 'premium',
+    rent_2br_usd: [900, 1400], rent_3br_usd: [1500, 2300],
+    korean_parents: 'high', chinese_parents: 'mid',
+    note_ko: 'Thao Dien 한국타운 인접. ISHCMC·EIS·TAS·AIS 모두 차량 5~10분.',
+    note_zh: 'Thao Dien 韩国城邻近。ISHCMC · EIS · TAS · AIS 车程均 5-10 分钟。',
+  },
+  {
+    name: 'The Vista An Phu',
+    distance_minutes: 8, tier: 'premium',
+    rent_2br_usd: [800, 1200], rent_3br_usd: [1300, 2000],
+    korean_parents: 'high', chinese_parents: 'mid',
+    note_ko: 'An Phu 외교관 클러스터. ISHCMC·AIS 도보·차량 5~10분.',
+    note_zh: 'An Phu 外交聚集。ISHCMC · AIS 步行 · 车程 5-10 分钟。',
+  },
+];
+
+/** 호치민 District 7 · Phu My Hung — CIS·RISS·ABCIS·BVIS·SNA 학부모. 외국인 단지. */
+export const HCMC_PHU_MY_HUNG_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Sky Garden (Phu My Hung)',
+    distance_minutes: 5, tier: 'premium',
+    rent_2br_usd: [800, 1200], rent_3br_usd: [1300, 1900],
+    korean_parents: 'high', chinese_parents: 'high',
+    note_ko: 'Phu My Hung 외국인 단지 중심. 한·중·일 가족 1순위. CIS·RISS·ABCIS 셔틀권.',
+    note_zh: '富美兴外国人小区中心。韩中日家庭首选。CIS · RISS · ABCIS 校车圈。',
+  },
+  {
+    name: 'Riviera Point (D7)',
+    distance_minutes: 10, tier: 'luxury',
+    rent_2br_usd: [1000, 1500], rent_3br_usd: [1600, 2400],
+    korean_parents: 'mid', chinese_parents: 'high',
+    note_ko: 'D7 럭셔리. 강변·골프. RISS·CIS 차량 10분.',
+    note_zh: 'D7 豪宅。河畔 · 高尔夫。RISS · CIS 车程 10 分钟。',
+  },
+];
+
+/** 다낭 — APU 학부모. 해변 · 디지털 노마드. */
+export const DANANG_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Muong Thanh Luxury Da Nang',
+    distance_minutes: 10, tier: 'mid',
+    rent_2br_usd: [500, 800], rent_3br_usd: [800, 1300],
+    korean_parents: 'high', chinese_parents: 'mid',
+    note_ko: '다낭 해변 도시. 한국 가족 신규 이주 1순위. APU 차량 10~15분.',
+    note_zh: '岘港海滨。韩国家庭新迁首选。APU 车程 10-15 分钟。',
+  },
+];
+
 export const PYEONGTAEK_CONDOS: NearbyCondo[] = [
   {
     name: '평택 험프리스 인근 군 가족 주택',
@@ -1521,6 +1627,151 @@ export const SCHOOL_NEIGHBORHOODS: Record<string, SchoolNeighborhood[]> = {
       overview_ko: 'SFMS 도보·차량 5~10분. Orchard 도심 인접.',
       overview_zh: 'SFMS 步行 · 车程 5-10 分钟。Orchard 市中心邻近。',
       condos: SG_TANGLIN_ORCHARD_CONDOS },
+  ],
+
+  // ── 베트남 ────────────────────────────────────────────────
+  // 하노이
+  'bis-hanoi': [
+    { area_ko: 'Long Bien · Vinhomes Riverside', area_zh: 'Long Bien · Vinhomes Riverside',
+      overview_ko: 'BIS Hanoi 단지 일체. Vinhomes Riverside 호수·골프 단지.',
+      overview_zh: 'BIS Hanoi 园区一体。Vinhomes Riverside 湖泊 · 高尔夫园区。',
+      condos: HANOI_LONG_BIEN_CONDOS },
+  ],
+  'dwight-hanoi': [
+    { area_ko: 'Tay Ho · 서호 외국인 클러스터', area_zh: 'Tay Ho · 西湖外国人聚集区',
+      overview_ko: 'Dwight Hanoi — Tay Ho 외국인 거주 1순위. 한국타운 인접.',
+      overview_zh: 'Dwight Hanoi — Tay Ho 外国人居住首选。韩国城邻近。',
+      condos: HANOI_TAY_HO_CONDOS },
+  ],
+  'st-paul-hanoi': [
+    { area_ko: 'Tay Ho · Ciputra', area_zh: 'Tay Ho · Ciputra',
+      overview_ko: 'St. Paul — Ciputra 외국인 단지. Tay Ho 도보·차량 5~10분.',
+      overview_zh: 'St. Paul — Ciputra 外国人小区。Tay Ho 步行 · 车程 5-10 分钟。',
+      condos: HANOI_TAY_HO_CONDOS },
+  ],
+  'bcvn-hanoi': [
+    { area_ko: '하노이 — 학교 인근', area_zh: '河内 — 学校附近',
+      overview_ko: 'BCVN — 하노이 캐나다 정통 학교. 학교 셔틀권 거주 권장.',
+      overview_zh: 'BCVN — 河内加拿大正统学校。建议校车圈居住。',
+      condos: HANOI_TAY_HO_CONDOS },
+  ],
+  'tnis-hanoi': [
+    { area_ko: '하노이 — 학교 인근', area_zh: '河内 — 学校附近',
+      overview_ko: 'TNIS / TH School — 학교 셔틀권 거주 권장.',
+      overview_zh: 'TNIS / TH School — 建议校车圈居住。',
+      condos: HANOI_TAY_HO_CONDOS },
+  ],
+  'bvis-hanoi': [
+    { area_ko: 'Royal City · Vinhomes Times City', area_zh: 'Royal City · Vinhomes Times City',
+      overview_ko: 'BVIS Hanoi — Royal City 단지 내. 한·중 학부모 1순위.',
+      overview_zh: 'BVIS Hanoi — Royal City 园区内。韩中家长首选。',
+      condos: HANOI_ROYAL_CITY_CONDOS },
+  ],
+  'wis-hanoi': [
+    { area_ko: 'Long Bien · 베트남 부유층 거주권', area_zh: 'Long Bien · 越南富裕区',
+      overview_ko: 'Wellspring 베트남 명문 바이링궐 학교. 베트남 부유층 가족 다수.',
+      overview_zh: 'Wellspring 越南名校双语学校。越南富裕家庭众多。',
+      condos: HANOI_LONG_BIEN_CONDOS },
+  ],
+  'hts-hanoi': [
+    { area_ko: '하노이 — 학교 인근', area_zh: '河内 — 学校附近',
+      overview_ko: 'HTS — 캐나다 Ontario 학교. 학교 셔틀권 거주 권장.',
+      overview_zh: 'HTS — 加拿大 Ontario 学校。建议校车圈居住。',
+      condos: HANOI_TAY_HO_CONDOS },
+  ],
+  'dewey-hanoi': [
+    { area_ko: 'Tay Ho · 다수 캠퍼스', area_zh: 'Tay Ho · 多校区',
+      overview_ko: 'Dewey Schools 하노이 다수 캠퍼스. 가까운 캠퍼스 확인 필요.',
+      overview_zh: 'Dewey Schools 河内多校区。建议查询就近校区。',
+      condos: HANOI_TAY_HO_CONDOS },
+  ],
+  'isph-hanoi': [
+    { area_ko: 'ParkCity Hanoi · Ha Dong', area_zh: 'ParkCity Hanoi · Ha Dong',
+      overview_ko: 'ISPH — ParkCity Hanoi 게이트 단지 내. 단지 거주 1순위.',
+      overview_zh: 'ISPH — ParkCity Hanoi 封闭社区内。社区居住首选。',
+      condos: [
+        { name: 'ParkCity Hanoi Villas (Ha Dong)', distance_minutes: 3, tier: 'premium', rent_2br_usd: [800, 1200], rent_3br_usd: [1300, 2000], korean_parents: 'mid', chinese_parents: 'mid', note_ko: '학교 도보권 단지 빌라. 게이트 커뮤니티.', note_zh: '学校步行可达社区别墅。封闭社区。' },
+      ] },
+  ],
+  'horizon-hanoi': [
+    { area_ko: 'Tu Liem · 하노이', area_zh: 'Tu Liem · 河内',
+      overview_ko: 'Horizon — Tu Liem 신도시. 학교 셔틀권 거주 권장.',
+      overview_zh: 'Horizon — Tu Liem 新城。建议校车圈居住。',
+      condos: HANOI_TAY_HO_CONDOS },
+  ],
+
+  // 호치민
+  'abcis-hcmc': [
+    { area_ko: 'District 7 · Phu My Hung', area_zh: '第七区 · 富美兴',
+      overview_ko: 'ABCIS — Phu My Hung 외국인 단지 인근.',
+      overview_zh: 'ABCIS — 富美兴外国人小区附近。',
+      condos: HCMC_PHU_MY_HUNG_CONDOS },
+  ],
+  'eis-hcmc': [
+    { area_ko: 'District 2 · Thao Dien', area_zh: '第二区 · Thao Dien',
+      overview_ko: 'EIS — Thao Dien 외교관·유럽 가족 클러스터.',
+      overview_zh: 'EIS — Thao Dien 外交 · 欧洲家庭聚集。',
+      condos: HCMC_THAO_DIEN_CONDOS },
+  ],
+  'ishcmc': [
+    { area_ko: 'District 2 · An Phu (외국인 거주 1순위)', area_zh: '第二区 · An Phu (外国人居住首选)',
+      overview_ko: 'ISHCMC — 호치민 최초·최고 IB 학교. Thao Dien·An Phu 외국인 클러스터.',
+      overview_zh: 'ISHCMC — 胡志明最早 · 顶级 IB 学校。Thao Dien · An Phu 外国人聚集。',
+      condos: HCMC_THAO_DIEN_CONDOS },
+  ],
+  'riss-saigon': [
+    { area_ko: 'District 7 · Phu My Hung', area_zh: '第七区 · 富美兴',
+      overview_ko: 'RISS — Phu My Hung 외국인 단지. 한·중 가족 1순위.',
+      overview_zh: 'RISS — 富美兴外国人小区。韩中家庭首选。',
+      condos: HCMC_PHU_MY_HUNG_CONDOS },
+  ],
+  'bvis-hcmc': [
+    { area_ko: 'Binh Thanh · District 2', area_zh: 'Binh Thanh · 第二区',
+      overview_ko: 'BVIS HCMC — 영·베 바이링궐. 베트남어 유지 학부모 1순위.',
+      overview_zh: 'BVIS HCMC — 英越双语。保持越南语家长首选。',
+      condos: HCMC_THAO_DIEN_CONDOS },
+  ],
+  'tas-hcmc': [
+    { area_ko: 'District 2 · Thao Dien', area_zh: '第二区 · Thao Dien',
+      overview_ko: 'TAS — Thao Dien 미국식 K-12. 미국·외교관 가족.',
+      overview_zh: 'TAS — Thao Dien 美式 K-12。美国 · 外交家庭。',
+      condos: HCMC_THAO_DIEN_CONDOS },
+  ],
+  'cis-hcmc': [
+    { area_ko: 'District 7 · Phu My Hung', area_zh: '第七区 · 富美兴',
+      overview_ko: 'CIS HCMC — 캐나다 Ontario. Phu My Hung 외국인 단지.',
+      overview_zh: 'CIS HCMC — 加拿大 Ontario。富美兴外国人小区。',
+      condos: HCMC_PHU_MY_HUNG_CONDOS },
+  ],
+  'ais-hcmc': [
+    { area_ko: 'District 2 · An Phu', area_zh: '第二区 · An Phu',
+      overview_ko: 'AIS HCMC — 미국식 K-12. An Phu 외교관 가족.',
+      overview_zh: 'AIS HCMC — 美式 K-12。An Phu 外交家庭。',
+      condos: HCMC_THAO_DIEN_CONDOS },
+  ],
+  'sna-hcmc': [
+    { area_ko: 'District 7 · Phu My Hung', area_zh: '第七区 · 富美兴',
+      overview_ko: 'SNA — Phu My Hung 미국식 + 베트남 바이링궐. 가성비.',
+      overview_zh: 'SNA — 富美兴美式 + 越南双语。性价比。',
+      condos: HCMC_PHU_MY_HUNG_CONDOS },
+  ],
+
+  // 하이퐁
+  'ssm-vietnam-haiphong': [
+    { area_ko: '하이퐁 도심', area_zh: '海防市区',
+      overview_ko: 'SSM Vietnam — 하이퐁 유일 국제학교. 도심·학교 인근 거주.',
+      overview_zh: 'SSM Vietnam — 海防唯一国际学校。建议市区 · 学校附近居住。',
+      condos: [
+        { name: '하이퐁 도심 콘도', distance_minutes: 10, tier: 'mid', rent_2br_usd: [400, 600], rent_3br_usd: [600, 900], korean_parents: 'low', chinese_parents: 'mid', note_ko: '하이퐁 도심. 가성비. 한국·중국 가족 신규 이주.', note_zh: '海防市区。性价比。韩中家庭新迁入。' },
+      ] },
+  ],
+
+  // 다낭
+  'apu-danang': [
+    { area_ko: '다낭 해변 · Son Tra', area_zh: '岘港海滨 · Son Tra',
+      overview_ko: 'APU — 다낭 해변 도시. 한·일·중 가족 + 디지털 노마드 신규 이주.',
+      overview_zh: 'APU — 岘港海滨。韩日中家庭 + 数字游牧族新迁。',
+      condos: DANANG_CONDOS },
   ],
   'oasis': [
     { area_ko: 'Kajang (KL 남쪽)', area_zh: 'Kajang (吉隆坡南部)',

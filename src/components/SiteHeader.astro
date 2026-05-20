@@ -15,6 +15,7 @@ import { FOREIGN_SCHOOLS, INTERNATIONAL_SCHOOLS } from '../lib/domestic-schools'
 import { MALAYSIA_SCHOOLS } from '../lib/malaysia-schools';
 import { THAILAND_SCHOOLS, REGION_LABELS as THAI_REGIONS } from '../lib/thailand-schools';
 import { SINGAPORE_SCHOOLS } from '../lib/singapore-schools';
+import { VIETNAM_SCHOOLS, VN_REGION_LABELS } from '../lib/vietnam-schools';
 
 const pathname = Astro.url.pathname;
 const locale: Locale = resolveLocale(Astro.currentLocale, pathname);
@@ -159,6 +160,34 @@ for (const c of SOUTHEAST_ASIA) {
           href: `/${locale}/abroad/singapore/`,
         },
       ],
+    });
+  } else if (c.id === 'vietnam') {
+    // 베트남 — 지역별 그룹 + 학교별 sub-menu (22개)
+    const vnChildren: Array<{ label: string; href: string }> = [];
+    const vnRegions: Array<'hanoi' | 'ho-chi-minh' | 'hai-phong' | 'da-nang'> = ['hanoi', 'ho-chi-minh', 'hai-phong', 'da-nang'];
+    for (const r of vnRegions) {
+      const regionSchools = VIETNAM_SCHOOLS.filter((s) => s.region === r);
+      if (regionSchools.length === 0) continue;
+      vnChildren.push({
+        label: `── ${locale === 'ko' ? VN_REGION_LABELS[r].ko : VN_REGION_LABELS[r].zh} (${regionSchools.length}) ──`,
+        href: `/${locale}/abroad/vietnam/${r}/`,
+      });
+      for (const s of regionSchools) {
+        vnChildren.push({
+          label: `   ${locale === 'ko' ? s.name_ko : s.name_zh}`,
+          href: `/${locale}/abroad/vietnam/${r}/${s.slug}/`,
+        });
+      }
+    }
+    vnChildren.push({
+      label: locale === 'ko' ? '🇻🇳 베트남 전체 →' : '🇻🇳 越南全部 →',
+      href: `/${locale}/abroad/vietnam/`,
+    });
+    countryChildren.push({
+      kind: 'submenu',
+      label: `${c.flag} ${countryName(c, locale)}`,
+      href: `/${locale}/abroad/vietnam/`,
+      children: vnChildren,
     });
   } else {
     const cityTrail = c.cities.length > 0
