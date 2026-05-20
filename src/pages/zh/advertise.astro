@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = '广告咨询 · AsiaEduHub 媒体资料';
+const description =
+  '面向考察东南亚与韩国国际学校的中国家长。留学机构、MM2H 中介、学校直投广告合作。严格的广告与内容分离政策。';
+---
+<BaseLayout title={title} description={description}>
+  <section class="container-content py-12 max-w-3xl">
+    <h1 class="text-2xl sm:text-3xl">广告咨询 · 媒体资料</h1>
+    <p class="mt-3 text-[color:var(--color-text-secondary)]">
+      AsiaEduHub 是站长 David 运营的独立媒体,核心读者为正在考察东南亚与韩国国际学校的家长。
+      站长亲自走访的学校探访记、学费分析、转校经验等第一手内容为核心资产。
+      广告区域与编辑内容物理分离。
+    </p>
+
+    <h2 class="mt-10 text-xl">广告报价说明</h2>
+    <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+      报价因广告主类型(留学机构·学校·MM2H/精英签证中介)和投放周期而异。
+      咨询时将以 PDF 发送内部媒体资料(流量·CTR 数据·实名负责人信息·价目表)。
+    </p>
+
+    <h2 class="mt-10 text-xl">广告位规格</h2>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b" style="border-color: var(--color-border-light)">
+            <th class="py-2 text-left" style="font-weight:500">位置</th>
+            <th class="py-2 text-left" style="font-weight:500">尺寸 (px)</th>
+            <th class="py-2 text-left" style="font-weight:500">展示环境</th>
+            <th class="py-2 text-left" style="font-weight:500">推荐素材</th>
+          </tr>
+        </thead>
+        <tbody class="text-[color:var(--color-text-secondary)]">
+          <tr class="border-b" style="border-color: var(--color-border-light)">
+            <td class="py-3">PC 左右天空位(每侧 3 个位)</td>
+            <td>160 × 300</td>
+            <td>桌面 ≥ 1536px</td>
+            <td>图片或文字广告。WebP/PNG 100KB 以内</td>
+          </tr>
+          <tr class="border-b" style="border-color: var(--color-border-light)">
+            <td class="py-3">移动底部悬浮</td>
+            <td>320 × 50</td>
+            <td>移动·平板(&lt; 1024px)</td>
+            <td>WebP/PNG 50KB 以内,带关闭按钮(用户关闭后默认隐藏 24h)</td>
+          </tr>
+          <tr class="border-b" style="border-color: var(--color-border-light)">
+            <td class="py-3">正文中(学校·指南页)</td>
+            <td>300 × 250</td>
+            <td>全部设备</td>
+            <td>图片或文字均可。与该页学校/主题相关度高者优先</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="mt-10 text-xl">广告与内容分离政策</h2>
+    <ul class="mt-4 space-y-2 text-sm text-[color:var(--color-text-primary)]">
+      <li>• 所有广告明确标注 <strong style="font-weight:500">SPONSORED</strong> 徽章。</li>
+      <li>• 广告链接使用 <code>rel="sponsored"</code>。</li>
+      <li>• 广告主学校与编辑推荐学校分页面展示。</li>
+      <li>• 即使是广告主学校,站长走访发现的不足也会如实记录。</li>
+      <li>• 详细原则见 <a href="/zh/editorial-policy/">编辑原则</a> 页面。</li>
+    </ul>
+
+    <h2 class="mt-10 text-xl">咨询方式</h2>
+    <div class="mt-4 rounded-lg border p-5" style="border-color: var(--color-border-light); background: var(--color-bg-secondary)">
+      <p class="text-sm">
+        中文咨询:<a href="/zh/contact/">WeChat</a><br />
+        韩语咨询:<a href="/ko/contact/">KakaoTalk · 邮箱</a><br />
+        咨询时请注明:广告主名称、行业、希望投放位置、周期。
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 内部媒体资料(流量数据、负责人实名与公司信息、价目表)将在咨询后以 PDF 发送。
+    </p>
+  </section>
+</BaseLayout>

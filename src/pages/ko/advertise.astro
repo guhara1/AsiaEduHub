@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = '광고 문의 · AsiaEduHub 미디어 키트';
+const description =
+  '동남아·국내 국제학교를 검토 중인 한국·중국 학부모 타겟. 유학원·MM2H 에이전시·학교 직접 광고 협력. 광고-콘텐츠 분리 정책 운영.';
+
+// 사양: 가격·트래픽은 운영자가 직접 입력. 공개 페이지는 닉네임만, 본명은 비공개 미디어 키트 PDF 에.
+---
+<BaseLayout title={title} description={description}>
+  <section class="container-content py-12 max-w-3xl">
+    <h1 class="text-2xl sm:text-3xl">광고 문의 · 미디어 키트</h1>
+    <p class="mt-3 text-[color:var(--color-text-secondary)]">
+      AsiaEduHub 는 한국·중국 학부모가 동남아·국내 국제학교를 검토할 때 참고하는
+      운영자(데이비드) 1인 미디어입니다. 학교 방문기·학비 분석·옮긴 경험 등
+      1차 경험 콘텐츠가 자산이며, 광고는 콘텐츠와 분리된 영역에서만 노출됩니다.
+    </p>
+
+    <h2 class="mt-10 text-xl">광고 단가 안내</h2>
+    <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+      광고주 카테고리(유학원·학교·MM2H/엘리트 비자 에이전시 등)와 노출 기간에 따라 단가가 다릅니다.
+      문의 시 비공개 미디어 키트(트래픽·CTR 데이터·본명 포함 책임자 정보 PDF)를 보내드립니다.
+    </p>
+
+    <h2 class="mt-10 text-xl">광고 슬롯 사이즈</h2>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b" style="border-color: var(--color-border-light)">
+            <th class="py-2 text-left" style="font-weight:500">위치</th>
+            <th class="py-2 text-left" style="font-weight:500">사이즈 (px)</th>
+            <th class="py-2 text-left" style="font-weight:500">노출 환경</th>
+            <th class="py-2 text-left" style="font-weight:500">권장 소재</th>
+          </tr>
+        </thead>
+        <tbody class="text-[color:var(--color-text-secondary)]">
+          <tr class="border-b" style="border-color: var(--color-border-light)">
+            <td class="py-3">PC 좌·우 스카이 (slot 1~3)</td>
+            <td>160 × 300</td>
+            <td>데스크탑 ≥ 1536px</td>
+            <td>이미지 또는 텍스트 광고. WebP/PNG 100KB 이내</td>
+          </tr>
+          <tr class="border-b" style="border-color: var(--color-border-light)">
+            <td class="py-3">모바일 하단 sticky</td>
+            <td>320 × 50</td>
+            <td>모바일·태블릿 (&lt; 1024px)</td>
+            <td>WebP/PNG 50KB 이내. 닫기(X) 버튼 표시 (사용자 기본 24h 숨김)</td>
+          </tr>
+          <tr class="border-b" style="border-color: var(--color-border-light)">
+            <td class="py-3">본문 중간 (학교·가이드 페이지)</td>
+            <td>300 × 250</td>
+            <td>전 디바이스</td>
+            <td>이미지·텍스트 모두 가능. 학교/가이드 주제와 관련성 ↑ 우선 노출</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="mt-10 text-xl">광고-콘텐츠 분리 정책 (광고주 안내)</h2>
+    <ul class="mt-4 space-y-2 text-sm text-[color:var(--color-text-primary)]">
+      <li>• 모든 광고에 <strong style="font-weight:500">SPONSORED</strong> 배지를 명시 표시 합니다.</li>
+      <li>• 광고 클릭 링크는 <code>rel="sponsored"</code> 처리 합니다.</li>
+      <li>• 광고주 학교·유학원과 편집부 추천 학교는 페이지를 분리합니다.</li>
+      <li>• 광고비를 받은 학교라도 운영자 방문 시 발견한 단점은 그대로 기록합니다.</li>
+      <li>• 편집 원칙 전문은 <a href="/ko/editorial-policy/">편집 원칙</a> 페이지 참고.</li>
+    </ul>
+
+    <h2 class="mt-10 text-xl">광고 문의</h2>
+    <div class="mt-4 rounded-lg border p-5" style="border-color: var(--color-border-light); background: var(--color-bg-secondary)">
+      <p class="text-sm">
+        한국어 문의: <a href="/ko/contact/">카카오톡·이메일</a><br />
+        중국어 문의: <a href="/zh/contact/">WeChat</a><br />
+        문의 시 광고주명·업종·희망 노출 위치·기간을 함께 적어주시면 응답이 빨라집니다.
+      </p>
+    </div>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 비공개 미디어 키트(트래픽 데이터, 책임자 본명·법인 정보, 단가표)는 광고 문의 시 PDF 로 발송합니다.
+    </p>
+  </section>
+</BaseLayout>

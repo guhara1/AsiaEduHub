@@ -1,0 +1,84 @@
+---
+import type { Locale } from '~/lib/i18n';
+import type { AdCreative } from '~/lib/ads';
+
+export interface Props {
+  locale: Locale;
+  /** 없으면 sticky 자체를 렌더하지 않음(첫인상 깔끔). */
+  creative?: AdCreative;
+}
+
+const { locale, creative } = Astro.props;
+
+const T = {
+  ko: { ad: '광고', sponsored: 'SPONSORED', close: '닫기', inquiry: '광고 문의' },
+  zh: { ad: '广告', sponsored: '赞助', close: '关闭', inquiry: '广告咨询' },
+}[locale];
+
+// 광고 미체결 시 표시하지 않음
+const visible = !!creative;
+---
+{visible && (
+  <div
+    id="mobile-sticky-ad"
+    class="fixed bottom-0 left-0 right-0 z-40 border-t bg-white lg:hidden"
+    style="border-color: var(--color-border-light)"
+    role="complementary"
+    aria-label={T.ad}
+    hidden
+  >
+    <div class="mx-auto flex max-w-md items-center justify-between gap-2 px-3 py-2">
+      <span class="shrink-0 text-[10px] uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{T.sponsored}</span>
+      <a
+        href={creative!.href}
+        target="_blank"
+        rel="sponsored noopener"
+        class="flex grow items-center gap-2 overflow-hidden"
+        aria-label={creative!.alt}
+      >
+        {creative!.image_src ? (
+          <img
+            src={creative!.image_src}
+            alt={creative!.alt}
+            width="320"
+            height="50"
+            loading="lazy"
+            decoding="async"
+            class="h-[50px] w-auto"
+          />
+        ) : (
+          <span class="truncate text-sm" style="font-weight:500">{creative!.headline ?? creative!.sponsor}</span>
+        )}
+      </a>
+      <button
+        id="mobile-sticky-ad-close"
+        class="ml-1 shrink-0 rounded-full p-1.5 text-[color:var(--color-text-secondary)] hover:bg-[var(--color-bg-tertiary)]"
+        aria-label={T.close}
+        type="button"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const KEY = 'aeh-sticky-closed-until';
+    const TTL_HOURS = 24;
+    const el = document.getElementById('mobile-sticky-ad');
+    const closeBtn = document.getElementById('mobile-sticky-ad-close');
+    if (el && closeBtn) {
+      const until = Number(localStorage.getItem(KEY) ?? '0');
+      if (Date.now() > until) {
+        el.hidden = false;
+        document.body.style.paddingBottom = '72px';
+      }
+      closeBtn.addEventListener('click', () => {
+        el.hidden = true;
+        document.body.style.paddingBottom = '';
+        localStorage.setItem(KEY, String(Date.now() + TTL_HOURS * 3600 * 1000));
+      });
+    }
+  </script>
+)}

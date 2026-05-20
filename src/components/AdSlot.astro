@@ -1,0 +1,73 @@
+---
+import type { Locale } from '~/lib/i18n';
+import type { AdCreative } from '~/lib/ads';
+
+export interface Props {
+  /** sky=160×300 (PC 좌·우), in-content=300×250 (본문 중간) */
+  type: 'sky' | 'in-content';
+  locale: Locale;
+  /** 없으면 "광고 문의" 폴백 박스 표시. CLS=0 유지 위해 사이즈는 항상 동일. */
+  creative?: AdCreative;
+}
+
+const { type, locale, creative } = Astro.props;
+
+const SIZE = {
+  sky: { w: 160, h: 300 },
+  'in-content': { w: 300, h: 250 },
+} as const;
+const { w, h } = SIZE[type];
+
+const T = {
+  ko: { ad: '광고', sponsored: 'SPONSORED', inquiry: '광고 문의' },
+  zh: { ad: '广告', sponsored: '赞助', inquiry: '广告咨询' },
+}[locale];
+---
+<aside class="ad-slot block" aria-label={T.ad} style={`width:${w}px`}>
+  <div
+    class="text-[10px] uppercase tracking-wide text-[color:var(--color-text-tertiary)]"
+    style="height:16px;line-height:16px;margin-bottom:4px"
+  >
+    {creative ? T.sponsored : T.ad}
+  </div>
+  {creative ? (
+    <a
+      href={creative.href}
+      target="_blank"
+      rel="sponsored noopener"
+      class="block overflow-hidden rounded-md border"
+      style={`width:${w}px; height:${h}px; border-color: var(--color-border-light)`}
+      aria-label={creative.alt}
+    >
+      {creative.image_src ? (
+        <img
+          src={creative.image_src}
+          alt={creative.alt}
+          width={w}
+          height={h}
+          loading="lazy"
+          decoding="async"
+          class="block h-full w-full object-cover"
+        />
+      ) : (
+        <div class="flex h-full flex-col justify-center p-3">
+          {creative.headline && (
+            <strong class="text-sm text-primary-900" style="font-weight:500">{creative.headline}</strong>
+          )}
+          {creative.body && (
+            <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{creative.body}</p>
+          )}
+          <p class="mt-2 text-[10px] text-[color:var(--color-text-tertiary)]">{creative.sponsor}</p>
+        </div>
+      )}
+    </a>
+  ) : (
+    <a
+      href={`/${locale}/advertise/`}
+      class="flex items-center justify-center rounded-md border text-xs text-[color:var(--color-text-tertiary)] transition-colors hover:border-primary-700 hover:text-primary-700"
+      style={`width:${w}px; height:${h}px; border-color: var(--color-border-light); background: var(--color-bg-secondary)`}
+    >
+      {T.inquiry}
+    </a>
+  )}
+</aside>

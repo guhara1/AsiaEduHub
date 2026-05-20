@@ -1,0 +1,41 @@
+---
+import AdSlot from './AdSlot.astro';
+import type { Locale } from '~/lib/i18n';
+import type { AdCreative } from '~/lib/ads';
+
+export interface Props {
+  side: 'left' | 'right';
+  locale: Locale;
+  /** 길이 3 권장. 부족하거나 null 이면 슬롯이 폴백 박스로 표시. */
+  creatives?: (AdCreative | null | undefined)[];
+}
+
+const { side, locale, creatives = [] } = Astro.props;
+
+/*
+  좌·우 sky 레일 노출 조건:
+   - 콘텐츠 컬럼: max-w-content = 1152px
+   - 슬롯 폭: 160px
+   - 콘텐츠와 슬롯 사이 갭: 32px
+   - 좌·우 둘 다 보이려면 viewport ≥ 1152 + (160+32)*2 = 1536px → Tailwind 2xl
+   - left:  calc(50% - (1152/2 + 32 + 160))  = calc(50% - 768px)
+   - right: 동일하게 768px
+*/
+const positionStyle = side === 'left' ? 'left: calc(50% - 768px)' : 'right: calc(50% - 768px)';
+
+// 항상 3슬롯 자리 예약 (CLS=0). creative 없는 슬롯은 폴백.
+const slots: (AdCreative | undefined)[] = [
+  creatives[0] ?? undefined,
+  creatives[1] ?? undefined,
+  creatives[2] ?? undefined,
+];
+---
+<aside
+  class="hidden 2xl:block fixed top-24 z-10"
+  style={`${positionStyle}; width:160px`}
+  aria-label={locale === 'ko' ? '광고 영역' : '广告区域'}
+>
+  <div class="flex flex-col gap-6">
+    {slots.map((c) => <AdSlot type="sky" locale={locale} creative={c} />)}
+  </div>
+</aside>
