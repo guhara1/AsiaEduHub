@@ -233,17 +233,32 @@
      카드 시스템 — 5개 variant
      ───────────────────────────────────────────────────────── */
   .card {
-    @apply relative rounded-xl border bg-white p-5 sm:p-6;
-    border-color: var(--color-border-light);
-    box-shadow: var(--shadow-xs);
-    transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out), border-color 200ms var(--ease-out);
+    @apply relative rounded-2xl bg-white p-5 sm:p-6;
+    /* 다중 border 효과: outer line + 상단 highlight */
+    border: 1px solid var(--color-border-medium);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      0 -1px 0 rgba(15, 23, 42, 0.02) inset,
+      var(--shadow-xs);
+    transition:
+      transform 300ms var(--ease-out),
+      box-shadow 300ms var(--ease-out),
+      border-color 200ms var(--ease-out);
   }
   .card:hover {
-    border-color: var(--color-primary-300);
-    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary-400);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      0 0 0 4px rgba(59, 130, 246, 0.05),
+      var(--shadow-md);
     transform: translateY(-2px);
   }
-  .card:focus-within { border-color: var(--color-primary-500); box-shadow: var(--shadow-glow-primary); }
+  .card:focus-within {
+    border-color: var(--color-primary-600);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      var(--shadow-glow-primary);
+  }
 
   /* 정보 카드 (네이비 톤, 작은 그라데이션) */
   .card-info {
@@ -252,7 +267,45 @@
       linear-gradient(135deg, var(--color-primary-50) 0%, #fff 60%);
     border-color: var(--color-primary-200);
   }
-  .card-info:hover { border-color: var(--color-primary-600); box-shadow: var(--shadow-md); }
+  .card-info:hover {
+    border-color: var(--color-primary-600);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      0 0 0 4px rgba(59, 130, 246, 0.08),
+      var(--shadow-md);
+  }
+
+  /* ─── 강조 outline 카드 (예산 등 색상별 강조) ─── */
+  .card-outline {
+    @apply relative rounded-2xl bg-white p-5 sm:p-6 overflow-hidden;
+    border: 1.5px solid var(--color-border-medium);
+    box-shadow: var(--shadow-xs);
+    transition: all 280ms var(--ease-out);
+  }
+  .card-outline::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(135deg, transparent 30%, var(--accent-color, var(--color-primary-400)) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 280ms var(--ease-out);
+    pointer-events: none;
+  }
+  .card-outline:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: transparent; }
+  .card-outline:hover::before { opacity: 1; }
+
+  /* 카테고리별 색상 — 데이터 속성으로 변수 주입 */
+  .card-outline[data-tone="emerald"] { --accent-color: #10B981; }
+  .card-outline[data-tone="sky"]     { --accent-color: #0EA5E9; }
+  .card-outline[data-tone="violet"]  { --accent-color: #8B5CF6; }
+  .card-outline[data-tone="rose"]    { --accent-color: #F43F5E; }
+  .card-outline[data-tone="amber"]   { --accent-color: #F59E0B; }
+  .card-outline[data-tone="primary"] { --accent-color: var(--color-primary-600); }
 
   /* Feature 카드 (골드 톤, 강조) */
   .card-feature {
