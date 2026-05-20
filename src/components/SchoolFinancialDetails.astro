@@ -27,10 +27,15 @@ const T = {
     facility: '시설 분담금',
     teacher: '원어민 교사 비율',
     teacherNote: '영·미·호·캐 등 영어 모국어 국적',
-    cca: 'CCA · 방과후 활동',
-    ccaYes: '학비에 기본 포함',
-    ccaNo: '별도 비용',
-    disclaimer: (n: string) => `※ 위 수치는 ${n} 공개 정보 기반 추정. 정확한 금액·환불 정책·할인은 학교 공식 등록비 안내에서 확인.`,
+    ccaTitle: 'CCA · 방과후 활동',
+    ccaBasicYes: '기본 CCA 학비 포함',
+    ccaBasicYesNote: '학교 교사 운영 — 스포츠·미술·합창·로봇 등 주 1~3회',
+    ccaBasicNo: '기본 CCA 별도 비용',
+    ccaExternal: '외부 강사 유료 CCA',
+    ccaExternalNote: '피아노·바이올린·테니스 코치·승마 등 — 학교 시설 사용, 신청자만',
+    ccaExternalFee: '1과목 월 비용 추정',
+    ccaExternalNone: '외부 강사 CCA 미운영',
+    disclaimer: (n: string) => `※ 위 수치는 ${n} 공개 정보 기반 추정. CCA 외부 강사 비용은 과목·강사별 큰 차이 — 학교 공식 CCA 안내에서 확인.`,
   },
   zh: {
     title: '学费 + 附加费用详情',
@@ -48,10 +53,15 @@ const T = {
     facility: '设施费',
     teacher: '英语母语教师比例',
     teacherNote: '英 · 美 · 澳 · 加等英语母语国家',
-    cca: 'CCA · 课外活动',
-    ccaYes: '学费已含',
-    ccaNo: '另计',
-    disclaimer: (n: string) => `※ 上述数字基于 ${n} 公开信息估算。准确金额 · 退费政策 · 折扣以学校官方注册费指南为准。`,
+    ccaTitle: 'CCA · 课外活动',
+    ccaBasicYes: '基础 CCA 已含学费',
+    ccaBasicYesNote: '校内教师 — 体育 · 艺术 · 合唱 · 机器人等,每周 1-3 次',
+    ccaBasicNo: '基础 CCA 另计',
+    ccaExternal: '外聘教练 · 付费 CCA',
+    ccaExternalNote: '钢琴 · 小提琴 · 网球教练 · 马术等 — 使用学校设施,自由报名',
+    ccaExternalFee: '单科目月费估算',
+    ccaExternalNone: '不开设外聘 CCA',
+    disclaimer: (n: string) => `※ 上述数字基于 ${n} 公开信息估算。CCA 外聘教练费用因科目 · 教师而异 — 请以学校官方 CCA 指南为准。`,
   },
 }[locale];
 
@@ -122,18 +132,47 @@ const levelRows: Array<[string, [number, number]]> = [
       </div>
     </div>
 
-    {/* CCA + 원어민 비율 */}
-    <div class="finance-section finance-section-row">
-      <div class={`finance-info-card ${details.cca_included ? 'pos' : 'neg'}`}>
-        <div class="finance-info-icon" aria-hidden="true">{details.cca_included ? '✓' : '+'}</div>
-        <div class="finance-info-content">
-          <div class="finance-info-label">{T.cca}</div>
-          <div class="finance-info-value">{details.cca_included ? T.ccaYes : T.ccaNo}</div>
-          {(locale === 'ko' ? details.cca_note_ko : details.cca_note_zh) && (
-            <p class="finance-info-note">{locale === 'ko' ? details.cca_note_ko : details.cca_note_zh}</p>
-          )}
+    {/* CCA — 기본 (학비 포함) + 외부 강사 유료 두 트랙 분리 표시 */}
+    <div class="finance-section">
+      <h3 class="finance-section-title">{T.ccaTitle}</h3>
+      <div class="cca-track-grid">
+        <div class={`cca-track ${details.cca_basic_included ? 'pos' : 'neg'}`}>
+          <div class="cca-track-head">
+            <span class="cca-track-icon" aria-hidden="true">{details.cca_basic_included ? '✓' : '+'}</span>
+            <span class="cca-track-title">{details.cca_basic_included ? T.ccaBasicYes : T.ccaBasicNo}</span>
+          </div>
+          {details.cca_basic_included && <p class="cca-track-note">{T.ccaBasicYesNote}</p>}
         </div>
+        {details.cca_paid_external ? (
+          <div class="cca-track paid">
+            <div class="cca-track-head">
+              <span class="cca-track-icon" aria-hidden="true">$</span>
+              <span class="cca-track-title">{T.ccaExternal}</span>
+            </div>
+            <p class="cca-track-note">{T.ccaExternalNote}</p>
+            {details.cca_external_fee && (
+              <div class="cca-fee-row">
+                <span class="cca-fee-label">{T.ccaExternalFee}</span>
+                <strong class="cca-fee-value">${details.cca_external_fee[0]}~${details.cca_external_fee[1]}</strong>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div class="cca-track neg">
+            <div class="cca-track-head">
+              <span class="cca-track-icon" aria-hidden="true">—</span>
+              <span class="cca-track-title">{T.ccaExternalNone}</span>
+            </div>
+          </div>
+        )}
       </div>
+      {(locale === 'ko' ? details.cca_note_ko : details.cca_note_zh) && (
+        <p class="cca-extra-note">💬 {locale === 'ko' ? details.cca_note_ko : details.cca_note_zh}</p>
+      )}
+    </div>
+
+    {/* 원어민 교사 비율 */}
+    <div class="finance-section">
       <div class="finance-info-card">
         <div class="finance-info-icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18" stroke="currentColor" stroke-width="1.5"/></svg>
@@ -303,6 +342,72 @@ const levelRows: Array<[string, [number, number]]> = [
   .school-finance .finance-info-note {
     margin-top: 0.25rem; font-size: 0.75rem; color: var(--color-text-secondary); line-height: 1.4;
   }
+  /* CCA 듀얼 트랙 */
+  .school-finance .cca-track-grid {
+    display: grid; gap: 0.625rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+  .school-finance .cca-track {
+    padding: 0.875rem 1rem; border-radius: 12px;
+    border: 1px solid var(--color-border-light);
+    background: #fff;
+  }
+  :root[data-theme="dark"] .school-finance .cca-track { background: rgba(255,255,255,0.02); }
+  .school-finance .cca-track.pos {
+    background: linear-gradient(135deg, var(--color-success-bg) 0%, #fff 100%);
+    border-color: rgba(4, 120, 87, 0.2);
+  }
+  .school-finance .cca-track.paid {
+    background: linear-gradient(135deg, var(--color-accent-50) 0%, #fff 100%);
+    border-color: var(--color-accent-200);
+  }
+  .school-finance .cca-track.neg {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border-light);
+  }
+  .school-finance .cca-track-head {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 0.375rem;
+  }
+  .school-finance .cca-track-icon {
+    width: 26px; height: 26px; border-radius: 7px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 0.9rem;
+    flex-shrink: 0;
+    background: var(--color-primary-100); color: var(--color-primary-800);
+  }
+  .school-finance .cca-track.pos .cca-track-icon { background: var(--color-success); color: #fff; }
+  .school-finance .cca-track.paid .cca-track-icon { background: var(--color-accent-500); color: #fff; }
+  .school-finance .cca-track.neg .cca-track-icon { background: var(--color-bg-tertiary); color: var(--color-text-tertiary); }
+  .school-finance .cca-track-title {
+    font-size: 0.9rem; font-weight: 700; color: var(--color-text-primary);
+    line-height: 1.35;
+  }
+  .school-finance .cca-track-note {
+    font-size: 0.75rem; color: var(--color-text-secondary); line-height: 1.5;
+    margin-left: 34px;
+  }
+  .school-finance .cca-fee-row {
+    margin-top: 0.5rem; margin-left: 34px;
+    padding: 0.375rem 0.625rem; border-radius: 6px;
+    background: rgba(245, 158, 11, 0.12);
+    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+  }
+  .school-finance .cca-fee-label {
+    font-size: 0.7rem; color: var(--color-accent-700); font-weight: 600;
+  }
+  .school-finance .cca-fee-value {
+    font-size: 0.85rem; color: var(--color-accent-700); font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .school-finance .cca-extra-note {
+    margin-top: 0.75rem;
+    padding: 0.625rem 0.75rem; border-radius: 8px;
+    background: var(--color-bg-soft);
+    font-size: 0.78rem; color: var(--color-text-secondary); line-height: 1.5;
+    border-left: 3px solid var(--color-primary-400);
+  }
+
   .school-finance .finance-disclaimer {
     padding: 0.875rem 1.5rem;
     font-size: 0.75rem; color: var(--color-text-tertiary); line-height: 1.5;

@@ -39,9 +39,13 @@ export interface FinanceOverride {
   facility_fee_usd?: number;
   /** 원어민 교사 비율 (0~100) — 영국·미국·호주·캐나다·뉴질랜드·아일랜드 국적 */
   native_teacher_ratio?: number;
-  /** CCA (방과후 활동) 포함 여부 */
-  cca_included?: boolean;
-  /** CCA 노트 (예: "기본 포함, 외부 코치 추가 비용") */
+  /** 기본 CCA (학교 내 교사 운영 — 스포츠·미술·합창 등) 학비 포함 여부 */
+  cca_basic_included?: boolean;
+  /** 외부 강사 유료 CCA (피아노·테니스 코치·로봇·승마 등) 운영 여부 */
+  cca_paid_external?: boolean;
+  /** 외부 강사 CCA 월 평균 비용 (USD, 1과목 기준) */
+  cca_external_fee_usd?: [number, number];
+  /** CCA 추가 메모 (예: "주 2회 무료 + 1과목 외부 강사 신청 가능") */
   cca_note_ko?: string;
   cca_note_zh?: string;
   /** 데이터 검증 상태 */
@@ -60,7 +64,9 @@ export interface FinancialDetails {
   refundable_deposit: [number, number];
   facility_fee?: number;
   native_teacher_ratio: number;
-  cca_included: boolean;
+  cca_basic_included: boolean;
+  cca_paid_external: boolean;
+  cca_external_fee?: [number, number];
   cca_note_ko?: string;
   cca_note_zh?: string;
   verified: boolean;
@@ -113,8 +119,17 @@ export function deriveFinance(school: SchoolBase & FinanceOverride): FinancialDe
     else nativeRatio = 45;
   }
 
-  // CCA 포함 — 프리미엄 학교일수록 기본 포함
-  const cca_included = school.cca_included ?? high >= 20000;
+  // CCA 휴리스틱:
+  //  - 기본 CCA (학교 교사 운영): 거의 모든 국제학교가 학비에 기본 포함
+  //  - 외부 강사 유료 CCA (피아노·테니스 코치 등): 대부분 학교가 운영 (선택 신청)
+  //  - 외부 강사 1과목 월 비용: $50~$300 (학교 등급별 차이)
+  const cca_basic_included = school.cca_basic_included ?? true;
+  const cca_paid_external = school.cca_paid_external ?? true;
+  const cca_external_fee: [number, number] = school.cca_external_fee_usd ?? (
+    high >= 30000 ? [120, 350] :
+    high >= 20000 ? [80, 250] :
+    [50, 180]
+  );
 
   return {
     tuition_kindergarten,
@@ -128,7 +143,9 @@ export function deriveFinance(school: SchoolBase & FinanceOverride): FinancialDe
     refundable_deposit,
     facility_fee: school.facility_fee_usd,
     native_teacher_ratio: nativeRatio,
-    cca_included,
+    cca_basic_included,
+    cca_paid_external,
+    cca_external_fee: cca_paid_external ? cca_external_fee : undefined,
     cca_note_ko: school.cca_note_ko,
     cca_note_zh: school.cca_note_zh,
     verified: school.data_verified ?? false,
