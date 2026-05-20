@@ -1,24 +1,207 @@
 ---
-import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
-import { DOMESTIC_KOREA } from '~/lib/locations';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import {
+  FOREIGN_SCHOOLS_INFO,
+  FOREIGN_SCHOOLS,
+  INTERNATIONAL_SCHOOLS_INFO,
+  INTERNATIONAL_SCHOOLS,
+  KINDERGARTEN_INFO,
+  ADMISSION_GUIDE_INFO,
+  DOMESTIC_FAQS,
+} from '~/lib/domestic-info';
 
-const categories = DOMESTIC_KOREA.flatMap((g) => {
-  const groupLabel = g.zh_sub ? `${g.zh}(${g.zh_sub})` : g.zh;
-  if (!g.regions || g.regions.length === 0) {
-    return [{ id: g.id, label: groupLabel }];
-  }
-  return [
-    { id: g.id, label: groupLabel, description: '按地区分类 — 见下方城市分组' },
-    ...g.regions.map((r) => ({ id: `${g.id}--${r.id}`, label: `${groupLabel} · ${r.zh}` })),
-  ];
-});
+const fs = FOREIGN_SCHOOLS_INFO.zh;
+const is = INTERNATIONAL_SCHOOLS_INFO.zh;
+const kg = KINDERGARTEN_INFO.zh;
+const ag = ADMISSION_GUIDE_INFO.zh;
+
+const title = '韩国国际学校信息 — 外国人学校 vs 济州·松岛国际学校 区别、学费、入学资格 | AsiaEduHub';
+const description =
+  '韩国外国人学校(SFS·YISS·KIS·Chadwick 松岛)与济州·松岛国际学校(NLCS·KIS·BHA·SJA)的法律差异、入学资格、学费范围、申请文件与时间表。家长常见问题。';
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '韩国国际学校' },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: DOMESTIC_FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q_zh,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_zh },
+  })),
+};
 ---
-<CategoryIndexPage
-  locale="zh"
-  pageTitle="韩国国际学校 — 外国人学校 · 济州·松岛国际学校 · 英语幼儿园 | AsiaEduHub"
-  metaDescription="韩国的「外国人学校」与「国际学校」法律地位与入学资格不同。家长视角分类整理。"
-  h1="韩国国际学校"
-  intro="韩国的「外国人学校」与「国际学校」在法律地位与入学资格上有本质区别。分类整理是家长视角下最值得信任的呈现方式。仅累积站长亲自核实的数据。"
-  breadcrumbName="韩国国际学校"
-  categories={categories}
-/>
+<BaseLayout title={title} description={description} jsonLd={[breadcrumb, faqSchema]}>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · 韩国国际学校</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">韩国国际学校 — 家长必须了解的所有要点</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      在韩国,「外国人学校」与「国际学校」是法律上完全不同的两类学校。入学资格、学历认定、学费、学生构成均不同,
+      请准确了解后再做选择。
+    </p>
+
+    <section class="mt-8 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">外国人学校 vs 国际学校 — 核心区别</h2>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b" style="border-color: var(--color-border-light)">
+              <th class="py-2 text-left" style="font-weight:500"></th>
+              <th class="py-2 text-left" style="font-weight:500">外国人学校</th>
+              <th class="py-2 text-left" style="font-weight:500">济州·松岛国际学校</th>
+            </tr>
+          </thead>
+          <tbody class="text-[color:var(--color-text-secondary)]">
+            <tr class="border-b" style="border-color: var(--color-border-light)">
+              <td class="py-3 text-[color:var(--color-text-primary)]" style="font-weight:500">入学资格</td>
+              <td class="py-3">外籍或归侨(资格严格)</td>
+              <td class="py-3">本国学生可单独入学</td>
+            </tr>
+            <tr class="border-b" style="border-color: var(--color-border-light)">
+              <td class="py-3 text-[color:var(--color-text-primary)]" style="font-weight:500">韩国学历认定</td>
+              <td class="py-3">需单独审核</td>
+              <td class="py-3">获认定</td>
+            </tr>
+            <tr class="border-b" style="border-color: var(--color-border-light)">
+              <td class="py-3 text-[color:var(--color-text-primary)]" style="font-weight:500">年学费</td>
+              <td class="py-3">{fs.tuition_range_label}</td>
+              <td class="py-3">{is.tuition_range_label}</td>
+            </tr>
+            <tr>
+              <td class="py-3 text-[color:var(--color-text-primary)]" style="font-weight:500">代表学校</td>
+              <td class="py-3">SFS · YISS · KIS · Chadwick 松岛 等</td>
+              <td class="py-3">NLCS · KIS Jeju · BHA · SJA · Chadwick 松岛</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        ※ 学费为 2025–2026 学年一般市场区间,准确金额请参考学校官方公告。
+      </p>
+    </section>
+
+    <section id="foreign-schools" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">外国人学校(归侨·外籍子女)</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">依据法律:{fs.legal_basis}</p>
+      <div class="mt-5 grid gap-5 sm:grid-cols-2">
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">入学资格</h3>
+          <ul class="mt-3 space-y-2 text-sm">{fs.eligibility.map((e) => <li>• {e}</li>)}</ul>
+        </div>
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">注意事项</h3>
+          <ul class="mt-3 space-y-2 text-sm">{fs.notes.map((n) => <li>• {n}</li>)}</ul>
+        </div>
+      </div>
+      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">主要外国人学校</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {FOREIGN_SCHOOLS.map((s) => (
+          <div class="rounded-md border p-4 text-sm" style="border-color: var(--color-border-light)">
+            <div class="text-primary-900" style="font-weight:500">{s.name_en}</div>
+            <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_ko}</div>
+            {s.website && <a href={s.website} target="_blank" rel="noopener" class="mt-2 inline-block text-xs text-primary-700 hover:underline">官网 ↗</a>}
+          </div>
+        ))}
+      </div>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        ※ 学校详细数据(韩国学生比例 · 教师国籍 · 设施自有/共用 等)由站长每季度核实更新。
+      </p>
+    </section>
+
+    <section id="international-schools" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">国际学校 — 济州·松岛(本国学生可入读)</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">依据法律:{is.legal_basis}</p>
+      <div class="mt-5 grid gap-5 sm:grid-cols-2">
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">入学资格</h3>
+          <ul class="mt-3 space-y-2 text-sm">{is.eligibility.map((e) => <li>• {e}</li>)}</ul>
+        </div>
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">注意事项</h3>
+          <ul class="mt-3 space-y-2 text-sm">{is.notes.map((n) => <li>• {n}</li>)}</ul>
+        </div>
+      </div>
+      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">主要国际学校</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {INTERNATIONAL_SCHOOLS.map((s) => (
+          <div class="rounded-md border p-4 text-sm" style="border-color: var(--color-border-light)">
+            <div class="text-primary-900" style="font-weight:500">{s.name_en}</div>
+            <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_ko}</div>
+            {s.website && <a href={s.website} target="_blank" rel="noopener" class="mt-2 inline-block text-xs text-primary-700 hover:underline">官网 ↗</a>}
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="kindergarten" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">英语幼儿园 · 国际幼儿园</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">依据法律:{kg.legal_basis}</p>
+      <div class="mt-5 grid gap-5 sm:grid-cols-2">
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">注意事项</h3>
+          <ul class="mt-3 space-y-2 text-sm">{kg.notes.map((n) => <li>• {n}</li>)}</ul>
+        </div>
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light); background: var(--color-bg-secondary)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">学费范围</h3>
+          <p class="mt-3 text-base text-primary-900" style="font-weight:500">{kg.tuition_range_label}</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="admission-guide" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">入学资格 · 文件 · 时间表</h2>
+      <div class="mt-5 grid gap-5 lg:grid-cols-3">
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">所需文件</h3>
+          <ul class="mt-3 space-y-2 text-sm">{ag.required_documents.map((d) => <li>• {d}</li>)}</ul>
+        </div>
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">标准时间表(秋季学期)</h3>
+          <ul class="mt-3 space-y-2 text-sm">{ag.timeline.map((t) => <li>• {t}</li>)}</ul>
+        </div>
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">检查清单</h3>
+          <ul class="mt-3 space-y-2 text-sm">{ag.checklist.map((c) => <li>☐ {c}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">常见问题</h2>
+      <div class="mt-5 space-y-3">
+        {DOMESTIC_FAQS.map((f) => (
+          <details class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+            <summary class="cursor-pointer text-sm text-primary-900" style="font-weight:500; list-style: disclosure-closed">{f.q_zh}</summary>
+            <p class="mt-3 text-sm text-[color:var(--color-text-primary)]">{f.a_zh}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-5">
+      <div class="text-xs uppercase tracking-wide text-accent-700">站长撰写区</div>
+      <p class="mt-2 text-sm text-accent-700">
+        各校优缺点·真实家长评价·站长实地走访意见·站长推荐学校,陆续刊登于
+        <a href="/zh/experts/" class="underline">专家专栏</a> 与
+        <a href="/zh/guide/" class="underline"> 指南</a>。不使用 AI 自动生成。
+      </p>
+    </section>
+
+    <section class="mt-10 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">不确定哪类学校最适合您家孩子?</h2>
+      <p class="mt-2 text-sm opacity-90">
+        请告知:海外居住经历、孩子年级、对韩国学生比例的偏好、预算。站长将 1:1 答复。
+      </p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a href="/zh/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">WeChat 咨询 →</a>
+      </div>
+    </section>
+  </section>
+</BaseLayout>

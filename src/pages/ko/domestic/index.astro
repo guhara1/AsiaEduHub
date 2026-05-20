@@ -1,24 +1,241 @@
 ---
-import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
-import { DOMESTIC_KOREA } from '~/lib/locations';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import {
+  FOREIGN_SCHOOLS_INFO,
+  FOREIGN_SCHOOLS,
+  INTERNATIONAL_SCHOOLS_INFO,
+  INTERNATIONAL_SCHOOLS,
+  KINDERGARTEN_INFO,
+  ADMISSION_GUIDE_INFO,
+  DOMESTIC_FAQS,
+} from '~/lib/domestic-info';
 
-const categories = DOMESTIC_KOREA.flatMap((g) => {
-  const groupLabel = g.ko_sub ? `${g.ko} (${g.ko_sub})` : g.ko;
-  if (!g.regions || g.regions.length === 0) {
-    return [{ id: g.id, label: groupLabel }];
-  }
-  return [
-    { id: g.id, label: groupLabel, description: '지역별 학교 — 아래 도시 섹션 참고' },
-    ...g.regions.map((r) => ({ id: `${g.id}--${r.id}`, label: `${groupLabel} · ${r.ko}` })),
-  ];
-});
+const fs = FOREIGN_SCHOOLS_INFO.ko;
+const is = INTERNATIONAL_SCHOOLS_INFO.ko;
+const kg = KINDERGARTEN_INFO.ko;
+const ag = ADMISSION_GUIDE_INFO.ko;
+
+const title = '국내 국제학교 정보 — 외국인학교 vs 제주·송도 국제학교 차이, 학비, 입학 자격 | AsiaEduHub';
+const description =
+  '한국의 외국인학교(SFS·YISS·KIS·채드윅 송도)와 제주·송도 국제학교(NLCS·KIS·BHA·SJA)의 법적 차이, 입학 자격, 학비 범위, 서류, 일정. 학부모 FAQ.';
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '국내 국제학교' },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: DOMESTIC_FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q_ko,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_ko },
+  })),
+};
 ---
-<CategoryIndexPage
-  locale="ko"
-  pageTitle="국내 국제학교 — 외국인학교 · 제주·송도 국제학교 · 영어유치원 | AsiaEduHub"
-  metaDescription="외국인학교(SFS · YISS · KIS · 채드윅 송도 등)와 국제학교(NLCS · BHA · SJA · 채드윅 송도)는 법적 지위·입학 자격이 다릅니다. 학부모 관점 정리."
-  h1="국내 국제학교"
-  intro="'외국인학교'와 '국제학교'는 법적 지위와 입학 자격이 다릅니다. 분리해 정리한 자료가 학부모에게 가장 신뢰받는 형식입니다. 운영자가 직접 검증한 데이터만 누적합니다."
-  breadcrumbName="국내 국제학교"
-  categories={categories}
-/>
+<BaseLayout title={title} description={description} jsonLd={[breadcrumb, faqSchema]}>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/ko/">홈</a> · 국내 국제학교</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">국내 국제학교 — 학부모가 알아야 할 모든 것</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      "외국인학교"와 "국제학교"는 한국 법적으로 다른 학교입니다. 입학 자격, 학력 인정, 학비, 학생 구성이
+      서로 다르므로 자녀에게 맞는 옵션을 정확히 알고 선택해야 합니다.
+    </p>
+
+    {/* 핵심 차이 한눈에 */}
+    <section class="mt-8 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">외국인학교 vs 국제학교 — 핵심 차이</h2>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b" style="border-color: var(--color-border-light)">
+              <th class="py-2 text-left" style="font-weight:500"></th>
+              <th class="py-2 text-left" style="font-weight:500">외국인학교</th>
+              <th class="py-2 text-left" style="font-weight:500">제주·송도 국제학교</th>
+            </tr>
+          </thead>
+          <tbody class="text-[color:var(--color-text-secondary)]">
+            <tr class="border-b" style="border-color: var(--color-border-light)">
+              <td class="py-3 text-[color:var(--color-text-primary)]" style="font-weight:500">입학 자격</td>
+              <td class="py-3">외국 국적 또는 재외국민 (자격 엄격)</td>
+              <td class="py-3">내국인 단독 입학 가능</td>
+            </tr>
+            <tr class="border-b" style="border-color: var(--color-border-light)">
+              <td class="py-3 text-[color:var(--color-text-primary)]" style="font-weight:500">한국 학력 인정</td>
+              <td class="py-3">별도 검토 필요</td>
+              <td class="py-3">인정</td>
+            </tr>
+            <tr class="border-b" style="border-color: var(--color-border-light)">
+              <td class="py-3 text-[color:var(--color-text-primary)]" style="font-weight:500">학비 범위 (연)</td>
+              <td class="py-3">{fs.tuition_range_label}</td>
+              <td class="py-3">{is.tuition_range_label}</td>
+            </tr>
+            <tr>
+              <td class="py-3 text-[color:var(--color-text-primary)]" style="font-weight:500">대표 학교</td>
+              <td class="py-3">SFS · YISS · KIS · 채드윅 송도 등</td>
+              <td class="py-3">NLCS · KIS Jeju · BHA · SJA · 채드윅 송도</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        ※ 학비는 2025–2026 학년도 일반 시장 범위 추정. 정확한 금액은 학교 공식 발표 참고.
+      </p>
+    </section>
+
+    {/* 1. 외국인학교 */}
+    <section id="foreign-schools" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">외국인학교 (재외국민·외국인 자녀)</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">근거법: {fs.legal_basis}</p>
+
+      <div class="mt-5 grid gap-5 sm:grid-cols-2">
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">입학 자격</h3>
+          <ul class="mt-3 space-y-2 text-sm">
+            {fs.eligibility.map((e) => <li>• {e}</li>)}
+          </ul>
+        </div>
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">유의 사항</h3>
+          <ul class="mt-3 space-y-2 text-sm">
+            {fs.notes.map((n) => <li>• {n}</li>)}
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">주요 외국인학교</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {FOREIGN_SCHOOLS.map((s) => (
+          <div class="rounded-md border p-4 text-sm" style="border-color: var(--color-border-light)">
+            <div class="text-primary-900" style="font-weight:500">{s.name_ko}</div>
+            <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_en}</div>
+            {s.website && (
+              <a href={s.website} target="_blank" rel="noopener" class="mt-2 inline-block text-xs text-primary-700 hover:underline">공식 사이트 ↗</a>
+            )}
+          </div>
+        ))}
+      </div>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        ※ 학교별 상세(한국인 비율·교사 국적·시설 자체/공유 등) 는 운영자가 검증한 학교 데이터로 분기별 업데이트.
+      </p>
+    </section>
+
+    {/* 2. 국제학교 (제주·송도) */}
+    <section id="international-schools" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">국제학교 — 제주·송도 (내국인 입학 가능)</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">근거법: {is.legal_basis}</p>
+
+      <div class="mt-5 grid gap-5 sm:grid-cols-2">
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">입학 자격</h3>
+          <ul class="mt-3 space-y-2 text-sm">
+            {is.eligibility.map((e) => <li>• {e}</li>)}
+          </ul>
+        </div>
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">유의 사항</h3>
+          <ul class="mt-3 space-y-2 text-sm">
+            {is.notes.map((n) => <li>• {n}</li>)}
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">주요 국제학교</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {INTERNATIONAL_SCHOOLS.map((s) => (
+          <div class="rounded-md border p-4 text-sm" style="border-color: var(--color-border-light)">
+            <div class="text-primary-900" style="font-weight:500">{s.name_ko}</div>
+            <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_en}</div>
+            {s.website && (
+              <a href={s.website} target="_blank" rel="noopener" class="mt-2 inline-block text-xs text-primary-700 hover:underline">공식 사이트 ↗</a>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* 3. 영어유치원 */}
+    <section id="kindergarten" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">영어유치원 · 국제유치원</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">근거법: {kg.legal_basis}</p>
+      <div class="mt-5 grid gap-5 sm:grid-cols-2">
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">유의 사항</h3>
+          <ul class="mt-3 space-y-2 text-sm">
+            {kg.notes.map((n) => <li>• {n}</li>)}
+          </ul>
+        </div>
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light); background: var(--color-bg-secondary)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">학비 범위</h3>
+          <p class="mt-3 text-base text-primary-900" style="font-weight:500">{kg.tuition_range_label}</p>
+        </div>
+      </div>
+    </section>
+
+    {/* 4. 입학 가이드 */}
+    <section id="admission-guide" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">입학 자격 · 서류 · 일정 가이드</h2>
+
+      <div class="mt-5 grid gap-5 lg:grid-cols-3">
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">필요 서류</h3>
+          <ul class="mt-3 space-y-2 text-sm">
+            {ag.required_documents.map((d) => <li>• {d}</li>)}
+          </ul>
+        </div>
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">표준 일정 (가을 학기 기준)</h3>
+          <ul class="mt-3 space-y-2 text-sm">
+            {ag.timeline.map((t) => <li>• {t}</li>)}
+          </ul>
+        </div>
+        <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+          <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">체크리스트</h3>
+          <ul class="mt-3 space-y-2 text-sm">
+            {ag.checklist.map((c) => <li>☐ {c}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    {/* 5. FAQ */}
+    <section id="faq" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">자주 묻는 질문</h2>
+      <div class="mt-5 space-y-3">
+        {DOMESTIC_FAQS.map((f) => (
+          <details class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+            <summary class="cursor-pointer text-sm text-primary-900" style="font-weight:500; list-style: disclosure-closed">{f.q_ko}</summary>
+            <p class="mt-3 text-sm text-[color:var(--color-text-primary)]">{f.a_ko}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    {/* 6. 운영자 작성 영역 (장점·단점·추천 등) */}
+    <section class="mt-12 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-5">
+      <div class="text-xs uppercase tracking-wide text-accent-700">운영자 작성 영역</div>
+      <p class="mt-2 text-sm text-accent-700">
+        각 학교의 장단점·실제 학부모 후기·운영자 방문 의견·운영자 추천 학교는
+        <a href="/ko/experts/" class="underline">전문가 칼럼</a>과
+        <a href="/ko/guide/" class="underline"> 가이드</a> 에 누적합니다.
+        AI 가 자동 생성하지 않습니다.
+      </p>
+    </section>
+
+    {/* 7. 상담 CTA (페이지 하단 한 번) */}
+    <section class="mt-10 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">자녀 상황에 맞는 학교가 헷갈리시면</h2>
+      <p class="mt-2 text-sm opacity-90">
+        외국 거주 이력, 자녀 학년, 한국인 비율 선호도, 예산을 함께 알려주시면 운영자가 1:1 로 답변합니다.
+      </p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a href="/ko/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">카카오톡 · 이메일 상담 →</a>
+      </div>
+    </section>
+  </section>
+</BaseLayout>
