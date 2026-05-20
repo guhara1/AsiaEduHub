@@ -1,0 +1,47 @@
+---
+import type { SchoolEntry } from '../lib/schools';
+import { schoolUrl, formatUsd, COUNTRY_LABEL, BUDGET_LABEL } from '../lib/schools';
+import { getMessages, type Locale } from '../lib/i18n';
+
+export interface Props {
+  entry: SchoolEntry;
+  locale: Locale;
+}
+const { entry, locale } = Astro.props;
+const t = getMessages(locale);
+const url = schoolUrl(entry);
+const d = entry.data;
+---
+<a
+  href={url}
+  class="block rounded-lg border p-5 transition-colors hover:border-primary-700"
+  style="border-color: var(--color-border-light)"
+>
+  <div class="flex flex-wrap items-center gap-2">
+    {d.visited_by_operator && (
+      <span class="badge-gold">⭐ {t.badges.operator_visited}</span>
+    )}
+    {d.sponsored && <span class="badge-sponsored">{t.badges.sponsored}</span>}
+    <span class="badge-navy">{BUDGET_LABEL[locale][d.budget_tier]}</span>
+  </div>
+
+  <h3 class="mt-3 text-lg text-primary-900" style="font-weight:500">{d.name}</h3>
+  <p class="mt-1 text-sm text-[color:var(--color-text-secondary)]">
+    {COUNTRY_LABEL[locale][d.country] ?? d.country} · {d.city}
+  </p>
+
+  <dl class="mt-4 grid grid-cols-2 gap-2 text-xs text-[color:var(--color-text-secondary)]">
+    <div>
+      <dt>{locale === 'ko' ? '연 학비' : '年学费'}</dt>
+      <dd class="text-[color:var(--color-text-primary)]" style="font-weight:500">
+        {formatUsd(d.tuition_annual_usd, locale)}
+      </dd>
+    </div>
+    <div>
+      <dt>{locale === 'ko' ? '커리큘럼' : '课程'}</dt>
+      <dd class="text-[color:var(--color-text-primary)]" style="font-weight:500">
+        {d.curriculum.primary_curriculum}
+      </dd>
+    </div>
+  </dl>
+</a>

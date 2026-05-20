@@ -1,0 +1,155 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { loadSchools, getRegion, COUNTRY_LABEL, REGION_LABEL, BUDGET_LABEL, formatUsd, formatDate, schoolUrl, basePairKey } from '~/lib/schools';
+import { alternateUrlFor } from '~/lib/i18n';
+
+export async function getStaticPaths() {
+  const zh = await loadSchools('zh');
+  return zh.map((entry) => ({
+    params: {
+      region: getRegion(entry.data.country),
+      country: entry.data.country,
+      city: entry.data.city,
+      slug: entry.slug,
+    },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await entry.render();
+
+const title = `${d.name} | ${COUNTRY_LABEL.zh[d.country]} ${d.city} · AsiaEduHub`;
+const description = d.summary;
+
+const allKo = await loadSchools('ko');
+const pair = allKo.find((e) => basePairKey(e) === basePairKey(entry));
+const koUrl = pair ? schoolUrl(pair) : alternateUrlFor(Astro.url.pathname, 'ko');
+
+const eduOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: d.name_en,
+  alternateName: [d.name_ko, d.name_zh].filter(Boolean),
+  url: d.website,
+  address: d.address ? { '@type': 'PostalAddress', addressLocality: d.city, addressCountry: d.country } : undefined,
+  description: d.summary,
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '海外国际学校', item: (Astro.site?.toString() ?? '') + 'zh/abroad/' },
+    { '@type': 'ListItem', position: 3, name: REGION_LABEL.zh[getRegion(d.country)] },
+    { '@type': 'ListItem', position: 4, name: COUNTRY_LABEL.zh[d.country] },
+    { '@type': 'ListItem', position: 5, name: d.name },
+  ],
+};
+
+const teach = d.teaching_staff;
+const stud = d.student_nationality;
+---
+<BaseLayout title={title} description={description} jsonLd={[eduOrg, breadcrumb]}>
+  <article class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/zh/abroad/">海外国际学校</a> ·
+      {REGION_LABEL.zh[getRegion(d.country)]} · {COUNTRY_LABEL.zh[d.country]} · {d.city}
+    </nav>
+
+    <div class="mt-4 flex flex-wrap items-center gap-2">
+      {d.visited_by_operator && <span class="badge-gold">⭐ 站长实地确认</span>}
+      {d.sponsored && <span class="badge-sponsored">SPONSORED</span>}
+      <span class="badge-navy">{BUDGET_LABEL.zh[d.budget_tier]}</span>
+    </div>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">{d.name}</h1>
+    <p class="mt-1 text-sm text-[color:var(--color-text-secondary)]">{d.name_en}</p>
+
+    <p class="mt-4 max-w-2xl text-[color:var(--color-text-secondary)]">{d.summary}</p>
+
+    <section class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs text-[color:var(--color-text-secondary)]">年学费</dt>
+        <dd class="mt-1 text-lg" style="font-weight:500">{formatUsd(d.tuition_annual_usd, 'zh')}</dd>
+        {d.tuition_year && <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">{d.tuition_year} 标准</p>}
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs text-[color:var(--color-text-secondary)]">课程</dt>
+        <dd class="mt-1 text-lg" style="font-weight:500">{d.curriculum.primary_curriculum}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs text-[color:var(--color-text-secondary)]">年级</dt>
+        <dd class="mt-1 text-lg" style="font-weight:500">{d.grade_range[0]} – {d.grade_range[1]}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs text-[color:var(--color-text-secondary)]">寄宿</dt>
+        <dd class="mt-1 text-lg" style="font-weight:500">
+          {d.boarding === 'day-only' ? '走读' : d.boarding === 'boarding-optional' ? '可选寄宿' : '全寄宿'}
+        </dd>
+      </div>
+    </section>
+
+    {stud && (
+      <section class="mt-10">
+        <h2 class="text-xl">学生国籍构成</h2>
+        <p class="text-xs text-[color:var(--color-text-tertiary)]">
+          来源:{stud.source ?? '未标注'} · 更新 {stud.last_updated ? formatDate(stud.last_updated, 'zh') : '未标注'}
+        </p>
+        <dl class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm">
+          {stud.korean_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">韩国</dt><dd style="font-weight:500">{stud.korean_ratio}%</dd></div>}
+          {stud.chinese_mainland_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">中国大陆</dt><dd style="font-weight:500">{stud.chinese_mainland_ratio}%</dd></div>}
+          {stud.chinese_overseas_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">本地华人</dt><dd style="font-weight:500">{stud.chinese_overseas_ratio}%</dd></div>}
+          {stud.other_asian_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">其他亚洲</dt><dd style="font-weight:500">{stud.other_asian_ratio}%</dd></div>}
+          {stud.western_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">欧美</dt><dd style="font-weight:500">{stud.western_ratio}%</dd></div>}
+          {stud.local_host_country_ratio !== undefined && <div><dt class="text-[color:var(--color-text-secondary)]">本地</dt><dd style="font-weight:500">{stud.local_host_country_ratio}%</dd></div>}
+        </dl>
+      </section>
+    )}
+
+    {teach && (
+      <section class="mt-10">
+        <h2 class="text-xl">教师构成</h2>
+        <p class="text-xs text-[color:var(--color-text-tertiary)]">
+          来源:{teach.source ?? '未标注'} · 更新 {teach.last_updated ? formatDate(teach.last_updated, 'zh') : '未标注'}
+        </p>
+        <dl class="mt-4 grid gap-3 sm:grid-cols-3 text-sm">
+          {teach.native_english_speakers?.subtotal_ratio !== undefined && (
+            <div class="rounded-lg border p-3" style="border-color: var(--color-border-light)">
+              <dt class="text-xs text-[color:var(--color-text-secondary)]">英语母语国家(美·英·加·澳·新·爱)</dt>
+              <dd class="mt-1 text-lg" style="font-weight:500">{teach.native_english_speakers.subtotal_ratio}%</dd>
+            </div>
+          )}
+          {teach.asian_english_teachers?.subtotal_ratio !== undefined && (
+            <div class="rounded-lg border p-3" style="border-color: var(--color-border-light)">
+              <dt class="text-xs text-[color:var(--color-text-secondary)]">英语流利亚洲国家(印·菲·新·马 等)</dt>
+              <dd class="mt-1 text-lg" style="font-weight:500">{teach.asian_english_teachers.subtotal_ratio}%</dd>
+            </div>
+          )}
+          {teach.other_teachers?.subtotal_ratio !== undefined && (
+            <div class="rounded-lg border p-3" style="border-color: var(--color-border-light)">
+              <dt class="text-xs text-[color:var(--color-text-secondary)]">其他(韩·中·本地·欧)</dt>
+              <dd class="mt-1 text-lg" style="font-weight:500">{teach.other_teachers.subtotal_ratio}%</dd>
+            </div>
+          )}
+        </dl>
+        {teach.with_teaching_license_ratio !== undefined && (
+          <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">
+            正式教师资格证持有率 <strong style="font-weight:500">{teach.with_teaching_license_ratio}%</strong>
+            {teach.average_experience_years !== undefined && <> · 平均经验 {teach.average_experience_years} 年</>}
+          </p>
+        )}
+      </section>
+    )}
+
+    <section class="mt-12 prose prose-neutral max-w-2xl">
+      <Content />
+    </section>
+
+    <p class="mt-10 text-xs text-[color:var(--color-text-tertiary)]">
+      最后更新:{formatDate(d.last_updated, 'zh')} · 作者:{d.author}
+    </p>
+  </article>
+</BaseLayout>

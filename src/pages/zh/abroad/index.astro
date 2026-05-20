@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SchoolCard from '../../../components/SchoolCard.astro';
+import { loadSchools, getRegion, REGION_LABEL, type Region } from '../../../lib/schools';
+
+const schools = await loadSchools('zh');
+
+const byRegion = new Map<Region, typeof schools>();
+for (const s of schools) {
+  const r = getRegion(s.data.country);
+  if (!byRegion.has(r)) byRegion.set(r, []);
+  byRegion.get(r)!.push(s);
+}
+
+const title = '海外国际学校 — 东南亚 · 英美澳加 | AsiaEduHub';
+const description =
+  '马来西亚、泰国、新加坡、越南等东南亚,以及美国、英国、加拿大、澳大利亚的国际学校。优先收录站长亲自走访的学校。';
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '海外国际学校' },
+  ],
+};
+---
+<BaseLayout title={title} description={description} jsonLd={breadcrumb}>
+  <section class="container-content py-12">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · 海外国际学校</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">海外国际学校</h1>
+    <p class="mt-2 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      东南亚学校中站长亲自走访的标注 ⭐ 徽章。英美澳加以寄宿制学校为主。
+    </p>
+
+    {(['southeast-asia', 'anglosphere'] as Region[]).map((region) => {
+      const list = byRegion.get(region) ?? [];
+      return (
+        <div class="mt-10">
+          <h2 class="text-xl">{REGION_LABEL.zh[region]}</h2>
+          {list.length === 0 ? (
+            <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">
+              暂未收录学校。站长亲自走访、核实后陆续上架。
+            </p>
+          ) : (
+            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {list.map((entry) => <SchoolCard entry={entry} locale="zh" />)}
+            </div>
+          )}
+        </div>
+      );
+    })}
+  </section>
+</BaseLayout>

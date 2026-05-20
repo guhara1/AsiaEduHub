@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = '무료 상담 · 데이비드 (카카오톡·이메일)';
+const description =
+  '국제학교 선택·학교 옮기기·말레이시아 MM2H 비자 등 학부모 1:1 상담. 카카오톡과 이메일로 운영자(데이비드) 직접 응답.';
+
+// 운영자 핸들은 추후 입력. 노출 직전 실제 값으로 교체.
+const KAKAO_ID = 'TODO_KAKAO_ID';
+const EMAIL = 'TODO_EMAIL@asiaeduhub.com';
+
+const contactSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  inLanguage: 'ko-KR',
+  about: {
+    '@type': 'Person',
+    name: '데이비드',
+    contactPoint: [
+      { '@type': 'ContactPoint', contactType: 'customer support', email: EMAIL, areaServed: ['KR', 'MY'], availableLanguage: ['ko', 'zh', 'en'] },
+    ],
+  },
+};
+---
+<BaseLayout title={title} description={description} jsonLd={contactSchema}>
+  <section class="container-content py-12 max-w-2xl">
+    <p class="badge-gold mb-3">학교 2회 이전 운영자</p>
+    <h1 class="text-2xl sm:text-3xl">학부모 1:1 상담</h1>
+    <p class="mt-3 text-[color:var(--color-text-secondary)]">
+      국제학교 선택, 학교 옮기기, 말레이시아 MM2H/태국 엘리트 비자, 유학원 활용 등.
+      운영자(데이비드)가 직접 응답합니다. 광고·영업이 아니며 응답에 1~2일 소요될 수 있습니다.
+    </p>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+      <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+        <div class="text-xs text-[color:var(--color-text-secondary)]">카카오톡 (1순위)</div>
+        <div class="mt-1 text-lg text-primary-900" style="font-weight:500">@{KAKAO_ID}</div>
+        <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">
+          채팅 검색에서 위 ID 검색 → 친구 추가 → 문의 내용 전송
+        </p>
+      </div>
+      <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+        <div class="text-xs text-[color:var(--color-text-secondary)]">이메일</div>
+        <a class="mt-1 block text-lg text-primary-900" style="font-weight:500" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+        <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">
+          자녀 학년·관심 국가·예산 범위를 함께 적어주시면 답변이 빨라집니다.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-6 rounded-lg p-5" style="background: var(--color-bg-secondary)">
+      <p class="text-sm">
+        중국어 상담은 <a href="/zh/contact/">WeChat 페이지</a> 이용을 권장합니다.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

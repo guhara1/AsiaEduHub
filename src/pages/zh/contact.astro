@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = '免费咨询 · David(WeChat 优先)';
+const description =
+  '国际学校选择、转校、马来西亚 MM2H 签证等家长 1:1 咨询。WeChat 优先,站长 David 亲自答复。中文沟通顺畅。';
+
+const WECHAT_ID = 'TODO_WECHAT_ID';
+const EMAIL = 'TODO_EMAIL@asiaeduhub.com';
+
+const contactSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  inLanguage: 'zh-CN',
+  about: {
+    '@type': 'Person',
+    name: 'David',
+    contactPoint: [
+      { '@type': 'ContactPoint', contactType: 'customer support', email: EMAIL, areaServed: ['CN', 'MY', 'SG'], availableLanguage: ['zh', 'ko', 'en'] },
+    ],
+  },
+};
+---
+<BaseLayout title={title} description={description} jsonLd={contactSchema}>
+  <section class="container-content py-12 max-w-2xl">
+    <p class="badge-gold mb-3">两次转校的家长</p>
+    <h1 class="text-2xl sm:text-3xl">家长 1:1 免费咨询</h1>
+    <p class="mt-3 text-[color:var(--color-text-secondary)]">
+      国际学校选择、转校、马来西亚 MM2H / 泰国精英签证、留学机构利用等。
+      站长 David 亲自答复(中文沟通顺畅,儿时北京经历)。非广告、非营销,答复可能 1~2 日。
+    </p>
+
+    {/* WeChat 우선 노출 — 사양 핵심 */}
+    <div class="mt-8 rounded-xl border-2 p-6" style="border-color: var(--color-primary-900); background: var(--color-primary-100)">
+      <div class="flex items-start gap-5">
+        <div class="shrink-0">
+          {/* 운영자 WeChat QR 코드 자리. /public/wechat-qr.png 로 업로드 시 자동 표시. */}
+          <div
+            aria-label="WeChat QR"
+            class="flex h-32 w-32 items-center justify-center rounded-lg bg-white text-xs text-[color:var(--color-text-tertiary)]"
+            style="background-image: url('/wechat-qr.png'); background-size: cover; background-position: center;"
+          >
+            <span class="px-2 text-center" style="background: rgba(255,255,255,0.85)">
+              WeChat QR<br />(待上传)
+            </span>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-primary-900">WeChat(首选)</div>
+          <div class="mt-1 text-xl text-primary-900" style="font-weight:500">{WECHAT_ID}</div>
+          <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+            扫描二维码,或在 WeChat 搜索上方 ID 添加站长。请简述:孩子年级、关注国家、预算范围。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 rounded-lg border p-5" style="border-color: var(--color-border-light)">
+      <div class="text-xs text-[color:var(--color-text-secondary)]">邮箱</div>
+      <a class="mt-1 block text-lg text-primary-900" style="font-weight:500" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+    </div>
+
+    <div class="mt-6 rounded-lg p-5" style="background: var(--color-bg-secondary)">
+      <p class="text-sm">
+        韩文咨询请前往 <a href="/ko/contact/">KakaoTalk 页面</a>。
+      </p>
+    </div>
+  </section>
+</BaseLayout>
