@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import AuthorByline from '~/components/AuthorByline.astro';
-import { FOREIGN_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS, type DomesticRegion } from '~/lib/domestic-schools';
+import { FOREIGN_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS, getRegionFaqs, type DomesticRegion } from '~/lib/domestic-schools';
 
 export async function getStaticPaths() {
   const regions = REGION_METAS.filter((r) => r.category === 'foreign-schools');
@@ -33,11 +33,22 @@ const breadcrumb = {
 };
 const elig = COMMON_ELIGIBILITY['foreign-schools'].ko;
 const proc = COMMON_ADMISSION_PROCESS.ko;
+const faqs = getRegionFaqs(regionId);
+
+const faqSchema = faqs.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q_ko,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_ko },
+  })),
+} : null;
 ---
 <BaseLayout
   title={title}
   description={description}
-  jsonLd={breadcrumb}
+  jsonLd={faqSchema ? [breadcrumb, faqSchema] : breadcrumb}
   author={{ name: '데이비드', url: '/ko/about/' }}
   publishedAt={publishedAt}
   updatedAt={updatedAt}
@@ -132,6 +143,21 @@ const proc = COMMON_ADMISSION_PROCESS.ko;
         ))}
       </div>
     </section>
+
+    {/* FAQ */}
+    {faqs.length > 0 && (
+      <section id="faq" class="mt-12 scroll-mt-24">
+        <h2 class="text-xl">{meta.ko} 자주 묻는 질문</h2>
+        <div class="mt-5 space-y-3">
+          {faqs.map((f) => (
+            <details class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+              <summary class="cursor-pointer text-sm text-primary-900" style="font-weight:500; list-style: disclosure-closed">{f.q_ko}</summary>
+              <p class="mt-3 text-sm text-[color:var(--color-text-primary)]">{f.a_ko}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    )}
 
     <section class="mt-12 rounded-lg bg-primary-900 p-6 text-white">
       <h2 class="text-lg" style="font-weight:500">자녀에게 맞는 학교 선택이 어렵다면</h2>
