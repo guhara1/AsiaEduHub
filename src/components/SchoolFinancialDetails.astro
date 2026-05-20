@@ -13,13 +13,16 @@ const { details, locale, schoolName } = Astro.props;
 const T = {
   ko: {
     title: '학비 + 부대 비용 상세',
-    estimated: '추정 — 학교 공식 발표 확인 필수',
+    estimated: '⚠ 추정값 · 공식 확인 필수',
     verified: '✓ 운영자가 학교 공식 등록비 안내 확인 완료',
     byLevel: '학년별 연 학비 (USD)',
+    byLevelNote: '※ 휴리스틱 추정 — 학교가 발표한 학년별 단가와 차이 가능',
     levels: { kindergarten: '유치원', primary: '초등', secondary: '중등', highSchool: '고등' },
     perTerm: '학기당 비용',
+    perTermNote: '※ 연 학비 ÷ 학기 수 단순 계산',
     termsPerYear: (n: number) => `연 ${n}학기 · 학기당`,
     initialFees: '입학 시 일회성 비용',
+    initialFeesNote: '※ 학비 mid값의 %로 추정 — 학교별 큰 차이',
     application: '지원료 (환불 불가)',
     registration: '등록금 (일회성 또는 매년)',
     deposit: '환불 가능 보증금',
@@ -32,19 +35,32 @@ const T = {
     ccaExternal: '외부 강사 유료 CCA',
     ccaExternalNote: '피아노·바이올린·테니스 코치·승마 등 — 학교 시설 사용, 신청자만',
     ccaExternalFee: '1과목 · 한 텀(학기) 1회 비용',
-    ccaExternalFeeNote: '텀 종료까지 추가 비용 없음 · 연 2~3 텀 운영',
+    ccaExternalFeeNote: '텀 종료까지 추가 비용 없음 · 연 2~3 텀 운영 · 학교·과목별 큰 차이',
     ccaExternalNone: '외부 강사 CCA 미운영',
-    disclaimer: (n: string) => `※ 위 수치는 ${n} 공개 정보 기반 추정. CCA 외부 강사 비용은 과목·강사별 큰 차이 — 학교 공식 CCA 안내에서 확인.`,
+    // 하단 환율 변동 + 추정값 종합 안내
+    fxWarningTitle: '환율 변동 · 추정값 안내 — 반드시 읽어주세요',
+    fxWarningBody: (n: string) =>
+      `${n} 학비는 실제로 말레이시아 링깃(MYR) 또는 한국 원(KRW)으로 학교가 청구합니다. 본 페이지의 USD 금액은 환율 변환 시점·추정값으로, 다음 요인으로 실제 결제 금액과 차이가 발생합니다 — 참고용으로만 활용해 주세요.`,
+    fxWarningPoints: [
+      '💱 환율 변동 — 1 USD = MYR 4.3~4.7 / KRW 1,300~1,400 범위에서 변동. USD 환산 시 ±10% 차이.',
+      '📈 매년 인상 — 국제학교는 통상 매년 3~7% 학비 인상. 본 데이터는 2025-2026 시점 추정.',
+      '📊 학년별 단가 휴리스틱 — 유치원·초·중·고 학비는 학교 공식 단가가 아닌 시장 평균 기반 공식 계산.',
+      '💰 부대 비용 차이 — 등록비·보증금·CCA 비용은 학교별·과목별 큰 차이. % 기반 추정만 표시.',
+      '✅ 정확한 금액 — 입학·계약 전 학교 공식 등록비 안내(Fee Schedule)를 매년 직접 확인 필수.',
+    ],
   },
   zh: {
     title: '学费 + 附加费用详情',
-    estimated: '估算 — 学校官网为准',
+    estimated: '⚠ 估算值 · 必须核实官方',
     verified: '✓ 站长已核实学校官方注册费指南',
     byLevel: '各年级年学费 (USD)',
+    byLevelNote: '※ 启发式估算 — 与学校公布的各年级单价可能不同',
     levels: { kindergarten: '幼儿园', primary: '小学', secondary: '初中', highSchool: '高中' },
     perTerm: '学期费用',
+    perTermNote: '※ 年学费 ÷ 学期数 简单计算',
     termsPerYear: (n: number) => `年 ${n} 学期 · 每学期`,
     initialFees: '入学一次性费用',
+    initialFeesNote: '※ 学费中位数的 % 估算 — 各校差异大',
     application: '申请费(不退还)',
     registration: '注册费(一次性或每年)',
     deposit: '可退保证金',
@@ -57,9 +73,19 @@ const T = {
     ccaExternal: '外聘教练 · 付费 CCA',
     ccaExternalNote: '钢琴 · 小提琴 · 网球教练 · 马术等 — 使用学校设施,自由报名',
     ccaExternalFee: '单科目 · 每学期一次性费用',
-    ccaExternalFeeNote: '学期结束前无额外费用 · 全年 2-3 学期',
+    ccaExternalFeeNote: '学期结束前无额外费用 · 全年 2-3 学期 · 各校 · 各科目差异大',
     ccaExternalNone: '不开设外聘 CCA',
-    disclaimer: (n: string) => `※ 上述数字基于 ${n} 公开信息估算。CCA 外聘教练费用因科目 · 教师而异 — 请以学校官方 CCA 指南为准。`,
+    // 底部汇率波动 + 估算值综合说明
+    fxWarningTitle: '汇率波动 · 估算值说明 — 请务必阅读',
+    fxWarningBody: (n: string) =>
+      `${n} 学费实际以马来西亚林吉特 (MYR) 或韩元 (KRW) 计价,本页 USD 金额为换算时点的估算。以下因素会导致实际缴费金额产生差异 — 请仅作参考使用。`,
+    fxWarningPoints: [
+      '💱 汇率波动 — 1 USD = MYR 4.3~4.7 / KRW 1,300~1,400 区间波动。USD 换算 ±10% 差异。',
+      '📈 每年涨幅 — 国际学校通常每年学费涨幅 3-7%。本数据为 2025-2026 时点估算。',
+      '📊 各年级单价启发式估算 — 幼儿园 · 小 · 初 · 高学费非学校公布单价,基于市场均值公式计算。',
+      '💰 附加费用差异 — 注册费 · 保证金 · CCA 费用因校 · 因科目差异大。仅显示 % 估算。',
+      '✅ 准确金额 — 入学 · 签约前请每年直接查阅学校官方注册费指南 (Fee Schedule)。',
+    ],
   },
 }[locale];
 
@@ -82,6 +108,7 @@ const levelRows: Array<[string, [number, number]]> = [
     {/* 학년별 학비 */}
     <div class="finance-section">
       <h3 class="finance-section-title">{T.byLevel}</h3>
+      <p class="finance-section-note">{T.byLevelNote}</p>
       <div class="finance-table">
         {levelRows.map(([label, range]) => (
           <div class="finance-row">
@@ -98,6 +125,7 @@ const levelRows: Array<[string, [number, number]]> = [
     {/* 학기당 */}
     <div class="finance-section">
       <h3 class="finance-section-title">{T.perTerm}</h3>
+      <p class="finance-section-note">{T.perTermNote}</p>
       <div class="finance-mini">
         <span class="finance-mini-label">{T.termsPerYear(details.terms_per_year)}</span>
         <strong class="finance-mini-value">{formatUSDRange(details.per_term)}</strong>
@@ -107,6 +135,7 @@ const levelRows: Array<[string, [number, number]]> = [
     {/* 입학 시 일회성 */}
     <div class="finance-section">
       <h3 class="finance-section-title">{T.initialFees}</h3>
+      <p class="finance-section-note">{T.initialFeesNote}</p>
       <div class="finance-grid">
         <div class="finance-cell">
           <dt>{T.application}</dt>
@@ -173,7 +202,17 @@ const levelRows: Array<[string, [number, number]]> = [
     </div>
 
 
-    <p class="finance-disclaimer">{T.disclaimer(schoolName)}</p>
+    {/* 환율 변동 + 추정값 종합 안내 — 하단 강조 */}
+    <div class="finance-fx-warning" role="note">
+      <div class="finance-fx-warning-head">
+        <span class="finance-fx-warning-icon" aria-hidden="true">💱</span>
+        <strong class="finance-fx-warning-title">{T.fxWarningTitle}</strong>
+      </div>
+      <p class="finance-fx-warning-body">{T.fxWarningBody(schoolName)}</p>
+      <ul class="finance-fx-warning-list">
+        {T.fxWarningPoints.map((p) => <li>{p}</li>)}
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -217,7 +256,12 @@ const levelRows: Array<[string, [number, number]]> = [
     font-size: 0.75rem; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.08em;
     color: var(--color-text-tertiary);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.375rem;
+  }
+  .school-finance .finance-section-note {
+    font-size: 0.7rem; color: var(--color-text-tertiary);
+    line-height: 1.5; margin-bottom: 0.75rem;
+    font-style: italic;
   }
   .school-finance .finance-table {
     display: grid; gap: 0.5rem;
@@ -399,11 +443,52 @@ const levelRows: Array<[string, [number, number]]> = [
     border-left: 3px solid var(--color-primary-400);
   }
 
-  .school-finance .finance-disclaimer {
-    padding: 0.875rem 1.5rem;
-    font-size: 0.75rem; color: var(--color-text-tertiary); line-height: 1.5;
-    background: var(--color-bg-secondary);
-    border-top: 1px solid var(--color-border-light);
+  /* 하단 환율 + 추정 종합 안내 — 강조 톤 */
+  .school-finance .finance-fx-warning {
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(180deg, #FFF8E6 0%, #FFFBF0 100%);
+    border-top: 2px solid var(--color-accent-300);
+  }
+  :root[data-theme="dark"] .school-finance .finance-fx-warning {
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.10) 0%, rgba(245, 158, 11, 0.04) 100%);
+    border-top-color: rgba(245, 158, 11, 0.4);
+  }
+  .school-finance .finance-fx-warning-head {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 0.625rem;
+  }
+  .school-finance .finance-fx-warning-icon {
+    font-size: 1.25rem;
+  }
+  .school-finance .finance-fx-warning-title {
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--color-accent-700);
+    letter-spacing: -0.01em;
+  }
+  .school-finance .finance-fx-warning-body {
+    font-size: 0.825rem; color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin-bottom: 0.75rem;
+  }
+  .school-finance .finance-fx-warning-list {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; gap: 0.5rem;
+  }
+  .school-finance .finance-fx-warning-list li {
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.65);
+    border-radius: 8px;
+    font-size: 0.8rem; color: var(--color-text-primary);
+    line-height: 1.55;
+    border-left: 3px solid var(--color-accent-500);
+  }
+  :root[data-theme="dark"] .school-finance .finance-fx-warning-list li {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-text-primary);
+  }
+  @media (max-width: 640px) {
+    .school-finance .finance-fx-warning { padding: 1rem; }
+    .school-finance .finance-fx-warning-list li { font-size: 0.75rem; padding: 0.5rem 0.625rem; }
   }
   /* 모바일 */
   @media (max-width: 640px) {
