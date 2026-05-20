@@ -1,0 +1,91 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
+import { GUIDE_CATEGORIES } from '~/lib/locations';
+
+export async function getStaticPaths() {
+  const all = await getCollection('guides', (e) => e.data.locale === 'zh');
+  return all.map((entry) => ({
+    params: { slug: entry.slug.replace(/-zh$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await entry.render();
+
+const categoryLabel = GUIDE_CATEGORIES.find((c) => c.id === d.category)?.zh ?? d.category;
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '指南', item: (Astro.site?.toString() ?? '') + 'zh/guide/' },
+    { '@type': 'ListItem', position: 3, name: categoryLabel, item: (Astro.site?.toString() ?? '') + 'zh/guide/#' + d.category },
+    { '@type': 'ListItem', position: 4, name: d.title },
+  ],
+};
+
+const sourcesText = d.sources?.map((s) => s.label).join(', ');
+---
+<BaseLayout
+  title={`${d.title} | AsiaEduHub`}
+  description={d.summary}
+  author={{ name: d.author, url: '/zh/about/' }}
+  publishedAt={d.published_at}
+  updatedAt={d.last_updated}
+  jsonLd={breadcrumb}
+>
+  <article class="container-content py-10 max-w-2xl">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/zh/guide/">指南</a> · <a href={`/zh/guide/#${d.category}`}>{categoryLabel}</a>
+    </nav>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">{d.title}</h1>
+    <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">{d.summary}</p>
+
+    <div class="mt-4">
+      <AuthorByline
+        locale="zh"
+        publishedAt={d.published_at}
+        updatedAt={d.last_updated}
+        sources={sourcesText}
+      />
+    </div>
+
+    <section class="mt-8 prose prose-neutral max-w-none">
+      <Content />
+    </section>
+
+    {d.sources && d.sources.length > 0 && (
+      <section class="mt-12 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+        <h2 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">来源</h2>
+        <ul class="mt-3 space-y-2 text-sm">
+          {d.sources.map((s) => (
+            <li>
+              {s.url ? <a href={s.url} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.label} ↗</a> : s.label}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      本文为站长(David)审核 · 整理的客观信息指南。站长第一人称经验与推荐另见正文中标注的「站长一句话」区域。
+    </p>
+
+    <section class="mt-8 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">个性化咨询</h2>
+      <p class="mt-2 text-sm opacity-90">
+        本文未涵盖的孩子年级 · 预算 · 国家组合可向站长 1:1 提问。回复内容匿名化后用于下一篇指南选题。
+      </p>
+      <div class="mt-4">
+        <a href="/zh/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">WeChat 咨询 →</a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

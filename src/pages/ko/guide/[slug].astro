@@ -1,0 +1,91 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
+import { GUIDE_CATEGORIES } from '~/lib/locations';
+
+export async function getStaticPaths() {
+  const all = await getCollection('guides', (e) => e.data.locale === 'ko');
+  return all.map((entry) => ({
+    params: { slug: entry.slug.replace(/-ko$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await entry.render();
+
+const categoryLabel = GUIDE_CATEGORIES.find((c) => c.id === d.category)?.ko ?? d.category;
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '가이드', item: (Astro.site?.toString() ?? '') + 'ko/guide/' },
+    { '@type': 'ListItem', position: 3, name: categoryLabel, item: (Astro.site?.toString() ?? '') + 'ko/guide/#' + d.category },
+    { '@type': 'ListItem', position: 4, name: d.title },
+  ],
+};
+
+const sourcesText = d.sources?.map((s) => s.label).join(', ');
+---
+<BaseLayout
+  title={`${d.title} | AsiaEduHub`}
+  description={d.summary}
+  author={{ name: d.author, url: '/ko/about/' }}
+  publishedAt={d.published_at}
+  updatedAt={d.last_updated}
+  jsonLd={breadcrumb}
+>
+  <article class="container-content py-10 max-w-2xl">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/ko/guide/">가이드</a> · <a href={`/ko/guide/#${d.category}`}>{categoryLabel}</a>
+    </nav>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">{d.title}</h1>
+    <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">{d.summary}</p>
+
+    <div class="mt-4">
+      <AuthorByline
+        locale="ko"
+        publishedAt={d.published_at}
+        updatedAt={d.last_updated}
+        sources={sourcesText}
+      />
+    </div>
+
+    <section class="mt-8 prose prose-neutral max-w-none">
+      <Content />
+    </section>
+
+    {d.sources && d.sources.length > 0 && (
+      <section class="mt-12 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+        <h2 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">출처</h2>
+        <ul class="mt-3 space-y-2 text-sm">
+          {d.sources.map((s) => (
+            <li>
+              {s.url ? <a href={s.url} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.label} ↗</a> : s.label}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      이 글은 공개 객관 자료를 운영자(데이비드)가 검수·정리한 정보 가이드입니다. 운영자 1인칭 경험·추천은 본문 중 별도로 표시된 "운영자 한마디" 영역에 작성됩니다.
+    </p>
+
+    <section class="mt-8 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">개별 상황 상담</h2>
+      <p class="mt-2 text-sm opacity-90">
+        이 글에 없는 자녀 학년·예산·국가 조합은 운영자에게 1:1 문의 가능. 답변은 다음 가이드 글 소재로 익명화 활용됩니다.
+      </p>
+      <div class="mt-4">
+        <a href="/ko/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">카카오톡 · 이메일 상담 →</a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
