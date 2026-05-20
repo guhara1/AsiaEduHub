@@ -128,17 +128,20 @@ const faqSchema = {
         </div>
       </div>
 
-      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">주요 외국인학교</h3>
+      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">지역별 학교 상세 페이지</h3>
       <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {FOREIGN_SCHOOLS.map((s) => (
-          <div class="rounded-md border p-4 text-sm" style="border-color: var(--color-border-light)">
-            <div class="text-primary-900" style="font-weight:500">{s.name_ko}</div>
-            <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_en}</div>
-            {s.website && (
-              <a href={s.website} target="_blank" rel="noopener" class="mt-2 inline-block text-xs text-primary-700 hover:underline">공식 사이트 ↗</a>
-            )}
-          </div>
-        ))}
+        <a href="/ko/domestic/foreign-schools/seoul/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">서울 외국인학교 (5곳)</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">SFS · YISS · KIS · Dwight · Dulwich</div>
+        </a>
+        <a href="/ko/domestic/foreign-schools/gyeonggi-incheon/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">경기·인천 외국인학교 (3곳)</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">KIS Pangyo · GSIS · ICS Pyeongtaek</div>
+        </a>
+        <a href="/ko/domestic/foreign-schools/regional/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">지방 외국인학교 (3곳)</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">ISB · DIS Daegu · BFS</div>
+        </a>
       </div>
       <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
         ※ 학교별 상세(한국인 비율·교사 국적·시설 자체/공유 등) 는 운영자가 검증한 학교 데이터로 분기별 업데이트.
@@ -165,17 +168,20 @@ const faqSchema = {
         </div>
       </div>
 
-      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">주요 국제학교</h3>
+      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">지역별 학교 상세 페이지</h3>
       <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {INTERNATIONAL_SCHOOLS.map((s) => (
-          <div class="rounded-md border p-4 text-sm" style="border-color: var(--color-border-light)">
-            <div class="text-primary-900" style="font-weight:500">{s.name_ko}</div>
-            <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_en}</div>
-            {s.website && (
-              <a href={s.website} target="_blank" rel="noopener" class="mt-2 inline-block text-xs text-primary-700 hover:underline">공식 사이트 ↗</a>
-            )}
-          </div>
-        ))}
+        <a href="/ko/domestic/international-schools/jeju/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">제주 국제학교 (4곳)</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">NLCS · KIS Jeju · BHA · SJA</div>
+        </a>
+        <a href="/ko/domestic/international-schools/songdo/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">송도 국제학교 (1곳)</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">Chadwick International</div>
+        </a>
+        <a href="/ko/domestic/international-schools/daegu-other/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">대구·기타</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">카테고리 안내</div>
+        </a>
       </div>
     </section>
 

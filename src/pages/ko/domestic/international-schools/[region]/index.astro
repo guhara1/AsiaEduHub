@@ -1,0 +1,154 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { INTERNATIONAL_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS, type DomesticRegion } from '~/lib/domestic-schools';
+
+export async function getStaticPaths() {
+  const regions = REGION_METAS.filter((r) => r.category === 'international-schools');
+  return regions.map((r) => ({
+    params: { region: r.id },
+    props: { regionId: r.id },
+  }));
+}
+
+const { regionId } = Astro.props as { regionId: DomesticRegion };
+const meta = REGION_METAS.find((r) => r.category === 'international-schools' && r.id === regionId)!;
+const schools = INTERNATIONAL_SCHOOLS.filter((s) => s.region === regionId);
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = `${meta.ko} — 학교별 상세 비교 (내국인 입학 · 학비 · 커리큘럼) | AsiaEduHub`;
+const description = schools.length > 0
+  ? `${meta.ko} 전체: ${schools.map((s) => s.abbreviation || s.name_en).join(' · ')}. 내국인 입학 가능. 학비 범위, 커리큘럼, 입학 자격 정리.`
+  : `${meta.ko} — 학교 등록 안내`;
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '국내 국제학교', item: (Astro.site?.toString() ?? '') + 'ko/domestic/' },
+    { '@type': 'ListItem', position: 3, name: '국제학교' },
+    { '@type': 'ListItem', position: 4, name: meta.ko },
+  ],
+};
+const elig = COMMON_ELIGIBILITY['international-schools'].ko;
+const proc = COMMON_ADMISSION_PROCESS.ko;
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={breadcrumb}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/ko/">홈</a> · <a href="/ko/domestic/">국내 국제학교</a> · 국제학교 · {meta.ko}
+    </nav>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">{meta.ko}</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">{meta.intro_ko}</p>
+
+    <div class="mt-4">
+      <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources="제주특별자치도 특별법, 인천경제자유구역 관련 법, 각 학교 공식 사이트" />
+    </div>
+
+    {schools.length > 0 ? (
+      <section class="mt-8">
+        <h2 class="text-xl">{meta.ko} — 학교 {schools.length}곳</h2>
+        <div class="mt-4 grid gap-5 md:grid-cols-2">
+          {schools.map((s) => (
+            <a href={`/ko/domestic/international-schools/${s.region}/${s.slug}/`} class="block rounded-lg border p-5 transition-colors hover:border-primary-700" style="border-color: var(--color-border-light)">
+              <div class="flex items-baseline justify-between">
+                <h3 class="text-lg text-primary-900" style="font-weight:500">{s.name_ko}</h3>
+                {s.founded_year && <span class="text-xs text-[color:var(--color-text-tertiary)]">{s.founded_year} 개교</span>}
+              </div>
+              <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_en}{s.abbreviation && ` (${s.abbreviation})`}</p>
+              <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">
+                {s.city_ko}{s.district_ko && ` · ${s.district_ko}`}
+              </p>
+              <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">{s.summary_ko}</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {s.curriculum_en.map((c) => (
+                  <span class="rounded-full bg-[color:var(--color-bg-tertiary)] px-2 py-0.5 text-[10px] text-[color:var(--color-text-secondary)]">{c}</span>
+                ))}
+              </div>
+              <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+                연 학비 (추정): ${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+    ) : (
+      <section class="mt-8 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+        <p class="text-sm">
+          현재 한국 정부 인가 "국제학교 (내국인 입학 가능)" 는 제주영어교육도시(4곳)와 송도글로벌캠퍼스(1곳)에만 존재합니다.
+          대구·기타 지역에서 국제학교형 학교를 찾으신다면 외국인학교 카테고리의 <a href="/ko/domestic/foreign-schools/regional/" class="text-primary-700 hover:underline">DIS Daegu</a> 등을 확인하세요.
+        </p>
+      </section>
+    )}
+
+    {/* 국제학교 공통 입학 자격 — 내국인 입학 가능 */}
+    <section class="mt-12">
+      <h2 class="text-xl">국제학교 — 내국인 입학 자격</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        외국인학교와 달리 제주·송도 국제학교는 외국 거주 이력이 없어도 내국인 자녀가 입학할 수 있는 합법 옵션.
+      </p>
+      <ul class="mt-4 space-y-2 text-sm">
+        {elig.map((e) => <li>• {e}</li>)}
+      </ul>
+      <p class="mt-4 rounded-md border-l-4 border-primary-700 bg-primary-100 p-3 text-xs text-primary-900">
+        ✓ 한국 학력 인정 (제주·송도 국제학교 모두 학력 인정 학교). 외국인학교와의 가장 큰 차이.
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl">입학 일정 (가을 학기 기준)</h2>
+      <ol class="mt-4 space-y-2 text-sm">
+        {proc.map((p) => <li>• {p}</li>)}
+      </ol>
+    </section>
+
+    <section class="mt-10 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">학비 외 추가 비용 (공통)</h2>
+      <ul class="mt-3 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
+        <li>• 입학금 (연 학비의 10~30%)</li>
+        <li>• 시설 분담금 · 기숙비 (보딩 선택 시)</li>
+        <li>• 교복 · 교재</li>
+        <li>• 스쿨버스 · 식비</li>
+        <li>• 시험 응시료 (IB · A-Level · AP · SAT)</li>
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        제주 4개 학교는 보딩(기숙) 옵션 있음 — 기숙비 별도. 연 학비 + 부대 = 약 1.3~1.5배 수준.
+      </p>
+    </section>
+
+    {schools.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl">학교별 상세 페이지</h2>
+        <div class="mt-3 flex flex-wrap gap-2">
+          {schools.map((s) => (
+            <a href={`/ko/domestic/international-schools/${s.region}/${s.slug}/`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
+              {s.name_ko} →
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mt-12 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">{meta.ko} 입학 상담</h2>
+      <p class="mt-2 text-sm opacity-90">
+        자녀 학년 · 영어 수준 · 보딩 여부 · 예산 · 졸업 후 진학 희망 국가를 알려주시면 학교별 비교 1:1 답변.
+      </p>
+      <div class="mt-4">
+        <a href="/ko/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">카카오톡 · 이메일 상담 →</a>
+      </div>
+    </section>
+  </section>
+</BaseLayout>

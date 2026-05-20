@@ -1,0 +1,153 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { INTERNATIONAL_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS, type DomesticRegion } from '~/lib/domestic-schools';
+
+export async function getStaticPaths() {
+  const regions = REGION_METAS.filter((r) => r.category === 'international-schools');
+  return regions.map((r) => ({
+    params: { region: r.id },
+    props: { regionId: r.id },
+  }));
+}
+
+const { regionId } = Astro.props as { regionId: DomesticRegion };
+const meta = REGION_METAS.find((r) => r.category === 'international-schools' && r.id === regionId)!;
+const schools = INTERNATIONAL_SCHOOLS.filter((s) => s.region === regionId);
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = `${meta.zh} — 学校详细对比(本国学生可入读 · 学费 · 课程)| AsiaEduHub`;
+const description = schools.length > 0
+  ? `${meta.zh}全部:${schools.map((s) => s.abbreviation || s.name_en).join(' · ')}。本国学生可入读。学费 · 课程 · 入学资格整理。`
+  : `${meta.zh} — 学校登记说明`;
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '韩国国际学校', item: (Astro.site?.toString() ?? '') + 'zh/domestic/' },
+    { '@type': 'ListItem', position: 3, name: '国际学校' },
+    { '@type': 'ListItem', position: 4, name: meta.zh },
+  ],
+};
+const elig = COMMON_ELIGIBILITY['international-schools'].zh;
+const proc = COMMON_ADMISSION_PROCESS.zh;
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={breadcrumb}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/zh/">首页</a> · <a href="/zh/domestic/">韩国国际学校</a> · 国际学校 · {meta.zh}
+    </nav>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">{meta.zh}</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">{meta.intro_zh}</p>
+
+    <div class="mt-4">
+      <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources="《济州特别自治道特别法》、仁川经济自由区相关法、各校官网" />
+    </div>
+
+    {schools.length > 0 ? (
+      <section class="mt-8">
+        <h2 class="text-xl">{meta.zh} — 共 {schools.length} 所</h2>
+        <div class="mt-4 grid gap-5 md:grid-cols-2">
+          {schools.map((s) => (
+            <a href={`/zh/domestic/international-schools/${s.region}/${s.slug}/`} class="block rounded-lg border p-5 transition-colors hover:border-primary-700" style="border-color: var(--color-border-light)">
+              <div class="flex items-baseline justify-between">
+                <h3 class="text-lg text-primary-900" style="font-weight:500">{s.name_zh}</h3>
+                {s.founded_year && <span class="text-xs text-[color:var(--color-text-tertiary)]">{s.founded_year} 开校</span>}
+              </div>
+              <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_en}{s.abbreviation && ` (${s.abbreviation})`}</p>
+              <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">
+                {s.city_zh}{s.district_zh && ` · ${s.district_zh}`}
+              </p>
+              <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">{s.summary_zh}</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {s.curriculum_en.map((c) => (
+                  <span class="rounded-full bg-[color:var(--color-bg-tertiary)] px-2 py-0.5 text-[10px] text-[color:var(--color-text-secondary)]">{c}</span>
+                ))}
+              </div>
+              <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+                年学费(估算):${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+    ) : (
+      <section class="mt-8 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+        <p class="text-sm">
+          目前韩国政府认证「国际学校(本国学生可入读)」仅存于济州英语教育城(4 所)与松岛全球校园(1 所)。
+          大邱·其他地区的国际型学校如需查看,请前往外国人学校类目下的 <a href="/zh/domestic/foreign-schools/regional/" class="text-primary-700 hover:underline">DIS Daegu</a> 等。
+        </p>
+      </section>
+    )}
+
+    <section class="mt-12">
+      <h2 class="text-xl">国际学校 — 本国学生入学资格</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        与外国人学校不同,济州·松岛国际学校允许无海外居住经历的本国学生子女合法入读。
+      </p>
+      <ul class="mt-4 space-y-2 text-sm">
+        {elig.map((e) => <li>• {e}</li>)}
+      </ul>
+      <p class="mt-4 rounded-md border-l-4 border-primary-700 bg-primary-100 p-3 text-xs text-primary-900">
+        ✓ 获韩国学历认定(济州·松岛国际学校均为学历认证学校),这是与外国人学校的最大区别。
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl">入学时间表(秋季学期)</h2>
+      <ol class="mt-4 space-y-2 text-sm">
+        {proc.map((p) => <li>• {p}</li>)}
+      </ol>
+    </section>
+
+    <section class="mt-10 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">学费之外的附加费用(通用)</h2>
+      <ul class="mt-3 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
+        <li>• 注册费(年学费的 10~30%)</li>
+        <li>• 设施分摊费 · 寄宿费(选择寄宿时)</li>
+        <li>• 校服 · 教材</li>
+        <li>• 校车 · 餐费</li>
+        <li>• 考试报名费(IB · A-Level · AP · SAT)</li>
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        济州 4 校均有寄宿(boarding)选项,寄宿费另计。年学费 + 附加约为 1.3~1.5 倍。
+      </p>
+    </section>
+
+    {schools.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl">各校详细页面</h2>
+        <div class="mt-3 flex flex-wrap gap-2">
+          {schools.map((s) => (
+            <a href={`/zh/domestic/international-schools/${s.region}/${s.slug}/`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
+              {s.name_zh} →
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mt-12 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">{meta.zh} 入学咨询</h2>
+      <p class="mt-2 text-sm opacity-90">
+        告知孩子年级 · 英语水平 · 是否寄宿 · 预算 · 毕业后目标国家,可获学校对比 1:1 答复。
+      </p>
+      <div class="mt-4">
+        <a href="/zh/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">WeChat 咨询 →</a>
+      </div>
+    </section>
+  </section>
+</BaseLayout>

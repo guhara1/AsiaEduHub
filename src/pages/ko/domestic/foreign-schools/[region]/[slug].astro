@@ -1,0 +1,191 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { FOREIGN_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS } from '~/lib/domestic-schools';
+
+export async function getStaticPaths() {
+  return FOREIGN_SCHOOLS.map((s) => ({
+    params: { region: s.region, slug: s.slug },
+    props: { school: s },
+  }));
+}
+
+const { school: s } = Astro.props;
+const meta = REGION_METAS.find((r) => r.category === 'foreign-schools' && r.id === s.region)!;
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = `${s.name_ko} (${s.name_en}) — 입학 자격 · 커리큘럼 · 학비 완벽 정리 | AsiaEduHub`;
+const description = s.summary_ko;
+
+const eduOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: s.name_en,
+  alternateName: [s.name_ko, s.name_zh].filter(Boolean),
+  url: s.website,
+  foundingDate: s.founded_year ? `${s.founded_year}` : undefined,
+  address: { '@type': 'PostalAddress', addressLocality: s.city_ko, addressCountry: 'KR' },
+  description: s.summary_ko,
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '국내 국제학교', item: (Astro.site?.toString() ?? '') + 'ko/domestic/' },
+    { '@type': 'ListItem', position: 3, name: meta.ko, item: (Astro.site?.toString() ?? '') + `ko/domestic/foreign-schools/${s.region}/` },
+    { '@type': 'ListItem', position: 4, name: s.name_ko },
+  ],
+};
+
+const elig = COMMON_ELIGIBILITY['foreign-schools'].ko;
+const proc = COMMON_ADMISSION_PROCESS.ko;
+
+const otherSchools = FOREIGN_SCHOOLS.filter((o) => o.region === s.region && o.slug !== s.slug);
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[eduOrg, breadcrumb]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <article class="container-content py-10 max-w-3xl">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/ko/domestic/">국내 국제학교</a> ·
+      <a href={`/ko/domestic/foreign-schools/${s.region}/`}>{meta.ko}</a> · {s.name_ko}
+    </nav>
+
+    <div class="mt-4 flex flex-wrap items-center gap-2">
+      <span class="badge-navy">외국인학교</span>
+      {s.founded_year && <span class="badge-navy">{s.founded_year} 설립</span>}
+    </div>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">{s.name_ko}</h1>
+    <p class="mt-1 text-sm text-[color:var(--color-text-secondary)]">{s.name_en}{s.abbreviation && ` (${s.abbreviation})`}</p>
+    <p class="mt-3 text-base text-[color:var(--color-text-secondary)]">{s.summary_ko}</p>
+
+    <div class="mt-4">
+      <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources={`${s.name_ko} 공식 사이트, 외국인학교법, 학교 입학 안내`} />
+    </div>
+
+    {/* 핵심 정보 박스 */}
+    <section class="mt-8 grid gap-4 sm:grid-cols-2">
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">위치</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">{s.city_ko}{s.district_ko && ` · ${s.district_ko}`}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">학년</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">{s.grade_range}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">커리큘럼</dt>
+        <dd class="mt-1 text-sm" style="font-weight:500">{s.curriculum_en.join(' · ')}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">연 학비 (추정)</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</dd>
+        <p class="mt-1 text-[11px] text-[color:var(--color-text-tertiary)]">정확한 학비는 학교 공식 발표 확인</p>
+      </div>
+    </section>
+
+    <p class="mt-4 text-xs text-[color:var(--color-text-tertiary)]">
+      공식 사이트: <a href={s.website} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.website} ↗</a>
+    </p>
+
+    {/* 학교 강점·특징 */}
+    <section class="mt-10">
+      <h2 class="text-xl">{s.name_ko} 핵심 특징</h2>
+      <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">학교 공식 자료 기반 객관 정리</p>
+      <ul class="mt-4 space-y-2 text-sm">
+        {s.highlights_ko.map((h) => <li>✓ {h}</li>)}
+      </ul>
+    </section>
+
+    {/* 입학 자격 */}
+    <section class="mt-10">
+      <h2 class="text-xl">입학 자격 (외국인학교법)</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        {s.name_ko}는 외국인학교법(2009)에 따라 다음 자격을 충족해야 입학 가능합니다.
+      </p>
+      <ul class="mt-4 space-y-2 text-sm">
+        {elig.map((e) => <li>• {e}</li>)}
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        학교별 추가 요건(영어 시험 종류·인터뷰 등)은 공식 사이트에서 확인.
+      </p>
+    </section>
+
+    {/* 학비 + 부대 비용 */}
+    <section class="mt-10 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">학비 + 부대 비용 안내</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        연 학비 추정: <strong style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</strong> (학년·연도별 상이).
+      </p>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">학비 외 추가:</p>
+      <ul class="mt-2 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
+        <li>• 입학금 (연 학비의 10~30%)</li>
+        <li>• 시설 분담금</li>
+        <li>• 교복 · 교재</li>
+        <li>• 스쿨버스 · 식비 · 방과후 활동</li>
+        <li>• 시험 응시료 (IB · AP · SAT)</li>
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        연 학비의 15~25% 추가로 보는 것이 안전. 정확한 금액은 학교 공식 등록비 안내 참고.
+      </p>
+    </section>
+
+    {/* 입학 절차 */}
+    <section class="mt-10">
+      <h2 class="text-xl">입학 절차 (가을 학기 기준)</h2>
+      <ol class="mt-4 space-y-2 text-sm">
+        {proc.map((p) => <li>• {p}</li>)}
+      </ol>
+    </section>
+
+    {/* 운영자 영역 */}
+    <section class="mt-10 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-5">
+      <div class="text-xs uppercase tracking-wide text-accent-700">운영자 한마디 (작성 예정)</div>
+      <p class="mt-2 text-sm text-accent-700">
+        운영자(데이비드)가 {s.name_ko} 입학설명회·재학생 인터뷰·캠퍼스 방문 후 학부모 관점 분석을 추가합니다.
+        한국인 학생 비율, 교사 국적 구성, 시설 자체/공유 여부 등 학교 공식 자료에 없는 디테일은
+        <a href="/ko/contact/" class="underline">운영자에게 직접 문의</a>하실 수 있습니다.
+      </p>
+    </section>
+
+    {/* 같은 지역 다른 학교 */}
+    {otherSchools.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl">같은 지역 다른 학교</h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+          {otherSchools.map((o) => (
+            <a href={`/ko/domestic/foreign-schools/${o.region}/${o.slug}/`} class="block rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+              <div class="text-primary-900" style="font-weight:500">{o.name_ko}</div>
+              <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{o.curriculum_en.join(' · ')}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mt-12 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">{s.name_ko} 입학 상담</h2>
+      <p class="mt-2 text-sm opacity-90">
+        자녀 학년 · 외국 거주 이력 · 영어 수준 · 예산을 알려주시면 {s.name_ko}와 비교 가능한 학교까지 1:1 답변.
+      </p>
+      <div class="mt-4">
+        <a href="/ko/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">카카오톡 · 이메일 상담 →</a>
+      </div>
+    </section>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 본 페이지는 {s.name_ko} 공식 자료를 기반으로 운영자(데이비드)가 정리한 정보 페이지입니다. 학교 정책·학비·자격은 매년 변경될 수 있으므로 학교 공식 사이트에서 최신 정보를 확인하세요.
+    </p>
+  </article>
+</BaseLayout>

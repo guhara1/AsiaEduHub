@@ -1,0 +1,181 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { INTERNATIONAL_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS } from '~/lib/domestic-schools';
+
+export async function getStaticPaths() {
+  return INTERNATIONAL_SCHOOLS.map((s) => ({
+    params: { region: s.region, slug: s.slug },
+    props: { school: s },
+  }));
+}
+
+const { school: s } = Astro.props;
+const meta = REGION_METAS.find((r) => r.category === 'international-schools' && r.id === s.region)!;
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = `${s.name_zh} (${s.name_en}) — 本国学生入学 · 课程 · 学费完整整理 | AsiaEduHub`;
+const description = s.summary_zh;
+
+const eduOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: s.name_en,
+  alternateName: [s.name_ko, s.name_zh].filter(Boolean),
+  url: s.website,
+  foundingDate: s.founded_year ? `${s.founded_year}` : undefined,
+  address: { '@type': 'PostalAddress', addressLocality: s.city_zh, addressCountry: 'KR' },
+  description: s.summary_zh,
+};
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '韩国国际学校', item: (Astro.site?.toString() ?? '') + 'zh/domestic/' },
+    { '@type': 'ListItem', position: 3, name: meta.zh, item: (Astro.site?.toString() ?? '') + `zh/domestic/international-schools/${s.region}/` },
+    { '@type': 'ListItem', position: 4, name: s.name_zh },
+  ],
+};
+
+const elig = COMMON_ELIGIBILITY['international-schools'].zh;
+const proc = COMMON_ADMISSION_PROCESS.zh;
+
+const otherSchools = INTERNATIONAL_SCHOOLS.filter((o) => o.region === s.region && o.slug !== s.slug);
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[eduOrg, breadcrumb]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <article class="container-content py-10 max-w-3xl">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/zh/domestic/">韩国国际学校</a> ·
+      <a href={`/zh/domestic/international-schools/${s.region}/`}>{meta.zh}</a> · {s.name_zh}
+    </nav>
+
+    <div class="mt-4 flex flex-wrap items-center gap-2">
+      <span class="badge-navy">国际学校(本国学生可入读)</span>
+      {s.founded_year && <span class="badge-navy">{s.founded_year} 开校</span>}
+    </div>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">{s.name_zh}</h1>
+    <p class="mt-1 text-sm text-[color:var(--color-text-secondary)]">{s.name_en}{s.abbreviation && ` (${s.abbreviation})`}</p>
+    <p class="mt-3 text-base text-[color:var(--color-text-secondary)]">{s.summary_zh}</p>
+
+    <div class="mt-4">
+      <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources={`${s.name_zh} 官网,《济州特别法》/ 仁川经济自由区法,学校招生资料`} />
+    </div>
+
+    <section class="mt-8 grid gap-4 sm:grid-cols-2">
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">位置</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">{s.city_zh}{s.district_zh && ` · ${s.district_zh}`}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">年级</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">{s.grade_range}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">课程</dt>
+        <dd class="mt-1 text-sm" style="font-weight:500">{s.curriculum_en.join(' · ')}</dd>
+      </div>
+      <div class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+        <dt class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">年学费(估算)</dt>
+        <dd class="mt-1 text-base" style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</dd>
+        <p class="mt-1 text-[11px] text-[color:var(--color-text-tertiary)]">准确学费请查阅学校官方公告</p>
+      </div>
+    </section>
+
+    <p class="mt-4 text-xs text-[color:var(--color-text-tertiary)]">
+      官方网站:<a href={s.website} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.website} ↗</a>
+    </p>
+
+    <section class="mt-10">
+      <h2 class="text-xl">{s.name_zh} 核心特点</h2>
+      <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">基于学校官方资料整理</p>
+      <ul class="mt-4 space-y-2 text-sm">
+        {s.highlights_zh.map((h) => <li>✓ {h}</li>)}
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl">入学资格 — 本国学生可入读</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        {s.name_zh}为韩国政府认证国际学校,本国学生无海外居住经历也可申请,毕业获韩国学历认定。
+      </p>
+      <ul class="mt-4 space-y-2 text-sm">
+        {elig.map((e) => <li>• {e}</li>)}
+      </ul>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        英语测试 · 面试等各校入学评估需通过。
+      </p>
+    </section>
+
+    <section class="mt-10 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
+      <h2 class="text-lg" style="font-weight:500">学费 + 附加费用指南</h2>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+        年学费估算:<strong style="font-weight:500">${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</strong>。
+        济州国际学校均有寄宿选项,寄宿费另计。
+      </p>
+      <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">学费之外:</p>
+      <ul class="mt-2 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
+        <li>• 注册费(年学费的 10~30%)</li>
+        <li>• 寄宿费(选择 boarding)— 各校差异大</li>
+        <li>• 设施费 · 校服 · 教材 · 餐费</li>
+        <li>• 考试报名费</li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl">入学流程</h2>
+      <ol class="mt-4 space-y-2 text-sm">
+        {proc.map((p) => <li>• {p}</li>)}
+      </ol>
+    </section>
+
+    <section class="mt-10 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-5">
+      <div class="text-xs uppercase tracking-wide text-accent-700">站长一句话(待补充)</div>
+      <p class="mt-2 text-sm text-accent-700">
+        站长(David)将在参加 {s.name_zh} 招生说明会 · 在校生访谈 · 校园走访后,从家长视角补充。
+        韩国学生比例 · 教师国籍 · 寄宿环境 · 毕业去向等学校公开资料未涉及的细节可
+        <a href="/zh/contact/" class="underline">直接向站长咨询</a>。
+      </p>
+    </section>
+
+    {otherSchools.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl">同地区其他学校</h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-2">
+          {otherSchools.map((o) => (
+            <a href={`/zh/domestic/international-schools/${o.region}/${o.slug}/`} class="block rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+              <div class="text-primary-900" style="font-weight:500">{o.name_zh}</div>
+              <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{o.curriculum_en.join(' · ')}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mt-12 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">{s.name_zh} 入学咨询</h2>
+      <p class="mt-2 text-sm opacity-90">
+        告知孩子年级 · 英语水平 · 是否寄宿 · 毕业后目标国家,可获 {s.name_zh} 与可比学校 1:1 答复。
+      </p>
+      <div class="mt-4">
+        <a href="/zh/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">WeChat 咨询 →</a>
+      </div>
+    </section>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 本页基于 {s.name_zh} 公开资料,由站长(David)整理。学校政策 · 学费 · 资格每年可能变更,最新信息请以学校官网为准。
+    </p>
+  </article>
+</BaseLayout>

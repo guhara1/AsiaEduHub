@@ -120,15 +120,20 @@ const faqSchema = {
           <ul class="mt-3 space-y-2 text-sm">{fs.notes.map((n) => <li>• {n}</li>)}</ul>
         </div>
       </div>
-      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">主要外国人学校</h3>
+      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">按地区查看学校详情</h3>
       <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {FOREIGN_SCHOOLS.map((s) => (
-          <div class="rounded-md border p-4 text-sm" style="border-color: var(--color-border-light)">
-            <div class="text-primary-900" style="font-weight:500">{s.name_en}</div>
-            <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_ko}</div>
-            {s.website && <a href={s.website} target="_blank" rel="noopener" class="mt-2 inline-block text-xs text-primary-700 hover:underline">官网 ↗</a>}
-          </div>
-        ))}
+        <a href="/zh/domestic/foreign-schools/seoul/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">首尔外国人学校(5 所)</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">SFS · YISS · KIS · Dwight · Dulwich</div>
+        </a>
+        <a href="/zh/domestic/foreign-schools/gyeonggi-incheon/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">京畿·仁川外国人学校(3 所)</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">KIS Pangyo · GSIS · ICS Pyeongtaek</div>
+        </a>
+        <a href="/zh/domestic/foreign-schools/regional/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">其他地区外国人学校(3 所)</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">ISB · DIS Daegu · BFS</div>
+        </a>
       </div>
       <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
         ※ 学校详细数据(韩国学生比例 · 教师国籍 · 设施自有/共用 等)由站长每季度核实更新。
@@ -148,15 +153,20 @@ const faqSchema = {
           <ul class="mt-3 space-y-2 text-sm">{is.notes.map((n) => <li>• {n}</li>)}</ul>
         </div>
       </div>
-      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">主要国际学校</h3>
+      <h3 class="mt-6 text-base text-primary-900" style="font-weight:500">按地区查看学校详情</h3>
       <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {INTERNATIONAL_SCHOOLS.map((s) => (
-          <div class="rounded-md border p-4 text-sm" style="border-color: var(--color-border-light)">
-            <div class="text-primary-900" style="font-weight:500">{s.name_en}</div>
-            <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_ko}</div>
-            {s.website && <a href={s.website} target="_blank" rel="noopener" class="mt-2 inline-block text-xs text-primary-700 hover:underline">官网 ↗</a>}
-          </div>
-        ))}
+        <a href="/zh/domestic/international-schools/jeju/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">济州国际学校(4 所)</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">NLCS · KIS Jeju · BHA · SJA</div>
+        </a>
+        <a href="/zh/domestic/international-schools/songdo/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">松岛国际学校(1 所)</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">Chadwick International</div>
+        </a>
+        <a href="/zh/domestic/international-schools/daegu-other/" class="rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">大邱·其他</div>
+          <div class="mt-1 text-xs text-[color:var(--color-text-secondary)]">类目说明</div>
+        </a>
       </div>
     </section>
 

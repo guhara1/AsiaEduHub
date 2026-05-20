@@ -29,19 +29,22 @@ type MenuItem =
       viewAll?: ChildLink;
     };
 
-// 국내(한국) 국제학교 드롭다운
+// 국내(한국) 국제학교 드롭다운 — 별도 페이지 URL로 연결
 const domesticChildren: DropdownChild[] = [];
 for (const g of DOMESTIC_KOREA) {
   const headerLabel = locale === 'ko'
     ? `${g.ko}${g.ko_sub ? ` · ${g.ko_sub}` : ''}`
     : `${g.zh}${g.zh_sub ? ` · ${g.zh_sub}` : ''}`;
-  if (g.regions && g.regions.length > 0) {
+  const isCategoryWithRegions = g.regions && g.regions.length > 0;
+  const isFsOrIs = g.id === 'foreign-schools' || g.id === 'international-schools';
+
+  if (isCategoryWithRegions && isFsOrIs) {
     domesticChildren.push({ kind: 'header', label: headerLabel });
-    for (const r of g.regions) {
+    for (const r of g.regions!) {
       domesticChildren.push({
         kind: 'link',
         label: locale === 'ko' ? r.ko : r.zh,
-        href: `/${locale}/domestic/#${g.id}--${r.id}`,
+        href: `/${locale}/domestic/${g.id}/${r.id}/`,
       });
     }
   } else {
