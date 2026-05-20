@@ -1,0 +1,77 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
+
+export async function getStaticPaths() {
+  const all = await getCollection('experts', (e) => e.data.locale === 'ko');
+  return all.map((entry) => ({
+    params: { slug: entry.slug.replace(/-ko$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await entry.render();
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: d.expert.name,
+  jobTitle: d.expert.role,
+  affiliation: { '@type': 'Organization', name: d.expert.affiliation },
+  description: d.expert.bio,
+  knowsAbout: d.topics,
+};
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: d.title,
+  description: d.summary,
+  datePublished: d.published_at.toISOString(),
+  dateModified: d.last_updated.toISOString(),
+  author: { '@type': 'Person', name: d.interviewer },
+  about: personSchema,
+  inLanguage: 'ko-KR',
+};
+---
+<BaseLayout title={`${d.title} | AsiaEduHub`} description={d.summary} jsonLd={[articleSchema, personSchema]}>
+  <article class="container-content py-10 max-w-2xl">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]">
+      <a href="/ko/experts/">전문가 칼럼</a>
+    </nav>
+
+    <div class="mt-4 flex flex-wrap items-center gap-2">
+      {d.expert.verified && <span class="badge-gold">⭐ 운영자 신원 확인</span>}
+      <span class="badge-navy">{d.expert.role}</span>
+    </div>
+
+    <h1 class="mt-3 text-2xl sm:text-3xl">{d.title}</h1>
+    <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">{d.summary}</p>
+
+    <div class="mt-6 rounded-lg border p-5" style="border-color: var(--color-border-light); background: var(--color-bg-secondary)">
+      <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">인터뷰 대상</div>
+      <div class="mt-1 text-base text-primary-900" style="font-weight:500">{d.expert.name}</div>
+      <div class="mt-1 text-sm text-[color:var(--color-text-secondary)]">{d.expert.affiliation} · {d.expert.country}</div>
+      {d.expert.years_experience !== undefined && (
+        <div class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">경력 {d.expert.years_experience}년</div>
+      )}
+      {d.expert.credentials && d.expert.credentials.length > 0 && (
+        <ul class="mt-2 text-xs text-[color:var(--color-text-secondary)]">
+          {d.expert.credentials.map((c) => <li>· {c}</li>)}
+        </ul>
+      )}
+      <p class="mt-3 text-sm">{d.expert.bio}</p>
+    </div>
+
+    <section class="mt-8 prose prose-neutral max-w-none">
+      <Content />
+    </section>
+
+    <p class="mt-10 text-xs text-[color:var(--color-text-tertiary)]">
+      인터뷰: {d.interviewer} · {d.interview_format} · {formatDate(d.interview_date, 'ko')} ·
+      마지막 업데이트 {formatDate(d.last_updated, 'ko')}
+    </p>
+  </article>
+</BaseLayout>

@@ -110,7 +110,7 @@ const mm2hChildren: DropdownChild[] = MM2H_TOPICS.map((t) => ({
 const guideChildren: DropdownChild[] = GUIDE_CATEGORIES.map((g) => ({
   kind: 'link',
   label: locale === 'ko' ? g.ko : g.zh,
-  href: `/${locale}/guide/#${g.id}`,
+  href: g.id === 'expert-columns' ? `/${locale}/experts/` : `/${locale}/guide/#${g.id}`,
 }));
 
 const menu: MenuItem[] = [

@@ -1,23 +1,94 @@
 ---
-import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import TrackSimulator from '~/components/react/TrackSimulator.tsx';
+import TuitionCalculator from '~/components/react/TuitionCalculator.tsx';
+import SchoolCompare from '~/components/react/SchoolCompare.tsx';
+import { loadSchools, schoolUrl, COUNTRY_LABEL, BUDGET_LABEL } from '~/lib/schools';
 import { COMPARE_TOOLS } from '~/lib/locations';
 
-const categories = COMPARE_TOOLS.map((t) => ({
-  id: t.id,
-  label: t.ko,
-  highlight: t.id === 'track-simulator' ? '킬러 도구' : undefined,
-  description:
-    t.id === 'track-simulator'
-      ? '예: "내국인 자녀가 송도 채드윅 → 미국 아이비리그 가려면" 시나리오를 단계별 학년·시험·서류·예산으로 시뮬레이션. 학부모 카페 공유용 핵심 도구.'
-      : undefined,
+const schools = await loadSchools('ko');
+const compareRows = schools.map((s) => ({
+  slug: s.slug,
+  name: s.data.name,
+  country: COUNTRY_LABEL.ko[s.data.country] ?? s.data.country,
+  city: s.data.city,
+  tuition_annual_usd: s.data.tuition_annual_usd,
+  budget_tier: BUDGET_LABEL.ko[s.data.budget_tier],
+  curriculum: s.data.curriculum.primary_curriculum,
+  grade_low: s.data.grade_range[0],
+  grade_high: s.data.grade_range[1],
+  boarding: s.data.boarding === 'day-only' ? '통학' : s.data.boarding === 'boarding-optional' ? '선택 기숙' : '기숙 전용',
+  korean_ratio: s.data.student_nationality?.korean_ratio,
+  chinese_mainland_ratio: s.data.student_nationality?.chinese_mainland_ratio,
+  chinese_overseas_ratio: s.data.student_nationality?.chinese_overseas_ratio,
+  visited_by_operator: s.data.visited_by_operator,
+  href: schoolUrl(s),
 }));
+
+const title = '학교 비교 · 학비 계산기 · 진학 트랙 시뮬레이터 | AsiaEduHub';
+const description =
+  '국제학교 비교 도구 모음. 학교 4개 동시 비교, 환율·기숙·항공권 포함 총비용 계산기, 제주 NLCS → 옥스브리지 같은 진학 트랙 시뮬레이터.';
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '진학 트랙 시뮬레이터',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'Web',
+  inLanguage: 'ko-KR',
+  offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
+};
 ---
-<CategoryIndexPage
-  locale="ko"
-  pageTitle="학교 비교 · 학비 계산기 · 진학 트랙 시뮬레이터 | AsiaEduHub"
-  metaDescription="국제학교 비교 도구 모음. 학교 4개 동시 비교, 환율·기숙·항공권 포함 총비용 계산기, 제주 NLCS → 옥스브리지 같은 진학 트랙 시뮬레이터."
-  h1="비교 / 도구"
-  intro="단순 정보가 아닌 학부모가 직접 입력·시뮬레이션할 수 있는 인터랙티브 도구로 의사결정을 돕습니다. 진학 트랙 시뮬레이터는 사이트 차별화의 핵심입니다."
-  breadcrumbName="비교 / 도구"
-  categories={categories}
-/>
+<BaseLayout title={title} description={description} jsonLd={webAppSchema}>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/ko/">홈</a> · 비교 / 도구</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">비교 / 도구</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      정보가 아닌 직접 입력·시뮬레이션할 수 있는 인터랙티브 도구. 진학 트랙 시뮬레이터는 사이트 차별화의 핵심.
+    </p>
+
+    <div class="mt-6 flex flex-wrap gap-2">
+      {COMPARE_TOOLS.map((tool) => (
+        <a href={`#${tool.id}`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
+          {tool.ko}
+        </a>
+      ))}
+    </div>
+
+    {/* 1. 진학 트랙 시뮬레이터 (킬러) */}
+    <section id="track-simulator" class="mt-12 scroll-mt-24">
+      <TrackSimulator client:visible locale="ko" />
+    </section>
+
+    {/* 2. 학교 비교 도구 */}
+    <section id="compare" class="mt-12 scroll-mt-24">
+      <SchoolCompare client:visible locale="ko" schools={compareRows} />
+    </section>
+
+    {/* 3. 학비 계산기 */}
+    <section id="calculator" class="mt-12 scroll-mt-24">
+      <TuitionCalculator client:visible locale="ko" />
+    </section>
+
+    {/* 4. 커리큘럼 가이드 (콘텐츠 누적 예정) */}
+    <section id="curriculum-guide" class="mt-12 scroll-mt-24">
+      <div class="rounded-lg border bg-white p-5" style="border-color: var(--color-border-light)">
+        <h3 class="text-lg text-primary-900" style="font-weight:500">커리큘럼 가이드 (IB vs AP vs A-Level)</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+          세 커리큘럼의 학년 진행·시험 형식·대학 진학 적합성 비교 가이드는 운영자가 별도 가이드 글로 누적합니다.
+        </p>
+        <a href="/ko/guide/#curriculum-compare" class="cta-secondary mt-3 inline-flex text-sm">관련 가이드 →</a>
+      </div>
+    </section>
+
+    {/* 5. 입학 일정 캘린더 (콘텐츠 누적 예정) */}
+    <section id="calendar" class="mt-12 scroll-mt-24">
+      <div class="rounded-lg border bg-white p-5" style="border-color: var(--color-border-light)">
+        <h3 class="text-lg text-primary-900" style="font-weight:500">입학 일정 캘린더</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+          학교별 원서 마감·시험 일정 캘린더는 학교 데이터 누적과 함께 자동 생성됩니다.
+        </p>
+      </div>
+    </section>
+  </section>
+</BaseLayout>

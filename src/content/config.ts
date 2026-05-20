@@ -348,9 +348,64 @@ const pages = defineCollection({
   }),
 });
 
+// ─────────────────────────────────────────────────────────────
+// 전문가 칼럼 — YMYL 신뢰 핵심 ("누가 쓰는가")
+// 현직 교사·입학사정관·유학 컨설턴트 인터뷰. AI 생성 금지.
+// ─────────────────────────────────────────────────────────────
+const experts = defineCollection({
+  type: 'content',
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      locale: localeSchema,
+      // 전문가 본인 정보 (인터뷰 대상)
+      expert: z.object({
+        name: z.string(),
+        role: z.enum([
+          'teacher',
+          'admissions-officer',
+          'consultant',
+          'principal',
+          'parent-coach',
+          'alumni',
+        ]),
+        affiliation: z.string(), // 소속(현직 또는 최근)
+        country: z.string(),
+        years_experience: z.number().int().nonnegative().optional(),
+        credentials: z.array(z.string()).optional(), // 학위·자격증
+        photo: image().optional(),
+        bio: z.string().min(20).max(500),
+        verified: z.boolean().default(false), // 운영자 신원·소속 확인 여부
+      }),
+      // 인터뷰 메타
+      interviewer: z.string().default('데이비드'),
+      interview_format: z.enum(['written', 'video', 'phone', 'in-person']),
+      interview_date: z.coerce.date(),
+      // 주제 분류 (가이드 카테고리와 연결)
+      topics: z.array(
+        z.enum([
+          'admission',
+          'tuition-scholarship',
+          'visa-residence',
+          'curriculum-compare',
+          'track-reviews',
+          'expert-columns',
+        ])
+      ),
+      // 관련 학교 (선택)
+      related_schools: z.array(z.string()).optional(),
+
+      hero_image: image().optional(),
+      summary: z.string().min(20).max(300),
+      published_at: z.coerce.date(),
+      last_updated: z.coerce.date(),
+    }),
+});
+
 export const collections = {
   schools,
   experiences,
   guides,
   pages,
+  experts,
 };

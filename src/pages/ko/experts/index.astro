@@ -1,0 +1,65 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
+
+const experts = (await getCollection('experts', (e) => e.data.locale === 'ko'))
+  .sort((a, b) => b.data.published_at.getTime() - a.data.published_at.getTime());
+
+const draftMode = experts.length === 0;
+
+const title = '전문가 칼럼 — 교사 · 입학사정관 · 컨설턴트 인터뷰 | AsiaEduHub';
+const description =
+  'YMYL 신뢰도 핵심: 현직 교사·입학사정관·유학 컨설턴트 인터뷰. "누가 쓰는가"가 "무엇을 쓰는가"보다 중요합니다.';
+
+const ROLE_LABEL: Record<string, string> = {
+  teacher: '현직 교사',
+  'admissions-officer': '입학사정관',
+  consultant: '유학 컨설턴트',
+  principal: '학교장',
+  'parent-coach': '학부모 코치',
+  alumni: '졸업생',
+};
+---
+<BaseLayout title={title} description={description} noindex={draftMode}>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/ko/">홈</a> · 전문가 칼럼</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">전문가 칼럼</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      현직 교사·입학사정관·유학 컨설턴트 인터뷰 모음. 운영자(데이비드)가 직접 진행·검증한 인터뷰만 게재합니다.
+      AI 생성 또는 익명 출처는 게재하지 않습니다.
+    </p>
+
+    {experts.length === 0 ? (
+      <div class="mt-10 rounded-lg border bg-white p-6" style="border-color: var(--color-border-light)">
+        <p class="text-sm text-[color:var(--color-text-secondary)]">
+          첫 인터뷰를 준비 중입니다. 인터뷰 대상 추천 또는 본인이 참여 의사가 있는 전문가는
+          <a href="/ko/contact/" class="text-primary-700"> 운영자에게 연락</a>하실 수 있습니다.
+        </p>
+      </div>
+    ) : (
+      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {experts.map((e) => (
+          <a
+            href={`/ko/experts/${e.slug.replace(/-ko$/, '')}/`}
+            class="block rounded-lg border p-5 transition-colors hover:border-primary-700"
+            style="border-color: var(--color-border-light)"
+          >
+            <div class="flex items-center gap-2">
+              {e.data.expert.verified && <span class="badge-gold">⭐ 신원 확인</span>}
+              <span class="badge-navy">{ROLE_LABEL[e.data.expert.role] ?? e.data.expert.role}</span>
+            </div>
+            <h2 class="mt-3 text-base text-primary-900" style="font-weight:500">{e.data.title}</h2>
+            <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">{e.data.summary}</p>
+            <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+              {e.data.expert.name} · {e.data.expert.affiliation}
+            </p>
+            <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">
+              {formatDate(e.data.published_at, 'ko')}
+            </p>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

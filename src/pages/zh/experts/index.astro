@@ -1,0 +1,63 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
+
+const experts = (await getCollection('experts', (e) => e.data.locale === 'zh'))
+  .sort((a, b) => b.data.published_at.getTime() - a.data.published_at.getTime());
+
+const draftMode = experts.length === 0;
+
+const title = '专家专栏 — 教师 · 招生官 · 顾问访谈 | AsiaEduHub';
+const description = 'YMYL 信任核心:现职教师·招生官·留学顾问访谈合集。「谁来写」比「写什么」更重要。';
+
+const ROLE_LABEL: Record<string, string> = {
+  teacher: '现职教师',
+  'admissions-officer': '招生官',
+  consultant: '留学顾问',
+  principal: '校长',
+  'parent-coach': '家长教练',
+  alumni: '校友',
+};
+---
+<BaseLayout title={title} description={description} noindex={draftMode}>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · 专家专栏</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">专家专栏</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      现职教师·招生官·留学顾问访谈合集。仅刊登站长 David 亲自访谈·核实的内容。不刊登 AI 生成或匿名来源。
+    </p>
+
+    {experts.length === 0 ? (
+      <div class="mt-10 rounded-lg border bg-white p-6" style="border-color: var(--color-border-light)">
+        <p class="text-sm text-[color:var(--color-text-secondary)]">
+          首篇访谈正在筹备中。如有推荐人选或愿意接受访谈的专家,可
+          <a href="/zh/contact/" class="text-primary-700">联系站长</a>。
+        </p>
+      </div>
+    ) : (
+      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {experts.map((e) => (
+          <a
+            href={`/zh/experts/${e.slug.replace(/-zh$/, '')}/`}
+            class="block rounded-lg border p-5 transition-colors hover:border-primary-700"
+            style="border-color: var(--color-border-light)"
+          >
+            <div class="flex items-center gap-2">
+              {e.data.expert.verified && <span class="badge-gold">⭐ 已核实身份</span>}
+              <span class="badge-navy">{ROLE_LABEL[e.data.expert.role] ?? e.data.expert.role}</span>
+            </div>
+            <h2 class="mt-3 text-base text-primary-900" style="font-weight:500">{e.data.title}</h2>
+            <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">{e.data.summary}</p>
+            <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+              {e.data.expert.name} · {e.data.expert.affiliation}
+            </p>
+            <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">
+              {formatDate(e.data.published_at, 'zh')}
+            </p>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

@@ -1,0 +1,237 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { Locale } from '~/lib/i18n';
+import { formatDate } from '~/lib/schools';
+import Item from './StatItem.astro';
+
+export interface Props {
+  entry: CollectionEntry<'schools'>;
+  locale: Locale;
+}
+const { entry, locale } = Astro.props;
+const d = entry.data;
+const f = d.facilities;
+const c = d.campus_condition;
+const m = d.meals;
+
+const T = {
+  ko: {
+    facilities: '시설',
+    sportFac: '스포츠 시설',
+    learnFac: '학습·예술 시설',
+    envFac: '환경 · 안전',
+    pool: '수영장', poolOwn: '자체', poolShared: '공유', poolNone: '없음',
+    gym: '체육관', gymFull: '풀사이즈', gymSmall: '소형', gymNone: '없음',
+    field: '운동장', tennis: '테니스 코트', basketball: '농구장',
+    library: '도서관', libL: '대형', libM: '중형', libS: '소형',
+    labs: '과학 실험실', artStudio: '미술실', musicRoom: '음악실', theater: '공연장',
+    aircon: '에어컨', acFull: '전관', acPartial: '부분', acNone: '없음',
+    cafeteria: '카페테리아', bus: '스쿨버스', campusSize: '캠퍼스 면적',
+    security: '보안', sec24: '24시간', secHours: '학교 시간', secBasic: '기초',
+    yes: '있음', no: '없음', acres: '에이커',
+    indoor: '실내', outdoor: '실외', both: '실내·외',
+    standard: '표준', small: '소형', shared: '공유',
+    campus: '캠퍼스 상태',
+    age: '건물 연식',
+    renovation: '대규모 리노베이션',
+    modernity: '캠퍼스 인상',
+    modern: '최신',
+    recent: '최근',
+    aging: '오래됨',
+    dated: '낙후',
+    operatorNotes: '운영자 방문 메모',
+    visitedAt: '운영자 방문일',
+    meals: '식사',
+    snack: '오전 간식',
+    provided: '제공',
+    notProvided: '미제공',
+    lunchCost: '점심 비용',
+    included: '학비 포함',
+    extra: '별도 청구',
+    monthlyFee: '월 식비 (USD)',
+    options: '옵션',
+    asian: '아시안',
+    western: '서양식',
+    halal: '할랄',
+    vegetarian: '채식',
+    korean: '한식 친화',
+    chinese: '중식 친화',
+    allergy: '알레르기 대응',
+    provider: '운영',
+    inHouse: '직영',
+    outsourced: '외부 위탁',
+    source: '출처',
+    lastUpdated: '업데이트',
+  },
+  zh: {
+    facilities: '设施',
+    sportFac: '体育设施',
+    learnFac: '学习·艺术设施',
+    envFac: '环境 · 安全',
+    pool: '游泳池', poolOwn: '自有', poolShared: '共用', poolNone: '无',
+    gym: '体育馆', gymFull: '全尺寸', gymSmall: '小型', gymNone: '无',
+    field: '运动场', tennis: '网球场', basketball: '篮球场',
+    library: '图书馆', libL: '大型', libM: '中型', libS: '小型',
+    labs: '科学实验室', artStudio: '美术室', musicRoom: '音乐室', theater: '剧场',
+    aircon: '空调', acFull: '全覆盖', acPartial: '部分', acNone: '无',
+    cafeteria: '餐厅', bus: '校车', campusSize: '校园面积',
+    security: '安保', sec24: '24小时', secHours: '上学时段', secBasic: '基础',
+    yes: '有', no: '无', acres: '英亩',
+    indoor: '室内', outdoor: '室外', both: '室内外',
+    standard: '标准', small: '小型', shared: '共用',
+    campus: '校园状况',
+    age: '建筑年限',
+    renovation: '大规模翻新',
+    modernity: '校园印象',
+    modern: '最新',
+    recent: '近期翻新',
+    aging: '陈旧',
+    dated: '老旧',
+    operatorNotes: '站长走访备注',
+    visitedAt: '站长走访日',
+    meals: '餐饮',
+    snack: '上午茶点',
+    provided: '提供',
+    notProvided: '不提供',
+    lunchCost: '午餐费用',
+    included: '含在学费',
+    extra: '另外收费',
+    monthlyFee: '月餐费 (USD)',
+    options: '选项',
+    asian: '亚洲菜',
+    western: '西餐',
+    halal: '清真',
+    vegetarian: '素食',
+    korean: '韩餐友好',
+    chinese: '中餐友好',
+    allergy: '过敏应对',
+    provider: '运营',
+    inHouse: '自营',
+    outsourced: '外包',
+    source: '来源',
+    lastUpdated: '更新',
+  },
+}[locale];
+
+function poolLabel(v?: string) {
+  if (!v) return undefined;
+  return v === 'own' ? T.poolOwn : v === 'shared' ? T.poolShared : T.poolNone;
+}
+function gymLabel(v?: string) {
+  if (!v) return undefined;
+  return v === 'full-size' ? T.gymFull : v === 'small' ? T.gymSmall : T.gymNone;
+}
+function libLabel(v?: string) {
+  if (!v) return undefined;
+  return v === 'large' ? T.libL : v === 'medium' ? T.libM : T.libS;
+}
+function acLabel(v?: string) {
+  if (!v) return undefined;
+  return v === 'full' ? T.acFull : v === 'partial' ? T.acPartial : T.acNone;
+}
+function fieldLabel(v?: string) {
+  if (!v) return undefined;
+  return v === 'standard' ? T.standard : v === 'small' ? T.small : v === 'shared' ? T.shared : T.poolNone;
+}
+function bballLabel(v?: string) {
+  if (!v) return undefined;
+  return v === 'indoor' ? T.indoor : v === 'outdoor' ? T.outdoor : v === 'both' ? T.both : T.no;
+}
+function modLabel(v?: string) {
+  if (!v) return undefined;
+  return v === 'modern' ? T.modern : v === 'recent' ? T.recent : v === 'aging' ? T.aging : T.dated;
+}
+
+const hasFacilities = !!f && Object.keys(f).length > 0;
+const hasCampus = !!c && (c.operator_visited || c.operator_notes || c.building_age_years);
+const hasMeals = !!m && Object.keys(m).length > 0;
+---
+{hasFacilities && (
+  <section class="mt-10">
+    <h2 class="text-xl">{T.facilities}</h2>
+
+    {/* 스포츠 */}
+    <div class="mt-4">
+      <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{T.sportFac}</h3>
+      <dl class="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm">
+        {f!.swimming_pool && <Item label={T.pool} value={poolLabel(f!.swimming_pool)!} />}
+        {f!.gymnasium && <Item label={T.gym} value={gymLabel(f!.gymnasium)!} />}
+        {f!.sports_field && <Item label={T.field} value={fieldLabel(f!.sports_field)!} />}
+        {f!.tennis_court !== undefined && <Item label={T.tennis} value={`${f!.tennis_court}`} />}
+        {f!.basketball_court && <Item label={T.basketball} value={bballLabel(f!.basketball_court)!} />}
+      </dl>
+    </div>
+
+    {/* 학습·예술 */}
+    <div class="mt-6">
+      <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{T.learnFac}</h3>
+      <dl class="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm">
+        {f!.library_size && <Item label={T.library} value={libLabel(f!.library_size)!} />}
+        {f!.science_labs !== undefined && <Item label={T.labs} value={`${f!.science_labs}`} />}
+        {f!.art_studio !== undefined && <Item label={T.artStudio} value={f!.art_studio ? T.yes : T.no} />}
+        {f!.music_room !== undefined && <Item label={T.musicRoom} value={f!.music_room ? T.yes : T.no} />}
+        {f!.performing_arts_theater !== undefined && <Item label={T.theater} value={f!.performing_arts_theater ? T.yes : T.no} />}
+      </dl>
+    </div>
+
+    {/* 환경·안전 */}
+    <div class="mt-6">
+      <h3 class="text-sm uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{T.envFac}</h3>
+      <dl class="mt-2 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm">
+        {f!.air_conditioning && <Item label={T.aircon} value={acLabel(f!.air_conditioning)!} />}
+        {f!.cafeteria !== undefined && <Item label={T.cafeteria} value={f!.cafeteria ? T.yes : T.no} />}
+        {f!.school_bus !== undefined && <Item label={T.bus} value={f!.school_bus ? T.yes : T.no} />}
+        {f!.campus_size_acres !== undefined && <Item label={T.campusSize} value={`${f!.campus_size_acres} ${T.acres}`} />}
+        {f!.security_level && (
+          <Item
+            label={T.security}
+            value={f!.security_level === '24h' ? T.sec24 : f!.security_level === 'school_hours' ? T.secHours : T.secBasic}
+          />
+        )}
+      </dl>
+    </div>
+  </section>
+)}
+
+{hasCampus && (
+  <section class="mt-10">
+    <h2 class="text-xl">{T.campus}</h2>
+    <dl class="mt-3 grid gap-3 sm:grid-cols-3 text-sm">
+      {c!.building_age_years !== undefined && <Item label={T.age} value={`${c!.building_age_years}${locale === 'ko' ? '년' : '年'}`} />}
+      {c!.major_renovation_year !== undefined && <Item label={T.renovation} value={`${c!.major_renovation_year}`} />}
+      {c!.campus_modernity && <Item label={T.modernity} value={modLabel(c!.campus_modernity)!} />}
+    </dl>
+    {c!.operator_notes && (
+      <div class="mt-4 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-4 text-sm text-accent-700">
+        <div class="text-xs uppercase tracking-wide">{T.operatorNotes}{c!.operator_visit_date && ` · ${formatDate(c!.operator_visit_date, locale)}`}</div>
+        <p class="mt-1">{c!.operator_notes}</p>
+      </div>
+    )}
+  </section>
+)}
+
+{hasMeals && (
+  <section class="mt-10">
+    <h2 class="text-xl">{T.meals}</h2>
+    <dl class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm">
+      {m!.morning_snack && <Item label={T.snack} value={m!.morning_snack === 'provided' ? T.provided : T.notProvided} />}
+      {m!.lunch_cost && <Item label={T.lunchCost} value={m!.lunch_cost === 'included' ? T.included : T.extra} />}
+      {m!.monthly_meal_fee_usd !== undefined && <Item label={T.monthlyFee} value={`$${m!.monthly_meal_fee_usd}`} />}
+      {m!.cafeteria_provider && <Item label={T.provider} value={m!.cafeteria_provider === 'in-house' ? T.inHouse : T.outsourced} />}
+      {m!.allergy_accommodation !== undefined && <Item label={T.allergy} value={m!.allergy_accommodation ? T.yes : T.no} />}
+    </dl>
+    {m!.lunch_options && (
+      <div class="mt-4">
+        <div class="text-sm text-[color:var(--color-text-secondary)]">{T.options}</div>
+        <div class="mt-2 flex flex-wrap gap-2">
+          {m!.lunch_options.asian && <span class="badge-navy">{T.asian}</span>}
+          {m!.lunch_options.western && <span class="badge-navy">{T.western}</span>}
+          {m!.lunch_options.halal && <span class="badge-navy">{T.halal}</span>}
+          {m!.lunch_options.vegetarian && <span class="badge-navy">{T.vegetarian}</span>}
+          {m!.lunch_options.korean_friendly && <span class="badge-gold">{T.korean}</span>}
+          {m!.lunch_options.chinese_friendly && <span class="badge-gold">{T.chinese}</span>}
+        </div>
+      </div>
+    )}
+  </section>
+)}

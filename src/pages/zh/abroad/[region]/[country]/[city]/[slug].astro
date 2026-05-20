@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import SchoolDetailExtras from '~/components/SchoolDetailExtras.astro';
 import { loadSchools, getRegion, COUNTRY_LABEL, REGION_LABEL, BUDGET_LABEL, formatUsd, formatDate, schoolUrl, basePairKey } from '~/lib/schools';
 import { alternateUrlFor } from '~/lib/i18n';
 
@@ -143,6 +144,9 @@ const stud = d.student_nationality;
         )}
       </section>
     )}
+
+    {/* 设施 · 校园状况 · 餐饮 */}
+    <SchoolDetailExtras entry={entry} locale="zh" />
 
     <section class="mt-12 prose prose-neutral max-w-2xl">
       <Content />

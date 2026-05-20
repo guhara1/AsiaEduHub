@@ -1,23 +1,89 @@
 ---
-import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import TrackSimulator from '~/components/react/TrackSimulator.tsx';
+import TuitionCalculator from '~/components/react/TuitionCalculator.tsx';
+import SchoolCompare from '~/components/react/SchoolCompare.tsx';
+import { loadSchools, schoolUrl, COUNTRY_LABEL, BUDGET_LABEL } from '~/lib/schools';
 import { COMPARE_TOOLS } from '~/lib/locations';
 
-const categories = COMPARE_TOOLS.map((t) => ({
-  id: t.id,
-  label: t.zh,
-  highlight: t.id === 'track-simulator' ? '核心工具' : undefined,
-  description:
-    t.id === 'track-simulator'
-      ? '示例:"本国学生从松岛 Chadwick → 美国常春藤" 路径,按年级·考试·文件·预算逐步模拟。家长群分享的核心工具。'
-      : undefined,
+const schools = await loadSchools('zh');
+const compareRows = schools.map((s) => ({
+  slug: s.slug,
+  name: s.data.name,
+  country: COUNTRY_LABEL.zh[s.data.country] ?? s.data.country,
+  city: s.data.city,
+  tuition_annual_usd: s.data.tuition_annual_usd,
+  budget_tier: BUDGET_LABEL.zh[s.data.budget_tier],
+  curriculum: s.data.curriculum.primary_curriculum,
+  grade_low: s.data.grade_range[0],
+  grade_high: s.data.grade_range[1],
+  boarding: s.data.boarding === 'day-only' ? '走读' : s.data.boarding === 'boarding-optional' ? '可选寄宿' : '全寄宿',
+  korean_ratio: s.data.student_nationality?.korean_ratio,
+  chinese_mainland_ratio: s.data.student_nationality?.chinese_mainland_ratio,
+  chinese_overseas_ratio: s.data.student_nationality?.chinese_overseas_ratio,
+  visited_by_operator: s.data.visited_by_operator,
+  href: schoolUrl(s),
 }));
+
+const title = '学校对比 · 学费计算器 · 升学路径模拟 | AsiaEduHub';
+const description =
+  '国际学校对比工具集合。4 所学校同时对比、含汇率·寄宿·机票的总费用计算器、济州 NLCS → 牛剑 等升学路径模拟器。';
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '升学路径模拟器',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'Web',
+  inLanguage: 'zh-CN',
+  offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
+};
 ---
-<CategoryIndexPage
-  locale="zh"
-  pageTitle="学校对比 · 学费计算器 · 升学路径模拟 | AsiaEduHub"
-  metaDescription="国际学校对比工具集合。4 所学校同时对比、含汇率·寄宿·机票的总费用计算器、济州 NLCS → 牛剑 等升学路径模拟器。"
-  h1="对比 / 工具"
-  intro="不是单纯信息,而是家长可亲手输入·模拟的交互工具,辅助决策。升学路径模拟器是本站差异化的核心。"
-  breadcrumbName="对比 / 工具"
-  categories={categories}
-/>
+<BaseLayout title={title} description={description} jsonLd={webAppSchema}>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · 对比 / 工具</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">对比 / 工具</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      不是单纯信息,而是家长可亲手输入·模拟的交互工具。升学路径模拟器是本站差异化的核心。
+    </p>
+
+    <div class="mt-6 flex flex-wrap gap-2">
+      {COMPARE_TOOLS.map((tool) => (
+        <a href={`#${tool.id}`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
+          {tool.zh}
+        </a>
+      ))}
+    </div>
+
+    <section id="track-simulator" class="mt-12 scroll-mt-24">
+      <TrackSimulator client:visible locale="zh" />
+    </section>
+
+    <section id="compare" class="mt-12 scroll-mt-24">
+      <SchoolCompare client:visible locale="zh" schools={compareRows} />
+    </section>
+
+    <section id="calculator" class="mt-12 scroll-mt-24">
+      <TuitionCalculator client:visible locale="zh" />
+    </section>
+
+    <section id="curriculum-guide" class="mt-12 scroll-mt-24">
+      <div class="rounded-lg border bg-white p-5" style="border-color: var(--color-border-light)">
+        <h3 class="text-lg text-primary-900" style="font-weight:500">课程指南(IB vs AP vs A-Level)</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+          三大课程的年级进度·考试形式·大学申请适配性对比,作为独立指南文章累积。
+        </p>
+        <a href="/zh/guide/#curriculum-compare" class="cta-secondary mt-3 inline-flex text-sm">相关指南 →</a>
+      </div>
+    </section>
+
+    <section id="calendar" class="mt-12 scroll-mt-24">
+      <div class="rounded-lg border bg-white p-5" style="border-color: var(--color-border-light)">
+        <h3 class="text-lg text-primary-900" style="font-weight:500">入学日历</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+          各学校申请截止·考试日历将随学校数据累积自动生成。
+        </p>
+      </div>
+    </section>
+  </section>
+</BaseLayout>
