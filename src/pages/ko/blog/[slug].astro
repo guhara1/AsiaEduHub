@@ -142,10 +142,6 @@ const shareUrl = siteRoot + `ko/blog/${slug}/`;
           <button type="button" class="blog-share-btn blog-copy-btn" data-url={shareUrl} aria-label="링크 복사">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
           </button>
-          <div class="blog-share-meta">
-            <div class="blog-share-meta-row"><span>본문 길이</span><strong>{wordCount.toLocaleString()}자</strong></div>
-            <div class="blog-share-meta-row"><span>읽기</span><strong>{readingTimeMin}분</strong></div>
-          </div>
         </div>
       </aside>
 
@@ -414,19 +410,6 @@ const shareUrl = siteRoot + `ko/blog/${slug}/`;
     background: var(--color-primary-50);
     transform: translateY(-1px);
   }
-  .blog-share-meta {
-    margin-top: 1rem; padding: 0.75rem;
-    border-radius: 10px;
-    background: var(--color-bg-soft);
-    border: 1px solid var(--color-border-light);
-    font-size: 0.7rem;
-    width: 100%;
-  }
-  .blog-share-meta-row {
-    display: flex; justify-content: space-between; padding: 0.2rem 0;
-    color: var(--color-text-tertiary);
-  }
-  .blog-share-meta-row strong { color: var(--color-primary-900); font-weight: 700; }
 
   /* 본문 prose */
   .blog-prose {

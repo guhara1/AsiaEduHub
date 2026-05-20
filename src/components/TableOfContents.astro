@@ -1,8 +1,8 @@
 ---
 /**
- * 가이드·정보 페이지용 사이드 인덱스 (Table of Contents).
+ * 가이드·블로그·정보 페이지용 사이드 인덱스 (Table of Contents).
  * Astro 빌드 시점엔 본문 h2/h3 를 파악할 수 없으므로,
- * 클라이언트에서 JS 로 article 내 h2/h3 를 추출해 목차 + ScrollSpy.
+ * 클라이언트에서 JS 로 article 내 h2/h3 를 추출해 목차 + ScrollSpy + 진행률.
  */
 import type { Locale } from '~/lib/i18n';
 export interface Props {
@@ -12,6 +12,7 @@ export interface Props {
 }
 const { locale, targetSelector = 'article' } = Astro.props;
 const tocLabel = locale === 'ko' ? '목차' : '目录';
+const sectionsLabel = locale === 'ko' ? '섹션' : '章节';
 const topLabel = locale === 'ko' ? '맨 위로' : '回到顶部';
 ---
 <nav
@@ -19,13 +20,19 @@ const topLabel = locale === 'ko' ? '맨 위로' : '回到顶部';
   class="toc"
   data-toc-target={targetSelector}
 >
-  <div class="text-xs uppercase tracking-wider mb-3" style="color: var(--color-text-tertiary); font-weight: 500; letter-spacing: 0.08em;">
-    {tocLabel}
+  <div class="toc-header">
+    <div class="toc-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      {tocLabel}
+    </div>
+    <span class="toc-count" id="toc-count" data-sections-label={sectionsLabel}></span>
   </div>
-  <ul class="toc-list" id="toc-list">
+  <ol class="toc-list" id="toc-list">
     {/* JS 로 채워짐 */}
-  </ul>
-  <a href="#top" class="mt-4 inline-flex items-center gap-1 text-xs" style="color: var(--color-text-tertiary)">
+  </ol>
+  <a href="#top" class="toc-top">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     {topLabel}
   </a>
@@ -36,7 +43,8 @@ const topLabel = locale === 'ko' ? '맨 위로' : '回到顶部';
     document.querySelectorAll('[data-toc-target]').forEach((tocEl) => {
       const targetSelector = (tocEl as HTMLElement).dataset.tocTarget || 'article';
       const target = document.querySelector(targetSelector);
-      const list = tocEl.querySelector('#toc-list') as HTMLUListElement | null;
+      const list = tocEl.querySelector('#toc-list') as HTMLOListElement | null;
+      const countEl = tocEl.querySelector('#toc-count') as HTMLElement | null;
       if (!target || !list) return;
 
       const headings = Array.from(target.querySelectorAll('h2, h3')) as HTMLElement[];
@@ -52,25 +60,63 @@ const topLabel = locale === 'ko' ? '맨 위로' : '回到顶部';
           const slug = text.replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
           h.id = slug || `toc-${i}`;
         }
-        // scroll-margin 으로 sticky header 가림 방지
         h.style.scrollMarginTop = '96px';
       });
 
-      // 목차 렌더링
+      // h2 만 번호 부여 (h3 는 sub item)
+      let h2Index = 0;
       const items = headings.map((h) => {
+        const isH2 = h.tagName === 'H2';
+        if (isH2) h2Index++;
         const li = document.createElement('li');
-        li.className = h.tagName === 'H2' ? 'toc-item toc-h2' : 'toc-item toc-h3';
+        li.className = isH2 ? 'toc-item toc-h2' : 'toc-item toc-h3';
         const a = document.createElement('a');
         a.href = '#' + h.id;
         a.className = 'toc-link';
         a.dataset.tocId = h.id;
-        a.textContent = (h.textContent || '').trim();
+
+        if (isH2) {
+          const num = document.createElement('span');
+          num.className = 'toc-num';
+          num.textContent = String(h2Index).padStart(2, '0');
+          a.appendChild(num);
+        } else {
+          const dot = document.createElement('span');
+          dot.className = 'toc-dot';
+          dot.setAttribute('aria-hidden', 'true');
+          a.appendChild(dot);
+        }
+
+        const text = document.createElement('span');
+        text.className = 'toc-text';
+        // ' — ' 구분자 이전을 strong, 이후를 가벼운 색으로 분리 (매거진 스타일)
+        const fullText = (h.textContent || '').trim();
+        const dashIdx = fullText.indexOf(' — ');
+        if (dashIdx > -1 && isH2) {
+          const main = document.createElement('span');
+          main.className = 'toc-text-main';
+          main.textContent = fullText.slice(0, dashIdx);
+          const sub = document.createElement('span');
+          sub.className = 'toc-text-sub';
+          sub.textContent = fullText.slice(dashIdx + 3);
+          text.appendChild(main);
+          text.appendChild(sub);
+        } else {
+          text.textContent = fullText;
+        }
+        a.appendChild(text);
         li.appendChild(a);
         return { li, link: a, heading: h };
       });
       items.forEach((it) => list.appendChild(it.li));
 
-      // ScrollSpy — 현재 보이는 heading 강조
+      // 섹션 수 표시 (h2 만)
+      if (countEl) {
+        const label = countEl.dataset.sectionsLabel || '';
+        countEl.textContent = `${h2Index} ${label}`;
+      }
+
+      // ScrollSpy
       if ('IntersectionObserver' in window) {
         const linkMap = new Map(items.map((it) => [it.heading.id, it.link]));
         let activeId: string | null = null;
@@ -88,7 +134,6 @@ const topLabel = locale === 'ko' ? '맨 위로' : '回到顶部';
               if (e.isIntersecting) visible.add(id);
               else visible.delete(id);
             });
-            // 위쪽부터 보이는 첫 heading 활성
             for (const it of items) {
               if (visible.has(it.heading.id)) {
                 setActive(it.heading.id);
