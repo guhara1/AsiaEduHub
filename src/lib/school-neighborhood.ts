@@ -223,29 +223,263 @@ export const CYBERJAYA_CONDOS: NearbyCondo[] = [
   },
 ];
 
-/** Subang / Sunway — Sunway·Taylor's·UCSI Subang·SJI 접근. */
-export const SUBANG_CONDOS: NearbyCondo[] = [
+/** Desa ParkCity — ISP(International School @ ParkCity) 도보·차량 5분. 영국·호주·한국 외국인 다수. */
+export const DESA_PARKCITY_CONDOS: NearbyCondo[] = [
+  {
+    name: 'The Westside Two · Three',
+    distance_minutes: 3,
+    tier: 'premium',
+    rent_2br_usd: [1100, 1500],
+    rent_3br_usd: [1700, 2400],
+    korean_parents: 'high',
+    chinese_parents: 'mid',
+    note_ko: 'ISP 도보권. Desa ParkCity 중심. 외국인 학부모 1순위 거주.',
+    note_zh: 'ISP 步行可达。Desa ParkCity 中心。外国家长居住首选。',
+  },
+  {
+    name: 'The Mansion at Desa ParkCity',
+    distance_minutes: 5,
+    tier: 'luxury',
+    rent_2br_usd: [1500, 2000],
+    rent_3br_usd: [2300, 3200],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'Desa ParkCity 럭셔리 타워. 영국·호주 외교관 가족 거주.',
+    note_zh: 'Desa ParkCity 豪华塔楼。英澳外交家庭居住。',
+  },
+  {
+    name: 'Casa Tropicana (Tropicana 인접)',
+    distance_minutes: 10,
+    tier: 'mid',
+    rent_2br_usd: [800, 1100],
+    rent_3br_usd: [1200, 1700],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'Desa ParkCity 인접 가성비 옵션. 호수공원 인근.',
+    note_zh: 'Desa ParkCity 邻近性价比之选。湖边公园附近。',
+  },
+];
+
+/** Bandar Enstek · KLIA 인근 — Epsom College in Malaysia (네그리 셈빌란) 학부모 거주. */
+export const BANDAR_ENSTEK_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Bandar Enstek 단독·테라스',
+    distance_minutes: 5,
+    tier: 'mid',
+    rent_2br_usd: [400, 600],
+    rent_3br_usd: [600, 900],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: 'Epsom 학부모 다수. KLIA 공항 인근 신도시. Day 학생 가족 우선 거주.',
+    note_zh: 'Epsom 家长众多。KLIA 机场附近新城。走读学生家庭优先居住。',
+  },
+  {
+    name: 'Putrajaya Pangsapuri (Epsom 통근권)',
+    distance_minutes: 25,
+    tier: 'mid',
+    rent_2br_usd: [500, 700],
+    rent_3br_usd: [750, 1100],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: 'Epsom 보딩 미선택 가족 — Putrajaya 도심 + 셔틀. 차량 25분.',
+    note_zh: 'Epsom 未选寄宿家庭 — Putrajaya 市区 + 校车。车程 25 分钟。',
+  },
+];
+
+/** Kajang (KL 남쪽) — Oasis International School Kajang 인근. 말레이·중국 가족 다수. */
+export const KAJANG_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Country Heights Kajang',
+    distance_minutes: 8,
+    tier: 'mid',
+    rent_2br_usd: [500, 750],
+    rent_3br_usd: [800, 1200],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: 'Oasis International 학부모 다수. 단독·테라스 옵션. 게이트 커뮤니티.',
+    note_zh: 'Oasis International 家长众多。独栋·联排选项。封闭社区。',
+  },
+  {
+    name: 'Kajang 2 Pangsapuri',
+    distance_minutes: 10,
+    tier: 'budget',
+    rent_2br_usd: [350, 500],
+    rent_3br_usd: [500, 750],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: '가성비. UCSI Springhill·APIS Cheras 셔틀권에도 접근.',
+    note_zh: '性价比。UCSI Springhill · APIS Cheras 校车圈也可达。',
+  },
+];
+
+/** Setia Eco Park · Shah Alam — Peninsula·Tenby 학부모 거주. 게이트 커뮤니티. */
+export const SETIA_ECO_PARK_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Setia Eco Park 단독·타운하우스',
+    distance_minutes: 5,
+    tier: 'luxury',
+    rent_2br_usd: [1500, 2500],
+    rent_3br_usd: [2500, 4000],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: '단지 내 단독·타운하우스. 학교 도보·자전거 권. 호주·말레이 가족 다수.',
+    note_zh: '社区内独栋 · 联排别墅。学校步行 · 自行车可达。澳大利亚 · 马来家庭众多。',
+  },
+  {
+    name: 'Setia Alam Pangsapuri',
+    distance_minutes: 10,
+    tier: 'mid',
+    rent_2br_usd: [500, 750],
+    rent_3br_usd: [750, 1100],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: 'Setia Alam 신도시 콘도. Peninsula·Tenby 셔틀권.',
+    note_zh: 'Setia Alam 新城公寓。Peninsula · Tenby 校车圈。',
+  },
+];
+
+/** Tropicana · Petaling Jaya — SJI International (Tropicana PJ 캠퍼스). 한·중 학부모 다수. */
+export const TROPICANA_PJ_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Tropicana Gardens',
+    distance_minutes: 5,
+    tier: 'premium',
+    rent_2br_usd: [1100, 1500],
+    rent_3br_usd: [1700, 2400],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: 'SJI International 도보권. MRT 직결. 한·중 학부모 다수.',
+    note_zh: 'SJI International 步行可达。MRT 直通。韩中家长众多。',
+  },
+  {
+    name: 'Pacific Place Ara Damansara',
+    distance_minutes: 8,
+    tier: 'mid',
+    rent_2br_usd: [700, 1000],
+    rent_3br_usd: [1100, 1500],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'Tropicana·Ara Damansara 인근 신축. PJ 도심.',
+    note_zh: 'Tropicana · Ara Damansara 邻近新建。PJ 市区。',
+  },
+];
+
+/** Equine Park · Seri Kembangan — Alice Smith 초등 캠퍼스 인근. */
+export const EQUINE_PARK_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Equine Park 단독·테라스',
+    distance_minutes: 3,
+    tier: 'mid',
+    rent_2br_usd: [500, 750],
+    rent_3br_usd: [750, 1100],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: 'Alice Smith 초등 캠퍼스 도보권. 말레이·중국 가족 다수.',
+    note_zh: 'Alice Smith 小学校区步行可达。马来 · 中国家庭众多。',
+  },
+  {
+    name: 'The Mines Resort (Seri Kembangan)',
+    distance_minutes: 8,
+    tier: 'premium',
+    rent_2br_usd: [800, 1100],
+    rent_3br_usd: [1200, 1700],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: '리조트형. 호수·골프장 일체. The Mines 쇼핑몰 인근.',
+    note_zh: '度假风。湖泊 · 高尔夫一体。The Mines 商场邻近。',
+  },
+];
+
+/** Subang Bestari — HELP International·Sri Bestari 학부모 거주. */
+export const SUBANG_BESTARI_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Subang Bestari 테라스·콘도',
+    distance_minutes: 5,
+    tier: 'mid',
+    rent_2br_usd: [500, 750],
+    rent_3br_usd: [750, 1100],
+    korean_parents: 'low',
+    chinese_parents: 'high',
+    note_ko: 'HELP·Sri Bestari 학부모 다수. 신도시. 가성비 양호.',
+    note_zh: 'HELP · Sri Bestari 家长众多。新城。性价比良好。',
+  },
+];
+
+/** Saujana · Subang — AISM (Australian International School Malaysia) 인근. */
+export const SAUJANA_SUBANG_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Saujana Residency',
+    distance_minutes: 5,
+    tier: 'premium',
+    rent_2br_usd: [900, 1300],
+    rent_3br_usd: [1400, 2000],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'AISM 도보·차량 5분. 호주·말레이 외교관 가족 다수. 골프장 일체.',
+    note_zh: 'AISM 步行 · 车程 5 分钟。澳大利亚 · 马来外交家庭众多。高尔夫一体。',
+  },
+  {
+    name: 'D\'Banyan Residency',
+    distance_minutes: 5,
+    tier: 'mid',
+    rent_2br_usd: [600, 900],
+    rent_3br_usd: [900, 1300],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: 'AISM 도보권. 호주식 커리큘럼 학부모 다수.',
+    note_zh: 'AISM 步行可达。澳式课程家长众多。',
+  },
+];
+
+/** Subang Jaya — BSKL·UCSI Subang·Sunway·HELP 통근권. */
+export const SUBANG_JAYA_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Subang Parkhomes',
+    distance_minutes: 5,
+    tier: 'mid',
+    rent_2br_usd: [600, 900],
+    rent_3br_usd: [900, 1300],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: '한·중 학부모 다수. 한국 슈퍼·식당 일부. BSKL 차량 5~8분.',
+    note_zh: '韩中家长众多。韩国超市 · 餐厅部分。BSKL 车程 5-8 分钟。',
+  },
+  {
+    name: 'Casa Subang',
+    distance_minutes: 8,
+    tier: 'budget',
+    rent_2br_usd: [400, 600],
+    rent_3br_usd: [600, 850],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: '가성비 가족. 신규 이주자 첫 6개월 단기 다수.',
+    note_zh: '性价比家庭。新迁者前 6 个月短租多。',
+  },
+];
+
+/** Sunway · Bandar Sunway — Sunway International School·Taylor's 인근. 리조트형 단지. */
+export const SUNWAY_CONDOS: NearbyCondo[] = [
   {
     name: 'Geo Sunway',
-    distance_minutes: 8,
+    distance_minutes: 5,
     tier: 'mid',
     rent_2br_usd: [700, 1000],
     rent_3br_usd: [1000, 1500],
     korean_parents: 'mid',
     chinese_parents: 'high',
-    note_ko: 'Sunway Pyramid 인접. Sunway 그룹 학교 셔틀권. 중국 학부모 다수.',
-    note_zh: 'Sunway Pyramid 邻近。Sunway 集团学校校车圈。中国家长众多。',
+    note_ko: 'Sunway Pyramid 도보권. Sunway International 학부모 1순위. 중국 학부모 다수.',
+    note_zh: 'Sunway Pyramid 步行可达。Sunway International 家长首选。中国家长众多。',
   },
   {
-    name: 'Sunway Velocity Two',
-    distance_minutes: 10,
+    name: 'Sunway Resort Suites',
+    distance_minutes: 5,
     tier: 'premium',
     rent_2br_usd: [1100, 1500],
     rent_3br_usd: [1700, 2300],
     korean_parents: 'mid',
     chinese_parents: 'high',
-    note_ko: '신축 럭셔리. 시설 최상. 한국·중국 학부모 모두 거주.',
-    note_zh: '新建豪华。设施一流。韩中家长均有居住。',
+    note_ko: '리조트 단지 일체. Sunway Lagoon 인접. 한·중 가족 모두.',
+    note_zh: '度假村一体。Sunway Lagoon 邻近。韩中家庭均有居住。',
   },
 ];
 
@@ -442,10 +676,14 @@ export const PYEONGTAEK_CONDOS: NearbyCondo[] = [
 export const SCHOOL_NEIGHBORHOODS: Record<string, SchoolNeighborhood[]> = {
   // ── 말레이시아 ────────────────────────────────────────────
   'alice-smith': [
-    { area_ko: 'Bangsar · Damansara Heights', area_zh: 'Bangsar · Damansara 高地',
-      overview_ko: 'Equine Park 캠퍼스(초등)·Jalan Bellamy 캠퍼스(중고등) 모두 KLCC·Bangsar 권. 영국·호주 외교관 가족 다수.',
-      overview_zh: 'Equine Park (小学) · Jalan Bellamy (中学) 校区均位于 KLCC · Bangsar 圈。英澳外交家庭众多。',
+    { area_ko: 'Jalan Bellamy (중·고등 캠퍼스) — Bangsar·Damansara Heights', area_zh: 'Jalan Bellamy (中学校区) — Bangsar · Damansara 高地',
+      overview_ko: 'Jalan Bellamy 캠퍼스 (Year 7–13) — KL 도심. Bangsar·Damansara Heights 차량 5~10분.',
+      overview_zh: 'Jalan Bellamy 校区 (Year 7-13) — KL 市区。Bangsar · Damansara Heights 车程 5-10 分钟。',
       condos: BANGSAR_CONDOS },
+    { area_ko: 'Equine Park (초등 캠퍼스) — Seri Kembangan', area_zh: 'Equine Park (小学校区) — Seri Kembangan',
+      overview_ko: 'Equine Park 캠퍼스 (Year 1–6) — KL 남쪽 Seri Kembangan. 단독·테라스 옵션 다수.',
+      overview_zh: 'Equine Park 校区 (Year 1-6) — KL 南部 Seri Kembangan。独栋 · 联排选项多。',
+      condos: EQUINE_PARK_CONDOS },
   ],
   'iskl': [
     { area_ko: 'Ampang · KLCC', area_zh: 'Ampang · KLCC',
@@ -470,16 +708,16 @@ export const SCHOOL_NEIGHBORHOODS: Record<string, SchoolNeighborhood[]> = {
       condos: [...MONT_KIARA_CONDOS, ...SRI_HARTAMAS_CONDOS] },
   ],
   'epsom-college': [
-    { area_ko: 'Cyberjaya · Putrajaya · Bandar Saujana Putra', area_zh: 'Cyberjaya · Putrajaya · Bandar Saujana Putra',
-      overview_ko: 'Bandar Saujana Putra 캠퍼스 보딩 옵션. Day 학생은 Cyberjaya·Putrajaya 거주 다수.',
-      overview_zh: 'Bandar Saujana Putra 校区有寄宿。Day 学生多居 Cyberjaya · Putrajaya。',
-      condos: CYBERJAYA_CONDOS },
+    { area_ko: 'Bandar Enstek (KLIA 인근, 네그리 셈빌란)', area_zh: 'Bandar Enstek (KLIA 附近, 森美兰)',
+      overview_ko: 'Epsom College Malaysia — KLIA 공항 인근. 보딩 중심 + Day 학생은 Bandar Enstek·Putrajaya 거주.',
+      overview_zh: 'Epsom College Malaysia — KLIA 机场附近。寄宿为主 + 走读学生居 Bandar Enstek · Putrajaya。',
+      condos: BANDAR_ENSTEK_CONDOS },
   ],
   'bskl': [
-    { area_ko: 'Sri Hartamas · Mont Kiara', area_zh: 'Sri Hartamas · Mont Kiara',
-      overview_ko: 'BSKL Sri Hartamas 캠퍼스 — 한·중·영국 외교관 가족 인근 거주.',
-      overview_zh: 'BSKL Sri Hartamas 校区 — 韩中英外交家庭附近居住。',
-      condos: SRI_HARTAMAS_CONDOS },
+    { area_ko: 'Subang Jaya', area_zh: 'Subang Jaya',
+      overview_ko: 'BSKL Subang Jaya 캠퍼스. 한·중 가족 + 영국·호주 외교관 거주.',
+      overview_zh: 'BSKL Subang Jaya 校区。韩中家庭 + 英澳外交家庭居住。',
+      condos: SUBANG_JAYA_CONDOS },
   ],
   'igb': [
     { area_ko: 'Sierramas · Saujana', area_zh: 'Sierramas · Saujana',
@@ -490,10 +728,10 @@ export const SCHOOL_NEIGHBORHOODS: Record<string, SchoolNeighborhood[]> = {
       ] },
   ],
   'sjim': [
-    { area_ko: 'Ampang · KLCC', area_zh: 'Ampang · KLCC',
-      overview_ko: 'SJI International Ulu Klang 캠퍼스. Ampang·KLCC 차량 15~20분.',
-      overview_zh: 'SJI International Ulu Klang 校区。Ampang · KLCC 车程 15-20 分钟。',
-      condos: AMPANG_CONDOS },
+    { area_ko: 'Tropicana · Petaling Jaya', area_zh: 'Tropicana · Petaling Jaya',
+      overview_ko: 'SJI International Tropicana 캠퍼스. 한·중 학부모 다수. MRT 직결.',
+      overview_zh: 'SJI International Tropicana 校区。韩中家长众多。MRT 直通。',
+      condos: TROPICANA_PJ_CONDOS },
   ],
   'nexus': [
     { area_ko: 'Putrajaya · Cyberjaya', area_zh: 'Putrajaya · Cyberjaya',
@@ -502,27 +740,26 @@ export const SCHOOL_NEIGHBORHOODS: Record<string, SchoolNeighborhood[]> = {
       condos: [...PUTRAJAYA_CONDOS, ...CYBERJAYA_CONDOS] },
   ],
   'sunway': [
-    { area_ko: 'Sunway · Subang Jaya', area_zh: 'Sunway · Subang Jaya',
-      overview_ko: 'Sunway 그룹 학교 — Sunway Pyramid·University 인근. 중국 학부모 매우 다수.',
-      overview_zh: 'Sunway 集团学校 — Sunway Pyramid · University 邻近。中国家长众多。',
-      condos: SUBANG_CONDOS },
+    { area_ko: 'Bandar Sunway', area_zh: 'Bandar Sunway',
+      overview_ko: 'Sunway International School — Sunway Pyramid·Lagoon·University 인근 리조트 단지. 중국 학부모 매우 다수.',
+      overview_zh: 'Sunway International School — Sunway Pyramid · Lagoon · University 邻近度假村。中国家长极多。',
+      condos: SUNWAY_CONDOS },
   ],
   'isp': [
-    { area_ko: 'Penang · Batu Ferringhi', area_zh: 'Penang · Batu Ferringhi',
-      overview_ko: 'ISP Penang Tanjung Bungah. 페낭 북부 해변. 영국·일본·한국 가족 외국인 클러스터.',
-      overview_zh: 'ISP Penang Tanjung Bungah。槟城北部海滩。英日韩外籍家庭聚集。',
-      condos: [
-        { name: 'Quayside Resort Condominiums', distance_minutes: 10, tier: 'premium', rent_2br_usd: [900, 1300], rent_3br_usd: [1400, 2000], korean_parents: 'mid', chinese_parents: 'mid', note_ko: '해변 리조트형. ISP·Uplands·Dalat 차량 10~20분.', note_zh: '海滨度假风。ISP · Uplands · Dalat 车程 10-20 分钟。' },
-        { name: 'Straits Quay', distance_minutes: 8, tier: 'premium', rent_2br_usd: [800, 1200], rent_3br_usd: [1300, 1900], korean_parents: 'mid', chinese_parents: 'high', note_ko: '마리나·상가 일체. 화교 가족 다수.', note_zh: '码头 · 商场一体。华人家庭众多。' },
-      ] },
+    { area_ko: 'Desa ParkCity (KL 북서부)', area_zh: 'Desa ParkCity (KL 西北部)',
+      overview_ko: 'International School @ ParkCity (ISP) — Desa ParkCity 단지 내. 영국·호주 외교관 + 한국 학부모 다수. 호수공원·도그파크로 가족 친화 동네.',
+      overview_zh: 'International School @ ParkCity (ISP) — Desa ParkCity 社区内。英澳外交 + 韩国家长众多。湖泊公园 · 狗公园,家庭友好社区。',
+      condos: DESA_PARKCITY_CONDOS },
+    { area_ko: 'Mont Kiara · Sri Hartamas (차량 15분 통근권)', area_zh: 'Mont Kiara · Sri Hartamas (车程 15 分钟通勤圈)',
+      overview_ko: 'Desa ParkCity 직접 거주 외 — Mont Kiara·Sri Hartamas 학부모도 ISP 통근 가능 (차량 15~20분).',
+      overview_zh: '除 Desa ParkCity 直接居住外 — Mont Kiara · Sri Hartamas 家长也可通勤 ISP (车程 15-20 分钟)。',
+      condos: [...MONT_KIARA_CONDOS.slice(0, 2), ...SRI_HARTAMAS_CONDOS] },
   ],
   'aism': [
-    { area_ko: 'Bukit Jelutong · Shah Alam', area_zh: 'Bukit Jelutong · Shah Alam',
-      overview_ko: '호주식 커리큘럼. AISM Bukit Jelutong 캠퍼스. 호주·말레이 가족 다수.',
-      overview_zh: '澳式课程。AISM Bukit Jelutong 校区。澳大利亚 · 马来家庭众多。',
-      condos: [
-        { name: 'D\'Banyan Residency', distance_minutes: 5, tier: 'mid', rent_2br_usd: [600, 900], rent_3br_usd: [900, 1300], korean_parents: 'low', chinese_parents: 'mid', note_ko: 'AISM 도보권. 호주식 커리큘럼 학부모 다수.', note_zh: 'AISM 步行可达。澳式课程家长众多。' },
-      ] },
+    { area_ko: 'Saujana · Subang (셀랑고르)', area_zh: 'Saujana · Subang (雪兰莪)',
+      overview_ko: 'AISM (Australian International School Malaysia) — Saujana 캠퍼스. 호주·말레이 외교관 가족 다수.',
+      overview_zh: 'AISM (Australian International School Malaysia) — Saujana 校区。澳大利亚 · 马来外交家庭众多。',
+      condos: SAUJANA_SUBANG_CONDOS },
   ],
   'ucsi-kl': [
     { area_ko: 'Cheras · Taman Connaught', area_zh: 'Cheras · Taman Connaught',
@@ -539,26 +776,22 @@ export const SCHOOL_NEIGHBORHOODS: Record<string, SchoolNeighborhood[]> = {
       ] },
   ],
   'peninsula': [
-    { area_ko: 'Petaling Jaya · Bandar Utama', area_zh: 'Petaling Jaya · Bandar Utama',
-      overview_ko: 'PJ 도심. 1 Utama 쇼핑몰 인접. 한·중 가족 다수.',
-      overview_zh: 'PJ 市区。1 Utama 商场邻近。韩中家庭众多。',
-      condos: [
-        { name: 'Atria Damansara', distance_minutes: 8, tier: 'mid', rent_2br_usd: [700, 1000], rent_3br_usd: [1000, 1400], korean_parents: 'mid', chinese_parents: 'mid', note_ko: '신축 콘도. PJ 도심.', note_zh: '新建公寓。PJ 市区。' },
-      ] },
+    { area_ko: 'Setia Eco Park · Shah Alam', area_zh: 'Setia Eco Park · 莎阿南',
+      overview_ko: 'Peninsula International (PISA) — Setia Eco Park 게이트 커뮤니티 내. 호주식 커리큘럼.',
+      overview_zh: 'Peninsula International (PISA) — Setia Eco Park 封闭社区内。澳式课程。',
+      condos: SETIA_ECO_PARK_CONDOS },
   ],
   'tenby-setia-eco-park': [
-    { area_ko: 'Setia Eco Park · Shah Alam', area_zh: 'Setia Eco Park · Shah Alam',
-      overview_ko: 'Setia Eco Park 게이트 커뮤니티. 영국·말레이 가족 클러스터.',
-      overview_zh: 'Setia Eco Park 封闭社区。英国 · 马来家庭聚集。',
-      condos: [
-        { name: 'Setia Eco Park 단독·타운하우스', distance_minutes: 5, tier: 'luxury', rent_2br_usd: [1500, 2500], rent_3br_usd: [2500, 4000], korean_parents: 'low', chinese_parents: 'mid', note_ko: '단지 내 단독·타운하우스. 학교 도보권.', note_zh: '社区内独栋 · 联排别墅。学校步行可达。' },
-      ] },
+    { area_ko: 'Setia Eco Park · Shah Alam', area_zh: 'Setia Eco Park · 莎阿南',
+      overview_ko: 'Tenby Setia Eco Park 캠퍼스 — 게이트 커뮤니티 내. 영국·말레이 가족 다수.',
+      overview_zh: 'Tenby Setia Eco Park 校区 — 封闭社区内。英国 · 马来家庭众多。',
+      condos: SETIA_ECO_PARK_CONDOS },
   ],
   'help-international': [
-    { area_ko: 'Subang Jaya · Damansara', area_zh: 'Subang Jaya · Damansara',
-      overview_ko: 'HELP International Subang 캠퍼스 — Subang Jaya 도심.',
-      overview_zh: 'HELP International Subang 校区 — Subang Jaya 市区。',
-      condos: SUBANG_CONDOS },
+    { area_ko: 'Subang Bestari · Subang Jaya', area_zh: 'Subang Bestari · Subang Jaya',
+      overview_ko: 'HELP International School (HIS) Subang Bestari 캠퍼스 — 셀랑고르 신도시.',
+      overview_zh: 'HELP International School (HIS) Subang Bestari 校区 — 雪兰莪新城。',
+      condos: [...SUBANG_BESTARI_CONDOS, ...SUBANG_JAYA_CONDOS] },
   ],
   'apis': [
     { area_ko: 'Cheras · Sungai Long', area_zh: 'Cheras · Sungai Long',
@@ -575,26 +808,22 @@ export const SCHOOL_NEIGHBORHOODS: Record<string, SchoolNeighborhood[]> = {
       ] },
   ],
   'sri-bestari': [
-    { area_ko: 'Bandar Sri Damansara · Kepong', area_zh: 'Bandar Sri Damansara · Kepong',
-      overview_ko: 'KL 북서부. 말레이·중국 가족 다수. 한국 학부모 일부.',
-      overview_zh: 'KL 西北部。马来 · 中国家庭众多。韩国家长部分。',
-      condos: [
-        { name: 'Sri Damansara Square', distance_minutes: 8, tier: 'mid', rent_2br_usd: [500, 800], rent_3br_usd: [800, 1200], korean_parents: 'low', chinese_parents: 'high', note_ko: '학교 차량 8~10분. 중국 학부모 다수.', note_zh: '学校车程 8-10 分钟。中国家长众多。' },
-      ] },
+    { area_ko: 'Subang Bestari · Sungai Buloh', area_zh: 'Subang Bestari · Sungai Buloh',
+      overview_ko: 'Sri Bestari International (SBIS) Subang Bestari 캠퍼스. 셀랑고르 신도시.',
+      overview_zh: 'Sri Bestari International (SBIS) Subang Bestari 校区。雪兰莪新城。',
+      condos: SUBANG_BESTARI_CONDOS },
   ],
   'ucsi-subang': [
     { area_ko: 'Subang Jaya · USJ', area_zh: 'Subang Jaya · USJ',
-      overview_ko: 'UCSI Subang 캠퍼스. Subang Jaya 도심.',
-      overview_zh: 'UCSI Subang 校区。Subang Jaya 市区。',
-      condos: SUBANG_CONDOS },
+      overview_ko: 'UCSI International School Subang Jaya 캠퍼스. USJ·Bandar Sunway 인근.',
+      overview_zh: 'UCSI International School Subang Jaya 校区。USJ · Bandar Sunway 邻近。',
+      condos: [...SUBANG_JAYA_CONDOS, ...SUNWAY_CONDOS] },
   ],
   'oasis': [
-    { area_ko: 'Ara Damansara · Petaling Jaya', area_zh: 'Ara Damansara · Petaling Jaya',
-      overview_ko: 'Oasis International Ara Damansara 캠퍼스. PJ 서부 신축 콘도 클러스터.',
-      overview_zh: 'Oasis International Ara Damansara 校区。PJ 西部新建公寓聚集区。',
-      condos: [
-        { name: 'Pacific Place Ara Damansara', distance_minutes: 5, tier: 'mid', rent_2br_usd: [700, 1000], rent_3br_usd: [1100, 1500], korean_parents: 'mid', chinese_parents: 'mid', note_ko: '학교 도보권. 한·중 학부모 일부.', note_zh: '学校步行可达。韩中家长部分。' },
-      ] },
+    { area_ko: 'Kajang (KL 남쪽)', area_zh: 'Kajang (吉隆坡南部)',
+      overview_ko: 'Oasis International School Kajang. KL 남쪽 신도시. 말레이·중국 가족 다수.',
+      overview_zh: 'Oasis International School Kajang。吉隆坡南部新城。马来 · 中国家庭众多。',
+      condos: KAJANG_CONDOS },
   ],
 
   // ── 한국 ─────────────────────────────────────────────────
