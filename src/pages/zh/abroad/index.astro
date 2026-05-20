@@ -5,10 +5,21 @@ import SchoolCard from '~/components/SchoolCard.astro';
 import { loadSchools } from '~/lib/schools';
 import { SOUTHEAST_ASIA, ANGLOSPHERE, SCHOOL_TYPES, countryName, cityName } from '~/lib/locations';
 import { COUNTRIES, ABROAD_FAQS } from '~/lib/abroad-info';
+import { MALAYSIA_SCHOOLS } from '~/lib/malaysia-schools';
+import { THAILAND_SCHOOLS } from '~/lib/thailand-schools';
 
 const schools = await loadSchools('zh');
 const seaCountries = COUNTRIES.filter((c) => c.region === 'sea');
 const angloCountries = COUNTRIES.filter((c) => c.region === 'anglo');
+
+const malaysiaCount = MALAYSIA_SCHOOLS.length;
+const thailandCount = THAILAND_SCHOOLS.length;
+const thailandByCity: Record<string, number> = {
+  'bangkok': THAILAND_SCHOOLS.filter(s => s.region === 'bangkok').length,
+  'pattaya': THAILAND_SCHOOLS.filter(s => s.region === 'pattaya').length,
+  'phuket': THAILAND_SCHOOLS.filter(s => s.region === 'phuket').length,
+  'chiang-mai': THAILAND_SCHOOLS.filter(s => s.region === 'chiang-mai').length,
+};
 
 const publishedAt = new Date('2026-05-20');
 const updatedAt = new Date('2026-05-20');
@@ -185,13 +196,43 @@ const faqSchema = {
 
     {SOUTHEAST_ASIA.map((country) => {
       const countrySchools = schools.filter((s) => s.data.country === country.id);
+      const dedicatedCount = country.id === 'malaysia' ? malaysiaCount : country.id === 'thailand' ? thailandCount : 0;
+      const dedicatedHref = country.id === 'malaysia' ? '/zh/abroad/malaysia/' : country.id === 'thailand' ? '/zh/abroad/thailand/' : null;
       return (
         <section id={country.id} class="mt-10 scroll-mt-24">
           <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
             <h3 class="text-lg">{country.flag} {countryName(country, 'zh')}</h3>
-            <span class="text-xs text-[color:var(--color-text-tertiary)]">已收录 {countrySchools.length} 所</span>
+            <span class="text-xs text-[color:var(--color-text-tertiary)]">
+              {dedicatedCount > 0 ? `已收录 ${dedicatedCount} 所` : `已收录 ${countrySchools.length} 所`}
+            </span>
           </div>
-          {country.cities.length > 0 ? (
+          {dedicatedHref ? (
+            <div class="mt-4 space-y-3">
+              <a href={dedicatedHref} class="block rounded-lg border-l-4 border-primary-700 bg-primary-50 p-4 hover:bg-primary-100 transition-colors">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-primary-900" style="font-weight:600">▶ {countryName(country, 'zh')}国际学校 {dedicatedCount} 所详情</div>
+                    <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">各校学费 · 课程 · 周边韩中家长公寓信息</div>
+                  </div>
+                  <span class="text-primary-700 text-xl">→</span>
+                </div>
+              </a>
+              {country.cities.length > 0 && (
+                <div class="grid gap-2 sm:grid-cols-2">
+                  {country.cities.map((city) => {
+                    const cityCount = country.id === 'thailand' ? (thailandByCity[city.id] ?? 0) : 0;
+                    const cityHref = country.id === 'thailand' ? `/zh/abroad/thailand/${city.id}/` : `${dedicatedHref}#${city.id}`;
+                    return (
+                      <a href={cityHref} class="block rounded-md border px-3 py-2 text-sm hover:border-primary-700 transition-colors" style="border-color: var(--color-border-light)">
+                        <span class="text-primary-900" style="font-weight:500">{cityName(city, 'zh')}</span>
+                        {cityCount > 0 && <span class="ml-2 text-xs" style="color: var(--color-text-tertiary)">({cityCount} 所)</span>}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ) : country.cities.length > 0 ? (
             country.cities.map((city) => {
               const cityList = schools.filter((s) => s.data.city === city.id);
               return (
