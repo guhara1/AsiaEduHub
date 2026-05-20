@@ -1,0 +1,123 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import Flag from '~/components/Flag.astro';
+import { SINGAPORE_SCHOOLS } from '~/lib/singapore-schools';
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = '新加坡国际学校 9 所 — UWC · SAS · CIS · HCIS · SAIS · NEXUS · AIS · XCL · SFMS 完整整理 | AsiaEduHub';
+const description =
+  '各校 IB 平均分 · 课程 · 学费 · 入学优先级详情。UWC 36.3 · HCIS 37.9 · CIS 35 · NEXUS 35 等 IB 成绩对比。SAS 美籍优先入学等真实信息整理。';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '海外留学', item: siteRoot + 'zh/abroad/' },
+    { '@type': 'ListItem', position: 3, name: '新加坡' },
+  ],
+};
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '新加坡国际学校 9 所',
+  numberOfItems: SINGAPORE_SCHOOLS.length,
+  itemListElement: SINGAPORE_SCHOOLS.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: s.name_zh,
+    url: siteRoot + `zh/abroad/singapore/${s.slug}/`,
+  })),
+};
+
+const ibRanked = [...SINGAPORE_SCHOOLS]
+  .filter((s) => s.ib_stats?.average)
+  .sort((a, b) => (b.ib_stats?.average ?? 0) - (a.ib_stats?.average ?? 0));
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[breadcrumb, itemList]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/zh/">首页</a> · <a href="/zh/abroad/">海外留学</a> · <Flag country="SG" />新加坡
+      </nav>
+
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.02em">
+        🇸🇬 新加坡国际学校 9 所
+      </h1>
+      <p class="mt-3 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        IB Diploma 平均分 · 课程 · 学费 · 入学优先级。UWC · HCIS · SAS · CIS 等东南亚 IB 顶尖学校云集。
+      </p>
+
+      <div class="mt-5">
+        <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="各校官网、IB Organization 官方统计、学校招生资料、家长社群" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-4xl">
+    <section class="mt-2">
+      <h2 class="text-xl sm:text-2xl" style="font-weight:700; letter-spacing:-0.01em">📊 IB Diploma 平均分排名(新加坡)</h2>
+      <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">基于学校官方公布。IB 满分 45 分。平均 30 分以上即为优秀。</p>
+      <div class="mt-4 grid gap-2">
+        {ibRanked.map((s, i) => (
+          <a href={`/zh/abroad/singapore/${s.slug}/`} class="flex items-center gap-3 rounded-lg border p-3 hover:border-primary-700 transition-colors" style="border-color: var(--color-border-light)">
+            <span class="flex-shrink-0 w-8 text-center" style="font-weight:700; color: var(--color-text-tertiary)">{i + 1}</span>
+            <span class="flex-1">
+              <div class="text-primary-900" style="font-weight:600">{s.name_zh}</div>
+              <div class="text-xs" style="color: var(--color-text-secondary)">{s.abbreviation} · {s.curriculum.type}</div>
+            </span>
+            <span class="flex-shrink-0 text-right">
+              <div style="font-weight:700; font-size: 1.125rem; color: var(--color-primary-900); font-variant-numeric: tabular-nums">{s.ib_stats?.average}</div>
+              {s.ib_stats?.max && <div class="text-xs" style="color: var(--color-text-tertiary)">最高 {s.ib_stats.max}</div>}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-xl sm:text-2xl" style="font-weight:700; letter-spacing:-0.01em">新加坡国际学校全列</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {SINGAPORE_SCHOOLS.map((s) => (
+          <a href={`/zh/abroad/singapore/${s.slug}/`} class="card text-sm block">
+            <div class="text-primary-900" style="font-weight:600">{s.name_zh}</div>
+            <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">{s.name_en}</div>
+            <p class="mt-2 text-xs" style="color: var(--color-text-secondary); line-height:1.55">{s.summary_zh}</p>
+            <div class="mt-3 flex flex-wrap gap-1">
+              <span class="badge-outlined">{s.curriculum.type}</span>
+              {s.boarding && <span class="badge-navy">寄宿</span>}
+              {s.ib_stats?.average && <span class="badge-outlined">IB {s.ib_stats.average}</span>}
+            </div>
+            <div class="mt-2 text-xs" style="color: var(--color-text-tertiary)">
+              年 ${s.tuition_range_usd[0].toLocaleString()}~${s.tuition_range_usd[1].toLocaleString()}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">新加坡国际学校入学咨询</h2>
+      <p class="mt-3 text-sm opacity-95">
+        告知孩子年级 · 英语水平 · 国籍(尤其 SAS · UWC 入学优先级)· 居住区 · 预算,1:1 答复。
+      </p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        WeChat 咨询
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+  </article>
+</BaseLayout>

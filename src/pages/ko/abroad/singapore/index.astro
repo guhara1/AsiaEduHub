@@ -1,0 +1,126 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import Flag from '~/components/Flag.astro';
+import { SINGAPORE_SCHOOLS } from '~/lib/singapore-schools';
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = '싱가포르 국제학교 9곳 — UWC · SAS · CIS · HCIS · SAIS · NEXUS · AIS · XCL · SFMS 완전 정리 | AsiaEduHub';
+const description =
+  'IB 평균 점수·커리큘럼·학비·입학 우선순위까지 학교별 상세. UWC 36.3 · HCIS 37.9 · CIS 35 · NEXUS 35 등 IB 성과 비교. SAS 미국 시민권자 우선 입학 등 실제 정보 정리.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '해외 유학', item: siteRoot + 'ko/abroad/' },
+    { '@type': 'ListItem', position: 3, name: '싱가포르' },
+  ],
+};
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '싱가포르 국제학교 9곳',
+  numberOfItems: SINGAPORE_SCHOOLS.length,
+  itemListElement: SINGAPORE_SCHOOLS.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: s.name_ko,
+    url: siteRoot + `ko/abroad/singapore/${s.slug}/`,
+  })),
+};
+
+// IB 점수 내림차순 정렬한 목록 (있는 학교만)
+const ibRanked = [...SINGAPORE_SCHOOLS]
+  .filter((s) => s.ib_stats?.average)
+  .sort((a, b) => (b.ib_stats?.average ?? 0) - (a.ib_stats?.average ?? 0));
+---
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[breadcrumb, itemList]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · <a href="/ko/abroad/">해외 유학</a> · <Flag country="SG" />싱가포르
+      </nav>
+
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.02em">
+        🇸🇬 싱가포르 국제학교 9곳
+      </h1>
+      <p class="mt-3 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        IB Diploma 평균 점수 · 커리큘럼 · 학비 · 입학 우선순위까지. UWC · HCIS · SAS · CIS 등 동남아 IB 점수 최상위 학교 다수.
+      </p>
+
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="각 학교 공식 사이트, IB Organization 공식 통계, 학교 입학 안내, 학부모 커뮤니티 청취" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-4xl">
+    {/* IB 평균 점수 순위표 (싱가포르 학교 차별점) */}
+    <section class="mt-2">
+      <h2 class="text-xl sm:text-2xl" style="font-weight:700; letter-spacing:-0.01em">📊 IB Diploma 평균 점수 순위 (싱가포르)</h2>
+      <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">학교 공식 발표 기준. IB 만점 45점. 평균 30점 이상이면 우수 평가.</p>
+      <div class="mt-4 grid gap-2">
+        {ibRanked.map((s, i) => (
+          <a href={`/ko/abroad/singapore/${s.slug}/`} class="flex items-center gap-3 rounded-lg border p-3 hover:border-primary-700 transition-colors" style="border-color: var(--color-border-light)">
+            <span class="flex-shrink-0 w-8 text-center" style="font-weight:700; color: var(--color-text-tertiary)">{i + 1}</span>
+            <span class="flex-1">
+              <div class="text-primary-900" style="font-weight:600">{s.name_ko}</div>
+              <div class="text-xs" style="color: var(--color-text-secondary)">{s.abbreviation} · {s.curriculum.type}</div>
+            </span>
+            <span class="flex-shrink-0 text-right">
+              <div style="font-weight:700; font-size: 1.125rem; color: var(--color-primary-900); font-variant-numeric: tabular-nums">{s.ib_stats?.average}</div>
+              {s.ib_stats?.max && <div class="text-xs" style="color: var(--color-text-tertiary)">최고 {s.ib_stats.max}</div>}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    {/* 전체 학교 카드 */}
+    <section class="mt-12">
+      <h2 class="text-xl sm:text-2xl" style="font-weight:700; letter-spacing:-0.01em">싱가포르 국제학교 전체</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {SINGAPORE_SCHOOLS.map((s) => (
+          <a href={`/ko/abroad/singapore/${s.slug}/`} class="card text-sm block">
+            <div class="text-primary-900" style="font-weight:600">{s.name_ko}</div>
+            <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">{s.name_en}</div>
+            <p class="mt-2 text-xs" style="color: var(--color-text-secondary); line-height:1.55">{s.summary_ko}</p>
+            <div class="mt-3 flex flex-wrap gap-1">
+              <span class="badge-outlined">{s.curriculum.type}</span>
+              {s.boarding && <span class="badge-navy">보딩</span>}
+              {s.ib_stats?.average && <span class="badge-outlined">IB {s.ib_stats.average}</span>}
+            </div>
+            <div class="mt-2 text-xs" style="color: var(--color-text-tertiary)">
+              연 ${s.tuition_range_usd[0].toLocaleString()}~${s.tuition_range_usd[1].toLocaleString()}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">싱가포르 국제학교 입학 상담</h2>
+      <p class="mt-3 text-sm opacity-95">
+        자녀 학년 · 영어 수준 · 시민권 (특히 SAS · UWC 입학 우선순위 관련) · 거주 희망 지역 · 예산을 알려주시면 1:1 답변.
+      </p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+  </article>
+</BaseLayout>

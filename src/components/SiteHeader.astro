@@ -14,6 +14,7 @@ import {
 import { FOREIGN_SCHOOLS, INTERNATIONAL_SCHOOLS } from '../lib/domestic-schools';
 import { MALAYSIA_SCHOOLS } from '../lib/malaysia-schools';
 import { THAILAND_SCHOOLS, REGION_LABELS as THAI_REGIONS } from '../lib/thailand-schools';
+import { SINGAPORE_SCHOOLS } from '../lib/singapore-schools';
 
 const pathname = Astro.url.pathname;
 const locale: Locale = resolveLocale(Astro.currentLocale, pathname);
@@ -141,6 +142,23 @@ for (const c of SOUTHEAST_ASIA) {
       label: `${c.flag} ${countryName(c, locale)}`,
       href: `/${locale}/abroad/thailand/`,
       children: thaiChildren,
+    });
+  } else if (c.id === 'singapore') {
+    // 싱가포르 — 학교별 sub-menu (9개)
+    countryChildren.push({
+      kind: 'submenu',
+      label: `${c.flag} ${countryName(c, locale)}`,
+      href: `/${locale}/abroad/singapore/`,
+      children: [
+        ...SINGAPORE_SCHOOLS.map((s) => ({
+          label: locale === 'ko' ? s.name_ko : s.name_zh,
+          href: `/${locale}/abroad/singapore/${s.slug}/`,
+        })),
+        {
+          label: locale === 'ko' ? '🇸🇬 싱가포르 전체 →' : '🇸🇬 新加坡全部 →',
+          href: `/${locale}/abroad/singapore/`,
+        },
+      ],
     });
   } else {
     const cityTrail = c.cities.length > 0

@@ -849,6 +849,242 @@ export const CHIANG_MAI_CONDOS: NearbyCondo[] = [
   },
 ];
 
+// ─── 싱가포르 ────────────────────────────────────────────────────
+
+/** 싱가포르 Bukit Timah · Tanglin — CIS·HCIS·SAS(차량) 한국 학부모 1순위. */
+export const SG_BUKIT_TIMAH_CONDOS: NearbyCondo[] = [
+  {
+    name: 'D\'Leedon (Farrer Road)',
+    distance_minutes: 8,
+    tier: 'luxury',
+    rent_2br_usd: [3500, 5000],
+    rent_3br_usd: [5500, 8000],
+    korean_parents: 'high',
+    chinese_parents: 'high',
+    note_ko: 'Bukit Timah 핵심 럭셔리. CIS·HCIS·SAS 셔틀권. 한국 학부모 거주 1위.',
+    note_zh: 'Bukit Timah 核心豪宅。CIS · HCIS · SAS 校车圈。韩国家长居住榜首。',
+  },
+  {
+    name: 'Gallop Green',
+    distance_minutes: 10,
+    tier: 'luxury',
+    rent_2br_usd: [3200, 4500],
+    rent_3br_usd: [4800, 7000],
+    korean_parents: 'high',
+    chinese_parents: 'mid',
+    note_ko: 'Botanic Gardens 인접 럭셔리. 영국·미국 외교관 가족 다수.',
+    note_zh: 'Botanic Gardens 邻近豪宅。英美外交家庭众多。',
+  },
+  {
+    name: 'Sixth Avenue Residences',
+    distance_minutes: 5,
+    tier: 'premium',
+    rent_2br_usd: [2500, 3500],
+    rent_3br_usd: [4000, 5500],
+    korean_parents: 'high',
+    chinese_parents: 'mid',
+    note_ko: 'Sixth Avenue MRT 도보권. CIS·NEXUS 차량 10~15분. 한식·중식 식당 다수.',
+    note_zh: 'Sixth Avenue MRT 步行可达。CIS · NEXUS 车程 10-15 分钟。韩中餐厅众多。',
+  },
+];
+
+/** 싱가포르 Tanglin · Orchard — SAIS·SFMS 학부모 거주. 시내 중심. */
+export const SG_TANGLIN_ORCHARD_CONDOS: NearbyCondo[] = [
+  {
+    name: 'The Marq on Paterson Hill',
+    distance_minutes: 8,
+    tier: 'luxury',
+    rent_2br_usd: [4500, 6500],
+    rent_3br_usd: [7000, 10000],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'Orchard 도보권 럭셔리. SAIS 셔틀·차량 10~15분.',
+    note_zh: 'Orchard 步行可达豪宅。SAIS 校车 · 车程 10-15 分钟。',
+  },
+  {
+    name: 'OUE Twin Peaks',
+    distance_minutes: 10,
+    tier: 'luxury',
+    rent_2br_usd: [3800, 5500],
+    rent_3br_usd: [6000, 9000],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: 'Leonie Hill Orchard 인접. 한·중·일 가족.',
+    note_zh: 'Leonie Hill Orchard 邻近。韩中日家庭。',
+  },
+];
+
+/** 싱가포르 Woodlands — SAS 미국 가족 클러스터. 북부. */
+export const SG_WOODLANDS_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Woodgrove Residence',
+    distance_minutes: 5,
+    tier: 'mid',
+    rent_2br_usd: [1800, 2500],
+    rent_3br_usd: [2800, 3800],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: 'SAS 도보권. 미국 가족 클러스터. Causeway 인접.',
+    note_zh: 'SAS 步行可达。美国家庭聚集。Causeway 邻近。',
+  },
+  {
+    name: 'Hillgate Place',
+    distance_minutes: 10,
+    tier: 'mid',
+    rent_2br_usd: [1500, 2200],
+    rent_3br_usd: [2300, 3300],
+    korean_parents: 'low',
+    chinese_parents: 'mid',
+    note_ko: 'SAS 차량 10분. 미국·말레이시아 통근 가족.',
+    note_zh: 'SAS 车程 10 分钟。美国 · 马来通勤家庭。',
+  },
+];
+
+/** 싱가포르 Woodleigh / Bartley — SAIS 학부모 거주. NE 신규 단지. */
+export const SG_WOODLEIGH_CONDOS: NearbyCondo[] = [
+  {
+    name: 'The Woodleigh Residences',
+    distance_minutes: 5,
+    tier: 'premium',
+    rent_2br_usd: [2500, 3500],
+    rent_3br_usd: [4000, 5500],
+    korean_parents: 'high',
+    chinese_parents: 'high',
+    note_ko: 'SAIS 도보권. The Woodleigh Mall 일체. 한·중 학부모 1순위.',
+    note_zh: 'SAIS 步行可达。The Woodleigh Mall 一体。韩中家长首选。',
+  },
+  {
+    name: 'Bartley Residences',
+    distance_minutes: 8,
+    tier: 'premium',
+    rent_2br_usd: [2200, 3000],
+    rent_3br_usd: [3500, 4800],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: 'Bartley MRT 도보권. SAIS·중국 가족 다수.',
+    note_zh: 'Bartley MRT 步行可达。SAIS · 中国家庭众多。',
+  },
+];
+
+/** 싱가포르 Lorong Chuan · Serangoon — AIS·NEXUS 학부모 거주. */
+export const SG_LORONG_CHUAN_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Chuan Park',
+    distance_minutes: 3,
+    tier: 'premium',
+    rent_2br_usd: [2300, 3200],
+    rent_3br_usd: [3500, 5000],
+    korean_parents: 'high',
+    chinese_parents: 'mid',
+    note_ko: 'AIS 도보권. 한국 학부모 클러스터. Lorong Chuan MRT 인접.',
+    note_zh: 'AIS 步行可达。韩国家长聚集。Lorong Chuan MRT 邻近。',
+  },
+  {
+    name: 'Goldenhill Park',
+    distance_minutes: 8,
+    tier: 'premium',
+    rent_2br_usd: [2000, 2800],
+    rent_3br_usd: [3200, 4500],
+    korean_parents: 'high',
+    chinese_parents: 'mid',
+    note_ko: 'AIS 차량 8분. 한국 학부모 다수. NEX 쇼핑몰 인접.',
+    note_zh: 'AIS 车程 8 分钟。韩国家长众多。NEX 商场邻近。',
+  },
+];
+
+/** 싱가포르 Dover · Clementi — UWC Dover 학부모. */
+export const SG_DOVER_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Dover Parkview',
+    distance_minutes: 5,
+    tier: 'premium',
+    rent_2br_usd: [2500, 3500],
+    rent_3br_usd: [4000, 5500],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'UWC Dover 도보권. 국제 교사·외교관 가족 다수.',
+    note_zh: 'UWC Dover 步行可达。国际教师 · 外交家庭众多。',
+  },
+  {
+    name: 'Heritage View',
+    distance_minutes: 8,
+    tier: 'premium',
+    rent_2br_usd: [2300, 3200],
+    rent_3br_usd: [3500, 4800],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'Dover MRT 인접. UWC 셔틀권. 학부모 신뢰도 높음.',
+    note_zh: 'Dover MRT 邻近。UWC 校车圈。家长信任度高。',
+  },
+];
+
+/** 싱가포르 Tampines — UWC Tampines 학부모. 동부 신도시. */
+export const SG_TAMPINES_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Treasure at Tampines',
+    distance_minutes: 8,
+    tier: 'mid',
+    rent_2br_usd: [1800, 2500],
+    rent_3br_usd: [2800, 3800],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: 'UWC Tampines 셔틀권. 신축 대형 단지. 가성비.',
+    note_zh: 'UWC Tampines 校车圈。新建大型小区。性价比。',
+  },
+  {
+    name: 'The Tapestry',
+    distance_minutes: 10,
+    tier: 'mid',
+    rent_2br_usd: [1700, 2300],
+    rent_3br_usd: [2600, 3600],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: 'Tampines East MRT. UWC 차량 10분.',
+    note_zh: 'Tampines East MRT。UWC 车程 10 分钟。',
+  },
+];
+
+/** 싱가포르 Jurong East — XCL World Academy 학부모. 서부. */
+export const SG_JURONG_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Lakeville',
+    distance_minutes: 8,
+    tier: 'mid',
+    rent_2br_usd: [1800, 2500],
+    rent_3br_usd: [2800, 3800],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: 'Lakeside MRT 도보권. XCL·CIS 셔틀권. 중국 학부모 다수.',
+    note_zh: 'Lakeside MRT 步行可达。XCL · CIS 校车圈。中国家长众多。',
+  },
+  {
+    name: 'J Gateway',
+    distance_minutes: 10,
+    tier: 'premium',
+    rent_2br_usd: [2200, 3000],
+    rent_3br_usd: [3500, 4800],
+    korean_parents: 'mid',
+    chinese_parents: 'high',
+    note_ko: 'Jurong East MRT 환승. XCL 차량 10분. 신축 럭셔리.',
+    note_zh: 'Jurong East MRT 换乘。XCL 车程 10 分钟。新建豪宅。',
+  },
+];
+
+/** 싱가포르 Aljunied · Geylang — NEXUS 학부모. 동부 도심. */
+export const SG_ALJUNIED_CONDOS: NearbyCondo[] = [
+  {
+    name: 'Sims Urban Oasis',
+    distance_minutes: 5,
+    tier: 'mid',
+    rent_2br_usd: [1900, 2600],
+    rent_3br_usd: [2900, 4000],
+    korean_parents: 'mid',
+    chinese_parents: 'mid',
+    note_ko: 'Aljunied MRT 도보권. NEXUS 차량 5~8분.',
+    note_zh: 'Aljunied MRT 步行可达。NEXUS 车程 5-8 分钟。',
+  },
+];
+
 export const PYEONGTAEK_CONDOS: NearbyCondo[] = [
   {
     name: '평택 험프리스 인근 군 가족 주택',
@@ -1209,6 +1445,82 @@ export const SCHOOL_NEIGHBORHOODS: Record<string, SchoolNeighborhood[]> = {
       overview_ko: 'APIS — Mae Rim. 보딩 + Day. 산악·자연 친화. 한·중·일 가족.',
       overview_zh: 'APIS — Mae Rim。寄宿 + 走读。山地 · 自然友好。韩中日家庭。',
       condos: CHIANG_MAI_CONDOS },
+  ],
+
+  // ── 싱가포르 ──────────────────────────────────────────────
+  'sais-stamford': [
+    { area_ko: 'Woodleigh · Bartley (NE 신규 단지)', area_zh: 'Woodleigh · Bartley (东北部新区)',
+      overview_ko: 'SAIS Woodleigh 캠퍼스 도보·셔틀권. The Woodleigh Mall 일체. 한·중 학부모 1순위.',
+      overview_zh: 'SAIS Woodleigh 校区步行 · 校车圈。The Woodleigh Mall 一体。韩中家长首选。',
+      condos: SG_WOODLEIGH_CONDOS },
+    { area_ko: 'Tanglin · Orchard (시내 통근권)', area_zh: 'Tanglin · Orchard (市区通勤圈)',
+      overview_ko: '시내 도심 학부모. SAIS 셔틀·차량 10~15분.',
+      overview_zh: '市中心家长。SAIS 校车 · 车程 10-15 分钟。',
+      condos: SG_TANGLIN_ORCHARD_CONDOS },
+  ],
+  'cis-canadian': [
+    { area_ko: 'Bukit Timah · Sixth Avenue', area_zh: 'Bukit Timah · Sixth Avenue',
+      overview_ko: 'CIS Lakeside 캠퍼스 셔틀권. Bukit Timah 한국 학부모 클러스터.',
+      overview_zh: 'CIS Lakeside 校区校车圈。Bukit Timah 韩国家长聚集。',
+      condos: SG_BUKIT_TIMAH_CONDOS },
+    { area_ko: 'Jurong · Lakeside (학교 인근)', area_zh: 'Jurong · Lakeside (学校附近)',
+      overview_ko: 'CIS 도보·차량 10분 가성비 옵션.',
+      overview_zh: 'CIS 步行 · 车程 10 分钟性价比之选。',
+      condos: SG_JURONG_CONDOS },
+  ],
+  'nexus-singapore': [
+    { area_ko: 'Aljunied · Geylang · Sims Urban', area_zh: 'Aljunied · Geylang · Sims Urban',
+      overview_ko: 'NEXUS 도보·셔틀권. 동부 도심.',
+      overview_zh: 'NEXUS 步行 · 校车圈。东部市区。',
+      condos: SG_ALJUNIED_CONDOS },
+    { area_ko: 'Bukit Timah · Sixth Avenue (영연방 가족)', area_zh: 'Bukit Timah · Sixth Avenue (英联邦家庭)',
+      overview_ko: 'NEXUS 영국·호주 학부모 다수 거주.',
+      overview_zh: 'NEXUS 英澳家长众多居住。',
+      condos: SG_BUKIT_TIMAH_CONDOS.slice(0, 2) },
+  ],
+  'ais-australian': [
+    { area_ko: 'Lorong Chuan · Serangoon (NE)', area_zh: 'Lorong Chuan · Serangoon (东北)',
+      overview_ko: 'AIS 도보·차량 5~8분. 한국 학부모 안정 커뮤니티 운영.',
+      overview_zh: 'AIS 步行 · 车程 5-8 分钟。韩国家长稳定社群。',
+      condos: SG_LORONG_CHUAN_CONDOS },
+  ],
+  'hcis-hwa-chong': [
+    { area_ko: 'Bukit Timah · Hwa Chong 단지', area_zh: 'Bukit Timah · 华中园区',
+      overview_ko: 'HCIS 보딩 중심 — Day 학생은 Bukit Timah 거주.',
+      overview_zh: 'HCIS 以寄宿为主 — 走读学生居 Bukit Timah。',
+      condos: SG_BUKIT_TIMAH_CONDOS },
+  ],
+  'xcl-world-academy': [
+    { area_ko: 'Jurong · Lakeside (서부)', area_zh: 'Jurong · Lakeside (西部)',
+      overview_ko: 'XCL World Academy 도보·셔틀권. 거주비 합리적.',
+      overview_zh: 'XCL World Academy 步行 · 校车圈。居住成本合理。',
+      condos: SG_JURONG_CONDOS },
+  ],
+  'uwc-sea': [
+    { area_ko: 'Dover · Clementi (UWC Dover 캠퍼스)', area_zh: 'Dover · Clementi (UWC Dover 校区)',
+      overview_ko: 'UWC Dover 도보·셔틀권. 국제 교사·외교관 가족 다수.',
+      overview_zh: 'UWC Dover 步行 · 校车圈。国际教师 · 外交家庭众多。',
+      condos: SG_DOVER_CONDOS },
+    { area_ko: 'Tampines (UWC Tampines 캠퍼스)', area_zh: 'Tampines (UWC Tampines 校区)',
+      overview_ko: 'UWC Tampines 셔틀권. 동부 신도시.',
+      overview_zh: 'UWC Tampines 校车圈。东部新城。',
+      condos: SG_TAMPINES_CONDOS },
+  ],
+  'sas-singapore-american': [
+    { area_ko: 'Woodlands (북부 미국 가족 클러스터)', area_zh: 'Woodlands (北部美国家庭聚集区)',
+      overview_ko: 'SAS 도보·셔틀권. Causeway 인접 미국 가족 클러스터.',
+      overview_zh: 'SAS 步行 · 校车圈。Causeway 邻近美国家庭聚集。',
+      condos: SG_WOODLANDS_CONDOS },
+    { area_ko: 'Bukit Timah (한·중 학부모 통근)', area_zh: 'Bukit Timah (韩中家长通勤)',
+      overview_ko: '한·중 학부모는 Bukit Timah 거주 + SAS 통학 (차량 25~30분).',
+      overview_zh: '韩中家长居 Bukit Timah + SAS 通勤(车程 25-30 分钟)。',
+      condos: SG_BUKIT_TIMAH_CONDOS.slice(0, 2) },
+  ],
+  'sfms-methodist': [
+    { area_ko: 'Stevens Road · Orchard (중심부)', area_zh: 'Stevens Road · Orchard (中心区)',
+      overview_ko: 'SFMS 도보·차량 5~10분. Orchard 도심 인접.',
+      overview_zh: 'SFMS 步行 · 车程 5-10 分钟。Orchard 市中心邻近。',
+      condos: SG_TANGLIN_ORCHARD_CONDOS },
   ],
   'oasis': [
     { area_ko: 'Kajang (KL 남쪽)', area_zh: 'Kajang (吉隆坡南部)',

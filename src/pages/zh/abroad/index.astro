@@ -7,6 +7,7 @@ import { SOUTHEAST_ASIA, ANGLOSPHERE, SCHOOL_TYPES, countryName, cityName } from
 import { COUNTRIES, ABROAD_FAQS } from '~/lib/abroad-info';
 import { MALAYSIA_SCHOOLS } from '~/lib/malaysia-schools';
 import { THAILAND_SCHOOLS } from '~/lib/thailand-schools';
+import { SINGAPORE_SCHOOLS } from '~/lib/singapore-schools';
 
 const schools = await loadSchools('zh');
 const seaCountries = COUNTRIES.filter((c) => c.region === 'sea');
@@ -14,6 +15,7 @@ const angloCountries = COUNTRIES.filter((c) => c.region === 'anglo');
 
 const malaysiaCount = MALAYSIA_SCHOOLS.length;
 const thailandCount = THAILAND_SCHOOLS.length;
+const singaporeCount = SINGAPORE_SCHOOLS.length;
 const thailandByCity: Record<string, number> = {
   'bangkok': THAILAND_SCHOOLS.filter(s => s.region === 'bangkok').length,
   'pattaya': THAILAND_SCHOOLS.filter(s => s.region === 'pattaya').length,
@@ -196,8 +198,8 @@ const faqSchema = {
 
     {SOUTHEAST_ASIA.map((country) => {
       const countrySchools = schools.filter((s) => s.data.country === country.id);
-      const dedicatedCount = country.id === 'malaysia' ? malaysiaCount : country.id === 'thailand' ? thailandCount : 0;
-      const dedicatedHref = country.id === 'malaysia' ? '/zh/abroad/malaysia/' : country.id === 'thailand' ? '/zh/abroad/thailand/' : null;
+      const dedicatedCount = country.id === 'malaysia' ? malaysiaCount : country.id === 'thailand' ? thailandCount : country.id === 'singapore' ? singaporeCount : 0;
+      const dedicatedHref = country.id === 'malaysia' ? '/zh/abroad/malaysia/' : country.id === 'thailand' ? '/zh/abroad/thailand/' : country.id === 'singapore' ? '/zh/abroad/singapore/' : null;
       return (
         <section id={country.id} class="mt-10 scroll-mt-24">
           <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
