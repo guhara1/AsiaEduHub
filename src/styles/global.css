@@ -339,6 +339,164 @@
   .card-outline[data-tone="amber"]   { --accent-color: #F59E0B; }
   .card-outline[data-tone="primary"] { --accent-color: var(--color-primary-600); }
 
+  /* ─────────────────────────────────────────────────────────
+     학교 리스트 카드 — 노안 대응 + 위계 명확화
+     ───────────────────────────────────────────────────────── */
+  .school-list-card {
+    @apply relative rounded-2xl bg-white flex flex-col;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--color-border-medium);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.6) inset,
+      var(--shadow-xs);
+    transition:
+      transform 280ms var(--ease-out),
+      box-shadow 280ms var(--ease-out),
+      border-color 200ms var(--ease-out);
+    overflow: hidden;
+  }
+  .school-list-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 16%; bottom: 16%;
+    width: 4px;
+    background: linear-gradient(180deg, var(--color-primary-700) 0%, var(--color-primary-500) 100%);
+    border-radius: 0 4px 4px 0;
+    transition: top 280ms var(--ease-out), bottom 280ms var(--ease-out), width 280ms var(--ease-out);
+  }
+  .school-list-card:hover {
+    border-color: var(--color-primary-400);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.8) inset,
+      0 0 0 4px rgba(59, 130, 246, 0.06),
+      var(--shadow-lg);
+    transform: translateY(-3px);
+  }
+  .school-list-card:hover::before {
+    top: 0; bottom: 0;
+    width: 5px;
+  }
+  .school-list-card[data-visited="true"]::before {
+    background: linear-gradient(180deg, #D97706 0%, #F59E0B 100%);
+  }
+
+  .school-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .school-card-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-primary-900);
+    letter-spacing: -0.022em;
+    line-height: 1.3;
+  }
+  .school-card-est {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    background: var(--color-bg-tertiary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .school-card-en {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.125rem;
+  }
+  .school-card-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-tertiary);
+    margin-top: 0.5rem;
+  }
+  .school-card-summary {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-text-primary);
+    margin-top: 0.875rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .school-card-curriculum {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-top: 1rem;
+  }
+
+  /* 커리큘럼 pill — 종류별 색상 자동 */
+  .curriculum-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+    letter-spacing: -0.005em;
+    line-height: 1.4;
+  }
+  .curriculum-pill[data-c="IB"]         { background: #F3E8FF; color: #6B21A8; }
+  .curriculum-pill[data-c="British"]    { background: #FEE2E2; color: #991B1B; }
+  .curriculum-pill[data-c="American"]   { background: #DBEAFE; color: #1E40AF; }
+  .curriculum-pill[data-c="Australian"] { background: #FEF3C7; color: #92400E; }
+  .curriculum-pill[data-c="Canadian"]   { background: #D1FAE5; color: #065F46; }
+
+  .school-card-footer {
+    margin-top: auto;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .school-card-tuition-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .school-card-tuition-value {
+    margin-top: 0.125rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-primary-900);
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+  .school-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-primary-700);
+    transition: transform 200ms var(--ease-out);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .school-list-card:hover .school-card-cta { transform: translateX(3px); }
+
+  /* 다크 모드 */
+  :root[data-theme="dark"] .school-list-card { background: var(--color-bg-elevated); }
+  :root[data-theme="dark"] .school-card-est { background: rgba(255,255,255,0.06); }
+  :root[data-theme="dark"] .school-card-name { color: #DBEAFE; }
+  :root[data-theme="dark"] .school-card-tuition-value { color: #BFDBFE; }
+
   /* Feature 카드 (골드 톤, 강조) */
   .card-feature {
     @apply card relative overflow-hidden;
@@ -377,6 +535,56 @@
   /* card-cta 안 텍스트 — opacity 대신 명시적 색상으로 가독성 보장 */
   .card-cta h1, .card-cta h2, .card-cta h3 { color: #fff; font-weight: 700; letter-spacing: -0.022em; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
   .card-cta p { color: rgba(255, 255, 255, 0.94); font-weight: 450; }
+
+  /* ─── bg-primary-900 / bg-primary-700 컨텍스트 — 모든 지역·학교 페이지 하단 CTA 자동 강화 ─── */
+  .bg-primary-900, .bg-primary-700 {
+    /* 다층 그라데이션으로 단색의 평이함 해소 */
+    background:
+      radial-gradient(circle at 0% 100%, rgba(245, 158, 11, 0.16) 0%, transparent 50%),
+      radial-gradient(circle at 100% 0%, rgba(96, 165, 250, 0.20) 0%, transparent 50%),
+      linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-800) 100%) !important;
+    box-shadow: var(--shadow-lg);
+  }
+  .bg-primary-900 h1, .bg-primary-900 h2, .bg-primary-900 h3,
+  .bg-primary-700 h1, .bg-primary-700 h2, .bg-primary-700 h3 {
+    color: #fff !important;
+    font-weight: 700;
+    letter-spacing: -0.022em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+  .bg-primary-900 p, .bg-primary-700 p {
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 500;
+  }
+  /* opacity 클래스 override — Tailwind opacity-90/95/80 무효화 */
+  .bg-primary-900 .opacity-80,
+  .bg-primary-900 .opacity-90,
+  .bg-primary-900 .opacity-95,
+  .bg-primary-700 .opacity-80,
+  .bg-primary-700 .opacity-90,
+  .bg-primary-700 .opacity-95 {
+    opacity: 1 !important;
+    color: rgba(255, 255, 255, 0.95);
+  }
+  /* 흰색 버튼은 가독성 확실하게 */
+  .bg-primary-900 a.bg-white,
+  .bg-primary-700 a.bg-white {
+    color: var(--color-primary-900) !important;
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+    box-shadow: var(--shadow-md);
+  }
+  .bg-primary-900 a.bg-white:hover,
+  .bg-primary-700 a.bg-white:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+  }
+  /* 푸터 안 링크 (흰색·반투명 텍스트 컨텍스트) */
+  .bg-primary-900 a.underline,
+  .bg-primary-700 a.underline {
+    color: #FCD34D !important;
+    text-decoration-color: rgba(252, 211, 77, 0.5);
+  }
   .card-cta .card-cta-label {
     color: rgba(255, 255, 255, 0.78);
     font-size: 0.75rem;

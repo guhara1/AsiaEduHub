@@ -1,0 +1,118 @@
+---
+/**
+ * 학교 리스트 카드 — 도메스틱·말레이시아·해외 학교 모두 통일.
+ * 위계 명확화 + 노안 대응 + 커리큘럼 색상 자동.
+ */
+import type { Locale } from '~/lib/i18n';
+
+export interface CurriculumPill {
+  /** 표시 텍스트 (예: "IB Diploma", "A-Level") */
+  label: string;
+  /** 색상 분류 — IB / British / American / Australian / Canadian */
+  tone?: 'IB' | 'British' | 'American' | 'Australian' | 'Canadian';
+}
+
+export interface Props {
+  locale: Locale;
+  href: string;
+  name: string;          // 한글/중문 표시 이름
+  name_en: string;       // 영문 학교명
+  abbreviation?: string;
+  founded_year?: number;
+  location: string;      // "서울 · 서대문구 연희동" 형태
+  summary: string;
+  curriculum_pills: CurriculumPill[];
+  tuition_min: number;
+  tuition_max: number;
+  visited?: boolean;
+  operator_note?: string;
+}
+
+const {
+  locale,
+  href,
+  name,
+  name_en,
+  abbreviation,
+  founded_year,
+  location,
+  summary,
+  curriculum_pills,
+  tuition_min,
+  tuition_max,
+  visited = false,
+  operator_note,
+} = Astro.props;
+
+const fmtUsd = new Intl.NumberFormat(locale === 'ko' ? 'ko-KR' : 'zh-CN', {
+  style: 'currency', currency: 'USD', maximumFractionDigits: 0,
+}).format(0).replace('0', '');
+
+const T = {
+  ko: {
+    est: '설립', visited: '⭐ 방문 확인', operatorChild: '⭐ 운영자 자녀',
+    tuition: '연 학비 (추정)', detail: '자세히 보기',
+  },
+  zh: {
+    est: '创立', visited: '⭐ 已走访', operatorChild: '⭐ 站长子女',
+    tuition: '年学费(估算)', detail: '查看详情',
+  },
+}[locale];
+---
+<a href={href} class="school-list-card group" data-visited={visited ? 'true' : undefined}>
+  {/* 헤더: 학교명 + 설립 연도 배지 */}
+  <div class="school-card-header">
+    <div class="min-w-0 flex-1">
+      <h3 class="school-card-name">{name}</h3>
+      <p class="school-card-en">{name_en}{abbreviation && ` (${abbreviation})`}</p>
+    </div>
+    {founded_year && (
+      <span class="school-card-est">{founded_year} {T.est}</span>
+    )}
+  </div>
+
+  {/* 위치 (📍 아이콘) */}
+  <div class="school-card-location">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.7"/>
+    </svg>
+    {location}
+  </div>
+
+  {/* 운영자 검증 배지 */}
+  {(visited || operator_note) && (
+    <div class="mt-2 flex flex-wrap gap-1.5">
+      {visited && <span class="badge-gold">{T.visited}</span>}
+      {operator_note && <span class="badge-gold">{T.operatorChild}</span>}
+    </div>
+  )}
+
+  {/* 요약 */}
+  <p class="school-card-summary">{summary}</p>
+
+  {/* 커리큘럼 색상 칩 */}
+  {curriculum_pills.length > 0 && (
+    <div class="school-card-curriculum">
+      {curriculum_pills.map((p) => (
+        <span class="curriculum-pill" data-c={p.tone}>{p.label}</span>
+      ))}
+    </div>
+  )}
+
+  {/* 푸터: 학비 + CTA */}
+  <div class="school-card-footer">
+    <div>
+      <div class="school-card-tuition-label">{T.tuition}</div>
+      <div class="school-card-tuition-value">
+        {fmtUsd}{tuition_min.toLocaleString()} – {fmtUsd}{tuition_max.toLocaleString()}
+      </div>
+    </div>
+    <span class="school-card-cta">
+      {T.detail}
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </span>
+  </div>
+</a>

@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import AuthorByline from '~/components/AuthorByline.astro';
-import { INTERNATIONAL_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS, getRegionFaqs, type DomesticRegion } from '~/lib/domestic-schools';
+import SchoolListCard from '~/components/SchoolListCard.astro';
+import { INTERNATIONAL_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS, getRegionFaqs, curriculumTone, type DomesticRegion } from '~/lib/domestic-schools';
 
 export async function getStaticPaths() {
   const regions = REGION_METAS.filter((r) => r.category === 'international-schools');
@@ -76,25 +77,19 @@ const faqSchema = faqs.length > 0 ? {
         <h2 class="text-xl">{meta.ko} — 학교 {schools.length}곳</h2>
         <div class="mt-4 grid gap-5 md:grid-cols-2">
           {schools.map((s) => (
-            <a href={`/ko/domestic/international-schools/${s.region}/${s.slug}/`} class="block rounded-lg border p-5 transition-colors hover:border-primary-700" style="border-color: var(--color-border-light)">
-              <div class="flex items-baseline justify-between">
-                <h3 class="text-lg text-primary-900" style="font-weight:500">{s.name_ko}</h3>
-                {s.founded_year && <span class="text-xs text-[color:var(--color-text-tertiary)]">{s.founded_year} 개교</span>}
-              </div>
-              <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{s.name_en}{s.abbreviation && ` (${s.abbreviation})`}</p>
-              <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">
-                {s.city_ko}{s.district_ko && ` · ${s.district_ko}`}
-              </p>
-              <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">{s.summary_ko}</p>
-              <div class="mt-3 flex flex-wrap gap-2">
-                {s.curriculum_en.map((c) => (
-                  <span class="rounded-full bg-[color:var(--color-bg-tertiary)] px-2 py-0.5 text-[10px] text-[color:var(--color-text-secondary)]">{c}</span>
-                ))}
-              </div>
-              <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
-                연 학비 (추정): ${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}
-              </p>
-            </a>
+            <SchoolListCard
+              locale="ko"
+              href={`/ko/domestic/international-schools/${s.region}/${s.slug}/`}
+              name={s.name_ko}
+              name_en={s.name_en}
+              abbreviation={s.abbreviation}
+              founded_year={s.founded_year}
+              location={`${s.city_ko}${s.district_ko ? ` · ${s.district_ko}` : ''}`}
+              summary={s.summary_ko}
+              curriculum_pills={s.curriculum_en.map((c) => ({ label: c, tone: curriculumTone(c) }))}
+              tuition_min={s.tuition_range_usd[0]}
+              tuition_max={s.tuition_range_usd[1]}
+            />
           ))}
         </div>
       </section>

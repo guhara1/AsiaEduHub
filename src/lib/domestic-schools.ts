@@ -759,3 +759,14 @@ export const REGION_FAQS: Record<DomesticRegion, RegionFaq[]> = {
 export function getRegionFaqs(region: DomesticRegion): RegionFaq[] {
   return REGION_FAQS[region] ?? [];
 }
+
+/** 커리큘럼 프로그램 이름 → 색상 tone 자동 분류 */
+export function curriculumTone(label: string): 'IB' | 'British' | 'American' | 'Australian' | 'Canadian' | undefined {
+  const l = label.toLowerCase();
+  if (l.includes('ib')) return 'IB';
+  if (l.includes('british') || l.includes('a-level') || l.includes('igcse') || l.includes('gcse')) return 'British';
+  if (l.includes('american') || l.includes('ap') || l.includes('sat')) return 'American';
+  if (l.includes('australian') || l.includes('nsw') || l.includes('vce') || l.includes('atar')) return 'Australian';
+  if (l.includes('canadian') || l.includes('ossd') || l.includes('ontario')) return 'Canadian';
+  return undefined;
+}
