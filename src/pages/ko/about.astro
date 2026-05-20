@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = '운영자 소개 · 데이비드';
+const description =
+  '말레이시아 쿠알라룸푸르 거주 학부모. 자녀 2명을 국제학교에 보내며 학교를 두 번 옮긴 1차 경험을 바탕으로 AsiaEduHub 를 운영합니다.';
+
+// 사양: 메타 데이터에는 닉네임만, 본명은 본문(아래 빈 영역)에만.
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: '데이비드',
+  alternateName: 'David',
+  jobTitle: '온라인 마케팅 · AsiaEduHub 운영자',
+  homeLocation: '말레이시아 쿠알라룸푸르',
+  knowsLanguage: ['ko-KR', 'zh-CN', 'en'],
+};
+
+// 운영자 정체성 인포그래픽 — 사양서 "About Hero" 격자 6개 셀
+const cells = [
+  { top: '2024', body: '말레이시아 이주' },
+  { top: '자녀 2명', body: 'UCSI 재학' },
+  { top: '학교 2회 이전', body: '사이트 핵심 차별점', emphasis: true },
+  { top: '한·중·영', body: '3개 언어' },
+  { top: '온라인 마케팅', body: '12년+ 경력' },
+  { top: '쿠알라룸푸르', body: '현지 거주' },
+];
+---
+<BaseLayout title={title} description={description} jsonLd={personSchema}>
+  <section class="container-content py-12">
+    <div class="flex items-center gap-4">
+      <span aria-hidden="true" class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary-900 text-white text-xl">D</span>
+      <div>
+        <h1 class="text-2xl sm:text-3xl">데이비드 <span class="text-[color:var(--color-text-tertiary)] text-base align-middle">[본명은 본문에]</span></h1>
+        <p class="mt-1 text-sm text-[color:var(--color-text-secondary)]">말레이시아 쿠알라룸푸르 거주 · 두 번 옮긴 학부모</p>
+      </div>
+    </div>
+
+    {/* 격자형 인포그래픽 (3×2) — 사양 디자인 방향 그대로 */}
+    <div class="mt-8 grid gap-3 sm:grid-cols-3">
+      {cells.map((c) => (
+        <div
+          class:list={[
+            'rounded-lg border p-5',
+            c.emphasis ? 'bg-accent-100 border-accent-500' : 'bg-white',
+          ]}
+          style={c.emphasis ? '' : 'border-color: var(--color-border-light)'}
+        >
+          <div class:list={['text-sm', c.emphasis ? 'text-accent-700' : 'text-[color:var(--color-text-secondary)]']}>
+            {c.top}
+          </div>
+          <div
+            class:list={['mt-1 text-base', c.emphasis && 'text-accent-700']}
+            style={c.emphasis ? 'font-weight:500' : 'color: var(--color-text-primary); font-weight:500'}
+          >
+            {c.body}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-6 rounded-lg bg-primary-900 p-6 text-white">
+      <p class="text-base" style="font-weight:500">
+        "학비가 비싸다고 다 좋은 학교가 아닙니다.
+        직접 학교를 두 번 옮기며 배운 것을 학부모 관점으로 그대로 기록합니다."
+      </p>
+    </div>
+  </section>
+
+  <article class="container-content pb-16 prose prose-neutral max-w-2xl">
+    {/* TODO(운영자): 아래 영역에 about-final-ko.md 본문을 붙여 넣으세요. */}
+    {/* 본명·자녀 학교 재학 사실·이전 학교 옮긴 이유(학비 + 한국인 비율 폭증)·유학원 이용 경험 포함 */}
+    <h2>운영자 본문 (작성 영역)</h2>
+    <p class="text-[color:var(--color-text-secondary)]">
+      이 영역은 운영자가 직접 작성한 자기소개로 교체됩니다. AI 생성 본문은 사이트 정책상 사용하지 않습니다.
+    </p>
+  </article>
+</BaseLayout>

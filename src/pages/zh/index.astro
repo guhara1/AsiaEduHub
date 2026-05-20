@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getMessages } from '../../lib/i18n';
+
+const t = getMessages('zh');
+
+const title = `${t.site.name} — ${t.site.tagline}`;
+const description =
+  'David(站长)居住马来西亚吉隆坡,中文能力来自儿时北京经历。亲身走访马来西亚、泰国、新加坡国际学校,从家长角度整理真实信息。';
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: t.site.name,
+  url: Astro.site?.toString(),
+  inLanguage: 'zh-CN',
+};
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'David',
+  description: '居住马来西亚的国际学校家长,AsiaEduHub 站长',
+  url: (Astro.site?.toString() ?? '') + 'zh/about/',
+};
+---
+<BaseLayout title={title} description={description} jsonLd={[websiteSchema, personSchema]}>
+  <section class="container-content py-16">
+    <p class="badge-gold mb-4">{t.badges.two_school_switches}</p>
+    <h1 class="text-3xl sm:text-5xl">
+      亚洲国际学校,<br />真实家长的真实经验
+    </h1>
+    <p class="mt-6 max-w-2xl text-base text-[color:var(--color-text-secondary)]">
+      站长 David 居住马来西亚吉隆坡,孩子两次转校的亲身经历。
+      学费、教师国籍、设施(自有/共用)、本地华人与中国大陆学生比例,从家长角度对比整理。
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="/zh/abroad/" class="cta-primary">查看海外国际学校</a>
+      <a href="/zh/contact/" class="cta-secondary">WeChat 咨询</a>
+    </div>
+  </section>
+
+  <section class="container-content pb-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {[
+      { href: '/zh/tools/budget/budget-friendly/', title: '高性价比', sub: '< 1万美元/年' },
+      { href: '/zh/tools/budget/mid-range/', title: '中等预算', sub: '1万~2万美元/年' },
+      { href: '/zh/tools/budget/premium/', title: '高端', sub: '2万~3.5万美元/年' },
+      { href: '/zh/tools/budget/top-tier/', title: '顶级', sub: '3.5万美元+/年' },
+    ].map((b) => (
+      <a
+        href={b.href}
+        class="rounded-lg border p-5 transition-colors hover:border-primary-700"
+        style="border-color: var(--color-border-light)"
+      >
+        <div class="text-lg text-primary-900" style="font-weight:500">{b.title}</div>
+        <div class="mt-1 text-sm text-[color:var(--color-text-secondary)]">{b.sub}</div>
+      </a>
+    ))}
+  </section>
+</BaseLayout>

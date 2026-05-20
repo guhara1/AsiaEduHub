@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = '站长简介 · David';
+const description =
+  '居住马来西亚吉隆坡的国际学校家长。两次转校的亲身经历,加上儿时北京生活经历带来的中文能力,运营 AsiaEduHub。';
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'David',
+  jobTitle: '在线营销 · AsiaEduHub 站长',
+  homeLocation: '马来西亚吉隆坡',
+  knowsLanguage: ['ko-KR', 'zh-CN', 'en'],
+};
+
+const cells = [
+  { top: '2024', body: '移居马来西亚' },
+  { top: '两个孩子', body: '就读 UCSI' },
+  { top: '两次转校', body: '本站核心差异', emphasis: true },
+  { top: '中·韩·英', body: '三种语言' },
+  { top: '在线营销', body: '12年+ 经验' },
+  { top: '吉隆坡', body: '本地居住' },
+];
+---
+<BaseLayout title={title} description={description} jsonLd={personSchema}>
+  <section class="container-content py-12">
+    <div class="flex items-center gap-4">
+      <span aria-hidden="true" class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary-900 text-white text-xl">D</span>
+      <div>
+        <h1 class="text-2xl sm:text-3xl">David</h1>
+        <p class="mt-1 text-sm text-[color:var(--color-text-secondary)]">居住马来西亚吉隆坡 · 两次转校的家长</p>
+      </div>
+    </div>
+
+    <div class="mt-8 grid gap-3 sm:grid-cols-3">
+      {cells.map((c) => (
+        <div
+          class:list={[
+            'rounded-lg border p-5',
+            c.emphasis ? 'bg-accent-100 border-accent-500' : 'bg-white',
+          ]}
+          style={c.emphasis ? '' : 'border-color: var(--color-border-light)'}
+        >
+          <div class:list={['text-sm', c.emphasis ? 'text-accent-700' : 'text-[color:var(--color-text-secondary)]']}>
+            {c.top}
+          </div>
+          <div
+            class:list={['mt-1 text-base', c.emphasis && 'text-accent-700']}
+            style={c.emphasis ? 'font-weight:500' : 'color: var(--color-text-primary); font-weight:500'}
+          >
+            {c.body}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-6 rounded-lg bg-primary-900 p-6 text-white">
+      <p class="text-base" style="font-weight:500">
+        "学费高 ≠ 学校好。两次转校的真实经验,从家长视角原原本本记录。"
+      </p>
+    </div>
+  </section>
+
+  <article class="container-content pb-16 prose prose-neutral max-w-2xl">
+    {/* TODO(站长): 此处粘贴 about-final-zh.md 正文。AI 生成正文不发布。 */}
+    <h2>站长正文(待填写)</h2>
+    <p class="text-[color:var(--color-text-secondary)]">
+      此区域将由站长亲自撰写的中文版自我介绍替换。本站不发布 AI 生成正文。
+    </p>
+  </article>
+</BaseLayout>

@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = '编辑原则 · AsiaEduHub';
+const description = '编辑原则、AI 使用范围、广告与内容分离政策、数据来源与更新政策。站长 David。';
+
+const lastUpdated = '2026-05-20';
+---
+<BaseLayout title={title} description={description}>
+  <article class="container-content py-12 max-w-2xl">
+    <h1 class="text-2xl sm:text-3xl">编辑原则</h1>
+    <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+      最后更新:{lastUpdated} · 负责人:David(实名仅在广告媒体资料与法律页面公开)
+    </p>
+
+    <section class="mt-8 space-y-6 text-[color:var(--color-text-primary)]">
+      <div>
+        <h2 class="text-lg">1. 第一手经验优先(E-E-A-T)</h2>
+        <p class="mt-2 text-sm">
+          学校探访与系列经验仅基于站长亲自走访·体验。已实地走访的学校标注 ⭐"站长实地确认"。
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg">2. AI 使用范围</h2>
+        <p class="mt-2 text-sm">
+          AI 仅用于翻译·语言润色·结构化。信息正文与经验文不使用 AI 自动生成。
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg">3. 广告与内容分离</h2>
+        <p class="mt-2 text-sm">
+          广告内容明确标注 "SPONSORED"。广告主(留学机构·学校)与编辑推荐学校分页面展示。
+          不用"推荐",改用"家长视角分析"、"性价比分析"等中立表述。
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg">4. 数据来源与更新</h2>
+        <p class="mt-2 text-sm">
+          所有学校数据标注来源(学校官方资料 / 站长亲自确认 等)与最后更新日期,每季度复核。
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg">5. 中国学生比例标注</h2>
+        <p class="mt-2 text-sm">
+          不使用"低·中·高"主观标签,统一用准确百分比。
+          中国大陆学生与本地华人(海外华人)必须分开标注。
+          马来西亚·新加坡等地华人比例高属自然现象,以此提供平衡语境。
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg">6. 设施数据核实</h2>
+        <p class="mt-2 text-sm">
+          设施不只是"有/无",必须区分自有/共用/租用。站长亲自走访确认的标注 ⭐ 徽章。
+        </p>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

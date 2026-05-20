@@ -1,0 +1,30 @@
+---
+import { resolveLocale, getMessages, type Locale } from '../lib/i18n';
+
+const pathname = Astro.url.pathname;
+const locale: Locale = resolveLocale(Astro.currentLocale, pathname);
+const t = getMessages(locale);
+
+const footerLinks = [
+  { label: t.footer.about, href: `/${locale}/about/` },
+  { label: t.footer.editorial_policy, href: `/${locale}/editorial-policy/` },
+  { label: t.footer.contact, href: `/${locale}/contact/` },
+  { label: t.footer.advertise, href: `/${locale}/advertise/` },
+  { label: t.footer.privacy, href: `/${locale}/privacy/` },
+  { label: t.footer.terms, href: `/${locale}/terms/` },
+];
+
+const year = new Date().getFullYear();
+---
+<footer class="mt-16 border-t" style="border-color: var(--color-border-light); background: var(--color-bg-secondary)">
+  <div class="container-content py-10 text-sm text-[color:var(--color-text-secondary)]">
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+      {footerLinks.map((l) => (
+        <a href={l.href} class="hover:text-primary-700">{l.label}</a>
+      ))}
+    </div>
+    <p class="mt-6 text-xs text-[color:var(--color-text-tertiary)]">
+      © {year} AsiaEduHub. {t.site.tagline}
+    </p>
+  </div>
+</footer>

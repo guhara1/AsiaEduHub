@@ -1,0 +1,35 @@
+{
+  "site": {
+    "name": "AsiaEduHub · 아시아 에듀 허브",
+    "tagline": "동남아 국제학교, 학부모가 직접 정리한 진짜 정보"
+  },
+  "nav": {
+    "domestic": "국내 국제학교",
+    "abroad": "해외 국제학교",
+    "compare": "학교 비교",
+    "guide": "유학 가이드",
+    "experience": "실제 경험담",
+    "consultation": "무료 상담",
+    "language": "언어"
+  },
+  "badges": {
+    "operator_visited": "운영자 방문 확인",
+    "field_report": "현장 취재",
+    "sponsored": "SPONSORED",
+    "two_school_switches": "학교 2회 이전 운영자"
+  },
+  "common": {
+    "last_updated": "마지막 업데이트",
+    "source": "출처",
+    "read_more": "더 보기",
+    "back_to_home": "홈으로"
+  },
+  "footer": {
+    "editorial_policy": "편집 원칙",
+    "about": "운영자 소개",
+    "contact": "연락처",
+    "advertise": "광고 문의",
+    "privacy": "개인정보처리방침",
+    "terms": "이용약관"
+  }
+}

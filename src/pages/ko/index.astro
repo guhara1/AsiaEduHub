@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getMessages } from '../../lib/i18n';
+
+const t = getMessages('ko');
+
+const title = `${t.site.name} — ${t.site.tagline}`;
+const description =
+  '말레이시아 거주 학부모(데이비드)가 직접 운영. 두 번 옮긴 경험을 바탕으로 동남아·국내·영미권 국제학교를 학부모 관점에서 정리합니다.';
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: t.site.name,
+  url: Astro.site?.toString(),
+  inLanguage: 'ko-KR',
+};
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: '데이비드',
+  description: '말레이시아 거주 학부모, AsiaEduHub 운영자',
+  url: (Astro.site?.toString() ?? '') + 'ko/about/',
+};
+---
+<BaseLayout title={title} description={description} jsonLd={[websiteSchema, personSchema]}>
+  <section class="container-content py-16">
+    <p class="badge-gold mb-4">{t.badges.two_school_switches}</p>
+    <h1 class="text-3xl sm:text-5xl">
+      동남아 국제학교,<br />학부모가 직접 정리한 진짜 정보
+    </h1>
+    <p class="mt-6 max-w-2xl text-base text-[color:var(--color-text-secondary)]">
+      말레이시아·태국·싱가포르·베트남과 국내 외국인학교·제주 국제학교까지.
+      학비·교사 국적·시설 자체/공유 여부·한국인 비율을 학부모 관점에서 비교합니다.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="/ko/abroad/" class="cta-primary">해외 국제학교 보기</a>
+      <a href="/ko/tools/compare/" class="cta-secondary">학교 비교 도구</a>
+    </div>
+  </section>
+
+  <section class="container-content pb-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {[
+      { href: '/ko/tools/budget/budget-friendly/', title: '가성비', sub: '연 1,000만원 이하' },
+      { href: '/ko/tools/budget/mid-range/', title: '중간 예산', sub: '1,000~2,000만원' },
+      { href: '/ko/tools/budget/premium/', title: '프리미엄', sub: '2,000~3,500만원' },
+      { href: '/ko/tools/budget/top-tier/', title: '최상위', sub: '3,500만원+' },
+    ].map((b) => (
+      <a
+        href={b.href}
+        class="rounded-lg border p-5 transition-colors hover:border-primary-700"
+        style="border-color: var(--color-border-light)"
+      >
+        <div class="text-lg text-primary-900" style="font-weight:500">{b.title}</div>
+        <div class="mt-1 text-sm text-[color:var(--color-text-secondary)]">{b.sub}</div>
+      </a>
+    ))}
+  </section>
+</BaseLayout>

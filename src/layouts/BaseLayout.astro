@@ -1,0 +1,77 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { resolveLocale, alternateUrlFor, HTML_LANG, getMessages } from '../lib/i18n';
+
+export interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  noindex?: boolean;
+  /** 페이지에 사용된 schema.org JSON-LD 객체(들). breadcrumb 등 page 단위 schema 는 여기로 전달. */
+  jsonLd?: object | object[];
+}
+
+const { title, description, ogImage, noindex = false, jsonLd } = Astro.props;
+
+const pathname = Astro.url.pathname;
+const locale = resolveLocale(Astro.currentLocale, pathname);
+const htmlLang = HTML_LANG[locale];
+const t = getMessages(locale);
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const canonical = siteUrl + pathname;
+const altKo = siteUrl + alternateUrlFor(pathname, 'ko');
+const altZh = siteUrl + alternateUrlFor(pathname, 'zh');
+const ogImageUrl = ogImage ? (ogImage.startsWith('http') ? ogImage : siteUrl + ogImage) : siteUrl + '/og-default.png';
+
+const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+---
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    {/* hreflang — 사양상 ko/zh 상호 매칭 필수 */}
+    <link rel="alternate" hreflang="ko-KR" href={altKo} />
+    <link rel="alternate" hreflang="zh-CN" href={altZh} />
+    <link rel="alternate" hreflang="x-default" href={altKo} />
+
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={t.site.name} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content={htmlLang.replace('-', '_')} />
+
+    {/* Twitter */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    {jsonLdArray.map((obj) => (
+      <script type="application/ld+json" set:html={JSON.stringify(obj)} />
+    ))}
+  </head>
+  <body class="min-h-screen bg-white text-[color:var(--color-text-primary)]">
+    <SiteHeader />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

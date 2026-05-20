@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = '편집 원칙 · AsiaEduHub';
+const description =
+  '편집 원칙, AI 사용 범위, 광고-콘텐츠 분리 정책, 데이터 출처·업데이트 정책. 운영자 데이비드.';
+
+const lastUpdated = '2026-05-20';
+---
+<BaseLayout title={title} description={description}>
+  <article class="container-content py-12 max-w-2xl">
+    <h1 class="text-2xl sm:text-3xl">편집 원칙</h1>
+    <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+      마지막 업데이트: {lastUpdated} · 책임자: 데이비드 (본명은 광고 미디어 키트·법적 페이지에 한해 공개)
+    </p>
+
+    <section class="mt-8 space-y-6 text-[color:var(--color-text-primary)]">
+      <div>
+        <h2 class="text-lg">1. 1차 경험 우선 (E-E-A-T)</h2>
+        <p class="mt-2 text-sm">
+          학교 방문기·시그니처 경험담은 운영자가 직접 방문·체험한 경우에만 발행합니다.
+          방문 학교에는 ⭐ "운영자 방문 확인" 배지를 표시합니다.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg">2. AI 사용 범위</h2>
+        <p class="mt-2 text-sm">
+          AI는 번역·문법 교정·구조화에만 사용합니다. 정보 본문·경험담은 AI 자동 생성을 사용하지 않습니다.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg">3. 광고-콘텐츠 분리</h2>
+        <p class="mt-2 text-sm">
+          광고 콘텐츠는 "SPONSORED" 배지로 명확히 표시합니다. 광고주(유학원·학교)와 편집 추천 학교는 페이지를 분리해 표기합니다.
+          "추천" 대신 "학부모 관점 분석", "가성비 분석" 같은 중립 표현을 사용합니다.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg">4. 데이터 출처·업데이트</h2>
+        <p class="mt-2 text-sm">
+          모든 학교 데이터에 출처(학교 공식 자료 / 운영자 직접 확인 등)와 마지막 업데이트 날짜를 표기합니다.
+          학교 데이터는 분기별로 검증합니다.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg">5. 한국·중국 학생 비율 표시</h2>
+        <p class="mt-2 text-sm">
+          "낮음·보통·높음" 같은 주관 라벨 대신 정확한 % 로 표기합니다.
+          중국 본토 학생과 화교(현지 중국계)는 반드시 분리해 표기합니다.
+          "한국인 비율 높음 ≠ 부정적" 이라는 균형 잡힌 맥락을 함께 제공합니다.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-lg">6. 시설 데이터 검증</h2>
+        <p class="mt-2 text-sm">
+          시설은 "있음"으로만 표시하지 않고 자체/공유/임대로 구분합니다. 운영자 직접 방문 확인 시 ⭐ 배지를 부여합니다.
+        </p>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

@@ -1,0 +1,96 @@
+/* Pretendard (한국어 1순위) — @import 는 모든 규칙보다 먼저 와야 함 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* 사양서 색상 토큰 — Tailwind theme 와 동기화. CSS 변수는 동적 스타일·인라인 SVG 용. */
+  --color-primary-900: #1E3A8A;
+  --color-primary-700: #1D4ED8;
+  --color-primary-100: #DBEAFE;
+
+  --color-accent-700: #92400E;
+  --color-accent-500: #F59E0B;
+  --color-accent-100: #FEF3C7;
+
+  --color-text-primary: #111827;
+  --color-text-secondary: #6B7280;
+  --color-text-tertiary: #9CA3AF;
+
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F9FAFB;
+  --color-bg-tertiary: #F3F4F6;
+
+  --color-border-light: rgba(30, 58, 138, 0.08);
+  --color-border-medium: rgba(30, 58, 138, 0.15);
+
+  --color-success: #047857;
+  --color-warning: #D97706;
+  --color-danger: #DC2626;
+}
+
+@layer base {
+  html {
+    /* 사양: 폰트 가중치 400·500만 사용. base 는 400. */
+    font-weight: 400;
+    color: var(--color-text-primary);
+    background: var(--color-bg-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* 중국어 페이지에서만 Noto Sans SC 우선 */
+  html[lang^='zh'] body {
+    font-family: 'Noto Sans SC', Pretendard, 'Noto Sans KR', Inter, system-ui, sans-serif;
+  }
+
+  /* 제목은 medium(500) 까지만 — 사양상 700+ 금지 */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+    color: var(--color-primary-900);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  a {
+    color: var(--color-primary-700);
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+@layer components {
+  .container-content {
+    @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8;
+  }
+
+  /* 골드 배지 — 사양상 "운영자 방문 확인", "두 번 옮긴 경험" 등 핵심 차별점에만 */
+  .badge-gold {
+    @apply inline-flex items-center gap-1 rounded-full bg-accent-100 px-2.5 py-0.5 text-xs text-accent-700;
+    font-weight: 500;
+  }
+
+  .badge-navy {
+    @apply inline-flex items-center gap-1 rounded-full bg-primary-100 px-2.5 py-0.5 text-xs text-primary-900;
+    font-weight: 500;
+  }
+
+  .badge-sponsored {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs uppercase tracking-wide;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  .cta-primary {
+    @apply inline-flex items-center justify-center rounded-md bg-primary-900 px-5 py-2.5 text-white transition-opacity hover:opacity-90;
+    font-weight: 500;
+  }
+
+  .cta-secondary {
+    @apply inline-flex items-center justify-center rounded-md border border-primary-900/15 bg-white px-5 py-2.5 text-primary-900;
+    font-weight: 500;
+  }
+}
