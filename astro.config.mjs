@@ -32,6 +32,12 @@ export default defineConfig({
           zh: 'zh-CN',
         },
       },
+      // 검색엔진 인덱스에서 제외할 경로 패턴.
+      //  - /advertise/ : 광고주 영업용, 학부모 검색 노출 불필요
+      //  - /experts/   : 콘텐츠 0건 시 빈 인덱스 (콘텐츠 누적 후 제외 패턴에서 제거)
+      filter: (page) => {
+        return !/\/(advertise|experts)\/?$/.test(page);
+      },
     }),
   ],
   image: {

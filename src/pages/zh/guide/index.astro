@@ -1,23 +1,139 @@
 ---
-import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
 import { GUIDE_CATEGORIES } from '~/lib/locations';
+import { GUIDE_TOPICS, GUIDE_FAQS } from '~/lib/guide-info';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
 
-const categories = GUIDE_CATEGORIES.map((g) => ({
-  id: g.id,
-  label: g.zh,
-  highlight: g.id === 'expert-columns' ? 'YMYL 信任资产' : undefined,
-  description:
-    g.id === 'expert-columns'
-      ? '现职教师·招生官·留学顾问的访谈合集。本站信任度的核心。「谁来写」比「写什么」更重要。'
-      : undefined,
-}));
+const guides = (await getCollection('guides', (e) => e.data.locale === 'zh'))
+  .sort((a, b) => b.data.last_updated.getTime() - a.data.last_updated.getTime());
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = '国际学校留学指南 — 入学 · 学费 · 签证 · 课程 · 升学案例 · 专家专栏 | AsiaEduHub';
+const description =
+  '韩国 · 东南亚 · 英美澳加国际学校的入学准备、学费 · 奖学金、签证 · 居住、IB · A-Level · AP 对比、升学案例、专家访谈。围绕家长核心问题整理。';
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '指南' },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: GUIDE_FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q_zh,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_zh },
+  })),
+};
+
+function topicFor(id: string) {
+  return GUIDE_TOPICS.find((t) => t.id === id);
+}
+function categoryGuides(id: string) {
+  return guides.filter((g) => g.data.category === id);
+}
 ---
-<CategoryIndexPage
-  locale="zh"
-  pageTitle="留学指南 — 入学 · 学费 · 签证 · 课程 · 升学案例 · 专家专栏 | AsiaEduHub"
-  metaDescription="国际学校入学准备、学费与奖学金、签证与居住、课程对比(IB·AP·A-Level)、升学案例、专家专栏。站长亲自审核。"
-  h1="指南"
-  intro="SEO 流量引擎。入学、学费、签证、课程、升学案例、专家访谈按分类累积。每篇文章标注作者署名与最后更新时间。"
-  breadcrumbName="指南"
-  categories={categories}
-/>
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · 指南</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">国际学校留学指南</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      家长在决策每个阶段都会遇到的核心问题,按 6 大类整理。站长第一手经验 + 核实数据 + 专家访谈持续累积的信息中心。
+    </p>
+
+    <div class="mt-4">
+      <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources="学校官方资料、各国政府公告、站长亲自核实、专家访谈" />
+    </div>
+
+    <div class="mt-6 flex flex-wrap gap-2">
+      {GUIDE_CATEGORIES.map((g) => (
+        <a href={`#${g.id}`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
+          {g.zh}
+        </a>
+      ))}
+    </div>
+
+    {GUIDE_CATEGORIES.map((cat) => {
+      const topic = topicFor(cat.id);
+      const list = categoryGuides(cat.id);
+      const isExpert = cat.id === 'expert-columns';
+      return (
+        <section id={cat.id} class="mt-12 scroll-mt-24">
+          <div class="flex flex-wrap items-baseline gap-2 border-b pb-2" style="border-color: var(--color-border-light)">
+            <h2 class="text-xl">{cat.zh}</h2>
+            {isExpert && <span class="badge-gold">⭐ YMYL 信任资产</span>}
+            <span class="text-xs text-[color:var(--color-text-tertiary)] ml-auto">已发 {list.length}</span>
+          </div>
+
+          {topic && <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">{topic.intro_zh}</p>}
+
+          {topic && topic.questions_zh.length > 0 && (
+            <div class="mt-4 rounded-lg border bg-[color:var(--color-bg-secondary)] p-4" style="border-color: var(--color-border-light)">
+              <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">家长核心问题</div>
+              <ul class="mt-2 space-y-1 text-sm">
+                {topic.questions_zh.map((q) => <li>• {q}</li>)}
+              </ul>
+            </div>
+          )}
+
+          {list.length > 0 ? (
+            <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {list.map((g) => (
+                <a href={`/zh/guide/${g.slug.replace(/-zh$/, '')}/`} class="block rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+                  <div class="text-primary-900" style="font-weight:500">{g.data.title}</div>
+                  <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{g.data.summary}</p>
+                  <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">{formatDate(g.data.last_updated, 'zh')}</p>
+                </a>
+              ))}
+            </div>
+          ) : isExpert ? (
+            <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">
+              现职教师 · 招生官 · 留学顾问访谈累积于 <a href="/zh/experts/" class="text-primary-700 hover:underline">专家专栏</a> 页面。
+            </p>
+          ) : (
+            <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">围绕上述问题的解答正陆续累积。</p>
+          )}
+        </section>
+      );
+    })}
+
+    <section id="faq" class="mt-16 scroll-mt-24">
+      <h2 class="text-xl">指南使用 FAQ</h2>
+      <div class="mt-5 space-y-3">
+        {GUIDE_FAQS.map((f) => (
+          <details class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+            <summary class="cursor-pointer text-sm text-primary-900" style="font-weight:500; list-style: disclosure-closed">{f.q_zh}</summary>
+            <p class="mt-3 text-sm text-[color:var(--color-text-primary)]">{f.a_zh}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">搜索找不到的具体问题?</h2>
+      <p class="mt-2 text-sm opacity-90">
+        指南中没有的具体情境(孩子年级 · 预算 · 国家),站长 1:1 答复,答复内容匿名化后用于下一篇指南选题。
+      </p>
+      <div class="mt-4">
+        <a href="/zh/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">WeChat 咨询 →</a>
+      </div>
+    </section>
+  </section>
+</BaseLayout>

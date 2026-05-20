@@ -1,73 +1,207 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
 import SchoolCard from '~/components/SchoolCard.astro';
 import { loadSchools } from '~/lib/schools';
 import { SOUTHEAST_ASIA, ANGLOSPHERE, SCHOOL_TYPES, countryName, cityName } from '~/lib/locations';
+import { COUNTRIES, ABROAD_FAQS } from '~/lib/abroad-info';
 
 const schools = await loadSchools('ko');
+const seaCountries = COUNTRIES.filter((c) => c.region === 'sea');
+const angloCountries = COUNTRIES.filter((c) => c.region === 'anglo');
 
-const title = '국가별 국제학교 — 동남아 (말레이시아 · 태국 · 싱가포르 · 베트남) | AsiaEduHub';
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = '해외 국제학교 — 동남아(가성비) vs 영미권(프리미엄) 완벽 비교 | AsiaEduHub';
 const description =
-  '말레이시아 쿠알라룸푸르·페낭·조호바루, 태국 방콕·치앙마이, 싱가포르, 베트남 국제학교. 운영자(데이비드)가 직접 방문·검증한 학교 우선.';
+  '말레이시아·태국·싱가포르·베트남 동남아 국제학교와 미국·영국·캐나다·호주 영미권 보딩스쿨 학비·생활비·비자·진학 트랙 비교. 운영자 직접 거주·검증.';
 
 const breadcrumb = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'ko/' },
-    { '@type': 'ListItem', position: 2, name: '국가별 학교' },
+    { '@type': 'ListItem', position: 2, name: '해외 유학' },
   ],
 };
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: ABROAD_FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q_ko,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_ko },
+  })),
+};
 ---
-<BaseLayout title={title} description={description} jsonLd={breadcrumb}>
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
   <section class="container-content py-10">
-    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/ko/">홈</a> · 국가별 학교</nav>
-    <h1 class="mt-2 text-2xl sm:text-3xl">국가별 국제학교</h1>
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/ko/">홈</a> · 해외 유학</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">해외 국제학교 — 동남아 가성비 vs 영미권 프리미엄</h1>
     <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
-      운영자가 직접 방문한 학교에 ⭐ "운영자 방문 확인" 배지를 부여합니다.
-      학교 데이터는 분기별 검증, 출처·업데이트 날짜 표기 원칙으로 운영합니다.
+      자녀의 영미권 대학 진학을 목표로 하는 학부모를 위한 두 가지 전략:
+      <strong style="font-weight:500">동남아 IB 학교(가성비)</strong>와 <strong style="font-weight:500">영미권 보딩스쿨(프리미엄)</strong>.
+      학비·생활비·비자·진학 트랙을 한 페이지에서 비교합니다.
     </p>
 
-    {/* 빠른 이동 */}
-    <div class="mt-6 space-y-2">
-      <div class="flex flex-wrap gap-2">
-        <span class="text-xs text-[color:var(--color-text-tertiary)] self-center">🌏 동남아 (가성비):</span>
-        {SOUTHEAST_ASIA.map((c) => (
-          <a href={`#${c.id}`} class="rounded-full bg-accent-100 px-3 py-1 text-xs text-accent-700 hover:bg-accent-500 hover:text-white" style="font-weight:500">
-            {c.flag} {countryName(c, 'ko')}
-          </a>
-        ))}
-      </div>
-      <div class="flex flex-wrap gap-2">
-        <span class="text-xs text-[color:var(--color-text-tertiary)] self-center">🌎 영미권 (프리미엄):</span>
-        {ANGLOSPHERE.map((c) => (
-          <a href={`#${c.id}`} class="rounded-full bg-primary-100 px-3 py-1 text-xs text-primary-900 hover:bg-primary-900 hover:text-white" style="font-weight:500">
-            {c.flag} {countryName(c, 'ko')}
-          </a>
-        ))}
-      </div>
-      <div class="flex flex-wrap gap-2">
-        <span class="text-xs text-[color:var(--color-text-tertiary)] self-center">📚 유형별:</span>
-        {SCHOOL_TYPES.map((t) => (
-          <a href={`#type-${t.id}`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
-            {t.ko}
-          </a>
-        ))}
-      </div>
+    <div class="mt-4">
+      <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources="각국 정부 공식 자료, 학교 공식 발표, MM2H · Thailand Privilege · MOM · ICA, 운영자 직접 거주 (쿠알라룸푸르)" />
     </div>
 
-    {/* 동남아 — 가성비 톤 (골드) */}
-    <div class="mt-10 rounded-lg border-l-4 border-accent-500 bg-accent-100 px-4 py-3">
-      <h2 class="text-lg text-accent-700" style="font-weight:500">🌏 동남아 — 가성비 국제학교</h2>
-      <p class="mt-1 text-xs text-accent-700">학비 대비 시설·커리큘럼이 우수한 시장. 운영자 현지 거주(쿠알라룸푸르) — 직접 방문 비중 ↑</p>
+    {/* 동남아 vs 영미권 한눈에 */}
+    <section class="mt-8 grid gap-4 md:grid-cols-2">
+      <div class="rounded-lg border-l-4 border-accent-500 bg-accent-100 p-5">
+        <div class="text-xs uppercase tracking-wide text-accent-700">🌏 동남아 (가성비)</div>
+        <h2 class="mt-1 text-lg text-accent-700" style="font-weight:500">$6K–$50K / 년 · MM2H · Elite · EP</h2>
+        <ul class="mt-3 space-y-1 text-sm text-accent-700">
+          <li>• 학비 영미권 보딩의 1/3 ~ 1/2</li>
+          <li>• 학부모 동반 비자 옵션 다양</li>
+          <li>• 한국과 시차·접근성 좋음</li>
+          <li>• 운영자 거주 → 정보 접근성 ↑</li>
+        </ul>
+      </div>
+      <div class="rounded-lg border-l-4 border-primary-700 bg-primary-100 p-5">
+        <div class="text-xs uppercase tracking-wide text-primary-900">🌎 영미권 (프리미엄)</div>
+        <h2 class="mt-1 text-lg text-primary-900" style="font-weight:500">$20K–$90K / 년 · 보딩 위주 · Student Visa</h2>
+        <ul class="mt-3 space-y-1 text-sm text-primary-900">
+          <li>• 명문 보딩스쿨 (Eton · Andover · Westminster 등)</li>
+          <li>• 옥스브리지 · 아이비 진학 직결</li>
+          <li>• 시험 환경(IB / A-Level / AP) 정통</li>
+          <li>• 학부모 동반 어려움 (호주 590 예외)</li>
+        </ul>
+      </div>
+    </section>
+
+    {/* 국가별 비교표 */}
+    <section class="mt-10 overflow-x-auto">
+      <h2 class="text-xl">국가별 비교 — 학비·생활비·비자</h2>
+      <table class="mt-4 w-full text-sm min-w-[820px]">
+        <thead>
+          <tr class="border-b" style="border-color: var(--color-border-light)">
+            <th class="py-2 text-left" style="font-weight:500">국가</th>
+            <th class="py-2 text-left" style="font-weight:500">연 학비 (USD)</th>
+            <th class="py-2 text-left" style="font-weight:500">월 가족 생활비 (USD)</th>
+            <th class="py-2 text-left" style="font-weight:500">학부모 비자</th>
+            <th class="py-2 text-left" style="font-weight:500">한 줄 요약</th>
+          </tr>
+        </thead>
+        <tbody class="text-[color:var(--color-text-secondary)]">
+          {COUNTRIES.map((c) => (
+            <tr class="border-b align-top" style="border-color: var(--color-border-light)">
+              <td class="py-3 text-[color:var(--color-text-primary)]" style="font-weight:500">
+                {c.flag} {c.ko_name}
+                {c.operator_proximity === 'high' && <span class="ml-2 badge-gold text-[10px]">⭐ 운영자 거주</span>}
+              </td>
+              <td class="py-3">${c.tuition_range_usd[0].toLocaleString()} – ${c.tuition_range_usd[1].toLocaleString()}</td>
+              <td class="py-3">${c.family_living_monthly_usd[0].toLocaleString()} – ${c.family_living_monthly_usd[1].toLocaleString()}</td>
+              <td class="py-3">{c.popular_visas_ko.join(' · ')}</td>
+              <td class="py-3 text-[color:var(--color-text-primary)]">{c.tagline_ko}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">
+        ※ 2025–2026 시점 일반 시장 추정 범위. 학교·도시·연도별 상이.
+      </p>
+    </section>
+
+    {/* 국가별 상세 카드 (동남아 + 영미권) */}
+    <section class="mt-12">
+      <h2 class="text-xl">🌏 동남아 — 가성비 4국 상세</h2>
+      <div class="mt-4 grid gap-5 md:grid-cols-2">
+        {seaCountries.map((c) => (
+          <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+            <h3 class="text-lg" style="font-weight:500">{c.flag} {c.ko_name}</h3>
+            <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">{c.tagline_ko}</p>
+            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+              <div>
+                <div class="text-xs text-primary-900" style="font-weight:500">장점</div>
+                <ul class="mt-1 space-y-1 text-xs text-[color:var(--color-text-primary)]">
+                  {c.pros_ko.map((p) => <li>✓ {p}</li>)}
+                </ul>
+              </div>
+              <div>
+                <div class="text-xs" style="font-weight:500; color: var(--color-danger)">단점</div>
+                <ul class="mt-1 space-y-1 text-xs text-[color:var(--color-text-primary)]">
+                  {c.cons_ko.map((p) => <li>⚠ {p}</li>)}
+                </ul>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl">🌎 영미권 — 프리미엄 4국 상세</h2>
+      <div class="mt-4 grid gap-5 md:grid-cols-2">
+        {angloCountries.map((c) => (
+          <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
+            <h3 class="text-lg" style="font-weight:500">{c.flag} {c.ko_name}</h3>
+            <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">{c.tagline_ko}</p>
+            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+              <div>
+                <div class="text-xs text-primary-900" style="font-weight:500">장점</div>
+                <ul class="mt-1 space-y-1 text-xs text-[color:var(--color-text-primary)]">
+                  {c.pros_ko.map((p) => <li>✓ {p}</li>)}
+                </ul>
+              </div>
+              <div>
+                <div class="text-xs" style="font-weight:500; color: var(--color-danger)">단점</div>
+                <ul class="mt-1 space-y-1 text-xs text-[color:var(--color-text-primary)]">
+                  {c.cons_ko.map((p) => <li>⚠ {p}</li>)}
+                </ul>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* FAQ */}
+    <section id="faq" class="mt-12 scroll-mt-24">
+      <h2 class="text-xl">자주 묻는 질문</h2>
+      <div class="mt-5 space-y-3">
+        {ABROAD_FAQS.map((f) => (
+          <details class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+            <summary class="cursor-pointer text-sm text-primary-900" style="font-weight:500; list-style: disclosure-closed">{f.q_ko}</summary>
+            <p class="mt-3 text-sm text-[color:var(--color-text-primary)]">{f.a_ko}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    {/* 등록 학교 (학교 데이터 누적 영역) */}
+    <h2 class="mt-16 text-xl">등록 학교 (운영자 검증)</h2>
+    <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+      운영자가 직접 방문 · 검증한 학교가 누적되는 영역. 빈 도시는 학교 추가 시 자동 노출.
+    </p>
+
+    <div class="mt-4 flex flex-wrap gap-2">
+      <span class="text-xs text-[color:var(--color-text-tertiary)] self-center">동남아:</span>
+      {SOUTHEAST_ASIA.map((c) => (
+        <a href={`#${c.id}`} class="rounded-full bg-accent-100 px-3 py-1 text-xs text-accent-700 hover:bg-accent-500 hover:text-white" style="font-weight:500">
+          {c.flag} {countryName(c, 'ko')}
+        </a>
+      ))}
     </div>
 
     {SOUTHEAST_ASIA.map((country) => {
       const countrySchools = schools.filter((s) => s.data.country === country.id);
       return (
-        <section id={country.id} class="mt-12 scroll-mt-24">
+        <section id={country.id} class="mt-10 scroll-mt-24">
           <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
-            <h2 class="text-xl">{country.flag} {countryName(country, 'ko')}</h2>
+            <h3 class="text-lg">{country.flag} {countryName(country, 'ko')}</h3>
             <span class="text-xs text-[color:var(--color-text-tertiary)]">등록 {countrySchools.length}곳</span>
           </div>
 
@@ -75,72 +209,66 @@ const breadcrumb = {
             country.cities.map((city) => {
               const cityList = schools.filter((s) => s.data.city === city.id);
               return (
-                <div id={city.id} class="mt-8 scroll-mt-24">
-                  <h3 class="text-base text-primary-900" style="font-weight:500">{cityName(city, 'ko')}</h3>
+                <div id={city.id} class="mt-6 scroll-mt-24">
+                  <h4 class="text-sm text-primary-900" style="font-weight:500">{cityName(city, 'ko')}</h4>
                   {cityList.length > 0 ? (
                     <div class="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                       {cityList.map((entry) => <SchoolCard entry={entry} locale="ko" />)}
                     </div>
                   ) : (
-                    <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">
-                      등록된 학교가 아직 없습니다. 운영자 직접 방문·검증한 학교부터 누적합니다.
+                    <p class="mt-2 text-xs text-[color:var(--color-text-secondary)]">
+                      검증 학교 누적 중.
                     </p>
                   )}
                 </div>
               );
             })
           ) : countrySchools.length > 0 ? (
-            <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {countrySchools.map((entry) => <SchoolCard entry={entry} locale="ko" />)}
             </div>
           ) : (
-            <p class="mt-4 text-sm text-[color:var(--color-text-secondary)]">
-              등록된 학교가 아직 없습니다. 운영자 직접 방문·검증한 학교부터 누적합니다.
-            </p>
+            <p class="mt-3 text-xs text-[color:var(--color-text-secondary)]">검증 학교 누적 중.</p>
           )}
         </section>
       );
     })}
-
-    {/* 영미권 — 프리미엄 톤 (네이비) */}
-    <div class="mt-16 rounded-lg border-l-4 border-primary-900 bg-primary-100 px-4 py-3">
-      <h2 class="text-lg text-primary-900" style="font-weight:500">🌎 영미권 — 프리미엄 보딩스쿨</h2>
-      <p class="mt-1 text-xs text-primary-900">미·영·캐·호 명문 학교. 동남아 학교를 거쳐 영미권 진학을 목표하는 학부모용 진학 트랙 안내.</p>
-    </div>
 
     {ANGLOSPHERE.map((country) => {
       const countrySchools = schools.filter((s) => s.data.country === country.id);
       return (
         <section id={country.id} class="mt-10 scroll-mt-24">
           <div class="flex items-end justify-between border-b pb-2" style="border-color: var(--color-border-light)">
-            <h2 class="text-xl">{country.flag} {countryName(country, 'ko')}</h2>
+            <h3 class="text-lg">{country.flag} {countryName(country, 'ko')}</h3>
             <span class="text-xs text-[color:var(--color-text-tertiary)]">등록 {countrySchools.length}곳</span>
           </div>
           {countrySchools.length > 0 ? (
-            <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {countrySchools.map((entry) => <SchoolCard entry={entry} locale="ko" />)}
             </div>
           ) : (
-            <p class="mt-4 text-sm text-[color:var(--color-text-secondary)]">
-              영미권 학교는 운영자가 동남아 학부모 관점에서 진학 트랙·비용 분석을 누적합니다. 직접 상담은 <a href="/ko/contact/" class="text-primary-700">상담신청</a>.
-            </p>
+            <p class="mt-3 text-xs text-[color:var(--color-text-secondary)]">진학 트랙 분석 + 검증 학교 누적 중.</p>
           )}
         </section>
       );
     })}
 
     {/* 학교 유형별 */}
-    <div class="mt-16 rounded-lg border px-4 py-3" style="border-color: var(--color-border-light)">
-      <h2 class="text-lg" style="font-weight:500">📚 학교 유형별</h2>
-      <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">기숙·커리큘럼 기준 필터. 학교 데이터 누적 시 자동 필터링 노출.</p>
-    </div>
     {SCHOOL_TYPES.map((t) => (
       <section id={`type-${t.id}`} class="mt-8 scroll-mt-24">
-        <h3 class="text-base text-primary-900" style="font-weight:500">{t.ko}</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
-          해당 유형 학교는 운영자 검증 후 누적됩니다.
-        </p>
+        <h3 class="text-sm text-[color:var(--color-text-secondary)] uppercase tracking-wide">{t.ko}</h3>
+        <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">유형 필터 — 학교 데이터 누적 시 자동 노출</p>
       </section>
     ))}
+
+    <section class="mt-16 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">동남아 vs 영미권, 우리 가족에 맞는 트랙이 헷갈리시면</h2>
+      <p class="mt-2 text-sm opacity-90">
+        자녀 학년, 영어 수준, 목표 대학, 예산을 함께 알려주시면 운영자가 1:1 답변합니다.
+      </p>
+      <div class="mt-4">
+        <a href="/ko/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">카카오톡 · 이메일 상담 →</a>
+      </div>
+    </section>
   </section>
 </BaseLayout>

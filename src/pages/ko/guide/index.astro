@@ -1,23 +1,146 @@
 ---
-import CategoryIndexPage from '~/components/CategoryIndexPage.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
 import { GUIDE_CATEGORIES } from '~/lib/locations';
+import { GUIDE_TOPICS, GUIDE_FAQS } from '~/lib/guide-info';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
 
-const categories = GUIDE_CATEGORIES.map((g) => ({
-  id: g.id,
-  label: g.ko,
-  highlight: g.id === 'expert-columns' ? 'YMYL 신뢰 자산' : undefined,
-  description:
-    g.id === 'expert-columns'
-      ? '현직 교사·입학사정관·유학 컨설턴트 인터뷰 모음. 사이트 신뢰도의 핵심. "누가 쓰는가"가 "무엇을 쓰는가"보다 중요합니다.'
-      : undefined,
-}));
+const guides = (await getCollection('guides', (e) => e.data.locale === 'ko'))
+  .sort((a, b) => b.data.last_updated.getTime() - a.data.last_updated.getTime());
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = '국제학교 유학 가이드 — 입학·학비·비자·커리큘럼·진학 사례·전문가 칼럼 | AsiaEduHub';
+const description =
+  '한국·동남아·영미권 국제학교 입학 준비, 학비·장학금, 비자·거주, IB·A-Level·AP 비교, 진학 사례, 전문가 인터뷰. 학부모 핵심 질문 위주 정리.';
+
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '가이드' },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: GUIDE_FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q_ko,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_ko },
+  })),
+};
+
+function topicFor(id: string) {
+  return GUIDE_TOPICS.find((t) => t.id === id);
+}
+function categoryGuides(id: string) {
+  return guides.filter((g) => g.data.category === id);
+}
 ---
-<CategoryIndexPage
-  locale="ko"
-  pageTitle="유학 가이드 — 입학 · 학비 · 비자 · 커리큘럼 · 진학 사례 · 전문가 칼럼 | AsiaEduHub"
-  metaDescription="국제학교 입학 준비, 학비·장학금, 비자·거주, 커리큘럼 비교(IB·AP·A-Level), 진학 사례, 전문가 칼럼. 운영자 검수 콘텐츠."
-  h1="가이드"
-  intro="SEO 트래픽 엔진. 입학·학비·비자·커리큘럼·진학 사례·전문가 인터뷰가 카테고리별로 누적됩니다. 모든 글에 저자 바이라인과 마지막 업데이트 표기."
-  breadcrumbName="가이드"
-  categories={categories}
-/>
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
+  <section class="container-content py-10">
+    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/ko/">홈</a> · 가이드</nav>
+    <h1 class="mt-2 text-2xl sm:text-3xl">국제학교 유학 가이드</h1>
+    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
+      학부모가 의사결정 단계마다 마주치는 핵심 질문을 6개 카테고리로 정리. 운영자 1차 경험·검증 데이터 + 전문가 인터뷰가 누적되는 정보 허브.
+    </p>
+
+    <div class="mt-4">
+      <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+        sources="학교 공식 자료, 각국 정부 발표, 운영자 직접 검증, 전문가 인터뷰" />
+    </div>
+
+    {/* 빠른 이동 */}
+    <div class="mt-6 flex flex-wrap gap-2">
+      {GUIDE_CATEGORIES.map((g) => (
+        <a href={`#${g.id}`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
+          {g.ko}
+        </a>
+      ))}
+    </div>
+
+    {/* 카테고리별 카드 */}
+    {GUIDE_CATEGORIES.map((cat) => {
+      const topic = topicFor(cat.id);
+      const list = categoryGuides(cat.id);
+      const isExpert = cat.id === 'expert-columns';
+      return (
+        <section id={cat.id} class="mt-12 scroll-mt-24">
+          <div class="flex flex-wrap items-baseline gap-2 border-b pb-2" style="border-color: var(--color-border-light)">
+            <h2 class="text-xl">{cat.ko}</h2>
+            {isExpert && <span class="badge-gold">⭐ YMYL 신뢰 자산</span>}
+            <span class="text-xs text-[color:var(--color-text-tertiary)] ml-auto">발행 {list.length}</span>
+          </div>
+
+          {topic && (
+            <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">{topic.intro_ko}</p>
+          )}
+
+          {/* 핵심 질문 */}
+          {topic && topic.questions_ko.length > 0 && (
+            <div class="mt-4 rounded-lg border bg-[color:var(--color-bg-secondary)] p-4" style="border-color: var(--color-border-light)">
+              <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">학부모 핵심 질문</div>
+              <ul class="mt-2 space-y-1 text-sm">
+                {topic.questions_ko.map((q) => <li>• {q}</li>)}
+              </ul>
+            </div>
+          )}
+
+          {/* 발행 글 */}
+          {list.length > 0 ? (
+            <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {list.map((g) => (
+                <a href={`/ko/guide/${g.slug.replace(/-ko$/, '')}/`} class="block rounded-md border p-4 text-sm hover:border-primary-700" style="border-color: var(--color-border-light)">
+                  <div class="text-primary-900" style="font-weight:500">{g.data.title}</div>
+                  <p class="mt-1 text-xs text-[color:var(--color-text-secondary)]">{g.data.summary}</p>
+                  <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">{formatDate(g.data.last_updated, 'ko')}</p>
+                </a>
+              ))}
+            </div>
+          ) : isExpert ? (
+            <p class="mt-3 text-sm text-[color:var(--color-text-secondary)]">
+              현직 교사·입학사정관·유학 컨설턴트 인터뷰는 <a href="/ko/experts/" class="text-primary-700 hover:underline">전문가 칼럼</a> 페이지에 누적됩니다.
+            </p>
+          ) : (
+            <p class="mt-3 text-xs text-[color:var(--color-text-tertiary)]">위 질문에 대한 답변 글이 누적되는 카테고리입니다.</p>
+          )}
+        </section>
+      );
+    })}
+
+    {/* 가이드 사용 FAQ */}
+    <section id="faq" class="mt-16 scroll-mt-24">
+      <h2 class="text-xl">가이드 사용 FAQ</h2>
+      <div class="mt-5 space-y-3">
+        {GUIDE_FAQS.map((f) => (
+          <details class="rounded-lg border p-4" style="border-color: var(--color-border-light)">
+            <summary class="cursor-pointer text-sm text-primary-900" style="font-weight:500; list-style: disclosure-closed">{f.q_ko}</summary>
+            <p class="mt-3 text-sm text-[color:var(--color-text-primary)]">{f.a_ko}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 rounded-lg bg-primary-900 p-6 text-white">
+      <h2 class="text-lg" style="font-weight:500">검색해도 안 나오는 구체적 질문이 있나요?</h2>
+      <p class="mt-2 text-sm opacity-90">
+        가이드 글에 없는 학부모만의 상황(자녀 학년·예산·국가)은 운영자가 1:1 답변하고, 답변 내용은 익명화해 다음 가이드 글의 소재로 활용합니다.
+      </p>
+      <div class="mt-4">
+        <a href="/ko/contact/" class="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm text-primary-900" style="font-weight:500">카카오톡 · 이메일 상담 →</a>
+      </div>
+    </section>
+  </section>
+</BaseLayout>
