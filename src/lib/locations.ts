@@ -125,7 +125,6 @@ export const MM2H_TOPICS: Mm2hTopic[] = [
   { id: 'malaysia-mm2h', ko: '말레이시아 MM2H', zh: '马来西亚 MM2H' },
   { id: 'thai-visa', ko: '태국 엘리트 · LTR 비자', zh: '泰国 Elite · LTR 签证' },
   { id: 'singapore-pr', ko: '싱가포르 영주권 · EP', zh: '新加坡 PR · EP' },
-  { id: 'agencies', ko: '추천 에이전시', zh: '推荐中介' },
   { id: 'housing', ko: '부동산 · 거주지 가이드', zh: '房产 · 居住地指南' },
 ];
 

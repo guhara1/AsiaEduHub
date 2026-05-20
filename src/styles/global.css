@@ -669,6 +669,16 @@
   /* card-cta 안 텍스트 — opacity 대신 명시적 색상으로 가독성 보장 */
   .card-cta h1, .card-cta h2, .card-cta h3 { color: #fff; font-weight: 700; letter-spacing: -0.022em; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
   .card-cta p { color: rgba(255, 255, 255, 0.94); font-weight: 450; }
+  /* card-cta 안 eyebrow / 라벨 — 어떤 클래스든 강제 밝게 (가시성 보호) */
+  .card-cta .uppercase,
+  .card-cta [class*="text-xs"],
+  .card-cta [class*="text-accent-7"],
+  .card-cta [class*="text-primary-9"],
+  .card-cta [class*="text-text-tertiary"] {
+    color: rgba(255, 255, 255, 0.78) !important;
+  }
+  .card-cta a { color: #fff; text-decoration: underline; text-decoration-color: rgba(255,255,255,0.45); text-underline-offset: 3px; }
+  .card-cta a:hover { text-decoration-color: #fff; }
 
   /* ─── bg-primary-900 / bg-primary-700 컨텍스트 — 모든 지역·학교 페이지 하단 CTA 자동 강화 ─── */
   .bg-primary-900, .bg-primary-700 {
@@ -699,6 +709,15 @@
   .bg-primary-700 .opacity-95 {
     opacity: 1 !important;
     color: rgba(255, 255, 255, 0.95);
+  }
+  /* eyebrow / 라벨 — 다크 컨텍스트에서 어두운 텍스트 자동 보정 */
+  .bg-primary-900 [class*="text-accent-7"],
+  .bg-primary-900 [class*="text-primary-9"],
+  .bg-primary-900 [class*="text-text-tertiary"],
+  .bg-primary-700 [class*="text-accent-7"],
+  .bg-primary-700 [class*="text-primary-9"],
+  .bg-primary-700 [class*="text-text-tertiary"] {
+    color: rgba(255, 255, 255, 0.78) !important;
   }
   /* 흰색 버튼은 가독성 확실하게 */
   .bg-primary-900 a.bg-white,
