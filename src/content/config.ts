@@ -402,10 +402,44 @@ const experts = defineCollection({
     }),
 });
 
+// ─────────────────────────────────────────────────────────────
+// 블로그 — 운영자 1차 경험·뉴스·분석
+// E-E-A-T 'Experience' 신호 누적 영역. AI 본문 생성 절대 금지.
+// ─────────────────────────────────────────────────────────────
+const blog = defineCollection({
+  type: 'content',
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      locale: localeSchema,
+      // 블로그 5개 카테고리 (운영자 결정)
+      category: z.enum([
+        'school-visits',   // 학교 방문기
+        'transfers',       // 두 번 옮긴 학부모 시그니처 시리즈
+        'news',            // 신규 학교 오픈·정책 변경
+        'analysis',        // 운영자 칼럼 (학비 vs 퀄리티 등)
+        'interviews',      // 재학생·졸업생 학부모 인터뷰
+      ]),
+      author: z.string().default('데이비드'),
+      hero_image: image().optional(),
+      summary: z.string().min(20).max(300),
+      published_at: z.coerce.date(),
+      last_updated: z.coerce.date(),
+      // 관련 학교 slug (선택) — 학교 페이지에서 이 글로 역링크 가능
+      related_school_slugs: z.array(z.string()).optional(),
+      // long-tail 검색 노출용 키워드 (글 하단 내부 링크에 활용)
+      tags: z.array(z.string()).optional(),
+      sources: z
+        .array(z.object({ label: z.string(), url: z.string().url().optional() }))
+        .optional(),
+    }),
+});
+
 export const collections = {
   schools,
   experiences,
   guides,
   pages,
   experts,
+  blog,
 };

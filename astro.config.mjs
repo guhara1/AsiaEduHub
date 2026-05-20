@@ -54,6 +54,16 @@ export default defineConfig({
           item.priority = 0.9;
           item.changefreq = 'weekly';
         }
+        // 블로그 상세 — 신선도 우선 (가이드보다 약간 높게)
+        else if (/\/blog\/[^/]+\//.test(url)) {
+          item.priority = 0.85;
+          item.changefreq = 'weekly';
+        }
+        // 블로그 인덱스
+        else if (/\/blog\/?$/.test(url)) {
+          item.priority = 0.9;
+          item.changefreq = 'daily';
+        }
         // 가이드 상세 · 카탈로그 인덱스
         else if (/\/(guide|domestic|abroad|mm2h)\//.test(url)) {
           item.priority = 0.8;

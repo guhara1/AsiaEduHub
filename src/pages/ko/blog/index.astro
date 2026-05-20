@@ -1,0 +1,113 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
+
+const posts = (await getCollection('blog', (e) => e.data.locale === 'ko'))
+  .sort((a, b) => b.data.published_at.getTime() - a.data.published_at.getTime());
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = posts.length > 0 ? posts[0].data.last_updated : publishedAt;
+
+const title = '운영자 블로그 — 학교 방문기 · 두 번 옮긴 학부모 시그니처 시리즈 | AsiaEduHub';
+const description =
+  '말레이시아 거주 학부모 데이비드의 1차 경험 기록. 학교 방문기 · 학교 옮기기 · 운영자 분석 · 학부모 인터뷰. 다른 곳에서 얻을 수 없는 솔직한 현지 후기.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '블로그' },
+  ],
+};
+
+const itemList = {
+  '@context': 'https://schema.org', '@type': 'ItemList',
+  name: '운영자 블로그',
+  numberOfItems: posts.length,
+  itemListElement: posts.map((p, i) => ({
+    '@type': 'ListItem', position: i + 1, name: p.data.title,
+    url: siteRoot + `ko/blog/${p.slug.replace(/-ko$/, '')}/`,
+  })),
+};
+
+const CATEGORY_LABEL: Record<string, { ko: string; emoji: string }> = {
+  'school-visits': { ko: '학교 방문기', emoji: '🏫' },
+  'transfers': { ko: '두 번 옮긴 학부모', emoji: '⭐' },
+  'news': { ko: '뉴스 · 업데이트', emoji: '📰' },
+  'analysis': { ko: '운영자 분석', emoji: '📊' },
+  'interviews': { ko: '학부모 인터뷰', emoji: '💬' },
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, itemList]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/ko/">홈</a> · 블로그</nav>
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.02em">
+        운영자 블로그
+      </h1>
+      <p class="mt-3 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        말레이시아 거주 학부모 <strong style="font-weight:600">데이비드</strong> 의 1차 경험 기록. 학교 방문기 · 학교 옮기기 · 운영자 분석 · 학부모 인터뷰.
+        <br/>다른 곳에서 얻을 수 없는 솔직한 현지 후기를 누적합니다.
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="운영자 1차 경험 + 학부모 커뮤니티(카카오톡 · WeChat) 청취" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-4xl">
+    {posts.length === 0 ? (
+      <div class="rounded-xl border-l-4 border-accent-500 bg-accent-100 p-6 text-accent-700">
+        <p class="text-sm" style="font-weight:500">첫 글 준비 중입니다.</p>
+        <p class="mt-2 text-sm">운영자가 학교 방문·인터뷰를 진행하며 글을 누적합니다.</p>
+      </div>
+    ) : (
+      <div class="grid gap-5">
+        {posts.map((p) => {
+          const slug = p.slug.replace(/-ko$/, '');
+          const cat = CATEGORY_LABEL[p.data.category] ?? { ko: p.data.category, emoji: '📝' };
+          return (
+            <a href={`/ko/blog/${slug}/`} class="block rounded-xl border p-5 sm:p-6 transition-all hover:border-primary-700 hover:shadow-md" style="border-color: var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+              <div class="flex items-center gap-2 text-xs">
+                <span class="badge-navy">{cat.emoji} {cat.ko}</span>
+                <span style="color: var(--color-text-tertiary)">{formatDate(p.data.published_at, 'ko')}</span>
+              </div>
+              <h2 class="mt-3 text-xl sm:text-2xl text-balance" style="font-weight:700; letter-spacing:-0.01em; color: var(--color-primary-900)">
+                {p.data.title}
+              </h2>
+              <p class="mt-2 text-sm sm:text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
+                {p.data.summary}
+              </p>
+              {p.data.tags && p.data.tags.length > 0 && (
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                  {p.data.tags.slice(0, 4).map((t) => (
+                    <span class="rounded-full bg-[color:var(--color-bg-tertiary)] px-2.5 py-0.5 text-xs" style="color: var(--color-text-secondary)">#{t}</span>
+                  ))}
+                </div>
+              )}
+              <div class="mt-4 text-sm text-primary-700" style="font-weight:500">읽기 →</div>
+            </a>
+          );
+        })}
+      </div>
+    )}
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">운영자에게 직접 묻기</h2>
+      <p class="mt-3 text-sm">블로그에 못 담은 디테일 · 자녀 학년·예산 맞춤 학교 추천 등 1:1 답변.</p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+  </article>
+</BaseLayout>
