@@ -9,35 +9,44 @@
   /* 사양서 색상 토큰 — Tailwind theme 와 동기화. CSS 변수는 동적 스타일·인라인 SVG 용. */
   --color-primary-900: #1E3A8A;
   --color-primary-700: #1D4ED8;
+  --color-primary-500: #3B82F6; /* 보조 강조 (호버·링크) */
   --color-primary-100: #DBEAFE;
+  --color-primary-50:  #EFF6FF; /* 매우 옅은 배경 */
 
   --color-accent-700: #92400E;
   --color-accent-500: #F59E0B;
   --color-accent-100: #FEF3C7;
+  --color-accent-50:  #FFFBEB;
 
   --color-text-primary: #111827;
-  --color-text-secondary: #6B7280;
-  --color-text-tertiary: #9CA3AF;
+  --color-text-secondary: #4B5563; /* AA 대비 강화 (#6B7280 → #4B5563) */
+  --color-text-tertiary: #6B7280;  /* AA 대비 강화 */
 
   --color-bg-primary: #FFFFFF;
   --color-bg-secondary: #F9FAFB;
   --color-bg-tertiary: #F3F4F6;
 
-  --color-border-light: rgba(30, 58, 138, 0.08);
-  --color-border-medium: rgba(30, 58, 138, 0.15);
+  --color-border-light: rgba(30, 58, 138, 0.10);
+  --color-border-medium: rgba(30, 58, 138, 0.18);
 
   --color-success: #047857;
   --color-warning: #D97706;
   --color-danger: #DC2626;
+
+  /* 그림자 — 학부모 정보 사이트 톤에 맞춰 부드럽게 */
+  --shadow-sm: 0 1px 2px 0 rgba(17, 24, 39, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(17, 24, 39, 0.06), 0 2px 4px -1px rgba(17, 24, 39, 0.04);
+  --shadow-lg: 0 12px 28px -8px rgba(30, 58, 138, 0.12), 0 4px 12px -4px rgba(17, 24, 39, 0.06);
+  --shadow-hero: 0 24px 60px -20px rgba(30, 58, 138, 0.18);
 }
 
 @layer base {
   html {
-    /* 사양: 폰트 가중치 400·500만 사용. base 는 400. */
     font-weight: 400;
     color: var(--color-text-primary);
     background: var(--color-bg-primary);
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   /* 중국어 페이지에서만 Noto Sans SC 우선 */
@@ -45,20 +54,37 @@
     font-family: 'Noto Sans SC', Pretendard, 'Noto Sans KR', Inter, system-ui, sans-serif;
   }
 
-  /* 제목은 medium(500) 까지만 — 사양상 700+ 금지 */
+  /* 본문 행간 — 학부모 정보 사이트는 긴 텍스트 가독성이 중요 */
+  body { line-height: 1.65; }
+  p { line-height: 1.7; }
+  li { line-height: 1.65; }
+
+  /* 제목 — 700 금지, 500 최대, 글자 살짝 좁게 */
   h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
     color: var(--color-primary-900);
-    line-height: 1.3;
-    letter-spacing: -0.01em;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
   }
+  h1 { line-height: 1.12; letter-spacing: -0.025em; }
+  h2 { line-height: 1.2; letter-spacing: -0.02em; }
 
   a {
     color: var(--color-primary-700);
+    text-underline-offset: 3px;
+    transition: color 0.15s ease;
   }
-  a:hover {
-    text-decoration: underline;
+  a:hover { color: var(--color-primary-900); text-decoration: underline; }
+
+  /* 포커스 가시성 — 키보드 접근성 */
+  :focus-visible {
+    outline: 2px solid var(--color-primary-700);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
+
+  /* 본문 텍스트 선택 */
+  ::selection { background: var(--color-primary-100); color: var(--color-primary-900); }
 }
 
 @layer components {
@@ -66,17 +92,54 @@
     @apply mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8;
   }
 
-  /* 골드 배지 — 사양상 "운영자 방문 확인", "두 번 옮긴 경험" 등 핵심 차별점에만 */
+  /* ─── 카드 시스템 ─── */
+  .card {
+    @apply rounded-xl border bg-white p-5 sm:p-6 transition-all duration-200;
+    border-color: var(--color-border-light);
+    box-shadow: var(--shadow-sm);
+  }
+  .card:hover {
+    border-color: var(--color-primary-500);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  /* 강조 카드 (골드) — 핵심 차별점 */
+  .card-feature {
+    @apply card;
+    background: linear-gradient(180deg, var(--color-accent-50) 0%, #fff 100%);
+    border-color: var(--color-accent-500);
+  }
+  .card-feature:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-accent-500);
+  }
+
+  /* 정보 카드 — 약간 옅은 네이비 톤 */
+  .card-info {
+    @apply card;
+    background: linear-gradient(180deg, var(--color-primary-50) 0%, #fff 100%);
+    border-color: var(--color-primary-100);
+  }
+  .card-info:hover { border-color: var(--color-primary-700); }
+
+  /* 큰 강조 CTA 카드 */
+  .card-cta {
+    @apply rounded-2xl p-6 sm:p-8 text-white;
+    background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 100%);
+    box-shadow: var(--shadow-hero);
+  }
+
+  /* 배지 — 가독성 강화 */
   .badge-gold {
     @apply inline-flex items-center gap-1 rounded-full bg-accent-100 px-2.5 py-0.5 text-xs text-accent-700;
     font-weight: 500;
+    letter-spacing: 0.01em;
   }
-
   .badge-navy {
     @apply inline-flex items-center gap-1 rounded-full bg-primary-100 px-2.5 py-0.5 text-xs text-primary-900;
     font-weight: 500;
   }
-
   .badge-sponsored {
     @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs uppercase tracking-wide;
     background: #f3f4f6;
@@ -84,13 +147,127 @@
     font-weight: 500;
   }
 
+  /* ─── CTA 버튼 ─── */
   .cta-primary {
-    @apply inline-flex items-center justify-center rounded-md bg-primary-900 px-5 py-2.5 text-white transition-opacity hover:opacity-90;
+    @apply inline-flex items-center justify-center rounded-lg bg-primary-900 px-5 py-3 text-white transition-all duration-150;
     font-weight: 500;
+    box-shadow: var(--shadow-sm);
   }
+  .cta-primary:hover {
+    background: var(--color-primary-700);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+    color: #fff;
+    text-decoration: none;
+  }
+  .cta-primary:active { transform: translateY(0); }
 
   .cta-secondary {
-    @apply inline-flex items-center justify-center rounded-md border border-primary-900/15 bg-white px-5 py-2.5 text-primary-900;
+    @apply inline-flex items-center justify-center rounded-lg border bg-white px-5 py-3 text-primary-900 transition-all duration-150;
+    border-color: var(--color-border-medium);
     font-weight: 500;
   }
+  .cta-secondary:hover {
+    border-color: var(--color-primary-700);
+    background: var(--color-primary-50);
+    text-decoration: none;
+  }
+
+  .cta-accent {
+    @apply inline-flex items-center justify-center rounded-lg px-5 py-3 transition-all duration-150;
+    background: var(--color-accent-500);
+    color: #fff;
+    font-weight: 500;
+    box-shadow: var(--shadow-sm);
+  }
+  .cta-accent:hover {
+    background: var(--color-accent-700);
+    box-shadow: var(--shadow-md);
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* ─── Hero 영역 배경 ─── */
+  .hero-gradient {
+    background:
+      radial-gradient(circle at 20% 10%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 30%, rgba(30, 58, 138, 0.06) 0%, transparent 60%),
+      linear-gradient(180deg, #FAFBFD 0%, #FFFFFF 100%);
+  }
+
+  /* ─── 섹션 패딩 ─── */
+  .section-md { @apply py-12 sm:py-14; }
+  .section-lg { @apply py-16 sm:py-20; }
+
+  /* ─── 아이콘 원 ─── */
+  .icon-circle {
+    @apply inline-flex items-center justify-center rounded-xl;
+    width: 44px; height: 44px;
+    background: var(--color-primary-100);
+    color: var(--color-primary-900);
+  }
+  .icon-circle-accent {
+    @apply icon-circle;
+    background: var(--color-accent-100);
+    color: var(--color-accent-700);
+  }
+
+  /* ─── 구분선 ─── */
+  .divider {
+    height: 1px;
+    background: var(--color-border-light);
+    margin: 1rem 0;
+  }
+
+  /* ─── 데이터 그리드 (학교 정보 박스 등) ─── */
+  .stat-grid {
+    @apply grid gap-3 sm:gap-4;
+  }
+  .stat-card {
+    @apply rounded-lg border p-4;
+    border-color: var(--color-border-light);
+    background: #fff;
+    transition: border-color 0.15s ease;
+  }
+  .stat-card:hover { border-color: var(--color-primary-700); }
+  .stat-card dt {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+  }
+  .stat-card dd {
+    margin-top: 0.25rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  /* ─── 콘텐츠 폭 (긴 글 가독성) ─── */
+  .prose-narrow {
+    max-width: 65ch;
+  }
+
+  /* ─── details/summary 펼침 화살표 ─── */
+  details > summary {
+    list-style: none;
+  }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::marker { content: ''; }
+
+  /* FAQ details 호버 효과 */
+  details.faq-item {
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  details.faq-item:hover { border-color: var(--color-primary-500); }
+  details.faq-item[open] {
+    background: var(--color-primary-50);
+    border-color: var(--color-primary-700);
+  }
+}
+
+@layer utilities {
+  /* 텍스트 wrap balance — 제목 줄바꿈 미려화 */
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
 }

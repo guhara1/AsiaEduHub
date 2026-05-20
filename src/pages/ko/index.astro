@@ -11,206 +11,270 @@ const description =
   '말레이시아 거주 학부모 데이비드가 직접 운영. 외국인학교·제주 국제학교·동남아·영미권 학교 정보, MM2H 비자, 학비 계산기, 진학 트랙 시뮬레이터 등 학부모가 정말 필요한 정보 정리.';
 
 const websiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: t.site.name,
-  url: Astro.site?.toString(),
-  inLanguage: 'ko-KR',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: { '@type': 'EntryPoint', urlTemplate: `${Astro.site?.toString() ?? ''}ko/?q={search_term_string}` },
-    'query-input': 'required name=search_term_string',
-  },
+  '@context': 'https://schema.org', '@type': 'WebSite',
+  name: t.site.name, url: Astro.site?.toString(), inLanguage: 'ko-KR',
 };
 const orgSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'AsiaEduHub',
-  url: Astro.site?.toString(),
+  '@context': 'https://schema.org', '@type': 'Organization',
+  name: 'AsiaEduHub', url: Astro.site?.toString(),
   logo: (Astro.site?.toString() ?? '') + 'favicon.svg',
   founder: { '@type': 'Person', name: '데이비드', url: (Astro.site?.toString() ?? '') + 'ko/about/' },
 };
 
-// 최근 콘텐츠 자동 노출
 const recentGuides = (await getCollection('guides', (e) => e.data.locale === 'ko'))
   .sort((a, b) => b.data.last_updated.getTime() - a.data.last_updated.getTime())
   .slice(0, 3);
 const recentExperts = (await getCollection('experts', (e) => e.data.locale === 'ko'))
   .sort((a, b) => b.data.published_at.getTime() - a.data.published_at.getTime())
   .slice(0, 2);
+
+const heroCards = [
+  { href: '/ko/domestic/', title: '외국인학교 vs 국제학교 차이', desc: '법적 자격·학력 인정·학비 차이. SFS·YISS·NLCS·BHA·채드윅 송도 등 주요 학교 정리.', icon: 'M3 21h18M3 10l9-7 9 7M5 21V10m14 11V10M9 21v-6h6v6', tone: 'primary' },
+  { href: '/ko/abroad/malaysia/', title: '말레이시아 국제학교 22곳', desc: 'Alice Smith · ISKL · MKIS · GIS · Epsom · Nexus · UCSI 등 KL·셀랑고르·푸트라자야 전체 학교.', icon: 'M12 3l9 4.5v9L12 21l-9-4.5v-9L12 3zm0 0v18M3 7.5l9 4.5 9-4.5', tone: 'primary' },
+  { href: '/ko/mm2h/', title: 'MM2H · Thailand · Singapore 비자', desc: '2024 MM2H 개정 포함. 학부모 비자 5종을 자격·비용·자녀 교육 영향으로 비교.', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', tone: 'primary' },
+  { href: '/ko/abroad/', title: '동남아 가성비 vs 영미권 프리미엄', desc: '학비 1/3~1/2 차이. 동남아 IB 트랙으로 옥스브리지·아이비 진학 가능.', icon: 'M3 12h18M3 12l4-4M3 12l4 4M21 12l-4-4M21 12l-4 4', tone: 'primary' },
+  { href: '/ko/tools/compare/#track-simulator', title: '진학 트랙 시뮬레이터', desc: '자녀 학년·목표 대학·예산 입력 → 학년별 단계·시험·총비용 자동 계산.', icon: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z', tone: 'accent', badge: '⭐ 킬러 도구' },
+  { href: '/ko/experts/', title: '전문가 칼럼', desc: '현직 교사·입학사정관·유학 컨설턴트 인터뷰. 운영자 신원 확인.', icon: 'M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-3.13a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 11-8 0 4 4 0 018 0z', tone: 'primary' },
+];
+
+const personaCards = [
+  { grade: '유치원 ~ 초3', label: '저학년', color: 'sky', title: '환경·시설·식사·한국인 비율', emoji: '🧒',
+    links: [
+      { label: '말레이시아 가성비 학교', href: '/ko/abroad/malaysia/' },
+      { label: '영어유치원 정보', href: '/ko/domestic/#kindergarten' },
+      { label: '입학 시험·인터뷰 준비', href: '/ko/guide/#admission' },
+    ] },
+  { grade: '초4 ~ 중2', label: '중학년', color: 'amber', title: '학업 환경 + 커리큘럼 진입', emoji: '🎒',
+    links: [
+      { label: 'IB · A-Level · AP 비교', href: '/ko/guide/ib-vs-alevel-vs-ap/' },
+      { label: '동남아 IB 학교 정리', href: '/ko/abroad/' },
+      { label: '학비 계산기', href: '/ko/tools/compare/#calculator' },
+    ] },
+  { grade: '중3 ~ 고등', label: '고학년', color: 'rose', title: '시험 결과 + 대학 진학', emoji: '🎓',
+    links: [
+      { label: '진학 트랙 시뮬레이터', href: '/ko/tools/compare/#track-simulator' },
+      { label: '옥스브리지·아이비 합격 사례', href: '/ko/guide/#track-reviews' },
+      { label: '영미권 보딩스쿨', href: '/ko/abroad/#usa' },
+    ] },
+];
+
+const budgetCards = [
+  { href: '/ko/tools/budget/budget-friendly/', title: '가성비', sub: '연 1,000만원 이하', color: 'emerald' },
+  { href: '/ko/tools/budget/mid-range/', title: '중간 예산', sub: '1,000~2,000만원', color: 'sky' },
+  { href: '/ko/tools/budget/premium/', title: '프리미엄', sub: '2,000~3,500만원', color: 'violet' },
+  { href: '/ko/tools/budget/top-tier/', title: '최상위', sub: '3,500만원+', color: 'rose' },
+];
+
+const operatorFacts = [
+  { num: '2024', label: '한국 → 쿠알라룸푸르 이주' },
+  { num: '2', label: '자녀, UCSI 국제학교 재학' },
+  { num: '2회', label: '학교 이전 — 1차 경험', highlight: true },
+  { num: '3', label: '한국어·중국어·영어' },
+  { num: '12+', label: '온라인 마케팅 경력 (년)' },
+  { num: 'KL', label: '쿠알라룸푸르 현지 거주' },
+];
 ---
 <BaseLayout title={title} description={description} jsonLd={[websiteSchema, orgSchema]}>
-  {/* Hero */}
-  <section class="container-content py-12 sm:py-16">
-    <div class="grid gap-10 lg:grid-cols-[1.6fr_1fr] lg:items-start">
-      <div>
-        <p class="badge-gold mb-3">{t.badges.two_school_switches}</p>
-        <h1 class="text-3xl sm:text-5xl">
-          외국인학교·제주 국제학교·동남아 유학,<br />
-          학부모가 직접 정리한 진짜 정보
-        </h1>
-        <p class="mt-6 max-w-2xl text-base text-[color:var(--color-text-secondary)]">
-          운영자(데이비드)는 말레이시아 거주 한국인 학부모. 자녀 2명, 학교 두 번 옮긴 1차 경험을 바탕으로
-          학비·비자·커리큘럼·진학 트랙을 학부모 관점에서 검증·정리합니다. AI 자동 생성 본문은 사용하지 않습니다.
-        </p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href="/ko/abroad/" class="cta-primary">해외 유학 비교 →</a>
-          <a href="/ko/domestic/" class="cta-secondary">국내 국제학교 →</a>
-        </div>
-      </div>
-
-      {/* 운영자 정체성 카드 */}
-      <aside class="rounded-lg border p-5" style="border-color: var(--color-border-light); background: var(--color-bg-secondary)">
-        <div class="flex items-center gap-3">
-          <span aria-hidden="true" class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary-900 text-white text-lg">D</span>
-          <div>
-            <div class="text-primary-900" style="font-weight:500">데이비드</div>
-            <div class="text-xs text-[color:var(--color-text-tertiary)]">말레이시아 쿠알라룸푸르 · 두 번 옮긴 학부모</div>
+  {/* ─── Hero ─── */}
+  <section class="hero-gradient">
+    <div class="container-content section-lg">
+      <div class="grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-center">
+        <div>
+          <span class="badge-gold mb-4">⭐ {t.badges.two_school_switches}</span>
+          <h1 class="text-pretty text-4xl sm:text-5xl lg:text-6xl">
+            외국인학교 · 제주 국제학교 ·<br />
+            <span class="text-accent-700">동남아 유학</span> 의 진짜 정보
+          </h1>
+          <p class="mt-6 max-w-2xl text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
+            말레이시아 거주 학부모 <strong style="color: var(--color-primary-900); font-weight:500">데이비드</strong> 가 자녀 2명·학교 두 번 옮긴 1차 경험을 바탕으로
+            학비·비자·커리큘럼·진학 트랙을 학부모 관점에서 검증·정리합니다.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/ko/abroad/malaysia/" class="cta-primary">🇲🇾 말레이시아 국제학교 22곳 →</a>
+            <a href="/ko/domestic/" class="cta-secondary">국내 국제학교 →</a>
           </div>
+          <p class="mt-4 text-xs" style="color: var(--color-text-tertiary)">
+            ✓ AI 자동 생성 본문 사용 안 함 &nbsp; ✓ 출처·업데이트 날짜 모든 페이지 표기 &nbsp; ✓ 운영자 1차 경험 우선
+          </p>
         </div>
-        <ul class="mt-4 space-y-1 text-xs text-[color:var(--color-text-secondary)]">
-          <li>• 2024 한국 → 쿠알라룸푸르 이주</li>
-          <li>• 자녀 2명, UCSI 국제학교 재학</li>
-          <li>• 학교 2회 이전 (학비 + 한국인 비율 폭증 경험)</li>
-          <li>• 한국어·중국어(북경 거주)·영어</li>
-          <li>• 온라인 마케팅 12년+ 경력</li>
-        </ul>
-        <a href="/ko/about/" class="mt-4 inline-block text-xs text-primary-700 hover:underline">운영자 소개 →</a>
-      </aside>
-    </div>
-  </section>
 
-  {/* 정보 진입 — 핵심 카드 */}
-  <section class="container-content pb-4">
-    <h2 class="text-xl">학부모가 가장 많이 묻는 주제</h2>
-    <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <a href="/ko/domestic/" class="block rounded-lg border p-5 hover:border-primary-700" style="border-color: var(--color-border-light)">
-        <h3 class="text-base text-primary-900" style="font-weight:500">외국인학교 vs 국제학교 차이</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">법적 자격·학력 인정·학비 차이. SFS·YISS·NLCS·BHA 등 주요 학교 정리.</p>
-      </a>
-      <a href="/ko/mm2h/" class="block rounded-lg border p-5 hover:border-primary-700" style="border-color: var(--color-border-light)">
-        <h3 class="text-base text-primary-900" style="font-weight:500">MM2H · Thailand · Singapore 비자 비교</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">2024 MM2H 개정 포함. 학부모 비자 5종을 자격·비용·자녀 교육 영향으로 비교.</p>
-      </a>
-      <a href="/ko/abroad/" class="block rounded-lg border p-5 hover:border-primary-700" style="border-color: var(--color-border-light)">
-        <h3 class="text-base text-primary-900" style="font-weight:500">동남아 가성비 vs 영미권 프리미엄</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">학비 1/3~1/2 차이. 동남아 IB 트랙으로 옥스브리지·아이비 진학 가능.</p>
-      </a>
-      <a href="/ko/tools/compare/#track-simulator" class="block rounded-lg border p-5 bg-accent-100 hover:border-accent-500" style="border-color: var(--color-accent-500)">
-        <div class="flex items-center gap-2">
-          <h3 class="text-base text-accent-700" style="font-weight:500">진학 트랙 시뮬레이터</h3>
-          <span class="badge-gold text-[10px]">⭐ 킬러 도구</span>
-        </div>
-        <p class="mt-2 text-sm text-accent-700">자녀 학년·목표 대학·예산 입력 → 학년별 단계·시험·총비용 자동 계산.</p>
-      </a>
-      <a href="/ko/tools/compare/#calculator" class="block rounded-lg border p-5 hover:border-primary-700" style="border-color: var(--color-border-light)">
-        <h3 class="text-base text-primary-900" style="font-weight:500">학비 계산기</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">학비 + 부대비 + 기숙 + 항공권 + 환율 + 인플레이션. 원화·위안화 환산.</p>
-      </a>
-      <a href="/ko/experts/" class="block rounded-lg border p-5 hover:border-primary-700" style="border-color: var(--color-border-light)">
-        <h3 class="text-base text-primary-900" style="font-weight:500">전문가 칼럼</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">현직 교사·입학사정관·유학 컨설턴트 인터뷰. 운영자 신원 확인.</p>
-      </a>
-    </div>
-  </section>
-
-  {/* 자녀 학년별 진입 */}
-  <section class="container-content py-12">
-    <h2 class="text-xl">자녀 학년에 맞는 시작점</h2>
-    <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">학년별로 학부모가 봐야 할 정보가 다릅니다.</p>
-    <div class="mt-5 grid gap-4 md:grid-cols-3">
-      <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
-        <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">유치원 ~ 초3 (저학년)</div>
-        <h3 class="mt-1 text-base" style="font-weight:500">환경·시설·식사·한국인 비율 중심</h3>
-        <ul class="mt-3 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
-          <li>• <a href="/ko/abroad/#malaysia" class="hover:text-primary-700">말레이시아 가성비 학교</a></li>
-          <li>• <a href="/ko/domestic/#kindergarten" class="hover:text-primary-700">영어유치원 정보</a></li>
-          <li>• <a href="/ko/guide/#admission" class="hover:text-primary-700">입학 시험·인터뷰 준비</a></li>
-        </ul>
-      </div>
-      <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
-        <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">초4 ~ 중2 (중학년)</div>
-        <h3 class="mt-1 text-base" style="font-weight:500">학업 환경 + 커리큘럼 진입</h3>
-        <ul class="mt-3 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
-          <li>• <a href="/ko/guide/#curriculum-compare" class="hover:text-primary-700">IB · A-Level · AP 비교</a></li>
-          <li>• <a href="/ko/abroad/" class="hover:text-primary-700">동남아 IB 학교 정리</a></li>
-          <li>• <a href="/ko/tools/compare/#calculator" class="hover:text-primary-700">학비 계산기</a></li>
-        </ul>
-      </div>
-      <div class="rounded-lg border p-5" style="border-color: var(--color-border-light)">
-        <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">중3 ~ 고등 (고학년)</div>
-        <h3 class="mt-1 text-base" style="font-weight:500">시험 결과 + 대학 진학 중심</h3>
-        <ul class="mt-3 space-y-1 text-sm text-[color:var(--color-text-secondary)]">
-          <li>• <a href="/ko/tools/compare/#track-simulator" class="hover:text-primary-700">진학 트랙 시뮬레이터</a></li>
-          <li>• <a href="/ko/guide/#track-reviews" class="hover:text-primary-700">옥스브리지·아이비 합격 사례</a></li>
-          <li>• <a href="/ko/abroad/#usa" class="hover:text-primary-700">영미권 보딩스쿨</a></li>
-        </ul>
+        <aside class="rounded-2xl border bg-white p-6 lg:p-7" style="border-color: var(--color-border-light); box-shadow: var(--shadow-lg);">
+          <div class="flex items-center gap-3">
+            <span aria-hidden="true" class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary-900 text-white text-xl" style="font-weight:500">D</span>
+            <div>
+              <div class="text-lg text-primary-900" style="font-weight:500">데이비드</div>
+              <div class="text-xs" style="color: var(--color-text-tertiary)">쿠알라룸푸르 · 두 번 옮긴 학부모</div>
+            </div>
+          </div>
+          <div class="mt-5 grid grid-cols-2 gap-3">
+            {operatorFacts.map((f) => (
+              <div class:list={['rounded-lg p-3', f.highlight ? 'bg-accent-100' : '']} style={f.highlight ? '' : 'background: var(--color-bg-secondary)'}>
+                <div class:list={['text-lg', f.highlight ? 'text-accent-700' : 'text-primary-900']} style="font-weight:500">{f.num}</div>
+                <div class:list={['mt-0.5 text-[11px]', f.highlight && 'text-accent-700']} style={f.highlight ? '' : 'color: var(--color-text-secondary)'}>{f.label}</div>
+              </div>
+            ))}
+          </div>
+          <a href="/ko/about/" class="mt-5 inline-flex items-center gap-1 text-sm text-primary-700 hover:underline" style="font-weight:500">
+            운영자 소개 자세히
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+        </aside>
       </div>
     </div>
   </section>
 
-  {/* 예산별 진입 */}
-  <section class="container-content pb-4">
-    <h2 class="text-xl">예산별 학교 추천</h2>
-    <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {[
-        { href: '/ko/tools/budget/budget-friendly/', title: '가성비', sub: '연 1,000만원 이하' },
-        { href: '/ko/tools/budget/mid-range/', title: '중간 예산', sub: '1,000~2,000만원' },
-        { href: '/ko/tools/budget/premium/', title: '프리미엄', sub: '2,000~3,500만원' },
-        { href: '/ko/tools/budget/top-tier/', title: '최상위', sub: '3,500만원+' },
-      ].map((b) => (
-        <a href={b.href} class="rounded-lg border p-5 hover:border-primary-700" style="border-color: var(--color-border-light)">
-          <div class="text-lg text-primary-900" style="font-weight:500">{b.title}</div>
-          <div class="mt-1 text-sm text-[color:var(--color-text-secondary)]">{b.sub}</div>
+  {/* ─── 핵심 정보 카드 6개 ─── */}
+  <section class="container-content section-md">
+    <div class="mb-8">
+      <h2 class="text-2xl sm:text-3xl">학부모가 가장 많이 묻는 주제</h2>
+      <p class="mt-2 text-sm" style="color: var(--color-text-secondary)">정보 · 도구 · 실제 인터뷰가 카테고리별로 누적되는 정보 허브</p>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {heroCards.map((c) => (
+        <a href={c.href} class:list={[c.tone === 'accent' ? 'card-feature' : 'card-info', 'group block']}>
+          <div class="flex items-start gap-3">
+            <div class:list={[c.tone === 'accent' ? 'icon-circle-accent' : 'icon-circle']}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d={c.icon} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+              {c.badge && <span class="badge-gold mb-2 text-[10px]">{c.badge}</span>}
+              <h3 class="text-base sm:text-lg leading-snug">{c.title}</h3>
+              <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height: 1.6;">{c.desc}</p>
+            </div>
+          </div>
+          <div class="mt-4 inline-flex items-center gap-1 text-xs text-primary-700 transition-transform group-hover:translate-x-1" style="font-weight:500">
+            자세히 보기
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
         </a>
       ))}
     </div>
   </section>
 
-  {/* 최근 가이드·전문가 칼럼 */}
+  {/* ─── 자녀 학년별 진입 (페르소나) ─── */}
+  <section class="container-content section-md">
+    <div class="mb-8">
+      <h2 class="text-2xl sm:text-3xl">자녀 학년에 맞는 시작점</h2>
+      <p class="mt-2 text-sm" style="color: var(--color-text-secondary)">학년별로 학부모가 봐야 할 정보가 다릅니다</p>
+    </div>
+    <div class="grid gap-5 md:grid-cols-3">
+      {personaCards.map((p) => (
+        <div class="card flex flex-col">
+          <div class="flex items-start justify-between">
+            <span class="text-4xl" aria-hidden="true">{p.emoji}</span>
+            <span class:list={[
+              'rounded-full px-3 py-1 text-xs',
+              p.color === 'sky' && 'bg-sky-100 text-sky-700',
+              p.color === 'amber' && 'bg-amber-100 text-amber-700',
+              p.color === 'rose' && 'bg-rose-100 text-rose-700',
+            ]} style="font-weight:500">{p.label}</span>
+          </div>
+          <div class="mt-3 text-xs uppercase tracking-wide" style="color: var(--color-text-tertiary)">{p.grade}</div>
+          <h3 class="mt-1 text-base">{p.title}</h3>
+          <ul class="mt-4 space-y-2 text-sm">
+            {p.links.map((l) => (
+              <li>
+                <a href={l.href} class="inline-flex items-center gap-1 hover:underline" style="color: var(--color-text-primary)">
+                  <span class="text-primary-700">▸</span> {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {/* ─── 예산별 진입 ─── */}
+  <section class="container-content section-md">
+    <div class="mb-8">
+      <h2 class="text-2xl sm:text-3xl">예산별 학교 추천</h2>
+      <p class="mt-2 text-sm" style="color: var(--color-text-secondary)">연 학비 + 부대 비용 종합 기준</p>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {budgetCards.map((b) => (
+        <a href={b.href} class="card group flex flex-col">
+          <div class:list={[
+            'inline-flex h-10 w-10 items-center justify-center rounded-lg',
+            b.color === 'emerald' && 'bg-emerald-100 text-emerald-700',
+            b.color === 'sky' && 'bg-sky-100 text-sky-700',
+            b.color === 'violet' && 'bg-violet-100 text-violet-700',
+            b.color === 'rose' && 'bg-rose-100 text-rose-700',
+          ]}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 6v12m-3-9h6m-6 6h6M5 6a2 2 0 012-2h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </div>
+          <div class="mt-4 text-lg text-primary-900" style="font-weight:500">{b.title}</div>
+          <div class="mt-1 text-sm" style="color: var(--color-text-secondary)">{b.sub}</div>
+          <div class="mt-3 text-xs text-primary-700 transition-transform group-hover:translate-x-1" style="font-weight:500">
+            학교 보기 →
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  {/* ─── 최근 콘텐츠 ─── */}
   {(recentGuides.length > 0 || recentExperts.length > 0) && (
-    <section class="container-content py-12">
-      <h2 class="text-xl">최근 발행 / 업데이트</h2>
-      <div class="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <section class="container-content section-md">
+      <div class="mb-8">
+        <h2 class="text-2xl sm:text-3xl">최근 발행 · 업데이트</h2>
+        <p class="mt-2 text-sm" style="color: var(--color-text-secondary)">운영자 검수 후 발행되는 가이드와 전문가 인터뷰</p>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {recentGuides.map((g) => (
-          <a href={`/ko/guide/${g.slug.replace(/-ko$/, '')}/`} class="block rounded-lg border p-5 hover:border-primary-700" style="border-color: var(--color-border-light)">
-            <div class="text-xs text-[color:var(--color-text-tertiary)]">가이드</div>
-            <div class="mt-1 text-base text-primary-900" style="font-weight:500">{g.data.title}</div>
-            <p class="mt-2 text-xs text-[color:var(--color-text-secondary)]">{g.data.summary}</p>
-            <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">{formatDate(g.data.last_updated, 'ko')}</p>
+          <a href={`/ko/guide/${g.slug.replace(/-ko$/, '')}/`} class="card group">
+            <div class="badge-navy text-[10px]">📘 가이드</div>
+            <h3 class="mt-3 text-base leading-snug">{g.data.title}</h3>
+            <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height: 1.6;">{g.data.summary}</p>
+            <p class="mt-3 text-xs" style="color: var(--color-text-tertiary)">{formatDate(g.data.last_updated, 'ko')}</p>
           </a>
         ))}
         {recentExperts.map((e) => (
-          <a href={`/ko/experts/${e.slug.replace(/-ko$/, '')}/`} class="block rounded-lg border p-5 hover:border-primary-700" style="border-color: var(--color-border-light)">
-            <div class="flex items-center gap-1">
-              <span class="text-xs text-[color:var(--color-text-tertiary)]">전문가 칼럼</span>
+          <a href={`/ko/experts/${e.slug.replace(/-ko$/, '')}/`} class="card group">
+            <div class="flex flex-wrap items-center gap-1">
+              <span class="badge-gold text-[10px]">🎤 전문가 칼럼</span>
               {e.data.expert.verified && <span class="badge-gold text-[10px]">⭐ 검증</span>}
             </div>
-            <div class="mt-1 text-base text-primary-900" style="font-weight:500">{e.data.title}</div>
-            <p class="mt-2 text-xs text-[color:var(--color-text-secondary)]">{e.data.summary}</p>
-            <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">{e.data.expert.affiliation}</p>
+            <h3 class="mt-3 text-base leading-snug">{e.data.title}</h3>
+            <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height: 1.6;">{e.data.summary}</p>
+            <p class="mt-3 text-xs" style="color: var(--color-text-tertiary)">{e.data.expert.affiliation}</p>
           </a>
         ))}
       </div>
     </section>
   )}
 
-  {/* 사이트 신뢰 신호 */}
-  <section class="container-content pb-16">
-    <div class="rounded-lg border p-5" style="border-color: var(--color-border-light); background: var(--color-bg-secondary)">
-      <h2 class="text-lg" style="font-weight:500">왜 AsiaEduHub 인가</h2>
-      <div class="mt-4 grid gap-4 sm:grid-cols-3 text-sm">
+  {/* ─── 사이트 신뢰 신호 / CTA ─── */}
+  <section class="container-content section-md">
+    <div class="card-cta">
+      <div class="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
         <div>
-          <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">1차 경험 (E-E-A-T)</div>
-          <p class="mt-1">운영자 본인이 한국 → 말레이시아 이주, 학교 2회 이전, MM2H 신청 경험.</p>
+          <h2 class="text-2xl sm:text-3xl text-white">왜 AsiaEduHub 인가</h2>
+          <p class="mt-3 text-sm opacity-90 max-w-2xl">
+            구글 2026 정책 (E-E-A-T · Helpful Content · Who/How/Why) 을 준수하는 학부모 정보 사이트.
+          </p>
+          <div class="mt-6 grid gap-4 sm:grid-cols-3 text-sm">
+            <div>
+              <div class="text-xs uppercase tracking-wide opacity-80">1차 경험 (E-E-A-T)</div>
+              <p class="mt-1 opacity-95">운영자 본인이 한국 → 말레이시아 이주, 학교 2회 이전, MM2H 신청 경험.</p>
+            </div>
+            <div>
+              <div class="text-xs uppercase tracking-wide opacity-80">출처 · 검증</div>
+              <p class="mt-1 opacity-95">모든 데이터에 출처 + 마지막 업데이트 날짜. 분기별 검증.</p>
+            </div>
+            <div>
+              <div class="text-xs uppercase tracking-wide opacity-80">광고 분리</div>
+              <p class="mt-1 opacity-95">광고 콘텐츠는 SPONSORED 배지. <a href="/ko/editorial-policy/" class="underline text-white">편집 원칙</a> 공개.</p>
+            </div>
+          </div>
         </div>
-        <div>
-          <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">출처·검증</div>
-          <p class="mt-1">모든 데이터에 출처 + 마지막 업데이트 날짜. 분기별 검증.</p>
-        </div>
-        <div>
-          <div class="text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">광고 분리</div>
-          <p class="mt-1">광고 콘텐츠는 SPONSORED 배지. <a href="/ko/editorial-policy/" class="text-primary-700 hover:underline">편집 원칙</a> 공개.</p>
+        <div class="md:text-right">
+          <a href="/ko/contact/" class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-primary-900" style="font-weight:500; box-shadow: var(--shadow-md)">
+            1:1 상담 신청
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
         </div>
       </div>
     </div>
