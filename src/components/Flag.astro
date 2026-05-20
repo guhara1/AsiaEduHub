@@ -1,0 +1,62 @@
+---
+/**
+ * 국기 SVG 컴포넌트 — 이모지 폴백 (Windows·구형 브라우저에서 🇲🇾가 "MY" 글자로 나오는 문제 해결).
+ * SVG 라이선스 무관 단순 사각 폼 사용 (식별만 가능하면 충분).
+ */
+export interface Props {
+  country: 'MY' | 'KR' | 'TH' | 'SG' | 'VN' | 'CN' | 'HK' | 'TW' | 'JP' | 'US' | 'UK' | 'CA' | 'AU' | 'NZ' | 'IN' | 'PH';
+  class?: string;
+}
+
+const { country, class: className = '' } = Astro.props;
+---
+<span class={`flag-chip ${className}`} aria-hidden="true">
+  {country === 'MY' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#cc0001"/><rect y="1.43" width="28" height="1.43" fill="#fff"/><rect y="4.29" width="28" height="1.43" fill="#fff"/><rect y="7.14" width="28" height="1.43" fill="#fff"/><rect y="10" width="28" height="1.43" fill="#fff"/><rect y="12.86" width="28" height="1.43" fill="#fff"/><rect y="15.71" width="28" height="1.43" fill="#fff"/><rect width="11.2" height="11.43" fill="#010066"/><circle cx="5" cy="5.71" r="2.5" fill="#ffcc00"/><circle cx="6" cy="5.71" r="2" fill="#010066"/></svg>
+  )}
+  {country === 'KR' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#fff"/><circle cx="14" cy="10" r="4" fill="#cd2e3a"/><path d="M10 10 a4 4 0 0 1 8 0 a2 2 0 0 1 -4 0 a2 2 0 0 0 -4 0z" fill="#0047a0"/><g fill="#000"><rect x="3" y="4" width="3" height="0.6"/><rect x="3" y="5.1" width="3" height="0.6"/><rect x="3" y="6.2" width="3" height="0.6"/><rect x="22" y="4" width="3" height="0.6"/><rect x="22" y="5.1" width="3" height="0.6"/><rect x="22" y="6.2" width="3" height="0.6"/><rect x="3" y="13.2" width="3" height="0.6"/><rect x="3" y="14.3" width="3" height="0.6"/><rect x="3" y="15.4" width="3" height="0.6"/><rect x="22" y="13.2" width="3" height="0.6"/><rect x="22" y="14.3" width="3" height="0.6"/><rect x="22" y="15.4" width="3" height="0.6"/></g></svg>
+  )}
+  {country === 'TH' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#ED1C24"/><rect y="3.33" width="28" height="13.33" fill="#fff"/><rect y="6.67" width="28" height="6.67" fill="#241D4F"/></svg>
+  )}
+  {country === 'SG' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="10" fill="#EF3340"/><rect y="10" width="28" height="10" fill="#fff"/><circle cx="7" cy="5" r="3" fill="#fff"/><circle cx="8" cy="5" r="2.5" fill="#EF3340"/></svg>
+  )}
+  {country === 'VN' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#DA251D"/><polygon points="14,4 15.5,9 20,9 16.5,12 18,17 14,14 10,17 11.5,12 8,9 12.5,9" fill="#FFFF00"/></svg>
+  )}
+  {country === 'CN' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#DE2910"/><polygon points="5,3 5.7,5 7.8,5 6.1,6.3 6.8,8.3 5,7 3.2,8.3 3.9,6.3 2.2,5 4.3,5" fill="#FFDE00"/></svg>
+  )}
+  {country === 'HK' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#DE2910"/><circle cx="14" cy="10" r="4" fill="#fff"/></svg>
+  )}
+  {country === 'TW' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#FE0000"/><rect width="14" height="10" fill="#000095"/><circle cx="7" cy="5" r="3" fill="#fff"/></svg>
+  )}
+  {country === 'JP' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#fff"/><circle cx="14" cy="10" r="5" fill="#bc002d"/></svg>
+  )}
+  {country === 'US' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#fff"/><g fill="#B22234"><rect y="0" width="28" height="1.54"/><rect y="3.08" width="28" height="1.54"/><rect y="6.15" width="28" height="1.54"/><rect y="9.23" width="28" height="1.54"/><rect y="12.31" width="28" height="1.54"/><rect y="15.38" width="28" height="1.54"/><rect y="18.46" width="28" height="1.54"/></g><rect width="11.2" height="10.77" fill="#3C3B6E"/></svg>
+  )}
+  {country === 'UK' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#012169"/><path d="M0,0 L28,20 M28,0 L0,20" stroke="#fff" stroke-width="3"/><path d="M0,0 L28,20 M28,0 L0,20" stroke="#C8102E" stroke-width="1.5"/><rect x="12" width="4" height="20" fill="#fff"/><rect y="8" width="28" height="4" fill="#fff"/><rect x="13" width="2" height="20" fill="#C8102E"/><rect y="9" width="28" height="2" fill="#C8102E"/></svg>
+  )}
+  {country === 'CA' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#fff"/><rect width="7" height="20" fill="#FF0000"/><rect x="21" width="7" height="20" fill="#FF0000"/><path d="M14,5 L15,8 L18,7 L16,10 L18,13 L15,12 L14,15 L13,12 L10,13 L12,10 L10,7 L13,8 Z" fill="#FF0000"/></svg>
+  )}
+  {country === 'AU' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#012169"/><rect width="14" height="10" fill="#012169"/><path d="M0,0 L14,10 M14,0 L0,10" stroke="#fff" stroke-width="1.5"/><rect x="6.5" width="1.5" height="10" fill="#fff"/><rect y="4.25" width="14" height="1.5" fill="#fff"/><rect x="7" width="0.7" height="10" fill="#C8102E"/><rect y="4.65" width="14" height="0.7" fill="#C8102E"/><text x="20" y="13" font-size="6" fill="#fff" font-family="Arial">✦</text></svg>
+  )}
+  {country === 'NZ' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="20" fill="#012169"/><rect width="14" height="10" fill="#012169"/><path d="M0,0 L14,10 M14,0 L0,10" stroke="#fff" stroke-width="1.5"/><rect x="6.5" width="1.5" height="10" fill="#fff"/><rect y="4.25" width="14" height="1.5" fill="#fff"/></svg>
+  )}
+  {country === 'IN' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="6.67" fill="#FF9933"/><rect y="6.67" width="28" height="6.67" fill="#fff"/><rect y="13.33" width="28" height="6.67" fill="#138808"/><circle cx="14" cy="10" r="1.5" fill="none" stroke="#000080" stroke-width="0.4"/></svg>
+  )}
+  {country === 'PH' && (
+    <svg viewBox="0 0 28 20"><rect width="28" height="10" fill="#0038A8"/><rect y="10" width="28" height="10" fill="#CE1126"/><polygon points="0,0 12,10 0,20" fill="#fff"/></svg>
+  )}
+</span>

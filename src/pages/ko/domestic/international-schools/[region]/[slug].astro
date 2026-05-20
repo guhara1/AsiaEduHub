@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import AuthorByline from '~/components/AuthorByline.astro';
+import Flag from '~/components/Flag.astro';
 import { INTERNATIONAL_SCHOOLS, REGION_METAS, COMMON_ELIGIBILITY, COMMON_ADMISSION_PROCESS } from '~/lib/domestic-schools';
 
 export async function getStaticPaths() {
@@ -70,62 +71,77 @@ const otherSchools = INTERNATIONAL_SCHOOLS.filter((o) => o.region === s.region &
   publishedAt={publishedAt}
   updatedAt={updatedAt}
 >
-  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
-    <div class="container-content py-10 sm:py-12">
+  <section class="hero-gradient hero-gradient-korea school-hero-wrap">
+    <div class="container-content pt-10 sm:pt-12">
       <nav class="text-sm" style="color: var(--color-text-secondary)">
         <a href="/ko/domestic/">국내 국제학교</a> ·
-        <a href={`/ko/domestic/international-schools/${s.region}/`}>{meta.ko}</a> · {s.name_ko}
+        <a href={`/ko/domestic/international-schools/${s.region}/`}>{meta.ko}</a> · <span style="color: var(--color-text-primary)">{s.name_ko}</span>
       </nav>
 
       <div class="mt-4 flex flex-wrap items-center gap-2">
-        <span class="badge-navy">🇰🇷 국제학교 (내국인 입학 가능)</span>
+        <span class="badge-navy"><Flag country="KR" />국제학교 (내국인 입학 가능)</span>
         {s.founded_year && <span class="badge-navy">{s.founded_year} 개교</span>}
       </div>
 
-      <h1 class="mt-4 text-3xl sm:text-4xl text-balance">{s.name_ko}</h1>
-      <p class="mt-2 text-sm" style="color: var(--color-text-secondary)">{s.name_en}{s.abbreviation && ` (${s.abbreviation})`}</p>
-      <p class="mt-4 max-w-2xl text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">{s.summary_ko}</p>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.02em">{s.name_ko}</h1>
+      <p class="mt-2 text-base" style="color: var(--color-text-secondary); font-weight:500">{s.name_en}{s.abbreviation && ` · ${s.abbreviation}`}</p>
+      <p class="mt-5 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">{s.summary_ko}</p>
 
-      <div class="mt-5">
+      <div class="mt-6">
         <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
           sources={`${s.name_ko} 공식 사이트, 제주특별법 / 인천경제자유구역법, 학교 입학 안내`} />
+      </div>
+
+      <div class="mt-5">
+        <a href={s.website} target="_blank" rel="noopener" class="official-site-button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20" stroke="currentColor" stroke-width="1.7"/>
+          </svg>
+          공식 사이트 방문
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 17L17 7M7 7h10v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </div>
     </div>
   </section>
 
-  <article class="container-content py-10 max-w-3xl">
-    <section class="stat-grid grid-cols-2 lg:grid-cols-4">
+  <div class="container-content school-stats-overlap">
+    <dl class="stat-grid grid-cols-2 lg:grid-cols-4">
       <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-7.5-7-12a7 7 0 1114 0c0 4.5-7 12-7 12z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.8"/></svg>
+        </span>
         <dt>위치</dt>
-        <dd>{s.city_ko}{s.district_ko && ` · ${s.district_ko}`}</dd>
+        <dd>{s.city_ko}{s.district_ko && <><br/><span class="text-sm" style="color:var(--color-text-secondary); font-weight:500">{s.district_ko}</span></>}</dd>
       </div>
       <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M2 7l10-4 10 4-10 4L2 7zM6 9v5c0 2 3 3 6 3s6-1 6-3V9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </span>
         <dt>학년</dt>
         <dd>{s.grade_range}</dd>
       </div>
       <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4zM4 9h16M9 5v14" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </span>
         <dt>커리큘럼</dt>
-        <dd class="text-sm">{s.curriculum_en.join(' · ')}</dd>
+        <dd class="text-sm" style="font-weight:600">{s.curriculum_en.join(' · ')}</dd>
       </div>
-      <div class="stat-card-tuition">
-        <dt>💰 연 학비 (추정)</dt>
+      <div class="stat-card stat-card-tuition">
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </span>
+        <dt>연 학비 (추정)</dt>
         <dd>${s.tuition_range_usd[0].toLocaleString()}~${s.tuition_range_usd[1].toLocaleString()}</dd>
         <p class="tuition-note">학교 공식 발표 확인</p>
       </div>
-    </section>
+    </dl>
+  </div>
 
-    <div class="mt-5">
-      <a href={s.website} target="_blank" rel="noopener" class="official-site-button">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7"/>
-          <path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20" stroke="currentColor" stroke-width="1.7"/>
-        </svg>
-        공식 사이트 방문
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M7 17L17 7M7 7h10v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-    </div>
+  <article class="container-content pt-6 pb-12 max-w-3xl">
 
     <section class="mt-10">
       <h2 class="text-xl">{s.name_ko} 핵심 특징</h2>
