@@ -819,6 +819,103 @@ export const SCHOOL_NEIGHBORHOODS: Record<string, SchoolNeighborhood[]> = {
       overview_zh: 'UCSI International School Subang Jaya 校区。USJ · Bandar Sunway 邻近。',
       condos: [...SUBANG_JAYA_CONDOS, ...SUNWAY_CONDOS] },
   ],
+
+  // ── 2026-05 추가 12개 ────────────────────────────────────────────
+  'king-henry-viii': [
+    { area_ko: 'Bandar Seri Putra · Putrajaya 통근권', area_zh: 'Bandar Seri Putra · Putrajaya 通勤圈',
+      overview_ko: 'King Henry VIII College — Bandar Seri Putra (네그리 셈빌란 북부). 보딩 중심 + Day 학생은 Putrajaya·Bandar Enstek 거주.',
+      overview_zh: 'King Henry VIII College — Bandar Seri Putra (森美兰北部)。寄宿为主 + 走读学生居 Putrajaya · Bandar Enstek。',
+      condos: [...BANDAR_ENSTEK_CONDOS, ...PUTRAJAYA_CONDOS] },
+  ],
+  'adcote-matrix': [
+    { area_ko: 'Bandar Sri Sendayan · 세렘반', area_zh: 'Bandar Sri Sendayan · 芙蓉',
+      overview_ko: 'Adcote School Malaysia — Matrix Concourse 단지 내. 보딩 중심 + 인근 단독 거주.',
+      overview_zh: 'Adcote School Malaysia — Matrix Concourse 园区内。寄宿为主 + 附近独栋居住。',
+      condos: [
+        { name: 'Matrix Concourse Residences', distance_minutes: 3, tier: 'mid', rent_2br_usd: [400, 600], rent_3br_usd: [600, 900], korean_parents: 'low', chinese_parents: 'mid', note_ko: 'Adcote 도보권. Matrix 단지 일체. 보딩 미선택 가족 거주.', note_zh: 'Adcote 步行可达。Matrix 园区一体。未选寄宿家庭居住。' },
+        { name: 'Seremban 2 단독·테라스', distance_minutes: 15, tier: 'mid', rent_2br_usd: [350, 550], rent_3br_usd: [550, 800], korean_parents: 'low', chinese_parents: 'mid', note_ko: '세렘반 신도시. Adcote 차량 15~20분.', note_zh: '芙蓉新城。Adcote 车程 15-20 分钟。' },
+      ] },
+  ],
+  'eaton-kajang': [
+    { area_ko: 'Kajang', area_zh: '加影',
+      overview_ko: 'Eaton International Kajang 캠퍼스. KL 남쪽 신도시.',
+      overview_zh: 'Eaton International Kajang 校区。KL 南部新城。',
+      condos: KAJANG_CONDOS },
+  ],
+  'eaton-shah-alam': [
+    { area_ko: 'Shah Alam', area_zh: '莎阿南',
+      overview_ko: 'Eaton International Shah Alam 캠퍼스. 셀랑고르 주도.',
+      overview_zh: 'Eaton International Shah Alam 校区。雪兰莪州府。',
+      condos: [
+        { name: 'i-City Residences', distance_minutes: 8, tier: 'mid', rent_2br_usd: [550, 800], rent_3br_usd: [800, 1200], korean_parents: 'low', chinese_parents: 'mid', note_ko: 'Shah Alam 도심 신축. i-City 상가·테마파크 인접.', note_zh: '莎阿南市区新建。i-City 商场 · 主题公园邻近。' },
+        ...SETIA_ECO_PARK_CONDOS,
+      ] },
+  ],
+  'sri-kdu-subang': [
+    { area_ko: 'Subang Jaya', area_zh: '梳邦再也',
+      overview_ko: 'Sri KDU 그룹 본 캠퍼스 — Subang Jaya 도심.',
+      overview_zh: 'Sri KDU 集团本校区 — 梳邦再也市区。',
+      condos: SUBANG_JAYA_CONDOS },
+  ],
+  'sri-kdu-klang': [
+    { area_ko: 'Klang · Bandar Bukit Tinggi', area_zh: '巴生 · Bandar Bukit Tinggi',
+      overview_ko: 'Sri KDU Klang 캠퍼스. 클랑항 인근 신도시.',
+      overview_zh: 'Sri KDU Klang 校区。巴生港邻近新城。',
+      condos: [
+        { name: 'Bandar Bukit Tinggi 콘도', distance_minutes: 5, tier: 'mid', rent_2br_usd: [400, 600], rent_3br_usd: [600, 900], korean_parents: 'low', chinese_parents: 'high', note_ko: 'Klang 신도시 중심. 학교 도보·차량 5분. 화교 가족 다수.', note_zh: '巴生新城中心。学校步行 · 车程 5 分钟。华人家庭众多。' },
+      ] },
+  ],
+  'ucsi-springhill': [
+    { area_ko: 'Port Dickson · Springhill (네그리 셈빌란)', area_zh: '波德申 · Springhill (森美兰)',
+      overview_ko: 'UCSI Springhill — 해변 리조트 단지 내. 보딩 중심 + Day 학생은 Port Dickson 거주.',
+      overview_zh: 'UCSI Springhill — 海滨度假村内。寄宿为主 + 走读学生居波德申。',
+      condos: [
+        { name: 'Springhill Garden Residence', distance_minutes: 3, tier: 'mid', rent_2br_usd: [500, 750], rent_3br_usd: [750, 1100], korean_parents: 'low', chinese_parents: 'mid', note_ko: '학교 도보권. 해변 리조트 단지 일체. 가족 친화.', note_zh: '学校步行可达。海滨度假村一体。家庭友好。' },
+        { name: 'Port Dickson 해변 콘도', distance_minutes: 10, tier: 'budget', rent_2br_usd: [350, 550], rent_3br_usd: [550, 800], korean_parents: 'low', chinese_parents: 'mid', note_ko: 'PD 도심 해변. 학교 차량 10~15분.', note_zh: 'PD 市区海滨。学校车程 10-15 分钟。' },
+      ] },
+  ],
+  'tenby-tropicana-aman': [
+    { area_ko: 'Tropicana Aman · Sungai Buloh', area_zh: 'Tropicana Aman · 双溪毛糯',
+      overview_ko: 'Tenby Tropicana Aman 캠퍼스 — 단지 내. KL 북서부 신도시.',
+      overview_zh: 'Tenby Tropicana Aman 校区 — 园区内。KL 西北部新城。',
+      condos: [
+        { name: 'Tropicana Aman Residence', distance_minutes: 3, tier: 'premium', rent_2br_usd: [800, 1200], rent_3br_usd: [1300, 1900], korean_parents: 'low', chinese_parents: 'mid', note_ko: '학교 도보권. 단지 일체. 한·중 학부모 신규 이주.', note_zh: '学校步行可达。园区一体。韩中家长新迁入。' },
+        { name: 'Kota Damansara 콘도 (차량 15분)', distance_minutes: 15, tier: 'mid', rent_2br_usd: [600, 900], rent_3br_usd: [900, 1300], korean_parents: 'mid', chinese_parents: 'high', note_ko: 'Sri KDU 학부모 클러스터와 셰어. 한·중 학부모 다수.', note_zh: '与 Sri KDU 家长聚集区共享。韩中家长众多。' },
+      ] },
+  ],
+  'tenby-setia-ecohill': [
+    { area_ko: 'Setia EcoHill · Semenyih (KL 남쪽)', area_zh: 'Setia EcoHill · 士毛月 (KL 南部)',
+      overview_ko: 'Tenby Setia EcoHill 캠퍼스 — Semenyih 신도시 단지 내.',
+      overview_zh: 'Tenby Setia EcoHill 校区 — 士毛月新城园区内。',
+      condos: [
+        { name: 'Setia EcoHill 단독·테라스', distance_minutes: 5, tier: 'mid', rent_2br_usd: [450, 650], rent_3br_usd: [650, 950], korean_parents: 'low', chinese_parents: 'mid', note_ko: '학교 도보·자전거 권. 단지 일체. 말레이·중국 가족 다수.', note_zh: '学校步行 · 自行车可达。园区一体。马来 · 中国家庭众多。' },
+        ...KAJANG_CONDOS,
+      ] },
+  ],
+  'maple-leaf-kingsley': [
+    { area_ko: 'Putra Heights · Subang Jaya', area_zh: 'Putra Heights · 梳邦再也',
+      overview_ko: 'Maple Leaf Kingsley — Putra Heights 신도시. 캐나다 OSSD 커리큘럼.',
+      overview_zh: 'Maple Leaf Kingsley — Putra Heights 新城。加拿大 OSSD 课程。',
+      condos: [
+        { name: 'Putra Heights Pangsapuri', distance_minutes: 5, tier: 'mid', rent_2br_usd: [500, 750], rent_3br_usd: [750, 1100], korean_parents: 'low', chinese_parents: 'mid', note_ko: '학교 차량 5분. LRT Putra Heights 연결.', note_zh: '学校车程 5 分钟。LRT Putra Heights 直通。' },
+        ...SUBANG_JAYA_CONDOS,
+      ] },
+  ],
+  'rocklin': [
+    { area_ko: 'Cheras', area_zh: 'Cheras',
+      overview_ko: 'Rocklin International — Cheras 도심. 영국식 가성비 학교.',
+      overview_zh: 'Rocklin International — Cheras 市区。英式性价比学校。',
+      condos: UCSI_CHERAS_CONDOS },
+  ],
+  'concord': [
+    { area_ko: 'Section 13, Petaling Jaya', area_zh: 'Section 13, PJ',
+      overview_ko: 'Concord International — PJ Section 13. PJ 도심 가성비 옵션.',
+      overview_zh: 'Concord International — PJ Section 13。PJ 市区性价比之选。',
+      condos: [
+        { name: 'PJ Section 13 콘도', distance_minutes: 5, tier: 'mid', rent_2br_usd: [550, 800], rent_3br_usd: [800, 1200], korean_parents: 'mid', chinese_parents: 'high', note_ko: 'PJ 도심. MRT·LRT 접근 우수. 한·중 가족 다수.', note_zh: 'PJ 市区。MRT · LRT 接驳良好。韩中家庭众多。' },
+        ...TROPICANA_PJ_CONDOS,
+      ] },
+  ],
   'oasis': [
     { area_ko: 'Kajang (KL 남쪽)', area_zh: 'Kajang (吉隆坡南部)',
       overview_ko: 'Oasis International School Kajang. KL 남쪽 신도시. 말레이·중국 가족 다수.',
