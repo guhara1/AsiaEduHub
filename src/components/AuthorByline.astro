@@ -1,0 +1,43 @@
+---
+import type { Locale } from '~/lib/i18n';
+
+export interface Props {
+  locale: Locale;
+  publishedAt?: Date;
+  updatedAt?: Date;
+  /** 운영자 자체 검수 배지. 기본 true. */
+  verified?: boolean;
+  /** 출처 표기 (예: "한국 외국인학교법 · 학교 공식 자료") */
+  sources?: string;
+}
+const { locale, publishedAt, updatedAt, verified = true, sources } = Astro.props;
+
+const T = {
+  ko: { by: '작성', published: '발행', updated: '업데이트', verified: '운영자 검수', source: '출처' },
+  zh: { by: '作者', published: '发布', updated: '更新', verified: '站长审核', source: '来源' },
+}[locale];
+
+const fmt = new Intl.DateTimeFormat(locale === 'ko' ? 'ko-KR' : 'zh-CN', {
+  year: 'numeric', month: '2-digit', day: '2-digit',
+});
+
+const authorName = locale === 'ko' ? '데이비드' : 'David';
+const authorUrl = `/${locale}/about/`;
+---
+<div class="not-prose">
+  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[color:var(--color-text-tertiary)]">
+    <span>
+      {T.by} <a href={authorUrl} class="text-primary-700 hover:underline">{authorName}</a>
+    </span>
+    {verified && <span class="badge-gold text-[10px]">⭐ {T.verified}</span>}
+    {publishedAt && <span>{T.published} {fmt.format(publishedAt)}</span>}
+    {updatedAt && publishedAt && updatedAt.getTime() !== publishedAt.getTime() && (
+      <span>{T.updated} {fmt.format(updatedAt)}</span>
+    )}
+  </div>
+  {sources && (
+    <p class="mt-1 text-xs text-[color:var(--color-text-tertiary)]">
+      {T.source}: {sources}
+    </p>
+  )}
+</div>

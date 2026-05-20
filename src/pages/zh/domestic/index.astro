@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
 import {
   FOREIGN_SCHOOLS_INFO,
   FOREIGN_SCHOOLS,
@@ -18,6 +19,9 @@ const ag = ADMISSION_GUIDE_INFO.zh;
 const title = '韩国国际学校信息 — 外国人学校 vs 济州·松岛国际学校 区别、学费、入学资格 | AsiaEduHub';
 const description =
   '韩国外国人学校(SFS·YISS·KIS·Chadwick 松岛)与济州·松岛国际学校(NLCS·KIS·BHA·SJA)的法律差异、入学资格、学费范围、申请文件与时间表。家长常见问题。';
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
 
 const breadcrumb = {
   '@context': 'https://schema.org',
@@ -38,7 +42,14 @@ const faqSchema = {
   })),
 };
 ---
-<BaseLayout title={title} description={description} jsonLd={[breadcrumb, faqSchema]}>
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+>
   <section class="container-content py-10">
     <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · 韩国国际学校</nav>
     <h1 class="mt-2 text-2xl sm:text-3xl">韩国国际学校 — 家长必须了解的所有要点</h1>
@@ -46,6 +57,15 @@ const faqSchema = {
       在韩国,「外国人学校」与「国际学校」是法律上完全不同的两类学校。入学资格、学历认定、学费、学生构成均不同,
       请准确了解后再做选择。
     </p>
+
+    <div class="mt-4">
+      <AuthorByline
+        locale="zh"
+        publishedAt={publishedAt}
+        updatedAt={updatedAt}
+        sources="韩国《外国人学校法》、《济州特别自治道设置特别法》、学校官方资料、站长亲自核实"
+      />
+    </div>
 
     <section class="mt-8 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5" style="border-color: var(--color-border-light)">
       <h2 class="text-lg" style="font-weight:500">外国人学校 vs 国际学校 — 核心区别</h2>
