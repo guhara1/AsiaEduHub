@@ -84,6 +84,14 @@ if (author && publishedAt) {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#1E3A8A" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
+
+    {/* 퍼포먼스 힌트 — LCP 개선 */}
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -117,6 +125,10 @@ if (author && publishedAt) {
     {updatedAt && <meta property="article:modified_time" content={updatedAt.toISOString()} />}
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    {/* RSS — 콘텐츠 신선도 신호 */}
+    <link rel="alternate" type="application/rss+xml" title="AsiaEduHub 가이드 (한국어)" href="/ko/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="AsiaEduHub 指南 (中文)" href="/zh/rss.xml" />
 
     {jsonLdArray.map((obj) => (
       <script type="application/ld+json" set:html={JSON.stringify(obj)} />

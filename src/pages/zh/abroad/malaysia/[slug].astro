@@ -24,9 +24,25 @@ const eduOrg = {
   name: s.name_en,
   alternateName: [s.name_ko, s.name_zh].filter(Boolean),
   url: s.website,
+  sameAs: [s.website].filter(Boolean),
   foundingDate: s.founded_year ? `${s.founded_year}` : undefined,
   address: { '@type': 'PostalAddress', addressLocality: s.city_zh, addressCountry: 'MY' },
   description: s.summary_zh,
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: `${s.name_zh} 年学费`,
+    itemListElement: [{
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      priceSpecification: {
+        '@type': 'PriceSpecification',
+        minPrice: s.tuition_range_usd[0],
+        maxPrice: s.tuition_range_usd[1],
+        priceCurrency: 'USD',
+      },
+      category: '年学费',
+    }],
+  },
 };
 
 const breadcrumb = {

@@ -10,15 +10,34 @@ const title = `${t.site.name} — ${t.site.tagline}`;
 const description =
   '居住马来西亚的家长 David 独立运营。韩国外国人学校 · 济州国际学校 · 东南亚 · 英美澳加学校信息,MM2H 签证,学费计算器,升学路径模拟器等家长真正需要的信息整理。';
 
+const siteRoot = Astro.site?.toString() ?? '';
 const websiteSchema = {
   '@context': 'https://schema.org', '@type': 'WebSite',
-  name: t.site.name, url: Astro.site?.toString(), inLanguage: 'zh-CN',
+  name: t.site.name, url: siteRoot, inLanguage: 'zh-CN',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: siteRoot + 'zh/?q={search_term_string}' },
+    'query-input': 'required name=search_term_string',
+  },
 };
 const orgSchema = {
   '@context': 'https://schema.org', '@type': 'Organization',
-  name: 'AsiaEduHub', url: Astro.site?.toString(),
-  logo: (Astro.site?.toString() ?? '') + 'favicon.svg',
-  founder: { '@type': 'Person', name: 'David', url: (Astro.site?.toString() ?? '') + 'zh/about/' },
+  name: 'AsiaEduHub', url: siteRoot,
+  logo: { '@type': 'ImageObject', url: siteRoot + 'favicon.svg' },
+  founder: {
+    '@type': 'Person', name: 'David', url: siteRoot + 'zh/about/',
+    jobTitle: '马来西亚国际学校家长 · 数字营销',
+    nationality: 'KR',
+    homeLocation: { '@type': 'Place', name: 'Kuala Lumpur, Malaysia' },
+    knowsLanguage: ['ko', 'zh', 'en'],
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    availableLanguage: ['Chinese', 'Korean', 'English'],
+    url: siteRoot + 'zh/contact/',
+  },
+  areaServed: ['CN', 'TW', 'HK', 'MY', 'SG', 'KR', 'TH', 'VN'],
 };
 
 const recentGuides = (await getCollection('guides', (e) => e.data.locale === 'zh'))

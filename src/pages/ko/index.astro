@@ -10,15 +10,34 @@ const title = `${t.site.name} — ${t.site.tagline}`;
 const description =
   '말레이시아 거주 학부모 데이비드가 직접 운영. 외국인학교·제주 국제학교·동남아·영미권 학교 정보, MM2H 비자, 학비 계산기, 진학 트랙 시뮬레이터 등 학부모가 정말 필요한 정보 정리.';
 
+const siteRoot = Astro.site?.toString() ?? '';
 const websiteSchema = {
   '@context': 'https://schema.org', '@type': 'WebSite',
-  name: t.site.name, url: Astro.site?.toString(), inLanguage: 'ko-KR',
+  name: t.site.name, url: siteRoot, inLanguage: 'ko-KR',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: siteRoot + 'ko/?q={search_term_string}' },
+    'query-input': 'required name=search_term_string',
+  },
 };
 const orgSchema = {
   '@context': 'https://schema.org', '@type': 'Organization',
-  name: 'AsiaEduHub', url: Astro.site?.toString(),
-  logo: (Astro.site?.toString() ?? '') + 'favicon.svg',
-  founder: { '@type': 'Person', name: '데이비드', url: (Astro.site?.toString() ?? '') + 'ko/about/' },
+  name: 'AsiaEduHub', url: siteRoot,
+  logo: { '@type': 'ImageObject', url: siteRoot + 'favicon.svg' },
+  founder: {
+    '@type': 'Person', name: '데이비드', url: siteRoot + 'ko/about/',
+    jobTitle: '말레이시아 국제학교 학부모·온라인 마케터',
+    nationality: 'KR',
+    homeLocation: { '@type': 'Place', name: 'Kuala Lumpur, Malaysia' },
+    knowsLanguage: ['ko', 'zh', 'en'],
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    availableLanguage: ['Korean', 'Chinese', 'English'],
+    url: siteRoot + 'ko/contact/',
+  },
+  areaServed: ['KR', 'MY', 'TH', 'SG', 'VN', 'CN', 'TW', 'HK'],
 };
 
 const recentGuides = (await getCollection('guides', (e) => e.data.locale === 'ko'))

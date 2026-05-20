@@ -1,0 +1,44 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+
+const title = '페이지를 찾을 수 없습니다 · 404 | AsiaEduHub';
+const description = '요청하신 페이지가 존재하지 않거나 이동되었습니다. 인기 페이지로 이동해 주세요.';
+
+const popular = [
+  { href: '/ko/', label: '메인 (한국어)', desc: 'AsiaEduHub 홈' },
+  { href: '/zh/', label: '主页 (中文)', desc: 'AsiaEduHub 首页' },
+  { href: '/ko/abroad/malaysia/', label: '말레이시아 국제학교 22곳', desc: 'KL·셀랑고르·푸트라자야 전체' },
+  { href: '/ko/domestic/', label: '국내 외국인학교·국제학교', desc: 'SFS·NLCS·BHA·채드윅 송도' },
+  { href: '/ko/tools/compare/', label: '학교 비교 · 학비 계산기', desc: '진학 트랙 시뮬레이터 포함' },
+  { href: '/ko/mm2h/', label: 'MM2H · 학부모 비자', desc: '말레이시아·태국·싱가포르 비교' },
+  { href: '/ko/guide/', label: '유학 가이드', desc: 'IB·A-Level·AP·MM2H' },
+  { href: '/ko/contact/', label: '운영자에게 문의', desc: '카카오톡 · WeChat · 이메일' },
+];
+---
+<BaseLayout title={title} description={description} noindex={true}>
+  <section class="hero-gradient">
+    <div class="container-content py-16 sm:py-20 text-center">
+      <p class="text-sm uppercase tracking-wider" style="color: var(--color-text-tertiary)">Error 404</p>
+      <h1 class="mt-3 text-4xl sm:text-5xl text-balance">페이지를 찾을 수 없습니다</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height:1.7;">
+        요청하신 URL 이 존재하지 않거나 이동되었습니다. 아래 인기 페이지에서 원하는 정보를 찾으실 수 있습니다.
+      </p>
+      <div class="mt-7 flex flex-wrap justify-center gap-3">
+        <a href="/ko/" class="inline-flex items-center rounded-md bg-primary-900 px-5 py-2.5 text-sm text-white" style="font-weight:500">한국어 홈으로</a>
+        <a href="/zh/" class="inline-flex items-center rounded-md border px-5 py-2.5 text-sm" style="border-color: var(--color-border-medium); font-weight:500">中文首页</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-content py-12">
+    <h2 class="text-xl sm:text-2xl" style="font-weight:600">자주 찾는 페이지</h2>
+    <div class="mt-6 grid gap-3 sm:grid-cols-2">
+      {popular.map((p) => (
+        <a href={p.href} class="block rounded-lg border p-4 hover:border-primary-700 transition-colors" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:500">{p.label}</div>
+          <div class="mt-1 text-sm" style="color: var(--color-text-secondary)">{p.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

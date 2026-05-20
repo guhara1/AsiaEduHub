@@ -16,13 +16,27 @@ const title = '国际学校留学指南 — 入学 · 学费 · 签证 · 课程
 const description =
   '韩国 · 东南亚 · 英美澳加国际学校的入学准备、学费 · 奖学金、签证 · 居住、IB · A-Level · AP 对比、升学案例、专家访谈。围绕家长核心问题整理。';
 
+const siteRoot = Astro.site?.toString() ?? '';
 const breadcrumb = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: (Astro.site?.toString() ?? '') + 'zh/' },
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
     { '@type': 'ListItem', position: 2, name: '指南' },
   ],
+};
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '留学指南',
+  numberOfItems: guides.length,
+  itemListElement: guides.map((g, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: g.data.title,
+    url: siteRoot + `zh/guide/${g.slug.replace(/-zh$/, '')}/`,
+  })),
 };
 
 const faqSchema = {
@@ -45,7 +59,7 @@ function categoryGuides(id: string) {
 <BaseLayout
   title={title}
   description={description}
-  jsonLd={[breadcrumb, faqSchema]}
+  jsonLd={[breadcrumb, faqSchema, itemList]}
   author={{ name: 'David', url: '/zh/about/' }}
   publishedAt={publishedAt}
   updatedAt={updatedAt}
