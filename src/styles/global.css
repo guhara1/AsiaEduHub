@@ -178,15 +178,26 @@
       'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', emoji, sans-serif;
   }
 
-  body { line-height: 1.65; font-size: 16px; }
-  p { line-height: 1.7; color: var(--color-text-primary); }
-  li { line-height: 1.65; }
+  body {
+    line-height: 1.65;
+    font-size: 16px;
+    /* Pretendard Variable — 정밀 weight 450 (Regular ~ Medium 사이) — 한글 시인성 강화 */
+    font-weight: 450;
+    -webkit-text-stroke: 0.01em currentColor; /* 미세한 stroke 로 한글 또렷하게 */
+  }
+  p {
+    line-height: 1.75;
+    color: var(--color-text-primary);
+    font-weight: 450;
+  }
+  li { line-height: 1.7; font-weight: 450; }
+  strong, b { font-weight: 600; }
 
   h1, h2, h3, h4, h5, h6 {
-    font-weight: 500;
+    font-weight: 600;
     color: var(--color-primary-900);
     line-height: 1.25;
-    letter-spacing: -0.018em;
+    letter-spacing: -0.022em;
     word-break: keep-all;
   }
   /* 한글 h1 — 정밀한 위계: weight 600(Variable), line-height 좁게, 자간 -3% */
@@ -325,13 +336,14 @@
   }
   .card-feature:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
 
-  /* CTA 카드 (네이비 그라데이션, 가장 강조) */
+  /* CTA 카드 (네이비 그라데이션, 가장 강조) — 시인성 강화 */
   .card-cta {
-    @apply rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden;
+    @apply rounded-2xl p-6 sm:p-8 relative overflow-hidden;
+    color: #fff;
     background:
       radial-gradient(circle at 0% 100%, rgba(245, 158, 11, 0.20) 0%, transparent 50%),
       radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.30) 0%, transparent 50%),
-      linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 60%, var(--color-primary-800) 100%);
+      linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-800) 100%);
     box-shadow: var(--shadow-xl);
   }
   .card-cta::before {
@@ -341,6 +353,23 @@
     background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,0.04) 100%);
     pointer-events: none;
   }
+  /* card-cta 안 텍스트 — opacity 대신 명시적 색상으로 가독성 보장 */
+  .card-cta h1, .card-cta h2, .card-cta h3 { color: #fff; font-weight: 700; letter-spacing: -0.022em; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
+  .card-cta p { color: rgba(255, 255, 255, 0.94); font-weight: 450; }
+  .card-cta .card-cta-label {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .card-cta a:not([class*='cta-']) {
+    color: #FCD34D;
+    text-decoration: underline;
+    text-decoration-color: rgba(252, 211, 77, 0.5);
+    text-underline-offset: 3px;
+  }
+  .card-cta a:not([class*='cta-']):hover { text-decoration-color: #FCD34D; }
 
   /* 학교 카드 (목록용) — 좌측 색상 액센트 */
   .card-school {
