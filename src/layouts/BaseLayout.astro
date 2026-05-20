@@ -71,12 +71,14 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   </head>
   <body class="min-h-screen bg-white text-[color:var(--color-text-primary)]">
     <SiteHeader />
+    {/* 광고 슬롯 — 광고주 체결 전까지 비활성. 활성화 시 아래 4줄 주석 해제.
     <AdRail side="left" locale={locale} />
     <AdRail side="right" locale={locale} />
+    */}
     <main>
       <slot />
     </main>
     <SiteFooter />
-    <MobileStickyAd locale={locale} />
+    {/* <MobileStickyAd locale={locale} /> */}
   </body>
 </html>
