@@ -497,6 +497,134 @@
   :root[data-theme="dark"] .school-card-name { color: #DBEAFE; }
   :root[data-theme="dark"] .school-card-tuition-value { color: #BFDBFE; }
 
+  /* ─────────────────────────────────────────────────────────
+     B. Hero 상단 강조 배지 — 운영자 자녀 재학 / 방문 확인
+     ───────────────────────────────────────────────────────── */
+  .hero-highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1.125rem 0.625rem 0.875rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--color-accent-100) 0%, var(--color-accent-50) 100%);
+    border: 1.5px solid var(--color-accent-400);
+    box-shadow: 0 4px 16px -6px rgba(245, 158, 11, 0.30), inset 0 1px 0 rgba(255,255,255,0.5);
+    margin-bottom: 1rem;
+  }
+  .hero-highlight-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-accent-600) 0%, var(--color-accent-500) 100%);
+    color: #fff;
+    font-size: 0.875rem;
+    box-shadow: 0 2px 6px -1px rgba(245, 158, 11, 0.40);
+  }
+  .hero-highlight-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+  .hero-highlight-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-accent-700);
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+  .hero-highlight-desc {
+    font-size: 0.75rem;
+    color: var(--color-accent-700);
+    opacity: 0.85;
+    line-height: 1.2;
+  }
+
+  /* ─────────────────────────────────────────────────────────
+     C. 학비 stat-card 강조 (골드 배경)
+     ───────────────────────────────────────────────────────── */
+  .stat-card-tuition {
+    @apply relative rounded-xl p-4 overflow-hidden;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.18) 0%, transparent 60%),
+      linear-gradient(135deg, var(--color-accent-50) 0%, #fff 100%);
+    border: 1.5px solid var(--color-accent-300);
+    transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+  }
+  .stat-card-tuition:hover {
+    border-color: var(--color-accent-500);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  .stat-card-tuition dt {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-accent-700);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .stat-card-tuition dd {
+    margin-top: 0.375rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--color-accent-700);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-card-tuition .tuition-note {
+    margin-top: 0.375rem;
+    font-size: 0.7rem;
+    color: var(--color-accent-700);
+    opacity: 0.7;
+  }
+  :root[data-theme="dark"] .stat-card-tuition {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.10) 0%, var(--color-bg-elevated) 100%);
+    border-color: rgba(245, 158, 11, 0.40);
+  }
+  :root[data-theme="dark"] .stat-card-tuition dd { color: #FCD34D; }
+
+  /* ─────────────────────────────────────────────────────────
+     D. 공식 사이트 버튼 — hero 안 또는 stat-card 옆
+     ───────────────────────────────────────────────────────── */
+  .official-site-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border-radius: 10px;
+    background: #fff;
+    border: 1.5px solid var(--color-border-medium);
+    color: var(--color-primary-900);
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 200ms var(--ease-out);
+    text-decoration: none;
+  }
+  .official-site-button:hover {
+    border-color: var(--color-primary-600);
+    background: var(--color-primary-50);
+    color: var(--color-primary-900);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+  }
+  .official-site-button svg {
+    flex-shrink: 0;
+    transition: transform 200ms var(--ease-out);
+  }
+  .official-site-button:hover svg { transform: translate(2px, -2px); }
+  :root[data-theme="dark"] .official-site-button {
+    background: var(--color-bg-elevated);
+    border-color: var(--color-border-medium);
+    color: #DBEAFE;
+  }
+
   /* Feature 카드 (골드 톤, 강조) */
   .card-feature {
     @apply card relative overflow-hidden;

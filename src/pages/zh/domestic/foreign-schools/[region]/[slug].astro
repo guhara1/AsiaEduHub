@@ -91,16 +91,25 @@ const otherSchools = FOREIGN_SCHOOLS.filter((o) => o.region === s.region && o.sl
         <dt>课程</dt>
         <dd class="text-sm">{s.curriculum_en.join(' · ')}</dd>
       </div>
-      <div class="stat-card">
-        <dt>年学费(估算)</dt>
-        <dd>${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</dd>
-        <p class="mt-1 text-[11px]" style="color: var(--color-text-tertiary)">准确学费请查阅学校官方公告</p>
+      <div class="stat-card-tuition">
+        <dt>💰 年学费(估算)</dt>
+        <dd>${s.tuition_range_usd[0].toLocaleString()}~${s.tuition_range_usd[1].toLocaleString()}</dd>
+        <p class="tuition-note">学校官网为准</p>
       </div>
     </section>
 
-    <p class="mt-4 text-xs text-[color:var(--color-text-tertiary)]">
-      官方网站:<a href={s.website} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.website} ↗</a>
-    </p>
+    <div class="mt-5">
+      <a href={s.website} target="_blank" rel="noopener" class="official-site-button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20" stroke="currentColor" stroke-width="1.7"/>
+        </svg>
+        访问官方网站
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 17L17 7M7 7h10v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
 
     <section class="mt-10">
       <h2 class="text-xl">{s.name_zh} 核心特点</h2>

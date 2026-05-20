@@ -67,12 +67,22 @@ const curriculumLabel = {
         <a href="/ko/abroad/">해외 유학</a> · <a href="/ko/abroad/malaysia/">🇲🇾 말레이시아</a> · {s.name_ko}
       </nav>
 
-      <div class="mt-4 flex flex-wrap items-center gap-2">
+      {/* B. 운영자 자녀 재학 강조 (단독 배지, h1 위) */}
+      {s.operator_note_ko && (
+        <div class="mt-5 hero-highlight">
+          <span class="hero-highlight-icon" aria-hidden="true">⭐</span>
+          <span class="hero-highlight-text">
+            <span class="hero-highlight-title">운영자 자녀가 다니는 학교</span>
+            <span class="hero-highlight-desc">데이비드의 두 자녀가 재학 중 · 1차 경험·방문 검증 데이터 누적</span>
+          </span>
+        </div>
+      )}
+
+      <div class="mt-3 flex flex-wrap items-center gap-2">
         <span class="badge-navy">🇲🇾 말레이시아 · {s.city_ko}</span>
         {s.founded_year && <span class="badge-navy">{s.founded_year} 설립</span>}
         <span class="badge-navy">{curriculumLabel}</span>
         {s.boarding && <span class="badge-navy">보딩 옵션</span>}
-        {s.operator_note_ko && <span class="badge-gold">⭐ 운영자 자녀 재학</span>}
       </div>
 
       <h1 class="mt-4 text-3xl sm:text-4xl text-balance">{s.name_ko}</h1>
@@ -81,15 +91,29 @@ const curriculumLabel = {
       </p>
       <p class="mt-4 max-w-2xl text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">{s.summary_ko}</p>
 
-      <div class="mt-5">
+      <div class="mt-5 flex flex-wrap items-center gap-3">
         <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
           sources={`${s.name_ko} 공식 사이트, 학교 입학 안내, 운영자 거주(쿠알라룸푸르)`} />
+      </div>
+
+      {/* D. 공식 사이트 버튼 (hero 안) */}
+      <div class="mt-5">
+        <a href={s.website} target="_blank" rel="noopener" class="official-site-button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20" stroke="currentColor" stroke-width="1.7"/>
+          </svg>
+          공식 사이트 방문
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 17L17 7M7 7h10v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </div>
     </div>
   </section>
 
   <article class="container-content py-10 max-w-3xl">
-    {/* 핵심 정보 박스 */}
+    {/* 핵심 정보 박스 — C. 학비 강조 */}
     <section class="stat-grid grid-cols-2 lg:grid-cols-4">
       <div class="stat-card">
         <dt>위치</dt>
@@ -103,20 +127,16 @@ const curriculumLabel = {
         <dt>커리큘럼</dt>
         <dd class="text-sm">{s.curriculum.programs_en.join(' · ')}</dd>
       </div>
-      <div class="stat-card">
-        <dt>연 학비 (추정)</dt>
-        <dd>${s.tuition_range_usd[0].toLocaleString()} – ${s.tuition_range_usd[1].toLocaleString()}</dd>
-        <p class="mt-1 text-[11px]" style="color: var(--color-text-tertiary)">정확한 학비는 학교 공식 발표 확인</p>
+      <div class="stat-card-tuition">
+        <dt>💰 연 학비 (추정)</dt>
+        <dd>${s.tuition_range_usd[0].toLocaleString()}~${s.tuition_range_usd[1].toLocaleString()}</dd>
+        <p class="tuition-note">학교 공식 발표 확인</p>
       </div>
     </section>
 
-    <p class="mt-4 text-xs text-[color:var(--color-text-tertiary)]">
-      공식 사이트: <a href={s.website} target="_blank" rel="noopener" class="text-primary-700 hover:underline">{s.website} ↗</a>
-    </p>
-
     {s.operator_note_ko && (
-      <div class="mt-4 rounded-lg border-l-4 border-accent-500 bg-accent-100 p-4 text-sm text-accent-700">
-        <strong style="font-weight:500">⭐ 운영자 특이사항:</strong> {s.operator_note_ko}
+      <div class="mt-6 rounded-xl border-l-4 border-accent-500 p-5 text-sm" style="background: linear-gradient(135deg, var(--color-accent-50) 0%, #fff 100%); color: var(--color-accent-700);">
+        <strong style="font-weight:600">⭐ 운영자 특이사항:</strong> {s.operator_note_ko}
       </div>
     )}
 
