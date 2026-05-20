@@ -11,6 +11,7 @@ import {
   countryName,
   cityName,
 } from '../lib/locations';
+import { FOREIGN_SCHOOLS, INTERNATIONAL_SCHOOLS } from '../lib/domestic-schools';
 
 const pathname = Astro.url.pathname;
 const locale: Locale = resolveLocale(Astro.currentLocale, pathname);
@@ -18,7 +19,13 @@ const t = getMessages(locale);
 
 type ChildLink = { kind: 'link'; label: string; href: string };
 type ChildHeader = { kind: 'header'; label: string };
-type DropdownChild = ChildLink | ChildHeader;
+type ChildSubmenu = {
+  kind: 'submenu';
+  label: string;
+  href: string; // 자체 인덱스 페이지 (예: 서울 외국인학교 목록)
+  children: { label: string; href: string }[]; // 학교 리스트
+};
+type DropdownChild = ChildLink | ChildHeader | ChildSubmenu;
 
 type MenuItem =
   | { type: 'link'; label: string; href: string }
@@ -29,7 +36,7 @@ type MenuItem =
       viewAll?: ChildLink;
     };
 
-// 국내(한국) 국제학교 드롭다운 — 별도 페이지 URL로 연결
+// 국내(한국) 국제학교 드롭다운 — 3단계 (카테고리 → 지역 → 학교)
 const domesticChildren: DropdownChild[] = [];
 for (const g of DOMESTIC_KOREA) {
   const headerLabel = locale === 'ko'
@@ -41,11 +48,34 @@ for (const g of DOMESTIC_KOREA) {
   if (isCategoryWithRegions && isFsOrIs) {
     domesticChildren.push({ kind: 'header', label: headerLabel });
     for (const r of g.regions!) {
-      domesticChildren.push({
-        kind: 'link',
-        label: locale === 'ko' ? r.ko : r.zh,
-        href: `/${locale}/domestic/${g.id}/${r.id}/`,
-      });
+      const allSchools = g.id === 'foreign-schools' ? FOREIGN_SCHOOLS : INTERNATIONAL_SCHOOLS;
+      const schoolsInRegion = allSchools.filter((s) => s.region === r.id);
+      const regionLabel = locale === 'ko' ? r.ko : r.zh;
+      const regionHref = `/${locale}/domestic/${g.id}/${r.id}/`;
+
+      if (schoolsInRegion.length > 0) {
+        domesticChildren.push({
+          kind: 'submenu',
+          label: regionLabel,
+          href: regionHref,
+          children: [
+            ...schoolsInRegion.map((s) => ({
+              label: locale === 'ko' ? s.name_ko : s.name_zh,
+              href: `/${locale}/domestic/${g.id}/${r.id}/${s.slug}/`,
+            })),
+            {
+              label: locale === 'ko' ? `${regionLabel} 전체 →` : `${regionLabel} 全部 →`,
+              href: regionHref,
+            },
+          ],
+        });
+      } else {
+        domesticChildren.push({
+          kind: 'link',
+          label: regionLabel,
+          href: regionHref,
+        });
+      }
     }
   } else {
     domesticChildren.push({
@@ -204,6 +234,35 @@ const langLabel = locale === 'ko' ? '언어' : '语言';
               {item.children.map((c) =>
                 c.kind === 'header' ? (
                   <div class="px-3 pt-2 pb-1 text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{c.label}</div>
+                ) : c.kind === 'submenu' ? (
+                  <div class="submenu-wrap relative">
+                    <a
+                      href={c.href}
+                      class="flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-[color:var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)] hover:text-primary-700"
+                    >
+                      <span>{c.label}</span>
+                      <svg width="9" height="9" viewBox="0 0 10 10" aria-hidden="true" class="opacity-60"><path d="M3 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+                    </a>
+                    <div
+                      class="submenu-panel absolute left-full top-0 z-40 min-w-[200px] rounded-md border bg-white py-2 shadow-lg"
+                      style="border-color: var(--color-border-light)"
+                    >
+                      {c.children.map((sc, i) => (
+                        <a
+                          href={sc.href}
+                          class:list={[
+                            'block px-3 py-1.5 text-sm hover:bg-[var(--color-bg-secondary)] hover:text-primary-700',
+                            i === c.children.length - 1
+                              ? 'mt-1 border-t pt-2 text-primary-900'
+                              : 'text-[color:var(--color-text-primary)]',
+                          ]}
+                          style={i === c.children.length - 1 ? 'border-color: var(--color-border-light); font-weight:500' : ''}
+                        >
+                          {sc.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                 ) : (
                   <a href={c.href} class="block px-3 py-1.5 text-sm text-[color:var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)] hover:text-primary-700">
                     {c.label}
@@ -335,6 +394,29 @@ const langLabel = locale === 'ko' ? '언어' : '语言';
                 {item.children.map((c) =>
                   c.kind === 'header' ? (
                     <div class="px-2 pt-2 pb-1 text-xs uppercase tracking-wide text-[color:var(--color-text-tertiary)]">{c.label}</div>
+                  ) : c.kind === 'submenu' ? (
+                    <details class="rounded-md">
+                      <summary class="dropdown-summary list-none cursor-pointer rounded-md px-2 py-2 text-sm hover:bg-[var(--color-bg-secondary)] flex items-center justify-between">
+                        <span style="font-weight:500">{c.label}</span>
+                        <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" class="opacity-60"><path d="M1 3l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+                      </summary>
+                      <div class="ml-2 mt-1 mb-1 border-l pl-2" style="border-color: var(--color-border-light)">
+                        {c.children.map((sc, i) => (
+                          <a
+                            href={sc.href}
+                            class:list={[
+                              'block rounded-md px-2 py-1.5 text-sm',
+                              i === c.children.length - 1
+                                ? 'text-primary-900'
+                                : 'text-[color:var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]',
+                            ]}
+                            style={i === c.children.length - 1 ? 'font-weight:500' : ''}
+                          >
+                            {sc.label}
+                          </a>
+                        ))}
+                      </div>
+                    </details>
                   ) : (
                     <a href={c.href} class="block rounded-md px-2 py-2 text-sm text-[color:var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]">{c.label}</a>
                   )
@@ -370,6 +452,14 @@ const langLabel = locale === 'ko' ? '언어' : '语言';
   /* details/summary 기본 디스클로저 아이콘 제거 */
   .dropdown-summary::-webkit-details-marker { display: none; }
   .dropdown-summary::marker { content: ''; }
+
+  /* PC submenu: 평소 숨김, 부모 hover 또는 focus-within 시 표시 */
+  .submenu-panel { display: none; }
+  .submenu-wrap:hover > .submenu-panel,
+  .submenu-wrap:focus-within > .submenu-panel { display: block; }
+
+  /* mouse 가 submenu panel 로 이동할 때 hover 가 끊기지 않도록 약간의 right-margin 확보 */
+  .submenu-wrap > a { padding-right: 1.5rem; }
 </style>
 
 <script>
