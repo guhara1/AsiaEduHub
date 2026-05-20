@@ -105,7 +105,7 @@ export interface StartRegionMeta {
   zh: string;
   /** 해당 출발지의 시장 학비 범위 (USD/년, 12~K12 평균) */
   tuition_range_usd: [number, number];
-  /** 운영자 직접 거주·방문 가능 영역 표시 (E-E-A-T 신호) */
+  /** 운영자 직접 거주·방문 가능 영역 표시 */
   operator_proximity: 'high' | 'medium' | 'low';
 }
 
