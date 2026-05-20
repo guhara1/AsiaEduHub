@@ -162,12 +162,20 @@
     color: var(--color-text-primary);
     background: var(--color-bg-primary);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: 'cv11', 'ss01', 'ss03';
+    font-feature-settings: 'cv11', 'ss01', 'ss03', 'kern', 'liga';
+    word-break: keep-all; /* 한글 단어 단위 줄바꿈 — 어색한 단어 중간 분리 방지 */
   }
 
+  /* 폰트 패밀리에 emoji 폰트 명시 — 🇰🇷·🇲🇾 등 국기 정상 렌더링 */
+  body {
+    font-family: 'Pretendard Variable', Pretendard, 'Noto Sans KR', Inter, system-ui,
+      'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', emoji, sans-serif;
+  }
   html[lang^='zh'] body {
-    font-family: 'Noto Sans SC', Pretendard, 'Noto Sans KR', Inter, system-ui, sans-serif;
+    font-family: 'Noto Sans SC', 'Pretendard Variable', Pretendard, Inter, system-ui,
+      'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', emoji, sans-serif;
   }
 
   body { line-height: 1.65; font-size: 16px; }
@@ -178,11 +186,18 @@
     font-weight: 500;
     color: var(--color-primary-900);
     line-height: 1.25;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.018em;
+    word-break: keep-all;
   }
-  h1 { line-height: 1.08; letter-spacing: -0.03em; font-size: clamp(1.875rem, 4vw, 3.25rem); }
-  h2 { line-height: 1.2; letter-spacing: -0.022em; }
-  h3 { letter-spacing: -0.015em; }
+  /* 한글 h1 — 정밀한 위계: weight 600(Variable), line-height 좁게, 자간 -3% */
+  h1 {
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.028em;
+    font-size: clamp(2rem, 3.6vw + 0.5rem, 3.5rem);
+  }
+  h2 { font-weight: 600; line-height: 1.18; letter-spacing: -0.022em; font-size: clamp(1.5rem, 1.5vw + 0.8rem, 2rem); }
+  h3 { font-weight: 600; letter-spacing: -0.018em; }
 
   a {
     color: var(--color-primary-700);

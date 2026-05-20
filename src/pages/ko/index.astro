@@ -75,49 +75,109 @@ const operatorFacts = [
 ];
 ---
 <BaseLayout title={title} description={description} jsonLd={[websiteSchema, orgSchema]}>
-  {/* ─── Hero ─── */}
-  <section class="hero-gradient">
-    <div class="container-content section-lg">
-      <div class="grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-center">
+  {/* ─── Hero (재설계) ─── */}
+  <section class="hero-gradient relative overflow-hidden">
+    {/* 우측 데코 블롭 */}
+    <div aria-hidden="true" class="absolute -right-32 -top-32 h-96 w-96 rounded-full" style="background: radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%); filter: blur(40px);"></div>
+    <div aria-hidden="true" class="absolute -left-32 bottom-0 h-96 w-96 rounded-full" style="background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%); filter: blur(40px);"></div>
+
+    <div class="container-content section-xl">
+      <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+        {/* 좌측 — 메시지 */}
         <div>
-          <span class="badge-gold mb-4">⭐ {t.badges.two_school_switches}</span>
-          <h1 class="text-pretty text-4xl sm:text-5xl lg:text-6xl">
-            외국인학교 · 제주 국제학교 ·<br />
-            <span class="text-accent-700">동남아 유학</span> 의 진짜 정보
+          <span class="badge-gold mb-6 inline-flex">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.8 6.6L22 10l-5.5 4.8 1.7 7.2L12 18l-6.2 4 1.7-7.2L2 10l7.2-1.4z"/></svg>
+            {t.badges.two_school_switches}
+          </span>
+          <h1 class="text-balance" style="font-size: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); line-height: 1.08; letter-spacing: -0.032em; font-weight: 600;">
+            <span style="color: var(--color-text-primary)">외국인학교·제주 국제학교,</span><br />
+            <span class="text-gradient-accent" style="position: relative; display: inline-block;">동남아 유학</span><span style="color: var(--color-text-primary)">의 진짜 정보</span>
           </h1>
-          <p class="mt-6 max-w-2xl text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
-            말레이시아 거주 학부모 <strong style="color: var(--color-primary-900); font-weight:500">데이비드</strong> 가 자녀 2명·학교 두 번 옮긴 1차 경험을 바탕으로
-            학비·비자·커리큘럼·진학 트랙을 학부모 관점에서 검증·정리합니다.
+          <p class="mt-7 max-w-xl text-pretty" style="color: var(--color-text-secondary); font-size: 1.0625rem; line-height: 1.7;">
+            말레이시아 거주 학부모 <strong style="color: var(--color-primary-900); font-weight: 600;">데이비드</strong>가
+            자녀 2명·학교 두 번 옮긴 1차 경험을 바탕으로 학비·비자·커리큘럼·진학 트랙을 학부모 관점에서 검증·정리합니다.
           </p>
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a href="/ko/abroad/malaysia/" class="cta-primary">🇲🇾 말레이시아 국제학교 22곳 →</a>
-            <a href="/ko/domestic/" class="cta-secondary">국내 국제학교 →</a>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="/ko/abroad/malaysia/" class="cta-primary" style="padding: 0.875rem 1.5rem; font-size: 0.9375rem;">
+              <span aria-hidden="true" style="font-family: 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji', emoji;">🇲🇾</span>
+              말레이시아 국제학교 22곳
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </a>
+            <a href="/ko/domestic/" class="cta-secondary" style="padding: 0.875rem 1.5rem; font-size: 0.9375rem;">
+              국내 국제학교
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </a>
           </div>
-          <p class="mt-4 text-xs" style="color: var(--color-text-tertiary)">
-            ✓ AI 자동 생성 본문 사용 안 함 &nbsp; ✓ 출처·업데이트 날짜 모든 페이지 표기 &nbsp; ✓ 운영자 1차 경험 우선
-          </p>
+
+          {/* 신뢰 신호 */}
+          <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs" style="color: var(--color-text-tertiary)">
+            <li class="inline-flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              AI 자동 생성 본문 사용 안 함
+            </li>
+            <li class="inline-flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              출처·업데이트 날짜 표기
+            </li>
+            <li class="inline-flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              운영자 1차 경험 우선
+            </li>
+          </ul>
         </div>
 
-        <aside class="rounded-2xl border bg-white p-6 lg:p-7" style="border-color: var(--color-border-light); box-shadow: var(--shadow-lg);">
-          <div class="flex items-center gap-3">
-            <span aria-hidden="true" class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary-900 text-white text-xl" style="font-weight:500">D</span>
-            <div>
-              <div class="text-lg text-primary-900" style="font-weight:500">데이비드</div>
-              <div class="text-xs" style="color: var(--color-text-tertiary)">쿠알라룸푸르 · 두 번 옮긴 학부모</div>
-            </div>
-          </div>
-          <div class="mt-5 grid grid-cols-2 gap-3">
-            {operatorFacts.map((f) => (
-              <div class:list={['rounded-lg p-3', f.highlight ? 'bg-accent-100' : '']} style={f.highlight ? '' : 'background: var(--color-bg-secondary)'}>
-                <div class:list={['text-lg', f.highlight ? 'text-accent-700' : 'text-primary-900']} style="font-weight:500">{f.num}</div>
-                <div class:list={['mt-0.5 text-[11px]', f.highlight && 'text-accent-700']} style={f.highlight ? '' : 'color: var(--color-text-secondary)'}>{f.label}</div>
+        {/* 우측 — 운영자 정체성 카드 (재설계) */}
+        <aside class="relative">
+          {/* 강조 통계 카드 (큰) */}
+          <div class="rounded-3xl bg-white p-7 lg:p-8" style="border: 1px solid var(--color-border-light); box-shadow: var(--shadow-xl); position: relative; overflow: hidden;">
+            {/* 카드 우상단 데코 */}
+            <div aria-hidden="true" class="absolute -right-6 -top-6 h-24 w-24 rounded-full" style="background: linear-gradient(135deg, rgba(245,158,11,0.16) 0%, transparent 70%);"></div>
+
+            {/* 헤더 */}
+            <div class="flex items-center gap-4">
+              <span aria-hidden="true" class="inline-flex h-16 w-16 items-center justify-center rounded-2xl text-white text-2xl" style="background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 100%); box-shadow: var(--shadow-md); font-weight: 600;">D</span>
+              <div>
+                <div class="text-xl text-primary-900" style="font-weight: 600; letter-spacing: -0.01em;">데이비드</div>
+                <div class="mt-0.5 text-xs" style="color: var(--color-text-tertiary)">쿠알라룸푸르 · 두 번 옮긴 학부모</div>
               </div>
-            ))}
+            </div>
+
+            {/* 메인 강조: 학교 2회 이전 */}
+            <div class="mt-6 rounded-2xl p-5" style="background: linear-gradient(135deg, var(--color-accent-100) 0%, var(--color-accent-50) 100%); border: 1px solid rgba(245,158,11,0.30);">
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: -0.03em;">2회</span>
+                <span class="text-xs" style="color: var(--color-accent-700); font-weight: 500;">⭐ 사이트 핵심 차별점</span>
+              </div>
+              <div class="mt-2 text-sm" style="color: var(--color-accent-700); font-weight: 500;">학교 이전 — 1차 경험</div>
+              <p class="mt-2 text-[11px]" style="color: var(--color-accent-700); opacity: 0.8;">학비 + 한국인 비율 폭증으로 옮긴 진짜 경험</p>
+            </div>
+
+            {/* 보조 통계 — 4셀 */}
+            <div class="mt-4 grid grid-cols-2 gap-2.5">
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">2024</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">한국 → KL 이주</div>
+              </div>
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">UCSI</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">자녀 2명 재학</div>
+              </div>
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">한·중·영</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">3개 언어</div>
+              </div>
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">12년+</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">온라인 마케팅</div>
+              </div>
+            </div>
+
+            {/* 푸터 링크 */}
+            <a href="/ko/about/" class="mt-5 inline-flex items-center gap-1.5 text-sm" style="color: var(--color-primary-700); font-weight: 500;">
+              운영자 소개 자세히
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
           </div>
-          <a href="/ko/about/" class="mt-5 inline-flex items-center gap-1 text-sm text-primary-700 hover:underline" style="font-weight:500">
-            운영자 소개 자세히
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </a>
         </aside>
       </div>
     </div>

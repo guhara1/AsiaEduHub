@@ -75,48 +75,98 @@ const operatorFacts = [
 ];
 ---
 <BaseLayout title={title} description={description} jsonLd={[websiteSchema, orgSchema]}>
-  <section class="hero-gradient">
-    <div class="container-content section-lg">
-      <div class="grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-center">
+  <section class="hero-gradient relative overflow-hidden">
+    <div aria-hidden="true" class="absolute -right-32 -top-32 h-96 w-96 rounded-full" style="background: radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%); filter: blur(40px);"></div>
+    <div aria-hidden="true" class="absolute -left-32 bottom-0 h-96 w-96 rounded-full" style="background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%); filter: blur(40px);"></div>
+
+    <div class="container-content section-xl">
+      <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:items-center">
         <div>
-          <span class="badge-gold mb-4">⭐ {t.badges.two_school_switches}</span>
-          <h1 class="text-pretty text-4xl sm:text-5xl lg:text-6xl">
-            韩国外国人学校 · 济州国际学校 ·<br />
-            <span class="text-accent-700">东南亚留学</span> 的真实信息
+          <span class="badge-gold mb-6 inline-flex">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.8 6.6L22 10l-5.5 4.8 1.7 7.2L12 18l-6.2 4 1.7-7.2L2 10l7.2-1.4z"/></svg>
+            {t.badges.two_school_switches}
+          </span>
+          <h1 class="text-balance" style="font-size: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); line-height: 1.08; letter-spacing: -0.032em; font-weight: 600;">
+            <span style="color: var(--color-text-primary)">韩国外国人学校·济州国际学校,</span><br />
+            <span class="text-gradient-accent" style="position: relative; display: inline-block;">东南亚留学</span><span style="color: var(--color-text-primary)">的真实信息</span>
           </h1>
-          <p class="mt-6 max-w-2xl text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
-            站长 <strong style="color: var(--color-primary-900); font-weight:500">David</strong> 是居住马来西亚的韩国家长。
+          <p class="mt-7 max-w-xl text-pretty" style="color: var(--color-text-secondary); font-size: 1.0625rem; line-height: 1.7;">
+            站长 <strong style="color: var(--color-primary-900); font-weight: 600;">David</strong> 是居住马来西亚的韩国家长。
             两个孩子,两次转校的亲身经验,从家长视角核实整理学费、签证、课程、升学路径。
           </p>
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a href="/zh/abroad/malaysia/" class="cta-primary">🇲🇾 马来西亚国际学校 22 所 →</a>
-            <a href="/zh/domestic/" class="cta-secondary">韩国国际学校 →</a>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="/zh/abroad/malaysia/" class="cta-primary" style="padding: 0.875rem 1.5rem; font-size: 0.9375rem;">
+              <span aria-hidden="true" style="font-family: 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji', emoji;">🇲🇾</span>
+              马来西亚国际学校 22 所
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </a>
+            <a href="/zh/domestic/" class="cta-secondary" style="padding: 0.875rem 1.5rem; font-size: 0.9375rem;">
+              韩国国际学校
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </a>
           </div>
-          <p class="mt-4 text-xs" style="color: var(--color-text-tertiary)">
-            ✓ 不使用 AI 自动生成正文 &nbsp; ✓ 所有页面标注来源与更新日期 &nbsp; ✓ 站长第一手经验优先
-          </p>
+
+          <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs" style="color: var(--color-text-tertiary)">
+            <li class="inline-flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              不使用 AI 自动生成
+            </li>
+            <li class="inline-flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              标注来源与更新日期
+            </li>
+            <li class="inline-flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              站长第一手经验
+            </li>
+          </ul>
         </div>
 
-        <aside class="rounded-2xl border bg-white p-6 lg:p-7" style="border-color: var(--color-border-light); box-shadow: var(--shadow-lg);">
-          <div class="flex items-center gap-3">
-            <span aria-hidden="true" class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary-900 text-white text-xl" style="font-weight:500">D</span>
-            <div>
-              <div class="text-lg text-primary-900" style="font-weight:500">David</div>
-              <div class="text-xs" style="color: var(--color-text-tertiary)">吉隆坡 · 两次转校的家长</div>
-            </div>
-          </div>
-          <div class="mt-5 grid grid-cols-2 gap-3">
-            {operatorFacts.map((f) => (
-              <div class:list={['rounded-lg p-3', f.highlight ? 'bg-accent-100' : '']} style={f.highlight ? '' : 'background: var(--color-bg-secondary)'}>
-                <div class:list={['text-lg', f.highlight ? 'text-accent-700' : 'text-primary-900']} style="font-weight:500">{f.num}</div>
-                <div class:list={['mt-0.5 text-[11px]', f.highlight && 'text-accent-700']} style={f.highlight ? '' : 'color: var(--color-text-secondary)'}>{f.label}</div>
+        <aside class="relative">
+          <div class="rounded-3xl bg-white p-7 lg:p-8" style="border: 1px solid var(--color-border-light); box-shadow: var(--shadow-xl); position: relative; overflow: hidden;">
+            <div aria-hidden="true" class="absolute -right-6 -top-6 h-24 w-24 rounded-full" style="background: linear-gradient(135deg, rgba(245,158,11,0.16) 0%, transparent 70%);"></div>
+
+            <div class="flex items-center gap-4">
+              <span aria-hidden="true" class="inline-flex h-16 w-16 items-center justify-center rounded-2xl text-white text-2xl" style="background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 100%); box-shadow: var(--shadow-md); font-weight: 600;">D</span>
+              <div>
+                <div class="text-xl text-primary-900" style="font-weight: 600; letter-spacing: -0.01em;">David</div>
+                <div class="mt-0.5 text-xs" style="color: var(--color-text-tertiary)">吉隆坡 · 两次转校的家长</div>
               </div>
-            ))}
+            </div>
+
+            <div class="mt-6 rounded-2xl p-5" style="background: linear-gradient(135deg, var(--color-accent-100) 0%, var(--color-accent-50) 100%); border: 1px solid rgba(245,158,11,0.30);">
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: -0.03em;">2 次</span>
+                <span class="text-xs" style="color: var(--color-accent-700); font-weight: 500;">⭐ 本站核心差异</span>
+              </div>
+              <div class="mt-2 text-sm" style="color: var(--color-accent-700); font-weight: 500;">转校 — 一手经验</div>
+              <p class="mt-2 text-[11px]" style="color: var(--color-accent-700); opacity: 0.8;">学费上涨 + 韩国学生骤增的真实经历</p>
+            </div>
+
+            <div class="mt-4 grid grid-cols-2 gap-2.5">
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">2024</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">韩国 → 吉隆坡</div>
+              </div>
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">UCSI</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">两个孩子在读</div>
+              </div>
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">韩·中·英</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">三语</div>
+              </div>
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">12 年+</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">在线营销</div>
+              </div>
+            </div>
+
+            <a href="/zh/about/" class="mt-5 inline-flex items-center gap-1.5 text-sm" style="color: var(--color-primary-700); font-weight: 500;">
+              站长简介详情
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
           </div>
-          <a href="/zh/about/" class="mt-5 inline-flex items-center gap-1 text-sm text-primary-700 hover:underline" style="font-weight:500">
-            站长简介详情
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </a>
         </aside>
       </div>
     </div>
