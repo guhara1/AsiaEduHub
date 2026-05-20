@@ -16,7 +16,10 @@
  * 모든 추정값은 UI 에서 "추정 · 학교 공식 확인 필요" 라벨과 함께 표시한다.
  */
 
+import { NATIVE_TEACHER_RATIOS } from './native-teacher-data';
+
 export type SchoolBase = {
+  slug?: string;
   tuition_range_usd: [number, number];
   curriculum: { type: string };
 };
@@ -39,11 +42,14 @@ export interface FinanceOverride {
   facility_fee_usd?: number;
   /** 원어민 교사 비율 (0~100) — 영국·미국·호주·캐나다·뉴질랜드·아일랜드 국적 */
   native_teacher_ratio?: number;
+  /** 원어민 비율 출처: 'official' (학교 공식 자료) / 'community' (학부모 커뮤니티 청취) / 'estimated' (등급 추정) */
+  native_teacher_ratio_source?: 'official' | 'community' | 'estimated';
   /** 기본 CCA (학교 내 교사 운영 — 스포츠·미술·합창 등) 학비 포함 여부 */
   cca_basic_included?: boolean;
   /** 외부 강사 유료 CCA (피아노·테니스 코치·로봇·승마 등) 운영 여부 */
   cca_paid_external?: boolean;
-  /** 외부 강사 CCA 월 평균 비용 (USD, 1과목 기준) */
+  /** 외부 강사 CCA — 한 텀(학기) 1회 비용 (USD, 1과목 기준).
+   *  텀 종료까지 추가 비용 없음. 학교마다 3학기(British/IB) 또는 2학기(American) 운영. */
   cca_external_fee_usd?: [number, number];
   /** CCA 추가 메모 (예: "주 2회 무료 + 1과목 외부 강사 신청 가능") */
   cca_note_ko?: string;
@@ -64,6 +70,7 @@ export interface FinancialDetails {
   refundable_deposit: [number, number];
   facility_fee?: number;
   native_teacher_ratio: number;
+  native_teacher_ratio_source: 'official' | 'community' | 'estimated';
   cca_basic_included: boolean;
   cca_paid_external: boolean;
   cca_external_fee?: [number, number];
@@ -110,25 +117,37 @@ export function deriveFinance(school: SchoolBase & FinanceOverride): FinancialDe
     roundFee(mid * 0.08), roundFee(mid * 0.17),
   ];
 
-  // 원어민 교사 비율 — 학비 등급 휴리스틱
+  // 원어민 교사 비율:
+  //  1. 학교별 직접 override (FinanceOverride.native_teacher_ratio) 우선
+  //  2. NATIVE_TEACHER_RATIOS 룩업 (학교 공식 자료 + 학부모 커뮤니티)
+  //  3. 학비 등급 휴리스틱 (위 두 가지 모두 없는 경우만)
   let nativeRatio = school.native_teacher_ratio ?? 0;
+  let nativeSource: 'official' | 'community' | 'estimated' = school.native_teacher_ratio_source ?? 'estimated';
   if (school.native_teacher_ratio === undefined) {
-    if (high >= 30000) nativeRatio = 75;
-    else if (high >= 22000) nativeRatio = 65;
-    else if (high >= 15000) nativeRatio = 55;
-    else nativeRatio = 45;
+    const lookup = school.slug ? NATIVE_TEACHER_RATIOS[school.slug] : undefined;
+    if (lookup) {
+      nativeRatio = lookup.ratio;
+      nativeSource = lookup.source;
+    } else {
+      if (high >= 30000) nativeRatio = 75;
+      else if (high >= 22000) nativeRatio = 65;
+      else if (high >= 15000) nativeRatio = 55;
+      else nativeRatio = 45;
+      nativeSource = 'estimated';
+    }
   }
 
   // CCA 휴리스틱:
   //  - 기본 CCA (학교 교사 운영): 거의 모든 국제학교가 학비에 기본 포함
   //  - 외부 강사 유료 CCA (피아노·테니스 코치 등): 대부분 학교가 운영 (선택 신청)
-  //  - 외부 강사 1과목 월 비용: $50~$300 (학교 등급별 차이)
+  //  - 외부 강사 1과목 한 텀(학기) 비용 — 텀 종료까지 추가 비용 없음
+  //    (말레이시아 시세: 피아노·테니스 1텀 ~RM 600~1500 = USD $130~330)
   const cca_basic_included = school.cca_basic_included ?? true;
   const cca_paid_external = school.cca_paid_external ?? true;
   const cca_external_fee: [number, number] = school.cca_external_fee_usd ?? (
-    high >= 30000 ? [120, 350] :
-    high >= 20000 ? [80, 250] :
-    [50, 180]
+    high >= 30000 ? [200, 600] :
+    high >= 20000 ? [150, 450] :
+    [100, 300]
   );
 
   return {
@@ -143,6 +162,7 @@ export function deriveFinance(school: SchoolBase & FinanceOverride): FinancialDe
     refundable_deposit,
     facility_fee: school.facility_fee_usd,
     native_teacher_ratio: nativeRatio,
+    native_teacher_ratio_source: nativeSource,
     cca_basic_included,
     cca_paid_external,
     cca_external_fee: cca_paid_external ? cca_external_fee : undefined,
