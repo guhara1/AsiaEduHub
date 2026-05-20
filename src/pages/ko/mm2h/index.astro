@@ -37,22 +37,22 @@ const faqSchema = {
   publishedAt={publishedAt}
   updatedAt={updatedAt}
 >
-  <section class="container-content py-10">
-    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/ko/">홈</a> · MM2H · 이주</nav>
-    <h1 class="mt-2 text-2xl sm:text-3xl">동남아 장기 거주 비자 — MM2H · Thailand · Singapore 완벽 비교</h1>
-    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
-      자녀 국제학교 교육을 위해 동남아 장기 비자를 알아보는 학부모를 위한 정보 정리입니다.
-      말레이시아 MM2H(2024 개정), 태국 Thailand Privilege · LTR, 싱가포르 EP · PR 의 자격·비용·기간·자녀 교육 영향을 한 페이지에 정리.
-    </p>
-
-    <div class="mt-4">
-      <AuthorByline
-        locale="ko"
-        publishedAt={publishedAt}
-        updatedAt={updatedAt}
-        sources="말레이시아 MM2H 관광·예술·문화부, Thailand Privilege Card Co., Thailand BOI, Singapore MOM·ICA 공식 자료"
-      />
+  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/ko/">홈</a> · MM2H · 이주</nav>
+      <h1 class="mt-3 text-3xl sm:text-4xl text-balance">동남아 장기 거주 비자 — <span class="text-accent-700">MM2H · Thailand · Singapore</span> 완벽 비교</h1>
+      <p class="mt-4 max-w-2xl text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
+        자녀 국제학교 교육을 위해 동남아 장기 비자를 알아보는 학부모를 위한 정보 정리입니다.
+        말레이시아 MM2H(2024 개정), 태국 Thailand Privilege · LTR, 싱가포르 EP · PR 의 자격·비용·기간·자녀 교육 영향을 한 페이지에 정리.
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="말레이시아 MM2H 관광·예술·문화부, Thailand Privilege Card Co., Thailand BOI, Singapore MOM·ICA 공식 자료" />
+      </div>
     </div>
+  </section>
+
+  <section class="container-content py-10">
 
     {/* 빠른 비교표 */}
     <section class="mt-8 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5 overflow-x-auto" style="border-color: var(--color-border-light)">

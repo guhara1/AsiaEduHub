@@ -37,22 +37,22 @@ const faqSchema = {
   publishedAt={publishedAt}
   updatedAt={updatedAt}
 >
-  <section class="container-content py-10">
-    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · MM2H · 移居</nav>
-    <h1 class="mt-2 text-2xl sm:text-3xl">东南亚长期居留签证 — MM2H · 泰国 · 新加坡 全面对比</h1>
-    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
-      为子女国际学校教育而考虑东南亚长期签证的家长指南。
-      马来西亚 MM2H(2024 修订)、泰国 Thailand Privilege · LTR、新加坡 EP · PR 的资格·费用·期限·子女教育影响一页通览。
-    </p>
-
-    <div class="mt-4">
-      <AuthorByline
-        locale="zh"
-        publishedAt={publishedAt}
-        updatedAt={updatedAt}
-        sources="马来西亚 MM2H 部门、Thailand Privilege Card Co.、Thailand BOI、Singapore MOM·ICA 官方资料"
-      />
+  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · MM2H · 移居</nav>
+      <h1 class="mt-3 text-3xl sm:text-4xl text-balance">东南亚长期居留签证 — <span class="text-accent-700">MM2H · 泰国 · 新加坡</span> 全面对比</h1>
+      <p class="mt-4 max-w-2xl text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
+        为子女国际学校教育而考虑东南亚长期签证的家长指南。
+        马来西亚 MM2H(2024 修订)、泰国 Thailand Privilege · LTR、新加坡 EP · PR 的资格·费用·期限·子女教育影响一页通览。
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="马来西亚 MM2H 部门、Thailand Privilege Card Co.、Thailand BOI、Singapore MOM·ICA 官方资料" />
+      </div>
     </div>
+  </section>
+
+  <section class="container-content py-10">
 
     <section class="mt-8 rounded-lg border bg-[color:var(--color-bg-secondary)] p-5 overflow-x-auto" style="border-color: var(--color-border-light)">
       <h2 class="text-lg" style="font-weight:500">一览对比</h2>

@@ -44,19 +44,23 @@ const faqSchema = {
   publishedAt={publishedAt}
   updatedAt={updatedAt}
 >
-  <section class="container-content py-10">
-    <nav class="text-sm text-[color:var(--color-text-secondary)]"><a href="/zh/">首页</a> · 海外留学</nav>
-    <h1 class="mt-2 text-2xl sm:text-3xl">海外国际学校 — 东南亚高性价比 vs 英美澳加高端</h1>
-    <p class="mt-3 max-w-2xl text-sm text-[color:var(--color-text-secondary)]">
-      为孩子升入英美澳加大学的两条战略路径:
-      <strong style="font-weight:500">东南亚 IB 学校(高性价比)</strong>与 <strong style="font-weight:500">英美澳加寄宿学校(高端)</strong>。
-      学费 · 生活成本 · 签证 · 升学路径一页通览。
-    </p>
-
-    <div class="mt-4">
-      <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
-        sources="各国政府官方资料、学校官方公告、MM2H · Thailand Privilege · MOM · ICA、站长本地居住(吉隆坡)" />
+  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · 海外留学</nav>
+      <h1 class="mt-3 text-3xl sm:text-4xl text-balance">海外国际学校 — <span class="text-accent-700">东南亚高性价比</span> vs <span class="text-primary-900">英美澳加高端</span></h1>
+      <p class="mt-4 max-w-2xl text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
+        为孩子升入英美澳加大学的两条战略路径:
+        <strong style="font-weight:500">东南亚 IB 学校(高性价比)</strong>与 <strong style="font-weight:500">英美澳加寄宿学校(高端)</strong>。
+        学费 · 生活成本 · 签证 · 升学路径一页通览。
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="各国政府官方资料、学校官方公告、MM2H · Thailand Privilege · MOM · ICA、站长本地居住(吉隆坡)" />
+      </div>
     </div>
+  </section>
+
+  <section class="container-content py-10">
 
     <section class="mt-8 grid gap-4 md:grid-cols-2">
       <div class="rounded-lg border-l-4 border-accent-500 bg-accent-100 p-5">
