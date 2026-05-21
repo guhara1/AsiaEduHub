@@ -11,3 +11,24 @@
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
+
+# 검색봇이 신선도를 빠르게 확인하도록 짧은 캐시 (sitemap / robots / rss)
+/sitemap-index.xml
+  Cache-Control: public, max-age=600, s-maxage=600
+  Content-Type: application/xml; charset=utf-8
+
+/sitemap-*.xml
+  Cache-Control: public, max-age=600, s-maxage=600
+  Content-Type: application/xml; charset=utf-8
+
+/robots.txt
+  Cache-Control: public, max-age=300, s-maxage=300
+  Content-Type: text/plain; charset=utf-8
+
+/ko/rss.xml
+  Cache-Control: public, max-age=600, s-maxage=600
+  Content-Type: application/rss+xml; charset=utf-8
+
+/zh/rss.xml
+  Cache-Control: public, max-age=600, s-maxage=600
+  Content-Type: application/rss+xml; charset=utf-8
