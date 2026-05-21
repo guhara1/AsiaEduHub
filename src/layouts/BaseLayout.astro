@@ -89,23 +89,9 @@ if (author && publishedAt) {
     <meta name="color-scheme" content="light dark" />
     <meta name="format-detection" content="telephone=no" />
 
-    {/* 퍼포먼스 힌트 — LCP 개선 */}
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-
-    {/* Pretendard CSS 는 비동기 로드 — 시스템 폰트로 즉시 렌더링 후 swap (font-display: swap) */}
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
-      />
-    </noscript>
+    {/* 시스템 폰트 우선 — 외부 폰트 의존성 제거 (LCP 즉시 확정).
+        한국 기기에 이미 설치된 Apple SD Gothic Neo / Malgun Gothic / Noto Sans KR 사용.
+        디자인 차이 최소·체감 속도 최대. */}
 
     <title>{title}</title>
     <meta name="description" content={description} />
