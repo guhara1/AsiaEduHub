@@ -23,12 +23,14 @@ export default {
       },
       fontFamily: {
         sans: [
+          '"Pretendard Variable"',
           'Pretendard',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'system-ui',
           '"Noto Sans KR"',
           '"Noto Sans SC"',
           'Inter',
-          'system-ui',
-          '-apple-system',
           'sans-serif',
         ],
       },
