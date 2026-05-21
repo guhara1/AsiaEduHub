@@ -1,4 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#1E3A8A"/>
-  <text x="50%" y="50%" dy=".35em" text-anchor="middle" font-family="Inter, Pretendard, system-ui, sans-serif" font-size="36" font-weight="500" fill="#ffffff">D</text>
+  <!-- Mortarboard (학사모 윗판) -->
+  <path d="M32 14 L56 25 L32 36 L8 25 Z" fill="#FFFFFF"/>
+  <!-- Cap base (모자 본체) -->
+  <path d="M18 27.5 L18 36 Q18 42 32 42 Q46 42 46 36 L46 27.5 L32 34 Z" fill="#FFFFFF"/>
+  <!-- Mortarboard center button (가운데 단추) -->
+  <circle cx="32" cy="25" r="2" fill="#F59E0B"/>
+  <!-- Tassel cord (술 끈) -->
+  <path d="M32 25 L50 27 L50 46" stroke="#F59E0B" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Tassel (술) -->
+  <path d="M46 46 L50 44 L54 46 L52 52 L50 50 L48 52 Z" fill="#F59E0B"/>
 </svg>
