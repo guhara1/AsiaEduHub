@@ -19,8 +19,8 @@
 
 4. **환경 변수**:
 
-   - `SITE_URL` = `https://asiaeduhub.pages.dev` (런칭 전)
-   - 도메인 연결 후: `SITE_URL` = `https://AsiaEduHub.com`
+   - `SITE_URL` = `https://asiaeduhub.com` (운영 도메인)
+   - 미리보기 환경에서만 `https://asiaeduhub.pages.dev` 별도 지정
 
 5. **Save and Deploy** → 2~3분 후 첫 배포 완료. `https://<프로젝트명>.pages.dev` URL 확인.
 

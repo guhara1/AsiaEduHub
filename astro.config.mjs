@@ -4,7 +4,7 @@ import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
-const SITE_URL = process.env.SITE_URL ?? 'https://asiaeduhub.pages.dev';
+const SITE_URL = process.env.SITE_URL ?? 'https://asiaeduhub.com';
 
 export default defineConfig({
   site: SITE_URL,

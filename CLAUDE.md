@@ -2,8 +2,8 @@
 
 ## 도메인 및 브랜드
 
-- **메인 도메인**: AsiaEduHub.com (Namecheap 장바구니, 런칭 직전 결제)
-- **임시 도메인**: asiaeduhub.pages.dev (Cloudflare Pages 무료, 개발용)
+- **메인 도메인**: AsiaEduHub.com (운영 도메인 · Cloudflare Pages 연결 완료)
+- **미리보기 도메인**: asiaeduhub.pages.dev (Cloudflare Pages 기본 URL, 미리보기 전용)
 - **사이트명**:
   - 한국어: AsiaEduHub · 아시아 에듀 허브
   - 중국어: AsiaEduHub · 亚洲教育中心
@@ -14,10 +14,9 @@
 
 ## 도메인 연결 전략
 
-- 개발·테스트: asiaeduhub.pages.dev 사용
-- 런칭 직전(1~2주 전): AsiaEduHub.com 결제 후 즉시 연결
-- 공식 런칭부터 모든 트래픽은 AsiaEduHub.com 으로 받음
-- *.pages.dev 주소로는 외부 공유·홍보 금지 (SEO 자산 보호)
+- 운영 도메인: **AsiaEduHub.com** 으로 모든 트래픽 수신 (도메인 연결 완료)
+- 미리보기·테스트: asiaeduhub.pages.dev (Cloudflare Pages 기본 URL)
+- *.pages.dev 주소로는 외부 공유·홍보 금지 (SEO 자산 보호 · 중복 인덱싱 방지)
 
 ## 디자인 시스템 ⭐
 
