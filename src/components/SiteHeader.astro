@@ -213,7 +213,7 @@ for (const c of ANGLOSPHERE) {
   countryChildren.push({
     kind: 'link',
     label: `${c.flag} ${countryName(c, locale)}`,
-    href: `/${locale}/abroad/#${c.id}`,
+    href: `/${locale}/abroad/anglosphere/${c.id}/`,
   });
 }
 // 3) 학교 유형별
@@ -225,7 +225,7 @@ for (const t of SCHOOL_TYPES) {
   countryChildren.push({
     kind: 'link',
     label: locale === 'ko' ? t.ko : t.zh,
-    href: `/${locale}/abroad/#type-${t.id}`,
+    href: `/${locale}/abroad/types/${t.id}/`,
   });
 }
 

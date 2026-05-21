@@ -1,0 +1,143 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { SCHOOL_TYPE_INFO, SCHOOL_TYPE_KEYS } from '~/lib/school-types-info';
+
+export async function getStaticPaths() {
+  return SCHOOL_TYPE_KEYS.map((type) => ({ params: { type }, props: { type } }));
+}
+
+const { type } = Astro.props as { type: string };
+const info = SCHOOL_TYPE_INFO[type];
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = `${info.name_ko} 종합 가이드 — 시스템 · 학비 · 명문 학교 · FAQ | AsiaEduHub`;
+const description = info.tagline_ko + ' ' + info.cost_ko.split('.')[0] + '.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '해외 유학', item: siteRoot + 'ko/abroad/' },
+    { '@type': 'ListItem', position: 3, name: info.name_ko },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: info.faqs.map((f) => ({
+    '@type': 'Question', name: f.q_ko,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_ko },
+  })),
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · <a href="/ko/abroad/">해외 유학</a> · <span style="color: var(--color-text-primary)">{info.name_ko}</span>
+      </nav>
+      <div class="mt-4">
+        <span class="badge-navy">📚 학교 유형별 가이드</span>
+      </div>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">
+        {info.flag_emoji} {info.name_ko}
+      </h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        {info.tagline_ko}
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="각국 교육 시스템 공식 자료, 학교 공식 사이트, 운영자 학부모 커뮤니티 청취" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+    {/* 핵심 요약 */}
+    <div class="rounded-2xl p-6 mt-2" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 한 줄 추천</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">{info.recommendation_ko}</p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">시스템 개요</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">{info.overview_ko}</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">누구를 위한 옵션인가</h2>
+      <ul class="mt-4 space-y-2 text-sm" style="line-height:1.75">
+        {info.who_for_ko.map((p) => <li>✓ {p}</li>)}
+      </ul>
+    </section>
+
+    <section class="mt-10 grid gap-5 md:grid-cols-2">
+      <div class="rounded-xl p-5" style="border:1px solid rgba(4, 120, 87, 0.20); background: linear-gradient(135deg, #ECFDF5 0%, #fff 100%)">
+        <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-success)">장점</div>
+        <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+          {info.pros_ko.map((p) => <li>✓ {p}</li>)}
+        </ul>
+      </div>
+      <div class="rounded-xl p-5" style="border:1px solid rgba(220, 38, 38, 0.20); background: linear-gradient(135deg, #FEF2F2 0%, #fff 100%)">
+        <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-danger)">단점 · 주의</div>
+        <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+          {info.cons_ko.map((p) => <li>⚠ {p}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">학비 · 비용</h2>
+      <div class="mt-4 rounded-xl p-5" style="background: var(--color-primary-50); border-left: 4px solid var(--color-primary-700)">
+        <p class="text-sm" style="color: var(--color-primary-900); line-height:1.7; font-weight:500">{info.cost_ko}</p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">대표 학교 · 커리큘럼 운영</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">{info.notable_ko}</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자주 묻는 질문</h2>
+      <div class="mt-5 space-y-3">
+        {info.faqs.map((f) => (
+          <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.q_ko}</summary>
+            <p class="mt-3 text-sm" style="line-height:1.7">{f.a_ko}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">{info.name_ko} 학교 추천</h2>
+      <p class="mt-3 text-sm">자녀 학년 · 영어 수준 · 진학 목표 · 예산을 알려주시면 1:1 답변.</p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">관련 정보</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/ko/abroad/anglosphere/usa/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇺🇸 미국 보딩스쿨·데이스쿨</div></a>
+        <a href="/ko/abroad/anglosphere/uk/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇬🇧 영국 보딩스쿨</div></a>
+        <a href="/ko/abroad/anglosphere/canada/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇨🇦 캐나다 공립·사립</div></a>
+        <a href="/ko/abroad/anglosphere/australia/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇦🇺 호주 (590 학부모 비자)</div></a>
+        <a href="/ko/abroad/malaysia/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">말레이시아 국제학교 34곳</div></a>
+        <a href="/ko/abroad/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">해외 국제학교 종합</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

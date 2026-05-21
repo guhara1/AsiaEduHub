@@ -54,8 +54,8 @@ export default defineConfig({
           item.priority = 0.9;
           item.changefreq = 'weekly';
         }
-        // 영어유치원 · 입학 자격 가이드 — high-intent SEO 페이지
-        else if (/\/domestic\/(kindergarten|admission-guide)\//.test(url)) {
+        // 영어유치원 · 입학 자격 · 영미권 · 학교 유형 — high-intent SEO 페이지
+        else if (/\/domestic\/(kindergarten|admission-guide)\/|\/abroad\/(anglosphere|types)\//.test(url)) {
           item.priority = 0.85;
           item.changefreq = 'monthly';
         }

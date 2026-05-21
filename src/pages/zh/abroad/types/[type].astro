@@ -1,0 +1,134 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { SCHOOL_TYPE_INFO, SCHOOL_TYPE_KEYS } from '~/lib/school-types-info';
+
+export async function getStaticPaths() {
+  return SCHOOL_TYPE_KEYS.map((type) => ({ params: { type }, props: { type } }));
+}
+
+const { type } = Astro.props as { type: string };
+const info = SCHOOL_TYPE_INFO[type];
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = `${info.name_zh} 综合指南 — 系统 · 学费 · 名校 · FAQ | AsiaEduHub`;
+const description = info.tagline_zh + ' ' + info.cost_zh.split('.')[0] + '.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '海外留学', item: siteRoot + 'zh/abroad/' },
+    { '@type': 'ListItem', position: 3, name: info.name_zh },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: info.faqs.map((f) => ({
+    '@type': 'Question', name: f.q_zh,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_zh },
+  })),
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/zh/">首页</a> · <a href="/zh/abroad/">海外留学</a> · <span style="color: var(--color-text-primary)">{info.name_zh}</span>
+      </nav>
+      <div class="mt-4"><span class="badge-navy">📚 按学校类型指南</span></div>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">
+        {info.flag_emoji} {info.name_zh}
+      </h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">{info.tagline_zh}</p>
+      <div class="mt-5">
+        <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="各国教育系统官方资料,学校官网,家长社群" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+    <div class="rounded-2xl p-6 mt-2" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 一句话推荐</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">{info.recommendation_zh}</p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">系统概览</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">{info.overview_zh}</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">适合谁</h2>
+      <ul class="mt-4 space-y-2 text-sm" style="line-height:1.75">
+        {info.who_for_zh.map((p) => <li>✓ {p}</li>)}
+      </ul>
+    </section>
+
+    <section class="mt-10 grid gap-5 md:grid-cols-2">
+      <div class="rounded-xl p-5" style="border:1px solid rgba(4, 120, 87, 0.20); background: linear-gradient(135deg, #ECFDF5 0%, #fff 100%)">
+        <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-success)">优势</div>
+        <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">{info.pros_zh.map((p) => <li>✓ {p}</li>)}</ul>
+      </div>
+      <div class="rounded-xl p-5" style="border:1px solid rgba(220, 38, 38, 0.20); background: linear-gradient(135deg, #FEF2F2 0%, #fff 100%)">
+        <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-danger)">劣势 · 注意</div>
+        <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">{info.cons_zh.map((p) => <li>⚠ {p}</li>)}</ul>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">学费 · 费用</h2>
+      <div class="mt-4 rounded-xl p-5" style="background: var(--color-primary-50); border-left: 4px solid var(--color-primary-700)">
+        <p class="text-sm" style="color: var(--color-primary-900); line-height:1.7; font-weight:500">{info.cost_zh}</p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">代表学校 · 课程运营</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">{info.notable_zh}</p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">常见问题</h2>
+      <div class="mt-5 space-y-3">
+        {info.faqs.map((f) => (
+          <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.q_zh}</summary>
+            <p class="mt-3 text-sm" style="line-height:1.7">{f.a_zh}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">{info.name_zh} 学校推荐</h2>
+      <p class="mt-3 text-sm">告知子女年级 · 英语水平 · 升学目标 · 预算,1:1 答复。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        WeChat 咨询
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">相关信息</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/zh/abroad/anglosphere/usa/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇺🇸 美国 寄宿 · 走读</div></a>
+        <a href="/zh/abroad/anglosphere/uk/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇬🇧 英国寄宿学校</div></a>
+        <a href="/zh/abroad/anglosphere/canada/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇨🇦 加拿大 公立 · 私立</div></a>
+        <a href="/zh/abroad/anglosphere/australia/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇦🇺 澳大利亚 (590 父母签证)</div></a>
+        <a href="/zh/abroad/malaysia/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">马来西亚国际学校 34 所</div></a>
+        <a href="/zh/abroad/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">海外国际学校综合</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
