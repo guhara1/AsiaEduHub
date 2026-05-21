@@ -1,0 +1,170 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = '韩国外国人学校 · 国际学校入学资格 · 文件指南 — 2026 最新整理 | AsiaEduHub';
+const description =
+  '《外国人学校法》(2009) · 济州特别法 · 仁川经济自由区法规定的入学资格差异,13 项必备文件清单,英文翻译 · 公证流程,入学考试 · 面试。站长亲历韩国国际学校招生说明会 · 文件准备经验整理。';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '韩国国际学校', item: siteRoot + 'zh/domestic/' },
+    { '@type': 'ListItem', position: 3, name: '入学资格 · 文件指南' },
+  ],
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={breadcrumb}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/zh/">首页</a> · <a href="/zh/domestic/">韩国国际学校</a> · <span style="color: var(--color-text-primary)">入学资格 · 文件指南</span>
+      </nav>
+
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">
+        韩国外国人学校 · 国际学校 <br/>入学资格 · 文件指南
+      </h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        《外国人学校法》(2009) · 济州特别法 · 仁川经济自由区法规定的入学资格差异、13 项必备文件清单、英文翻译 · 公证流程、入学考试 · 面试。
+      </p>
+
+      <div class="mt-5">
+        <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="《外国人学校法》(2009)·济州特别法·仁川经济自由区法,各校官方招生指南,站长子女入学说明会 · 文件准备亲历经验" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+
+    <div class="rounded-2xl p-6 mt-2" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 核心要点</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
+        韩国有 <strong>外国人学校</strong>(限外国国籍 · 外国居住 3 年+子女)和 <strong>国际学校</strong>(济州 · 松岛,韩国国籍子女可)两类。
+        法律资格不同,毕业证韩国学历认定与否也不同。文件平均 <strong>12-15 项</strong>,均需英文翻译 · 公证。准备期约 <strong>2-3 个月</strong>。
+      </p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">法律分类 — 外国人学校 vs 国际学校</h2>
+      <div class="mt-5 grid gap-4 md:grid-cols-2">
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-medium); background: #fff">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-text-tertiary)">外国人学校</div>
+          <div class="mt-2 text-xl" style="font-weight:700; color: var(--color-primary-900)">外国人学校法 (2009)</div>
+          <ul class="mt-3 space-y-1.5 text-sm" style="color: var(--color-text-primary); line-height:1.65">
+            <li>• <strong>对象:</strong>外国国籍子女 + 海外归国子女</li>
+            <li>• <strong>入学资格:</strong>外国国籍 或 外国居住 3 年+</li>
+            <li>• <strong>韩国学历:</strong>未认定(子女毕业后申请韩国大学需通过自学考试)</li>
+            <li>• <strong>例:</strong>SFS · YISS · KIS Seoul · Dulwich Seoul · Dwight Seoul · GSIS</li>
+          </ul>
+        </div>
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-accent-300); background: linear-gradient(180deg, #FFFBF0 0%, #fff 100%)">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-accent-700)">国际学校</div>
+          <div class="mt-2 text-xl" style="font-weight:700; color: var(--color-accent-700)">济州特别法 / 仁川经济自由区法</div>
+          <ul class="mt-3 space-y-1.5 text-sm" style="color: var(--color-text-primary); line-height:1.65">
+            <li>• <strong>对象:</strong>外国 · 韩国国籍子女均可</li>
+            <li>• <strong>入学资格:</strong>韩国国籍子女可(无限制)</li>
+            <li>• <strong>韩国学历:</strong>认定(保持韩国学籍同时接受国际教育)</li>
+            <li>• <strong>例:</strong>NLCS Jeju · KIS Jeju · BHA · SJA Jeju · Chadwick Songdo</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">外国人学校入学资格详细</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">
+        《外国人学校法》(2009)规定的入学资格,以下任 <strong>一项</strong> 满足即可。
+      </p>
+      <ol class="mt-5 space-y-3 text-sm" style="line-height:1.7">
+        <li><strong>1. 子女持外国国籍</strong> — 父母韩国国籍无关,子女外国国籍即可(含双重国籍)</li>
+        <li><strong>2. 父母中至少 1 人持外国国籍</strong> — 子女韩国国籍也可</li>
+        <li><strong>3. 子女有外国 3 年+ 居住经历</strong> — 需韩国政府认可的外国居住证明(外交部出入境记录 + 外国学校出席记录)</li>
+      </ol>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">13 项必备文件清单</h2>
+      <div class="mt-5 grid gap-4 md:grid-cols-2">
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: #fff">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-primary-700)">子女相关 (7 项)</div>
+          <ol class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+            <li>1. 子女护照(韩国 · 外国均含)</li>
+            <li>2. 出生证明(英文)</li>
+            <li>3. 基本证明(英文核发)</li>
+            <li>4. 此前学校成绩单 (近 2 年)</li>
+            <li>5. 教师推荐信</li>
+            <li>6. 疫苗接种记录</li>
+            <li>7. 子女照片(护照规格)</li>
+          </ol>
+        </div>
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: #fff">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-primary-700)">监护人 · 财务 (6 项)</div>
+          <ol class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+            <li>8. 监护人护照 · 身份证</li>
+            <li>9. 家庭关系证明(英文)</li>
+            <li>10. 监护人外国居住证明(适用时)</li>
+            <li>11. 外国学校出席记录(适用时)</li>
+            <li>12. 财务证明(银行存款 · 收入)</li>
+            <li>13. 监护人职业证明</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">文件准备时间线 — 2-3 个月</h2>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">时点</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">任务</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">-3 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">学校官网文件清单核对 + 韩国政府英文文件申请</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">-2 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">此前学校成绩单 · 教师推荐信申请</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">-6 周</td><td class="p-3" style="border:1px solid var(--color-border-light)">疫苗记录整理 · 英文翻译公证开始</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">-4 周</td><td class="p-3" style="border:1px solid var(--color-border-light)">在线申请提交 + 申请费付费</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">-2 周</td><td class="p-3" style="border:1px solid var(--color-border-light)">入学考试 · 面试确定 + 子女准备</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">家庭入学资格确认</h2>
+      <p class="mt-3 text-sm">告知子女国籍 · 外国居住经历 · 关注学校,获取可入学校 + 必备文件清单 1:1 答复。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        WeChat 咨询
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">相关信息</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/zh/domestic/kindergarten/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">英语幼儿园 · 国际幼儿园差异</div>
+        </a>
+        <a href="/zh/domestic/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">韩国国际学校 16 所对比</div>
+        </a>
+        <a href="/zh/abroad/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">海外国际学校综合</div>
+        </a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

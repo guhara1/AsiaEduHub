@@ -1,0 +1,288 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-20');
+
+const title = '영어유치원 vs 국제유치원 차이 — 학비·영어 노출·입학 자격 총정리 | AsiaEduHub';
+const description =
+  '한국 영어유치원과 국제유치원의 법적 차이·학비·영어 노출 시간·입학 자격 비교. 동남아 국제학교 유치원과의 비용·환경 차이까지. 운영자가 자녀 두 명을 한국 영어유치원·말레이시아 국제유치원에 모두 보낸 1차 경험 기반.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '국내 국제학교', item: siteRoot + 'ko/domestic/' },
+    { '@type': 'ListItem', position: 3, name: '영어유치원 · 국제유치원' },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '영어유치원과 국제유치원의 법적 차이는 무엇인가?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '영어유치원은 한국 유아교육법 적용 일반 유치원에 영어 커리큘럼을 추가한 형태. 국제유치원은 외국인학교·국제학교 부설 유치원으로 외국 커리큘럼 (IB PYP·EYFS·American 등) 운영. 입학 자격·졸업 자격 모두 다름.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '영어유치원 학비는 보통 얼마인가?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '서울·강남권 영어유치원 학비는 월 200~350만원 수준. 연 환산 약 2,500~4,200만원. 국제유치원(외국인학교 부설)은 연 USD $18,000~30,000 = 약 2,500~4,200만원으로 비슷한 수준이지만 입학 자격 제한 있음.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '영어유치원에서 영어 노출 시간은 얼마나 되는가?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '대부분 영어유치원이 영어 노출 시간 60~80%로 광고하지만, 실제로는 한국인 교사 비중·자녀끼리 한국어 사용 등으로 체감 영어 환경은 40~60% 수준. 동남아 국제학교(말레이시아·태국·베트남) 유치원은 영어 노출 90%+ 환경이 자연스럽게 형성됨.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '국제유치원 입학 자격은?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '외국인학교 부설 유치원 — 부모가 외국 국적이거나 자녀가 외국 3년+ 거주 경험 필요. 국제학교 부설 유치원 — 제주(NLCS·KIS·BHA·SJA), 송도(채드윅) 등은 내국인 자녀 입학 가능. 학교별 영어 능력 검증·인터뷰 추가 요건 존재.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '동남아 국제학교 유치원으로 이주하는 게 더 합리적일까?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '학비만 보면 비슷하지만, 동남아(말레이시아·태국·베트남)는 (1) 영어 환경 자연스러움 (2) 가족 생활비 한국 대비 60~70% 수준 (3) 학부모 비자 옵션 다양 (MM2H·Elite·DT). 단, 부모 직업·한국 자산·자녀 한국 학적 관리 등 종합 고려 필요.',
+      },
+    },
+  ],
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · <a href="/ko/domestic/">국내 국제학교</a> · <span style="color: var(--color-text-primary)">영어유치원 · 국제유치원</span>
+      </nav>
+
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">
+        영어유치원 vs 국제유치원 — <br/>학비·영어 노출·입학 자격 총정리
+      </h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        한국 영어유치원과 국제유치원(외국인학교·국제학교 부설)의 법적 차이·학비·영어 노출 시간·입학 자격을 비교. 동남아 국제학교 유치원과의 비용·환경 차이까지.
+      </p>
+
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="한국 유아교육법, 외국인학교법(2009), 각 학교 공식 안내, 운영자 자녀 한국 영어유치원·말레이시아 국제유치원 보낸 1차 경험" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+
+    {/* 핵심 요약 */}
+    <div class="rounded-2xl p-6 mt-2" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 핵심 요약</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
+        한국 영어유치원과 국제유치원은 <strong>법적 지위·학비·영어 환경·입학 자격</strong>이 모두 다릅니다.
+        영어 환경 우선이라면 <strong>국제유치원 또는 동남아 이주</strong>가 합리적, 한국 학적·가족 안정 우선이라면 <strong>영어유치원</strong>이 합리적.
+        자녀 5세 전후 결정이 향후 10년 학습 트랙에 큰 영향을 줍니다.
+      </p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">법적 차이 — 정확히 알아두기</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">
+        영어유치원과 국제유치원은 같은 이름처럼 보이지만 법적 카테고리가 완전히 다릅니다.
+      </p>
+
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">구분</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">영어유치원</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">국제유치원 (외국인학교·국제학교 부설)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">근거 법령</td><td class="p-3" style="border:1px solid var(--color-border-light)">유아교육법 / 영유아보육법</td><td class="p-3" style="border:1px solid var(--color-border-light)">외국인학교법(2009) 또는 제주특별법·인천경제자유구역법</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">졸업 자격</td><td class="p-3" style="border:1px solid var(--color-border-light)">한국 학력 인정 (초등 진학 무관)</td><td class="p-3" style="border:1px solid var(--color-border-light)">학교별 — 외국인학교 졸업장은 한국 학력 미인정, 국제학교(제주·송도)는 한국 학력 인정</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">커리큘럼</td><td class="p-3" style="border:1px solid var(--color-border-light)">한국 누리과정 + 영어 보강</td><td class="p-3" style="border:1px solid var(--color-border-light)">IB PYP · EYFS · American Preschool 등 외국 정통</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">입학 자격</td><td class="p-3" style="border:1px solid var(--color-border-light)">제한 없음 (한국인 누구나)</td><td class="p-3" style="border:1px solid var(--color-border-light)">외국 국적 또는 외국 거주 3년+ (외국인학교) / 학교별 차등 (국제학교)</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">학비 (연)</td><td class="p-3" style="border:1px solid var(--color-border-light)">2,400~4,200만원</td><td class="p-3" style="border:1px solid var(--color-border-light)">USD 18,000~30,000 (≈2,500~4,200만원)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">영어 노출 시간 — 광고와 실제의 차이</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">
+        영어유치원이 광고하는 영어 노출 시간과 실제 자녀 체감 영어 환경은 차이가 큽니다. 운영자가 자녀를 한국 영어유치원에 1년, 말레이시아 국제유치원에 1년 보낸 비교 결과:
+      </p>
+
+      <div class="mt-5 grid gap-4 md:grid-cols-2">
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-text-tertiary)">한국 영어유치원</div>
+          <div class="mt-2 text-2xl" style="font-weight:800; color: var(--color-primary-900)">광고 70~80% / 실제 ~50%</div>
+          <ul class="mt-3 space-y-1.5 text-sm" style="color: var(--color-text-secondary)">
+            <li>• 원어민 교사 1명 + 한국인 교사 2~3명 일반적</li>
+            <li>• 점심·간식·하원 시간 한국어</li>
+            <li>• 자녀끼리는 한국어가 디폴트</li>
+            <li>• 한국어 책·미디어로 보강 — 영어 환경 무의식 약화</li>
+          </ul>
+        </div>
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-accent-300); background: linear-gradient(180deg, #FFFBF0 0%, #FEF9E7 100%)">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-accent-700)">동남아 국제학교 유치원</div>
+          <div class="mt-2 text-2xl" style="font-weight:800; color: var(--color-accent-700)">실제 ~95%</div>
+          <ul class="mt-3 space-y-1.5 text-sm" style="color: var(--color-accent-700)">
+            <li>• 교사 대부분 UK·미국·호주 출신</li>
+            <li>• 점심·간식·하원 시간 영어</li>
+            <li>• 자녀 친구 국적 다양 (영어가 공통 언어)</li>
+            <li>• 학교 안과 밖이 같은 영어 환경</li>
+          </ul>
+        </div>
+      </div>
+
+      <blockquote class="mt-5 p-5 rounded-xl" style="background: linear-gradient(135deg, var(--color-primary-50) 0%, #fff 100%); border-left: 4px solid var(--color-primary-700); color: var(--color-primary-900)">
+        <strong>운영자 비교:</strong> 큰애가 한국 영어유치원 1년 후 영어 출력은 한국식 단어·문장 위주였습니다.
+        말레이시아 국제유치원으로 옮긴 후 3개월에 일상 회화가 영어로 자연스럽게 나왔습니다.
+        <strong>영어 노출 시간의 차이가 자녀 영어 출력 패턴에 결정적</strong>입니다.
+      </blockquote>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">한국 주요 영어유치원·국제유치원 카테고리</h2>
+
+      <h3 class="mt-6 text-xl" style="font-weight:700">1. 한국 영어유치원 — 일반 학부모 접근 가능</h3>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• <strong>대표 브랜드:</strong> SLP · Avalon · April · Wonderland · ECC 등</li>
+        <li>• <strong>월 학비:</strong> 200~350만원 (지역·시간 차이)</li>
+        <li>• <strong>입학 자격:</strong> 제한 없음 — 누구나 신청 가능 (단, 자리 부족 다수)</li>
+        <li>• <strong>운영 시간:</strong> 보통 9~14시 (방과후 옵션)</li>
+      </ul>
+
+      <h3 class="mt-6 text-xl" style="font-weight:700">2. 외국인학교 부설 유치원 (입학 자격 제한)</h3>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• <strong>대표 학교:</strong> SFS · YISS · KIS Seoul · Dwight Seoul · Dulwich Seoul 등</li>
+        <li>• <strong>연 학비:</strong> USD 25,000~37,000</li>
+        <li>• <strong>입학 자격:</strong> 부모 외국 국적 또는 자녀 외국 거주 3년+ — 일반 한국 가족은 입학 어려움</li>
+        <li>• <strong>특이점:</strong> 졸업장 한국 학력 미인정 — 초등도 같은 학교 진학 필수</li>
+      </ul>
+
+      <h3 class="mt-6 text-xl" style="font-weight:700">3. 국제학교 부설 유치원 (제주·송도, 내국인 가능)</h3>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• <strong>대표 학교:</strong> NLCS Jeju, KIS Jeju, BHA, SJA Jeju, Chadwick Songdo</li>
+        <li>• <strong>연 학비:</strong> USD 25,000~37,000</li>
+        <li>• <strong>입학 자격:</strong> 한국 국적 자녀 가능 (제주특별법·인천경제자유구역법)</li>
+        <li>• <strong>특이점:</strong> 졸업장 한국 학력 인정 (자녀가 한국 학적 유지하며 국제 교육 받음)</li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">동남아 국제학교 유치원 비교 — 학비는 비슷, 환경은 다름</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">
+        한국 학부모의 가장 큰 비교 대상은 말레이시아·태국·베트남·싱가포르 국제학교 유치원입니다.
+      </p>
+
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">구분</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">한국 영어유치원</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">한국 국제유치원</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">동남아 국제유치원</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">학비 (연)</td><td class="p-3" style="border:1px solid var(--color-border-light)">2,400~4,200만원</td><td class="p-3" style="border:1px solid var(--color-border-light)">2,500~4,200만원</td><td class="p-3" style="border:1px solid var(--color-border-light)">1,000~2,500만원</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">영어 노출</td><td class="p-3" style="border:1px solid var(--color-border-light)">~50%</td><td class="p-3" style="border:1px solid var(--color-border-light)">~95%</td><td class="p-3" style="border:1px solid var(--color-border-light)">~95%</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">가족 생활비</td><td class="p-3" style="border:1px solid var(--color-border-light)">한국 기준</td><td class="p-3" style="border:1px solid var(--color-border-light)">한국 기준</td><td class="p-3" style="border:1px solid var(--color-border-light)">한국의 60~70%</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">입학 자격</td><td class="p-3" style="border:1px solid var(--color-border-light)">없음</td><td class="p-3" style="border:1px solid var(--color-border-light)">제한 (외국 국적·거주 경력)</td><td class="p-3" style="border:1px solid var(--color-border-light)">없음 (학생 비자만)</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">한국 학력</td><td class="p-3" style="border:1px solid var(--color-border-light)">인정</td><td class="p-3" style="border:1px solid var(--color-border-light)">학교별 차등</td><td class="p-3" style="border:1px solid var(--color-border-light)">미인정 (별도 절차 필요)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">유치원 결정 5분 체크리스트</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">5개 질문에 답하면 어느 옵션이 맞는지 명확해집니다.</p>
+      <ol class="mt-4 space-y-3 text-sm" style="line-height:1.7">
+        <li><strong>1.</strong> 자녀 영어 노출이 우선인가? (예 → 국제유치원 또는 이주 / 아니오 → 영어유치원)</li>
+        <li><strong>2.</strong> 부모 직업이 한국에서만 가능한가? (예 → 한국 옵션 / 아니오 → 동남아 비교 가치)</li>
+        <li><strong>3.</strong> 자녀가 한국 초·중·고 학적을 유지해야 하는가? (예 → 영어유치원 또는 제주·송도 국제학교 / 아니오 → 동남아 자유)</li>
+        <li><strong>4.</strong> 가족이 외국 거주 3년+ 경험이 있는가? (예 → 외국인학교 가능 / 아니오 → 외국인학교 제외)</li>
+        <li><strong>5.</strong> 학비 + 생활비 합산 월 예산은? (700만원+ → 한국 / 400~700만원 → 동남아 / 400만원 이하 → 가성비 동남아 학교)</li>
+      </ol>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자주 묻는 질문</h2>
+      <div class="mt-5 space-y-3">
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">영어유치원 1년 보내고 동남아 국제학교로 옮겨도 적응 가능한가?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">가능합니다. 운영자 자녀가 그 경로였습니다. 단, 자녀가 영어 단어·문장은 알지만 의사소통 자신감이 부족할 수 있어 동남아 학교 첫 2~3개월은 적응 시간이 필요. 동남아 학교 EYFS·Reception 입학이 일반적.</p>
+        </details>
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">제주 국제학교 유치원 입학 자격은?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">NLCS Jeju · KIS Jeju · BHA · SJA Jeju 모두 한국 국적 자녀 입학 가능 (제주특별법 적용). 학교별 영어 능력 검증·인터뷰 통과 필요. 보딩(기숙) 옵션은 보통 초등 고학년부터.</p>
+        </details>
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">송도 채드윅 입학 자격은?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">인천경제자유구역법 적용 — 한국 국적 자녀 입학 가능. 영어 능력 검증 + 인터뷰. PreK 부터 G12 통합 운영. 자녀 1명당 연 USD $30,000+ 수준.</p>
+        </details>
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">유치원 시점에 동남아 이주가 너무 이르지 않은가?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">자녀 적응 면에서는 오히려 유치원·초등 저학년이 적기. 자녀가 영어 환경에 자연스럽게 흡수. 운영자 자녀도 5·6세에 이주 — 가장 자연스러운 적응. 부모 우선순위(직업·자산·한국 가족 관계) 가 변수.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">자녀 유치원 1:1 상담</h2>
+      <p class="mt-3 text-sm">한국 영어유치원·국제유치원·동남아 이주 옵션 — 자녀 나이 · 가족 우선순위 · 예산을 알려주시면 운영자가 1:1 답변.</p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">관련 정보</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/ko/domestic/admission-guide/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">입학 자격 · 서류 가이드</div>
+          <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">외국인학교법·국제학교법·서류 체크리스트</div>
+        </a>
+        <a href="/ko/domestic/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">국내 국제학교 16곳 비교</div>
+          <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">외국인학교 · 제주 · 송도 국제학교</div>
+        </a>
+        <a href="/ko/abroad/malaysia/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">말레이시아 국제학교 34곳</div>
+          <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">유치원·초·중·고 학비 비교</div>
+        </a>
+        <a href="/ko/blog/2026-05-tuition-quality-analysis/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">학비 $30K vs $12K 학교 차이</div>
+          <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">유치원도 학비 차이 분석 동일 적용</div>
+        </a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

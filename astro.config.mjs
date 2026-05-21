@@ -54,6 +54,11 @@ export default defineConfig({
           item.priority = 0.9;
           item.changefreq = 'weekly';
         }
+        // 영어유치원 · 입학 자격 가이드 — high-intent SEO 페이지
+        else if (/\/domestic\/(kindergarten|admission-guide)\//.test(url)) {
+          item.priority = 0.85;
+          item.changefreq = 'monthly';
+        }
         // 블로그 상세 — 신선도 우선 (가이드보다 약간 높게)
         else if (/\/blog\/[^/]+\//.test(url)) {
           item.priority = 0.85;

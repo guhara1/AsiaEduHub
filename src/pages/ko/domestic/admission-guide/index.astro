@@ -1,0 +1,321 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = '외국인학교·국제학교 입학 자격 · 서류 가이드 — 2026 최신 정리 | AsiaEduHub';
+const description =
+  '외국인학교법(2009)·제주특별법·인천경제자유구역법에 따른 입학 자격 차이, 필요 서류 13가지 체크리스트, 영문 번역·공증 절차, 입학 시험·인터뷰까지. 운영자 자녀 두 명을 한국 국제학교 입학설명회·서류 준비 직접 경험.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '국내 국제학교', item: siteRoot + 'ko/domestic/' },
+    { '@type': 'ListItem', position: 3, name: '입학 자격 · 서류 가이드' },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '외국인학교 입학 자격의 정확한 기준은?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '외국인학교법(2009) 적용 — 부모가 외국 국적이거나 자녀가 외국 3년+ 거주 경험 필요. 두 조건 중 하나만 충족하면 됨. 단, 학교별로 외국 거주 기간 산정 기준(연속 거주 vs 누적 거주)이 다름 — 학교 공식 사이트 확인 필수.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '제주 국제학교(NLCS · KIS · BHA · SJA) 입학 자격은?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '제주특별법 적용 — 한국 국적 자녀 입학 가능. 외국 거주 경력 불필요. 학교별 영어 능력 검증(CAT4 · MAP · 자체 시험) + 인터뷰 통과 필요. 보호자도 인터뷰 참여 일반적.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '필요한 서류는 보통 몇 가지 인가?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '평균 12~15가지. 자녀 출생증명서·여권·이전 학교 성적표·예방접종 기록·보호자 신분증·보호자 외국 거주 증명·재정 증명·자녀 사진 등. 모든 한국 서류는 영문 번역 + 공증 필요 (소요 5~10일).',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '영문 번역 공증은 어디서 하나?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '공증 사무소 어디서나 가능. 비용 서류 1장당 1.5~3만원. 한국 정부 발급 서류(출생증명·기본증명)는 대법원 인터넷 발급으로 영문 발급 가능 (별도 번역·공증 불요). 학교에 따라 아포스티유(Apostille) 요구하는 경우 있음.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '학교 입학 시험은 보통 어떤 내용인가?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: '영어 능력(CAT4 · MAP · WIDA 또는 학교 자체 시험), 수학 능력(Singapore Math 또는 Cambridge 기준), 인터뷰(학생 + 학부모 분리). 학년에 따라 추가 과목 시험 (Year 7+ 부터 과학·인문 영어 평가) 있음. 시험 시간 보통 2~3시간.',
+      },
+    },
+  ],
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · <a href="/ko/domestic/">국내 국제학교</a> · <span style="color: var(--color-text-primary)">입학 자격 · 서류 가이드</span>
+      </nav>
+
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">
+        외국인학교·국제학교 <br/>입학 자격 · 서류 가이드
+      </h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        외국인학교법(2009)·제주특별법·인천경제자유구역법에 따른 입학 자격 차이, 필요 서류 13가지 체크리스트, 영문 번역·공증 절차, 입학 시험·인터뷰까지 한 페이지 정리.
+      </p>
+
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="외국인학교법(2009) · 제주특별법 · 인천경제자유구역법, 각 학교 공식 입학 안내, 운영자 자녀 두 명 입학설명회·서류 준비 직접 경험" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+
+    {/* 핵심 요약 */}
+    <div class="rounded-2xl p-6 mt-2" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 핵심 요약</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
+        한국에는 <strong>외국인학교</strong>(외국 국적·외국 거주 3년+ 자녀만)와 <strong>국제학교</strong>(제주·송도, 한국 국적 자녀 가능) 두 카테고리가 있습니다.
+        법적 자격이 다르고, 졸업장 한국 학력 인정 여부도 다릅니다.
+        서류는 평균 <strong>12~15가지</strong>, 모두 영문 번역·공증 필요. 준비 기간 약 <strong>2~3개월</strong>.
+      </p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">법적 카테고리 — 외국인학교 vs 국제학교</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">
+        같은 "국제학교"로 불리지만 법적 카테고리가 완전히 다릅니다. 입학 자격·졸업 자격·학교 운영 모두 다른 법령 적용.
+      </p>
+
+      <div class="mt-5 grid gap-4 md:grid-cols-2">
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-medium); background: #fff">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-text-tertiary)">외국인학교</div>
+          <div class="mt-2 text-xl" style="font-weight:700; color: var(--color-primary-900)">외국인학교법 (2009)</div>
+          <ul class="mt-3 space-y-1.5 text-sm" style="color: var(--color-text-primary); line-height:1.65">
+            <li>• <strong>대상:</strong> 외국 국적 자녀 + 재외국민 자녀</li>
+            <li>• <strong>입학 자격:</strong> 외국 국적 OR 외국 3년+ 거주</li>
+            <li>• <strong>한국 학력:</strong> 미인정 (자녀 졸업 후 한국 대학 진학 시 검정고시 필요)</li>
+            <li>• <strong>예:</strong> SFS · YISS · KIS Seoul · Dulwich Seoul · Dwight Seoul · GSIS</li>
+          </ul>
+        </div>
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-accent-300); background: linear-gradient(180deg, #FFFBF0 0%, #fff 100%)">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-accent-700)">국제학교</div>
+          <div class="mt-2 text-xl" style="font-weight:700; color: var(--color-accent-700)">제주특별법 / 인천경제자유구역법</div>
+          <ul class="mt-3 space-y-1.5 text-sm" style="color: var(--color-text-primary); line-height:1.65">
+            <li>• <strong>대상:</strong> 외국·한국 국적 자녀 모두</li>
+            <li>• <strong>입학 자격:</strong> 한국 국적 자녀 가능 (제한 없음)</li>
+            <li>• <strong>한국 학력:</strong> 인정 (한국 학적 유지하며 국제 교육)</li>
+            <li>• <strong>예:</strong> NLCS Jeju · KIS Jeju · BHA · SJA Jeju · Chadwick Songdo</li>
+          </ul>
+        </div>
+      </div>
+
+      <blockquote class="mt-5 p-5 rounded-xl" style="background: linear-gradient(135deg, var(--color-primary-50) 0%, #fff 100%); border-left: 4px solid var(--color-primary-700); color: var(--color-primary-900)">
+        <strong>운영자 한 줄:</strong> "외국인학교"라는 이름에 외국 자녀만 다닐 수 있다고 오해하기 쉽지만,
+        외국 거주 3년 경력이 있으면 한국 가족도 입학 가능합니다.
+        반대로 "국제학교(제주·송도)"는 한국 국적 자녀에게 열려 있어 일반 한국 가족 접근성이 훨씬 좋습니다.
+      </blockquote>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">외국인학교 입학 자격 디테일</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">
+        외국인학교법(2009)이 정한 입학 자격은 다음 중 <strong>한 가지만 충족</strong>하면 됩니다. 단, 학교별 추가 요건 존재.
+      </p>
+
+      <ol class="mt-5 space-y-3 text-sm" style="line-height:1.7">
+        <li><strong>1. 자녀가 외국 국적</strong> — 부모 한국 국적 무관, 자녀만 외국 국적이면 OK (이중 국적 포함)</li>
+        <li><strong>2. 부모 중 1명 이상이 외국 국적</strong> — 자녀 한국 국적이어도 OK</li>
+        <li><strong>3. 자녀가 외국 3년+ 거주 경험</strong> — 한국 정부가 인정하는 외국 거주 증명 필요 (외교부 출입국 기록 + 외국 학교 출석 기록)</li>
+      </ol>
+
+      <p class="mt-5 text-sm" style="line-height:1.7; color: var(--color-text-secondary)">
+        <strong>3번 거주 기간 산정:</strong> 학교에 따라 (a) 연속 3년 거주 (b) 누적 3년 거주 두 기준이 다름. 일반적으로:
+      </p>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• <strong>서울 외국인학교(SFS · YISS · KIS Seoul):</strong> 보통 누적 3년 인정</li>
+        <li>• <strong>경기·인천 외국인학교(KIS Pangyo · GSIS):</strong> 연속 3년 기준 다수</li>
+        <li>• <strong>학교 공식 사이트 확인 필수</strong></li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">필요 서류 13가지 체크리스트</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">학교별 약간 다르지만 핵심 13가지는 공통입니다.</p>
+
+      <div class="mt-5 grid gap-4 md:grid-cols-2">
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: #fff">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-primary-700)">자녀 관련 (7가지)</div>
+          <ol class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+            <li>1. 자녀 여권 사본 (한국·외국 모두)</li>
+            <li>2. 자녀 출생증명서 (영문)</li>
+            <li>3. 기본증명서 (영문 발급)</li>
+            <li>4. 이전 학교 성적표 최근 2년</li>
+            <li>5. 이전 학교 교사 추천서</li>
+            <li>6. 예방접종 기록</li>
+            <li>7. 자녀 사진 (여권 규격)</li>
+          </ol>
+        </div>
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: #fff">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-primary-700)">보호자·재정 (6가지)</div>
+          <ol class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+            <li>8. 보호자 여권·신분증</li>
+            <li>9. 가족관계증명서 (영문)</li>
+            <li>10. 보호자 외국 거주 증명 (해당 시)</li>
+            <li>11. 외국 학교 출석 기록 (해당 시)</li>
+            <li>12. 재정 증명 (은행 잔고·소득)</li>
+            <li>13. 보호자 직업 증명서</li>
+          </ol>
+        </div>
+      </div>
+
+      <p class="mt-5 text-sm" style="line-height:1.7; color: var(--color-text-secondary)">
+        ※ 한국 정부 발급 서류는 <strong>대법원 인터넷 발급</strong>으로 영문 발급 가능 — 별도 번역·공증 불요.
+        외국 발급 서류는 영문 원본이면 OK. 한국어 서류는 공증 사무소에서 영문 번역 + 공증 (서류 1장당 1.5~3만원, 5~10일 소요).
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">입학 시험·인터뷰 절차</h2>
+
+      <h3 class="mt-6 text-xl" style="font-weight:700">시험 구성</h3>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• <strong>영어 능력</strong> — CAT4 · MAP · WIDA 또는 학교 자체 시험 (50~90분)</li>
+        <li>• <strong>수학 능력</strong> — Singapore Math · Cambridge 기준 (40~60분)</li>
+        <li>• <strong>학년별 추가</strong> — Year 7+ 부터 과학·인문 영어 평가</li>
+        <li>• <strong>총 시간</strong> — 2~3시간 (학년 따라 차이)</li>
+      </ul>
+
+      <h3 class="mt-6 text-xl" style="font-weight:700">인터뷰 구성</h3>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• <strong>학생 인터뷰</strong> — 영어로 자기소개, 짧은 작문, 학교 선택 이유</li>
+        <li>• <strong>학부모 인터뷰</strong> — 학교 교육 철학 이해, 가족 우선순위, 학교 활동 참여 의지</li>
+        <li>• <strong>학생·학부모 분리</strong> 진행이 일반적</li>
+      </ul>
+
+      <blockquote class="mt-5 p-5 rounded-xl" style="background: linear-gradient(135deg, var(--color-primary-50) 0%, #fff 100%); border-left: 4px solid var(--color-primary-700); color: var(--color-primary-900)">
+        <strong>운영자 팁:</strong> 시험은 자녀 수준 평가가 목적. 만점 받으려 무리하지 마세요.
+        <strong>학부모 인터뷰는 학교 마케팅 자료를 미리 읽고 가는 게 결정적</strong>입니다.
+        "이 학교가 우리 가족에 맞는 이유"를 한 문장으로 답할 수 있어야 합격률이 높아집니다.
+      </blockquote>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">합격 후 등록 절차</h2>
+      <ol class="mt-4 space-y-3 text-sm" style="line-height:1.7">
+        <li><strong>1.</strong> 합격 통지 (보통 시험 후 2~4주)</li>
+        <li><strong>2.</strong> 등록금 결제 (연 학비의 약 20~30%, 일시불, 환불 어려움)</li>
+        <li><strong>3.</strong> 환불 가능 보증금 결제 (USD $1,500~3,000, 졸업·전학 시 환불)</li>
+        <li><strong>4.</strong> 자녀 학생 비자 갱신 (해당 시)</li>
+        <li><strong>5.</strong> 교복 · 교재 구입 (학교 지정 매장, 약 2~3주 소요)</li>
+        <li><strong>6.</strong> 셔틀 · 점심 옵션 신청</li>
+        <li><strong>7.</strong> 오리엔테이션 참석 (개학 1~2주 전)</li>
+      </ol>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">서류 준비 타임라인 — 2~3개월 권장</h2>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">시점</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">할 일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">-3개월</td><td class="p-3" style="border:1px solid var(--color-border-light)">학교 공식 사이트 서류 리스트 확인 + 한국 정부 발급 영문 서류 신청</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">-2개월</td><td class="p-3" style="border:1px solid var(--color-border-light)">이전 학교 성적표·교사 추천서 요청 (학교 응답 1~2주 소요)</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">-6주</td><td class="p-3" style="border:1px solid var(--color-border-light)">예방접종 기록 정리 · 영문 번역 공증 시작</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">-4주</td><td class="p-3" style="border:1px solid var(--color-border-light)">온라인 지원서 제출 + 지원료 결제</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">-2주</td><td class="p-3" style="border:1px solid var(--color-border-light)">입학 시험·인터뷰 일정 확정 + 자녀 준비</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">시험 후 2~4주</td><td class="p-3" style="border:1px solid var(--color-border-light)">합격 통지 → 등록금 결제 → 개학 준비</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자주 묻는 질문</h2>
+      <div class="mt-5 space-y-3">
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">한국 국적 자녀가 외국인학교에 입학할 수 있나?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">자녀 외국 3년+ 거주 경험이 있으면 OK. 외국 학교 출석 기록 + 외교부 출입국 기록으로 증명. 부모 한국 국적 무관.</p>
+        </details>
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">제주 국제학교 입학 자격은?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">제주특별법 적용 — 한국 국적 자녀 입학 가능. 외국 거주 경력 불요. 학교별 영어 능력 검증 + 인터뷰 통과 필수. 보호자 인터뷰 일반적.</p>
+        </details>
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">송도 채드윅 입학 자격은?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">인천경제자유구역법 적용 — 한국 국적 자녀 입학 가능. 영어 능력 검증 + 인터뷰. PreK 부터 G12 통합 운영. 자리 부족 다수.</p>
+        </details>
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">서류 영문 번역은 어디서 하나?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">공증 사무소 (1장당 1.5~3만원, 5~10일). 한국 정부 발급 서류는 대법원 인터넷 발급 영문 (별도 비용 무료). 학교에 따라 아포스티유 추가 요구.</p>
+        </details>
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">입학 시험 떨어지면 다시 응시 가능한가?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">학교에 따라 6개월~1년 후 재응시 허용. 단, 같은 학년 시험은 2회까지가 일반적. 자녀 영어 능력이 부족하면 영어 학원·홈스쿨 1년 후 재시도가 합리적.</p>
+        </details>
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">외국인학교 졸업 후 한국 대학 진학 가능한가?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">외국인학교 졸업장은 한국 학력 미인정 → 한국 대학 진학 시 (a) 검정고시 합격 (b) 외국 대학 입학 후 한국 대학 편입 (c) 외국 대학 졸업 후 한국 대학원 진학 옵션. 국제학교(제주·송도) 졸업장은 한국 학력 인정.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">우리 가족 입학 자격 확인</h2>
+      <p class="mt-3 text-sm">자녀 국적·외국 거주 경력·관심 학교를 알려주시면 입학 가능한 학교 + 필요 서류 리스트를 1:1 답변.</p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">관련 정보</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/ko/domestic/kindergarten/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">영어유치원 · 국제유치원 차이</div>
+          <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">유치원도 입학 자격 다름 — 미리 확인</div>
+        </a>
+        <a href="/ko/domestic/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">국내 국제학교 16곳 비교</div>
+          <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">외국인학교 · 국제학교 학교별 상세</div>
+        </a>
+        <a href="/ko/blog/2026-05-transfer-12-month-checklist/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">학교 옮기기 12개월 체크리스트</div>
+          <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">학교 옮길 때 서류 준비 타임라인</div>
+        </a>
+        <a href="/ko/blog/2026-05-korean-ratio-truth/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">한국인 비율 0% 학교의 함정</div>
+          <div class="mt-1 text-xs" style="color: var(--color-text-secondary)">입학 시 한국인 비율 어떻게 봐야 하는가</div>
+        </a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

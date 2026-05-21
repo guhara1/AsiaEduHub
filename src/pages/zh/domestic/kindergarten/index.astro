@@ -1,0 +1,153 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = '韩国英语幼儿园 vs 国际幼儿园 — 学费 · 英语环境 · 入学资格完整整理 | AsiaEduHub';
+const description =
+  '韩国英语幼儿园(영어유치원)与国际幼儿园(외국인학교·국제학교附属)的法律差异 · 学费 · 英语接触时长 · 入学资格对比。与东南亚国际学校幼儿园的费用 · 环境差异。站长亲历两国幼儿园经验整理。';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '韩国国际学校', item: siteRoot + 'zh/domestic/' },
+    { '@type': 'ListItem', position: 3, name: '英语幼儿园 · 国际幼儿园' },
+  ],
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={breadcrumb}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/zh/">首页</a> · <a href="/zh/domestic/">韩国国际学校</a> · <span style="color: var(--color-text-primary)">英语幼儿园 · 国际幼儿园</span>
+      </nav>
+
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">
+        韩国英语幼儿园 vs 国际幼儿园 — <br/>学费 · 英语环境 · 入学资格
+      </h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        韩国英语幼儿园(영어유치원)与国际幼儿园的法律差异 · 学费 · 英语接触时长 · 入学资格对比。与东南亚国际学校幼儿园的费用 · 环境差异。
+      </p>
+
+      <div class="mt-5">
+        <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="韩国幼儿教育法,外国人学校法(2009),各校官方招生资料,站长子女韩国英语幼儿园 · 马来西亚国际幼儿园亲历经验" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+    <div class="rounded-2xl p-6 mt-2" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 核心要点</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
+        韩国英语幼儿园与国际幼儿园的 <strong>法律地位 · 学费 · 英语环境 · 入学资格</strong> 完全不同。
+        优先英语环境 → <strong>国际幼儿园或东南亚迁移</strong>;优先韩国学籍 · 家庭稳定 → <strong>英语幼儿园</strong>。
+        子女 5 岁前后的决定将影响未来 10 年学习路径。
+      </p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">法律差异</h2>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">项目</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">英语幼儿园 (영어유치원)</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">国际幼儿园 (외국인학교·국제학교附属)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">适用法</td><td class="p-3" style="border:1px solid var(--color-border-light)">幼儿教育法 / 婴幼儿保育法</td><td class="p-3" style="border:1px solid var(--color-border-light)">外国人学校法(2009)或济州特别法 · 仁川经济自由区法</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">毕业资格</td><td class="p-3" style="border:1px solid var(--color-border-light)">韩国学历认定</td><td class="p-3" style="border:1px solid var(--color-border-light)">外国人学校未认定 / 国际学校 (济州·松岛) 认定</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">课程</td><td class="p-3" style="border:1px solid var(--color-border-light)">韩国 누리과정 + 英语补强</td><td class="p-3" style="border:1px solid var(--color-border-light)">IB PYP · EYFS · American Preschool 等</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">入学资格</td><td class="p-3" style="border:1px solid var(--color-border-light)">无限制</td><td class="p-3" style="border:1px solid var(--color-border-light)">外国国籍或外国居住 3 年+(外国人学校)/各校差异(国际学校)</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">学费 (年)</td><td class="p-3" style="border:1px solid var(--color-border-light)">KRW 2,400~4,200 万元</td><td class="p-3" style="border:1px solid var(--color-border-light)">USD 18,000~30,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">英语接触时长 — 宣传 vs 实际</h2>
+      <div class="mt-5 grid gap-4 md:grid-cols-2">
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-text-tertiary)">韩国英语幼儿园</div>
+          <div class="mt-2 text-2xl" style="font-weight:800; color: var(--color-primary-900)">宣传 70~80% / 实际 ~50%</div>
+          <ul class="mt-3 space-y-1.5 text-sm" style="color: var(--color-text-secondary)">
+            <li>• 母语外教 1 名 + 韩籍教师 2~3 名</li>
+            <li>• 午餐 · 点心 · 放学时间用韩语</li>
+            <li>• 孩子间默认韩语</li>
+          </ul>
+        </div>
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-accent-300); background: linear-gradient(180deg, #FFFBF0 0%, #FEF9E7 100%)">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-accent-700)">东南亚国际幼儿园</div>
+          <div class="mt-2 text-2xl" style="font-weight:800; color: var(--color-accent-700)">实际 ~95%</div>
+          <ul class="mt-3 space-y-1.5 text-sm" style="color: var(--color-accent-700)">
+            <li>• 教师多来自英 · 美 · 澳 · 加</li>
+            <li>• 午餐 · 点心 · 放学时间用英语</li>
+            <li>• 学生国籍多元,英语为共通语</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">学费对比</h2>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">项目</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">韩国英语幼儿园</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">韩国国际幼儿园</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">东南亚国际幼儿园</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">学费 (年)</td><td class="p-3" style="border:1px solid var(--color-border-light)">KRW 2,400~4,200 万</td><td class="p-3" style="border:1px solid var(--color-border-light)">USD 18K~30K</td><td class="p-3" style="border:1px solid var(--color-border-light)">USD 8K~18K</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">英语接触</td><td class="p-3" style="border:1px solid var(--color-border-light)">~50%</td><td class="p-3" style="border:1px solid var(--color-border-light)">~95%</td><td class="p-3" style="border:1px solid var(--color-border-light)">~95%</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">家庭生活费</td><td class="p-3" style="border:1px solid var(--color-border-light)">韩国基准</td><td class="p-3" style="border:1px solid var(--color-border-light)">韩国基准</td><td class="p-3" style="border:1px solid var(--color-border-light)">韩国 60~70%</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">入学资格</td><td class="p-3" style="border:1px solid var(--color-border-light)">无</td><td class="p-3" style="border:1px solid var(--color-border-light)">限制(外国国籍 · 居住经历)</td><td class="p-3" style="border:1px solid var(--color-border-light)">无(学生签证)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">子女幼儿园 1:1 咨询</h2>
+      <p class="mt-3 text-sm">韩国英语幼儿园 · 国际幼儿园 · 东南亚迁移 — 告知子女年龄 · 家庭优先级 · 预算可获 1:1 答复。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        WeChat 咨询
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">相关信息</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/zh/domestic/admission-guide/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">入学资格 · 文件指南</div>
+        </a>
+        <a href="/zh/domestic/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">韩国国际学校 16 所</div>
+        </a>
+        <a href="/zh/abroad/malaysia/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">马来西亚国际学校 34 所</div>
+        </a>
+        <a href="/zh/abroad/singapore/" class="card text-sm block">
+          <div class="text-primary-900" style="font-weight:500">新加坡国际学校 9 所</div>
+        </a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

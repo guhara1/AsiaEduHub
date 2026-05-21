@@ -82,10 +82,14 @@ for (const g of DOMESTIC_KOREA) {
       }
     }
   } else {
+    // kindergarten · admission-guide 등 카테고리: 별도 페이지로 링크
+    const dedicatedHref = (g.id === 'kindergarten' || g.id === 'admission-guide')
+      ? `/${locale}/domestic/${g.id}/`
+      : `/${locale}/domestic/#${g.id}`;
     domesticChildren.push({
       kind: 'link',
       label: locale === 'ko' ? g.ko : g.zh,
-      href: `/${locale}/domestic/#${g.id}`,
+      href: dedicatedHref,
     });
   }
 }
