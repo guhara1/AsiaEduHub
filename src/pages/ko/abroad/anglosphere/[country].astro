@@ -112,13 +112,19 @@ const faqSchema = {
       <p class="mt-2 text-xs text-[color:var(--color-text-tertiary)]">한국 학부모 사이에서 자주 검색되는 학교 위주 정리. 모든 정보는 학교 공식 사이트 최신 확인 권장.</p>
       <div class="mt-5 grid gap-3">
         {info.notable_schools.map((s) => (
-          <div class="rounded-xl border p-4" style="border-color: var(--color-border-light)">
-            <div class="flex items-center justify-between gap-3 flex-wrap">
-              <div class="text-primary-900" style="font-weight:700">{s.name}</div>
-              <div class="text-xs" style="color: var(--color-text-tertiary)">{s.location}</div>
+          <a href={s.website} target="_blank" rel="noopener noreferrer" class="school-link-card">
+            <div class="school-link-head">
+              <div class="school-link-name">
+                {s.name}
+                <svg class="school-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 17L17 7M7 7h10v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="school-link-location">{s.location}</div>
             </div>
-            <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.6">{s.note_ko}</p>
-          </div>
+            <p class="school-link-note">{s.note_ko}</p>
+            <div class="school-link-url">{s.website.replace(/^https?:\/\//, '').replace(/\/$/, '')} · 공식 사이트 ↗</div>
+          </a>
         ))}
       </div>
     </section>

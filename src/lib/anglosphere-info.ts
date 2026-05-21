@@ -16,7 +16,7 @@ export interface AngloCountryInfo {
   /** 입학 시험 */
   exams: string[];
   /** 대표 학교 (보딩 중심) */
-  notable_schools: { name: string; location: string; note_ko: string; note_zh: string }[];
+  notable_schools: { name: string; location: string; website: string; note_ko: string; note_zh: string }[];
   /** 한국 학부모 관점 핵심 포인트 */
   key_points_ko: string[];
   key_points_zh: string[];
@@ -46,14 +46,14 @@ export const ANGLOSPHERE_INFO: Record<string, AngloCountryInfo> = {
     visa_zh: '子女:F-1 学生签证。监护人陪同签证 (F-2) 可办但不许就业。寄宿学校实际为子女独居模式。',
     exams: ['SSAT (Secondary School Admission Test)', 'TOEFL iBT (보통 100+ 요구)', 'School-specific interview', 'Math placement'],
     notable_schools: [
-      { name: 'Phillips Academy Andover (MA)', location: 'Massachusetts', note_ko: '1778 설립. 미국 보딩스쿨 1순위 종종 거론.', note_zh: '1778 创立。常被列为美国寄宿学校第一。' },
-      { name: 'Phillips Exeter Academy (NH)', location: 'New Hampshire', note_ko: 'Harkness method (원탁 토론) 발상지.', note_zh: 'Harkness 圆桌讨论教学法发源地。' },
-      { name: 'Choate Rosemary Hall (CT)', location: 'Connecticut', note_ko: 'JFK 모교. 인문학·예술 강함.', note_zh: 'JFK 母校。人文 · 艺术强势。' },
-      { name: 'Deerfield Academy (MA)', location: 'Massachusetts', note_ko: '1797. 소규모·전통 보딩.', note_zh: '1797。小规模 · 传统寄宿。' },
-      { name: 'Hotchkiss School (CT)', location: 'Connecticut', note_ko: '1891. 호숫가 캠퍼스. 아이비 진학 다수.', note_zh: '1891。湖畔校园。常春藤升学多。' },
-      { name: 'Lawrenceville School (NJ)', location: 'New Jersey', note_ko: 'Princeton 인접. 학업 강도 매우 강.', note_zh: 'Princeton 邻近。学业强度极高。' },
-      { name: "St. Paul's School (NH)", location: 'New Hampshire', note_ko: '100% 보딩. 전통 보딩 문화.', note_zh: '100% 寄宿。传统寄宿文化。' },
-      { name: 'Groton School (MA)', location: 'Massachusetts', note_ko: 'FDR 모교. 소규모 명문.', note_zh: 'FDR 母校。小规模名校。' },
+      { name: 'Phillips Academy Andover (MA)', location: 'Massachusetts', website: 'https://www.andover.edu', note_ko: '1778 설립. 미국 보딩스쿨 1순위 종종 거론.', note_zh: '1778 创立。常被列为美国寄宿学校第一。' },
+      { name: 'Phillips Exeter Academy (NH)', location: 'New Hampshire', website: 'https://www.exeter.edu', note_ko: 'Harkness method (원탁 토론) 발상지.', note_zh: 'Harkness 圆桌讨论教学法发源地。' },
+      { name: 'Choate Rosemary Hall (CT)', location: 'Connecticut', website: 'https://www.choate.edu', note_ko: 'JFK 모교. 인문학·예술 강함.', note_zh: 'JFK 母校。人文 · 艺术强势。' },
+      { name: 'Deerfield Academy (MA)', location: 'Massachusetts', website: 'https://deerfield.edu', note_ko: '1797. 소규모·전통 보딩.', note_zh: '1797。小规模 · 传统寄宿。' },
+      { name: 'Hotchkiss School (CT)', location: 'Connecticut', website: 'https://www.hotchkiss.org', note_ko: '1891. 호숫가 캠퍼스. 아이비 진학 다수.', note_zh: '1891。湖畔校园。常春藤升学多。' },
+      { name: 'Lawrenceville School (NJ)', location: 'New Jersey', website: 'https://www.lawrenceville.org', note_ko: 'Princeton 인접. 학업 강도 매우 강.', note_zh: 'Princeton 邻近。学业强度极高。' },
+      { name: "St. Paul's School (NH)", location: 'New Hampshire', website: 'https://www.sps.edu', note_ko: '100% 보딩. 전통 보딩 문화.', note_zh: '100% 寄宿。传统寄宿文化。' },
+      { name: 'Groton School (MA)', location: 'Massachusetts', website: 'https://www.groton.org', note_ko: 'FDR 모교. 소규모 명문.', note_zh: 'FDR 母校。小规模名校。' },
     ],
     key_points_ko: [
       '아이비리그·MIT·Stanford·Top 30 미국 대학 진학 직결',
@@ -96,14 +96,14 @@ export const ANGLOSPHERE_INFO: Record<string, AngloCountryInfo> = {
     visa_zh: '子女:Child Student Visa (4-17 岁)。父母:Parent of a Child Student Visa — 11 岁以下子女可陪同 (限就业)。11 岁+ 寄宿。',
     exams: ['UKiset (UK Independent Schools Entry Test)', 'ISEB Common Entrance (11+ · 13+)', 'School-specific interview', 'Pre-tests (Year 6 시점)'],
     notable_schools: [
-      { name: 'Eton College', location: 'Berkshire', note_ko: '1440 설립. 영국 보딩의 상징. 남학생 전용.', note_zh: '1440 创立。英国寄宿象征。男校。' },
-      { name: 'Harrow School', location: 'London', note_ko: '1572. 남학생 전용. Winston Churchill 모교.', note_zh: '1572。男校。Winston Churchill 母校。' },
-      { name: 'Westminster School', location: 'London', note_ko: 'Oxbridge 진학률 1위 종종 (~50%).', note_zh: '牛剑升学率常居首位 (~50%)。' },
-      { name: 'Winchester College', location: 'Hampshire', note_ko: '1382. 학업 강도 강함. 남학생 전용.', note_zh: '1382。学业强度高。男校。' },
-      { name: 'Charterhouse', location: 'Surrey', note_ko: '남녀 공학 전환. 16+ 입학 옵션.', note_zh: '已转男女合校。16+ 入学选项。' },
-      { name: 'Rugby School', location: 'Warwickshire', note_ko: '럭비 발상지. 남녀 공학. 13+ 입학.', note_zh: '橄榄球发源地。男女合校。13+ 入学。' },
-      { name: 'Wellington College', location: 'Berkshire', note_ko: '런던 인접. 남녀 공학. IB 옵션 추가.', note_zh: '伦敦邻近。男女合校。IB 选项。' },
-      { name: 'Marlborough College', location: 'Wiltshire', note_ko: '남녀 공학. Kate Middleton 모교.', note_zh: '男女合校。Kate Middleton 母校。' },
+      { name: 'Eton College', location: 'Berkshire', website: 'https://www.etoncollege.com', note_ko: '1440 설립. 영국 보딩의 상징. 남학생 전용.', note_zh: '1440 创立。英国寄宿象征。男校。' },
+      { name: 'Harrow School', location: 'London', website: 'https://www.harrowschool.org.uk', note_ko: '1572. 남학생 전용. Winston Churchill 모교.', note_zh: '1572。男校。Winston Churchill 母校。' },
+      { name: 'Westminster School', location: 'London', website: 'https://www.westminster.org.uk', note_ko: 'Oxbridge 진학률 1위 종종 (~50%).', note_zh: '牛剑升学率常居首位 (~50%)。' },
+      { name: 'Winchester College', location: 'Hampshire', website: 'https://www.winchestercollege.org', note_ko: '1382. 학업 강도 강함. 남학생 전용.', note_zh: '1382。学业强度高。男校。' },
+      { name: 'Charterhouse', location: 'Surrey', website: 'https://www.charterhouse.org.uk', note_ko: '남녀 공학 전환. 16+ 입학 옵션.', note_zh: '已转男女合校。16+ 入学选项。' },
+      { name: 'Rugby School', location: 'Warwickshire', website: 'https://www.rugbyschool.co.uk', note_ko: '럭비 발상지. 남녀 공학. 13+ 입학.', note_zh: '橄榄球发源地。男女合校。13+ 入学。' },
+      { name: 'Wellington College', location: 'Berkshire', website: 'https://www.wellingtoncollege.org.uk', note_ko: '런던 인접. 남녀 공학. IB 옵션 추가.', note_zh: '伦敦邻近。男女合校。IB 选项。' },
+      { name: 'Marlborough College', location: 'Wiltshire', website: 'https://www.marlboroughcollege.org', note_ko: '남녀 공학. Kate Middleton 모교.', note_zh: '男女合校。Kate Middleton 母校。' },
     ],
     key_points_ko: [
       '옥스브리지 (Oxford·Cambridge) 진학 명확한 트랙',
@@ -146,13 +146,13 @@ export const ANGLOSPHERE_INFO: Record<string, AngloCountryInfo> = {
     visa_zh: '子女:Study Permit。父母:Visitor Record (监护人签证) — 子女入学后 6 个月-数年居留。父母可另办工作签。子女毕业后有 PR 路径。',
     exams: ['공립: 학교·교육청 자체 평가', 'TOEFL/IELTS (사립 보딩)', 'SSAT (사립 보딩)', 'School interview'],
     notable_schools: [
-      { name: 'Upper Canada College', location: 'Toronto, Ontario', note_ko: '1829. 캐나다 보딩 1순위. 남학생.', note_zh: '1829。加拿大寄宿首选。男校。' },
-      { name: 'Branksome Hall', location: 'Toronto, Ontario', note_ko: '여학생. IB World School.', note_zh: '女校。IB World School。' },
-      { name: "St. Andrew's College", location: 'Aurora, Ontario', note_ko: '1899. 남학생 전용 보딩.', note_zh: '1899。男生寄宿。' },
-      { name: 'Trinity College School', location: 'Port Hope, Ontario', note_ko: '1865. 남녀 공학 보딩.', note_zh: '1865。男女合校寄宿。' },
-      { name: 'Ridley College', location: 'St. Catharines, Ontario', note_ko: 'IB 전 단계 운영.', note_zh: 'IB 全阶段运营。' },
-      { name: 'Lakefield College School', location: 'Lakefield, Ontario', note_ko: '소규모 자연 환경 보딩.', note_zh: '小规模自然环境寄宿。' },
-      { name: 'BC 공립 (Burnaby·Coquitlam 등)', location: 'British Columbia', note_ko: '연 USD $10K~12K. 한국·중국 학부모 인기 1순위.', note_zh: '年 USD $10K-12K。韩中家长首选。' },
+      { name: 'Upper Canada College', location: 'Toronto, Ontario', website: 'https://www.ucc.on.ca', note_ko: '1829. 캐나다 보딩 1순위. 남학생.', note_zh: '1829。加拿大寄宿首选。男校。' },
+      { name: 'Branksome Hall', location: 'Toronto, Ontario', website: 'https://www.branksome.on.ca', note_ko: '여학생. IB World School.', note_zh: '女校。IB World School。' },
+      { name: "St. Andrew's College", location: 'Aurora, Ontario', website: 'https://www.sac.on.ca', note_ko: '1899. 남학생 전용 보딩.', note_zh: '1899。男生寄宿。' },
+      { name: 'Trinity College School', location: 'Port Hope, Ontario', website: 'https://www.tcs.on.ca', note_ko: '1865. 남녀 공학 보딩.', note_zh: '1865。男女合校寄宿。' },
+      { name: 'Ridley College', location: 'St. Catharines, Ontario', website: 'https://www.ridleycollege.com', note_ko: 'IB 전 단계 운영.', note_zh: 'IB 全阶段运营。' },
+      { name: 'Lakefield College School', location: 'Lakefield, Ontario', website: 'https://www.lcs.on.ca', note_ko: '소규모 자연 환경 보딩.', note_zh: '小规模自然环境寄宿。' },
+      { name: 'BC 공립 (Burnaby·Coquitlam 등)', location: 'British Columbia', website: 'https://studyinbc.gov.bc.ca', note_ko: '연 USD $10K~12K. 한국·중국 학부모 인기 1순위.', note_zh: '年 USD $10K-12K。韩中家长首选。' },
     ],
     key_points_ko: [
       '학부모 동반 비자 가장 용이 (한국 학부모 1순위 선호)',
@@ -195,13 +195,13 @@ export const ANGLOSPHERE_INFO: Record<string, AngloCountryInfo> = {
     visa_zh: '子女:Subclass 500 (Student Visa)。父母:Subclass 590 (Student Guardian Visa) — 18 岁以下子女 1 名陪同 1 名父母。境内居留可,有就业限制。',
     exams: ['AEAS (Australian Education Assessment Services)', 'School-specific entrance exam', 'IELTS / TOEFL (학교별)', 'Interview'],
     notable_schools: [
-      { name: 'Geelong Grammar School', location: 'Victoria', note_ko: 'King Charles 영국 왕세자 출신 학교. 호주 보딩 1순위.', note_zh: 'King Charles 英国国王出身。澳寄宿首选。' },
-      { name: 'Scotch College', location: 'Melbourne, Victoria', note_ko: '1851. 남학생 전용. 학업 강도 강.', note_zh: '1851。男校。学业强度高。' },
-      { name: 'Wesley College', location: 'Melbourne, Victoria', note_ko: '남녀 공학. IB World School 운영.', note_zh: '男女合校。IB World School。' },
-      { name: "Methodist Ladies' College (MLC)", location: 'Melbourne, Victoria', note_ko: '여학생 전용. IB Diploma.', note_zh: '女校。IB Diploma。' },
-      { name: "The King's School", location: 'Sydney, NSW', note_ko: '1831. 남학생 전용 명문.', note_zh: '1831。男校名门。' },
-      { name: 'Knox Grammar School', location: 'Sydney, NSW', note_ko: '남학생 전용. NSW HSC + IB.', note_zh: '男校。NSW HSC + IB。' },
-      { name: 'Cranbrook School', location: 'Sydney, NSW', note_ko: '남녀 공학. 시드니 도심.', note_zh: '男女合校。悉尼市区。' },
+      { name: 'Geelong Grammar School', location: 'Victoria', website: 'https://www.ggs.vic.edu.au', note_ko: 'King Charles 영국 왕세자 출신 학교. 호주 보딩 1순위.', note_zh: 'King Charles 英国国王出身。澳寄宿首选。' },
+      { name: 'Scotch College', location: 'Melbourne, Victoria', website: 'https://www.scotch.vic.edu.au', note_ko: '1851. 남학생 전용. 학업 강도 강.', note_zh: '1851。男校。学业强度高。' },
+      { name: 'Wesley College', location: 'Melbourne, Victoria', website: 'https://www.wesleycollege.edu.au', note_ko: '남녀 공학. IB World School 운영.', note_zh: '男女合校。IB World School。' },
+      { name: "Methodist Ladies' College (MLC)", location: 'Melbourne, Victoria', website: 'https://www.mlc.vic.edu.au', note_ko: '여학생 전용. IB Diploma.', note_zh: '女校。IB Diploma。' },
+      { name: "The King's School", location: 'Sydney, NSW', website: 'https://www.kings.edu.au', note_ko: '1831. 남학생 전용 명문.', note_zh: '1831。男校名门。' },
+      { name: 'Knox Grammar School', location: 'Sydney, NSW', website: 'https://www.knox.nsw.edu.au', note_ko: '남학생 전용. NSW HSC + IB.', note_zh: '男校。NSW HSC + IB。' },
+      { name: 'Cranbrook School', location: 'Sydney, NSW', website: 'https://www.cranbrook.nsw.edu.au', note_ko: '남녀 공학. 시드니 도심.', note_zh: '男女合校。悉尼市区。' },
     ],
     key_points_ko: [
       '학부모 동반 비자 (590) — 영미권 중 가장 폭넓은 학부모 거주 옵션',

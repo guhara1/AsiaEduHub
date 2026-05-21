@@ -1190,6 +1190,85 @@
   [data-reveal][data-reveal-delay="300"] { transition-delay: 300ms; }
 }
 
+/* ─── 영미권 대표 학교 링크 카드 ─── */
+.school-link-card {
+  display: block;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+  background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%);
+  transition: all 200ms var(--ease-out);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+.school-link-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--color-primary-700) 0%, var(--color-accent-500) 100%);
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out);
+}
+.school-link-card:hover {
+  border-color: var(--color-primary-400);
+  background: linear-gradient(180deg, #fff 0%, var(--color-primary-50) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.10);
+  text-decoration: none;
+}
+.school-link-card:hover::before { opacity: 1; }
+.school-link-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem; flex-wrap: wrap;
+}
+.school-link-name {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-weight: 700; font-size: 1.0625rem;
+  color: var(--color-primary-900);
+  letter-spacing: -0.01em;
+}
+.school-link-icon {
+  color: var(--color-primary-700);
+  transition: transform 200ms var(--ease-out);
+  flex-shrink: 0;
+}
+.school-link-card:hover .school-link-icon {
+  transform: translate(2px, -2px);
+  color: var(--color-accent-500);
+}
+.school-link-location {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  padding: 0.2rem 0.625rem;
+  border-radius: 999px;
+  background: var(--color-bg-tertiary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.school-link-note {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+.school-link-url {
+  margin-top: 0.625rem;
+  padding-top: 0.625rem;
+  border-top: 1px dashed var(--color-border-light);
+  font-size: 0.72rem;
+  color: var(--color-primary-700);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-family: 'JetBrains Mono', Menlo, monospace;
+}
+:root[data-theme="dark"] .school-link-card {
+  background: var(--color-bg-elevated);
+}
+:root[data-theme="dark"] .school-link-card:hover {
+  background: rgba(96, 165, 250, 0.05);
+}
+
 /* ─── Table of Contents — 매거진 스타일 ─── */
 .toc {
   padding: 0;
