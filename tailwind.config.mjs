@@ -23,10 +23,13 @@ export default {
       },
       fontFamily: {
         sans: [
-          '"Pretendard Variable"',
-          'Pretendard',
           '-apple-system',
           'BlinkMacSystemFont',
+          '"Apple SD Gothic Neo"',
+          '"Pretendard Variable"',
+          'Pretendard',
+          '"Malgun Gothic"',
+          '"맑은 고딕"',
           'system-ui',
           '"Noto Sans KR"',
           '"Noto Sans SC"',
