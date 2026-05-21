@@ -133,6 +133,8 @@ if (author && publishedAt) {
     {jsonLdArray.map((obj) => (
       <script type="application/ld+json" set:html={JSON.stringify(obj)} />
     ))}
+
+    <slot name="head" />
   </head>
   <body class="min-h-screen bg-white text-[color:var(--color-text-primary)]">
     <SiteHeader />

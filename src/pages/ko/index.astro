@@ -94,6 +94,12 @@ const operatorFacts = [
 ];
 ---
 <BaseLayout title={title} description={description} jsonLd={[websiteSchema, orgSchema]}>
+  {/* 검색엔진 사이트 소유권 확인 — 루트(메인) 페이지에만 등록 */}
+  <Fragment slot="head">
+    <meta name="naver-site-verification" content="85f43806ccec89bafa1e7c397b8e4e829394915e" />
+    <meta name="google-site-verification" content="ymKPTukb2F9uWfn6I0MaszLLeaJTd2DdMcIIlkjOh98" />
+  </Fragment>
+
   {/* ─── Hero (재설계) ─── */}
   <section class="hero-gradient relative overflow-hidden">
     {/* 우측 데코 블롭 */}
