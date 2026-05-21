@@ -11,6 +11,9 @@ export default defineConfig({
   trailingSlash: 'always',
   build: {
     format: 'directory',
+    // 모든 스타일시트 인라인 — 렌더링 차단 CSS 제거 (FCP/LCP 개선)
+    // 페이지당 CSS 13KB 정도라 인라인이 외부 파일 + 추가 RTT 보다 빠름
+    inlineStylesheets: 'always',
   },
   i18n: {
     defaultLocale: 'ko',
