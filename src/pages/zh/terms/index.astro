@@ -1,0 +1,43 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+const title = '使用条款 · AsiaEduHub';
+const description = 'AsiaEduHub 使用条款 — 内容使用范围 · 免责 · 广告政策 · 纠纷解决。';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '使用条款' },
+  ],
+};
+---
+<BaseLayout title={title} description={description} jsonLd={breadcrumb}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12 max-w-3xl">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · 使用条款</nav>
+      <h1 class="mt-3 text-3xl sm:text-4xl text-balance" style="font-weight:800; letter-spacing:-0.022em">使用条款</h1>
+      <p class="mt-3 text-base" style="color: var(--color-text-secondary); line-height: 1.7;">本条款规定 AsiaEduHub 网站使用相关权利 · 义务 · 责任。</p>
+      <div class="mt-5"><AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt} sources="韩国电子商务法 · 信息通信网法 · 标准条款指南" /></div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+    <section class="mt-2"><h2 class="text-xl" style="font-weight:700">1. 服务定义</h2><p class="mt-2 text-sm" style="line-height:1.75">AsiaEduHub 是供韩中家长检视东南亚 · 韩国国际学校的信息站。基于站长 (David) 第一手经验 · 学校官方资料 · 家长社群信息。</p></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">2. 内容使用范围</h2><ul class="mt-3 space-y-2 text-sm" style="line-height:1.7"><li>• 仅供 <strong>个人家长参考</strong>。</li><li>• 禁止部分或整体 <strong>商业目的复制 · 再分发</strong>。</li><li>• 禁止 AI 学习数据用 (robots.txt 阻止 GPTBot · CCBot · Google-Extended · ClaudeBot)。</li><li>• 标注出处 <strong>引用 (200 字内)</strong> 允许。需回链本站。</li><li>• 学校名 · 学费 · 签证等事实信息可自由使用。</li></ul></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">3. 信息准确性 · 免责</h2><ul class="mt-3 space-y-2 text-sm" style="line-height:1.7"><li>• 所有信息为发布时点 <strong>"估算"</strong>。</li><li>• 学校政策 · 学费 · 签证每年变更 — 需向各学校 · 政府官网确认。</li><li>• 站长 <strong>不对本站信息导致的入学 · 签证 · 移居决定结果负责</strong>。</li><li>• 汇率波动 · 政策变化导致的实际成本差异不负责。</li><li>• 广告方承诺事项由广告方直接负责。</li></ul></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">4. 广告 - 内容分离政策</h2><ul class="mt-3 space-y-2 text-sm" style="line-height:1.7"><li>• 广告内容 <strong>"SPONSORED" 标签</strong> 明示。</li><li>• 广告链接 <code>rel="sponsored"</code>。</li><li>• 广告主学校与编辑推荐学校页面分离。</li><li>• 收广告费学校的缺点也照实记录。</li></ul></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">5. 用户禁止行为</h2><ul class="mt-3 space-y-2 text-sm" style="line-height:1.7"><li>• 冒充站长 · 虚假信息</li><li>• 诽谤 · 侮辱其他用户</li><li>• 垃圾邮件 · 广告擅自发布</li><li>• 系统黑客 · 非法访问</li><li>• 版权 · 商标 · 肖像权侵犯</li></ul></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">6. 外部链接</h2><p class="mt-2 text-sm" style="line-height:1.75">本站含学校官网 · 政府网 · 家长社群等外部链接。外部站点内容 · 准确性 · 安全 <strong>站长不负责</strong>。</p></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">7. 服务变更 · 终止</h2><p class="mt-2 text-sm" style="line-height:1.75">站长可视情况变更 · 终止运营。重要变更前 30 天公告 · 邮件通知。</p></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">8. 纠纷解决</h2><p class="mt-2 text-sm" style="line-height:1.75">本条款相关纠纷依韩国法,协商不成时站长居住地管辖法院为第一审管辖。</p></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">9. 变更通知</h2><p class="mt-2 text-sm" style="line-height:1.75">本条款随法规 · 运营变化更新。最后更新:<strong>2026-05-21</strong>。</p></section>
+    <section class="mt-10"><h2 class="text-xl" style="font-weight:700">相关页面</h2><div class="mt-4 grid gap-3 sm:grid-cols-2"><a href="/zh/privacy/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">隐私政策</div></a><a href="/zh/editorial-policy/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">编辑原则</div></a><a href="/zh/about/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">站长介绍</div></a><a href="/zh/contact/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">联系方式</div></a></div></section>
+  </article>
+</BaseLayout>

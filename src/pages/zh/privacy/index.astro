@@ -1,0 +1,44 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+const title = '隐私政策 · AsiaEduHub';
+const description = 'AsiaEduHub 如何收集 · 使用 · 保护家长 · 学生个人信息。站长(David)负责。2026-05 更新。';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '隐私政策' },
+  ],
+};
+---
+<BaseLayout title={title} description={description} jsonLd={breadcrumb}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12 max-w-3xl">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · 隐私政策</nav>
+      <h1 class="mt-3 text-3xl sm:text-4xl text-balance" style="font-weight:800; letter-spacing:-0.022em">隐私政策</h1>
+      <p class="mt-3 text-base" style="color: var(--color-text-secondary); line-height: 1.7;">AsiaEduHub 透明公开如何收集 · 使用 · 保护用户个人信息。</p>
+      <div class="mt-5"><AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt} sources="GDPR · PDPA · 韩国个人信息保护法标准" /></div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+    <section class="mt-2"><h2 class="text-xl" style="font-weight:700">1. 负责人</h2><p class="mt-2 text-sm" style="line-height:1.75">本站个人信息处理负责人为 <strong>David (站长)</strong>。真名 · 法人信息仅在广告媒体包 · 法律纠纷时公开。咨询:<a href="/zh/contact/" class="text-primary-700 underline">contact 页面</a>。</p></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">2. 收集的个人信息</h2><ul class="mt-3 space-y-2 text-sm" style="line-height:1.7"><li>• <strong>咨询时</strong>:邮箱 · WeChat · 子女年级 · 居住区 · 预算 (选填)</li><li>• <strong>广告咨询</strong>:公司名 · 负责人 · 邮箱 · 电话</li><li>• <strong>自动收集</strong>:IP · Cookie · 浏览器 · 访问页 (Google Analytics 4)</li></ul></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">3. 使用目的</h2><ul class="mt-3 space-y-2 text-sm" style="line-height:1.7"><li>• 咨询应答 · 学校推荐 1:1 答复</li><li>• 广告咨询应对 · 媒体包发送</li><li>• 网站运营 · 统计分析 · 内容改善</li><li>• 法规遵守 · 纠纷应对</li></ul></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">4. 保留期限</h2><ul class="mt-3 space-y-2 text-sm" style="line-height:1.7"><li>• 咨询信息:最后回复后 <strong>1 年</strong> 自动删除</li><li>• 广告咨询:合同终止后 <strong>3 年</strong></li><li>• Google Analytics 数据:自动匿名化 <strong>26 个月</strong></li></ul></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">5. 第三方提供</h2><p class="mt-2 text-sm" style="line-height:1.7">未经用户同意 <strong>不向第三方提供</strong>。例外:用户请求直接联系学校 · 中介时 (事先同意),法律 · 司法机关要求时。</p></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">6. Cookie 使用</h2><ul class="mt-3 space-y-2 text-sm" style="line-height:1.7"><li>• <strong>必需 Cookie</strong>:深 · 浅色主题 · 语言保存</li><li>• <strong>分析 Cookie</strong>:Google Analytics 4 (IP 匿名化)</li><li>• <strong>广告 Cookie</strong>:广告时使用 (当前未运营)</li></ul></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">7. 用户权利</h2><ul class="mt-3 space-y-2 text-sm" style="line-height:1.7"><li>• 查询 · 更正 · 删除请求</li><li>• 撤回同意</li><li>• 处理停止 · 第三方拒绝</li><li>• 未成年人 (14 岁以下) 需法定代理人同意</li></ul></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">8. 安全措施</h2><ul class="mt-3 space-y-2 text-sm" style="line-height:1.7"><li>• HTTPS 加密通信 (Cloudflare SSL)</li><li>• 仅站长本人访问个人信息</li><li>• 定期安全检查 · 可疑活动监控</li><li>• 备份数据加密保存</li></ul></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">9. 变更通知</h2><p class="mt-2 text-sm" style="line-height:1.7">本政策随法规 · 运营变化更新。重要变更网站公告 · 邮件通知。最后更新:<strong>2026-05-21</strong>。</p></section>
+    <section class="mt-8"><h2 class="text-xl" style="font-weight:700">10. 咨询</h2><p class="mt-2 text-sm" style="line-height:1.7">个人信息相关咨询:<a href="/zh/contact/" class="text-primary-700 underline">/zh/contact/</a> 或 WeChat · 邮箱。</p></section>
+    <section class="mt-10"><h2 class="text-xl" style="font-weight:700">相关页面</h2><div class="mt-4 grid gap-3 sm:grid-cols-2"><a href="/zh/terms/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">使用条款</div></a><a href="/zh/editorial-policy/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">编辑原则</div></a><a href="/zh/about/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">站长介绍</div></a><a href="/zh/contact/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">联系方式</div></a></div></section>
+  </article>
+</BaseLayout>

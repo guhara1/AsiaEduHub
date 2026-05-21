@@ -1,72 +1,198 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
 
-const title = '편집 원칙 · AsiaEduHub';
+const publishedAt = new Date('2026-05-20');
+const updatedAt = new Date('2026-05-21');
+
+const title = '편집 원칙 · 콘텐츠 정책 · AI 사용 범위 — 운영자 책임 명시 | AsiaEduHub';
 const description =
-  '편집 원칙, AI 사용 범위, 광고-콘텐츠 분리 정책, 데이터 출처·업데이트 정책. 운영자 데이비드.';
+  'AsiaEduHub 편집 원칙 · AI 사용 범위 · 광고-콘텐츠 분리 · 데이터 출처 · 업데이트 정책. 구글 2025.12 "Who, How, Why" 가이드라인 준수. 운영자 데이비드 책임.';
 
-const lastUpdated = '2026-05-20';
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '편집 원칙' },
+  ],
+};
 ---
-<BaseLayout title={title} description={description}>
-  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
-    <div class="container-content py-10 sm:py-12 max-w-2xl">
+<BaseLayout title={title} description={description} jsonLd={breadcrumb}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12 max-w-3xl">
       <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/ko/">홈</a> · 편집 원칙</nav>
-      <h1 class="mt-3 text-3xl sm:text-4xl text-balance">편집 원칙</h1>
-      <p class="mt-3 text-sm" style="color: var(--color-text-secondary)">
-        마지막 업데이트: {lastUpdated} · 책임자: 데이비드 (본명은 광고 미디어 키트 · 법적 페이지에 한해 공개)
+      <h1 class="mt-3 text-3xl sm:text-4xl text-balance" style="font-weight:800; letter-spacing:-0.022em">편집 원칙 · AI 사용 범위 · 책임 저자</h1>
+      <p class="mt-3 text-base" style="color: var(--color-text-secondary); line-height: 1.7;">
+        AsiaEduHub 는 한국 · 중국 학부모가 동남아 · 국내 국제학교를 검토할 때 참고하는 1인 미디어입니다.
+        구글 2025.12 갱신 "Who, How, Why" 가이드라인을 따라 <strong>누가 · 어떻게 · 왜 만들었는지</strong>를 투명하게 공개합니다.
       </p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="구글 검색 품질 평가 가이드라인 2025.12 · YMYL 콘텐츠 기준 · 운영자 직접 검수" />
+      </div>
     </div>
   </section>
 
-  <article class="container-content py-10 max-w-2xl">
+  <article class="container-content py-10 max-w-3xl">
 
-    <section class="mt-8 space-y-6 text-[color:var(--color-text-primary)]">
-      <div>
-        <h2 class="text-lg">1. 운영자 1차 경험 우선</h2>
-        <p class="mt-2 text-sm">
-          학교 방문기·시그니처 경험담은 운영자가 직접 방문·체험한 경우에만 발행합니다.
-          운영자가 직접 다녀본 학교에는 ⭐ "운영자 방문 확인" 배지를 표시합니다.
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 핵심 원칙</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
+        본 사이트는 <strong>YMYL 카테고리</strong> (자녀 교육 · 이주 · 재정 결정) 입니다.
+        모든 콘텐츠는 운영자(데이비드)의 <strong>1차 경험</strong> 또는 <strong>학교 · 정부 공식 자료 + 학부모 커뮤니티 청취</strong> 기반으로 작성합니다. AI 자동 생성 본문 발행은 절대 금지합니다.
+      </p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">1. 누가 (Who) — 책임 저자 명시</h2>
+      <p class="mt-3 text-sm" style="line-height:1.75">
+        <strong>책임 저자:</strong> 데이비드 (닉네임). 본명 · 법인 정보는 광고 미디어 키트 · 법적 분쟁 시에만 공개.
+      </p>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• <strong>거주:</strong> 말레이시아 쿠알라룸푸르 (2024년 한국에서 이주)</li>
+        <li>• <strong>자녀:</strong> 2명, UCSI International School Kuala Lumpur 재학</li>
+        <li>• <strong>이력:</strong> 자녀 학교 2회 이전 (1차 경험), 온라인 마케팅 12년+, 한 · 중 · 영 3개 언어</li>
+        <li>• <strong>경험 영역:</strong> 말레이시아 MM2H 비자 신청 + KL 학부모 카카오톡 · WeChat 커뮤니티 운영</li>
+        <li>• <strong>운영자 소개 페이지:</strong> <a href="/ko/about/" class="text-primary-700 underline">/ko/about/</a> (Person schema 적용)</li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">2. 어떻게 (How) — 콘텐츠 작성 방식</h2>
+
+      <h3 class="mt-6 text-lg" style="font-weight:700">2-1. 운영자 1차 경험 우선</h3>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• 학교 방문기 · 시그니처 경험담은 운영자가 직접 방문 · 체험한 경우에만 발행</li>
+        <li>• 운영자 직접 방문 학교에는 ⭐ "운영자 방문 확인" 배지 표시</li>
+        <li>• 실제 결제 내역 · 학교 입학설명회 자료 · 학부모 카카오톡 청취 기반</li>
+      </ul>
+
+      <h3 class="mt-6 text-lg" style="font-weight:700">2-2. AI 사용 범위 (Google 2025.12 정책 준수)</h3>
+      <div class="mt-4 rounded-xl p-5" style="background: var(--color-primary-50); border-left: 4px solid var(--color-primary-700)">
+        <p class="text-sm" style="color: var(--color-primary-900); line-height:1.7">
+          구글은 2025.12 갱신 가이드라인에서 <strong>"AI 사용 여부 자체보다 결과물의 가치가 핵심"</strong> 이라고 명시했습니다. 본 사이트의 AI 사용 범위:
         </p>
+        <ul class="mt-3 space-y-2 text-sm" style="color: var(--color-primary-900); line-height:1.7">
+          <li>✅ <strong>허용:</strong> 다국어 번역 보조 (한 · 중 본문 번역 1차안 작성, 운영자 직접 검수 필수)</li>
+          <li>✅ <strong>허용:</strong> 본문 구조화 · 가독성 개선 · 문법 검수</li>
+          <li>✅ <strong>허용:</strong> 데이터 표 · 비교 차트 자동 생성 (운영자 직접 검증 필수)</li>
+          <li>❌ <strong>금지:</strong> AI 자동 생성 본문 그대로 발행</li>
+          <li>❌ <strong>금지:</strong> 운영자 1차 경험 없는 학교 후기 · 방문기 AI 작성</li>
+          <li>❌ <strong>금지:</strong> 학부모 인터뷰 등 1인칭 콘텐츠 AI 생성</li>
+          <li>❌ <strong>금지:</strong> 학교 · 정부 공식 자료를 AI 가 임의로 해석 · 추정</li>
+        </ul>
       </div>
 
-      <div>
-        <h2 class="text-lg">2. 운영자 직접 검수</h2>
-        <p class="mt-2 text-sm">
-          모든 정보 본문과 경험담은 운영자가 직접 작성·검수한 후 발행합니다. 학교 데이터는 분기별로 출처와 함께 재검증합니다.
-        </p>
-      </div>
+      <h3 class="mt-6 text-lg" style="font-weight:700">2-3. 데이터 출처 명시</h3>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• 모든 학교 데이터에 출처(학교 공식 자료 / 운영자 직접 확인 등)와 마지막 업데이트 날짜 표기</li>
+        <li>• 학교 데이터는 분기별로 검증</li>
+        <li>• 운영자 추정값과 학교 공식 발표를 명확히 구분 ("추정" · "공식" 라벨)</li>
+        <li>• 외부 사이트 인용 시 출처 링크 · 인용 날짜 명시</li>
+      </ul>
 
-      <div>
-        <h2 class="text-lg">3. 광고-콘텐츠 분리</h2>
-        <p class="mt-2 text-sm">
-          광고 콘텐츠는 "SPONSORED" 배지로 명확히 표시합니다. 광고주(유학원·학교)와 편집 추천 학교는 페이지를 분리해 표기합니다.
-          "추천" 대신 "학부모 관점 분석", "가성비 분석" 같은 중립 표현을 사용합니다.
-        </p>
-      </div>
+      <h3 class="mt-6 text-lg" style="font-weight:700">2-4. 콘텐츠 검수 절차</h3>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• 한국어: 운영자 직접 작성 · 검수</li>
+        <li>• 중국어: 운영자 1차 검수 + 사이트 런칭 전 네이티브 추가 검수</li>
+        <li>• 모든 새 콘텐츠는 양 언어 검수 후 동시 발행</li>
+      </ul>
+    </section>
 
-      <div>
-        <h2 class="text-lg">4. 데이터 출처·업데이트</h2>
-        <p class="mt-2 text-sm">
-          모든 학교 데이터에 출처(학교 공식 자료 / 운영자 직접 확인 등)와 마지막 업데이트 날짜를 표기합니다.
-          학교 데이터는 분기별로 검증합니다.
-        </p>
-      </div>
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">3. 왜 (Why) — 사이트 목적</h2>
+      <p class="mt-3 text-sm" style="line-height:1.75">
+        본 사이트는 운영자가 한국에서 KL 로 이주 후 자녀 학교 옮긴 1차 경험에서 출발했습니다.
+        같은 결정을 앞둔 한국 · 중국 학부모가 <strong>다른 사이트에서 얻을 수 없는 솔직한 정보</strong>를 찾을 수 있는 공간으로 운영합니다.
+      </p>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• <strong>차별 가치:</strong> 학교 공식 마케팅에 없는 솔직한 정보 (한 · 중 비율, 시설 노후도, 학비 인상 패턴, 실제 결제 항목)</li>
+        <li>• <strong>편집 독립성:</strong> 광고비를 받은 학교라도 운영자 방문 시 발견한 단점은 그대로 기록</li>
+        <li>• <strong>광고-콘텐츠 분리:</strong> 광고는 "SPONSORED" 배지 · 별도 페이지</li>
+      </ul>
+    </section>
 
-      <div>
-        <h2 class="text-lg">5. 한국·중국 학생 비율 표시</h2>
-        <p class="mt-2 text-sm">
-          "낮음·보통·높음" 같은 주관 라벨 대신 정확한 % 로 표기합니다.
-          중국 본토 학생과 화교(현지 중국계)는 반드시 분리해 표기합니다.
-          "한국인 비율 높음 ≠ 부정적" 이라는 균형 잡힌 맥락을 함께 제공합니다.
-        </p>
-      </div>
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">4. 광고-콘텐츠 분리 정책</h2>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• 광고 콘텐츠는 <strong>"SPONSORED" 배지</strong>로 명확 표시</li>
+        <li>• 광고 클릭 링크는 <code>rel="sponsored"</code> 처리</li>
+        <li>• 광고주 학교 · 유학원과 편집부 추천 학교는 페이지 분리</li>
+        <li>• "추천" 대신 "학부모 관점 분석", "가성비 분석" 같은 중립 표현 사용</li>
+        <li>• 학비 · 한국인 비율 · 시설 등 부정적 정보도 광고주 학교라도 그대로 기록</li>
+      </ul>
+    </section>
 
-      <div>
-        <h2 class="text-lg">6. 시설 데이터 검증</h2>
-        <p class="mt-2 text-sm">
-          시설은 "있음"으로만 표시하지 않고 자체/공유/임대로 구분합니다. 운영자 직접 방문 확인 시 ⭐ 배지를 부여합니다.
-        </p>
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">5. 데이터 표기 정확성</h2>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• "낮음 · 보통 · 높음" 같은 주관적 라벨 대신 정확한 % 사용</li>
+        <li>• 중국 본토 학생과 화교(현지 중국계) 반드시 분리 표기</li>
+        <li>• "한국인 비율 높음 ≠ 부정적" 균형 잡힌 맥락 제공</li>
+        <li>• 시설은 "있음"이 아닌 자체/공유/임대 구분</li>
+        <li>• 운영자 직접 방문 확인 시 ⭐ "방문 검증" 배지</li>
+        <li>• 학비는 학교가 청구하는 통화(MYR · KRW · THB 등) 명시 + USD 환산값 추정 라벨</li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">6. 정정 · 피드백 처리</h2>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• 정보 오류 발견 시 <strong>72시간 이내</strong> 검증 · 정정</li>
+        <li>• 정정 시 "마지막 업데이트" 날짜 갱신 + 변경 사유 본문에 기록</li>
+        <li>• 운영자 1차 경험과 학교 공식 자료가 다를 시 양쪽 모두 명시</li>
+        <li>• 학부모 카카오톡 · 이메일 통해 정정 요청 환영</li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">7. 발행 빈도 · 신선도 관리</h2>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• 초기 3개월: 주 2~3개 글 (품질 우선)</li>
+        <li>• 안정기: 주 1~2개 글 + 기존 글 분기별 업데이트</li>
+        <li>• 모든 페이지 "마지막 업데이트" 날짜 표시</li>
+        <li>• 학교 데이터 분기별 출처 재검증</li>
+        <li>• 계절성 콘텐츠 (입학 시즌 · 신학기 · 학년 말)</li>
+      </ul>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">8. 절대 금지 (구글 스팸 정책)</h2>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>❌ AI 자동 생성 본문 그대로 발행</li>
+        <li>❌ 키워드 스터핑 · 클로킹 · 도어웨이 페이지</li>
+        <li>❌ 만료 도메인 매입 후 무관 콘텐츠 발행</li>
+        <li>❌ 광고 콘텐츠를 정보 콘텐츠로 위장</li>
+        <li>❌ 검색 순위 조작을 위한 대량 저가치 콘텐츠 양산</li>
+        <li>❌ 제3자 콘텐츠로 도메인 신뢰도 악용</li>
+        <li>❌ 링크 스킴 · 대량 백링크 매입</li>
+      </ul>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">편집 원칙 관련 문의</h2>
+      <p class="mt-3 text-sm">정보 오류 정정 요청 · 데이터 출처 확인 · 광고-콘텐츠 분리 정책 질문은 운영자에게 직접 문의.</p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">관련 페이지</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/ko/about/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">운영자 소개</div></a>
+        <a href="/ko/privacy/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">개인정보처리방침</div></a>
+        <a href="/ko/terms/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">이용약관</div></a>
+        <a href="/ko/contact/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">연락처</div></a>
       </div>
     </section>
+
+    <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+      ※ 본 편집 원칙은 구글 검색 품질 평가 가이드라인 2025.12 갱신 + YMYL 카테고리 기준을 반영합니다. 마지막 업데이트: 2026-05-21.
+    </p>
   </article>
 </BaseLayout>

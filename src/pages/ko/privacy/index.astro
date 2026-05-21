@@ -1,0 +1,149 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = '개인정보처리방침 · AsiaEduHub';
+const description = 'AsiaEduHub 는 학부모·학생의 개인정보를 어떻게 수집·이용·보호하는지 정리합니다. 운영자(데이비드) 책임. 2026-05 갱신.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '개인정보처리방침' },
+  ],
+};
+---
+<BaseLayout title={title} description={description} jsonLd={breadcrumb}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12 max-w-3xl">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/ko/">홈</a> · 개인정보처리방침</nav>
+      <h1 class="mt-3 text-3xl sm:text-4xl text-balance" style="font-weight:800; letter-spacing:-0.022em">개인정보처리방침</h1>
+      <p class="mt-3 text-base" style="color: var(--color-text-secondary); line-height: 1.7;">
+        AsiaEduHub 는 한국 · 중국 학부모가 동남아 · 국내 국제학교를 검토할 때 참고하는 1인 미디어입니다.
+        이용자의 개인정보를 어떻게 수집·이용·보호하는지 투명하게 공개합니다.
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="GDPR · PDPA (말레이시아·태국·싱가포르 데이터 보호법) · 한국 개인정보보호법 표준 기준" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+
+    <section class="mt-2">
+      <h2 class="text-xl" style="font-weight:700">1. 책임자</h2>
+      <p class="mt-2 text-sm" style="line-height:1.75">
+        본 사이트의 개인정보 처리 책임자는 <strong>데이비드 (운영자)</strong> 입니다.
+        본명 · 법인 정보는 광고 미디어 키트 · 법적 분쟁 시에만 공개합니다.
+        문의: <a href="/ko/contact/" class="text-primary-700 underline">contact 페이지</a>.
+      </p>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl" style="font-weight:700">2. 수집하는 개인정보 항목</h2>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• <strong>상담 문의 시</strong>: 이메일 · 카카오톡 ID · WeChat ID · 자녀 학년 · 거주 지역 · 예산 (선택)</li>
+        <li>• <strong>광고 문의 시</strong>: 회사명 · 담당자명 · 이메일 · 전화번호</li>
+        <li>• <strong>자동 수집</strong>: 접속 IP · 쿠키 · 브라우저 종류 · 방문 페이지 (Google Analytics 4)</li>
+      </ul>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl" style="font-weight:700">3. 개인정보 이용 목적</h2>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• 상담 응답 · 학교 추천 1:1 답변</li>
+        <li>• 광고 문의 응대 · 미디어 키트 발송</li>
+        <li>• 사이트 운영 · 통계 분석 · 콘텐츠 개선</li>
+        <li>• 법령 준수 · 분쟁 대응</li>
+      </ul>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl" style="font-weight:700">4. 보유·이용 기간</h2>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• 상담 정보: 마지막 응답일로부터 <strong>1년</strong> 후 자동 삭제</li>
+        <li>• 광고 문의: 계약 종료 후 <strong>3년</strong> (세무 기록 보관 의무)</li>
+        <li>• Google Analytics 데이터: 자동 익명화 후 <strong>26개월</strong></li>
+      </ul>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl" style="font-weight:700">5. 제3자 제공</h2>
+      <p class="mt-2 text-sm" style="line-height:1.7">
+        본 사이트는 이용자의 동의 없이 개인정보를 제3자에게 제공하지 <strong>않습니다</strong>. 다음 경우 예외:
+      </p>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• 이용자가 학교·유학원 직접 연결을 요청한 경우 (사전 동의 후)</li>
+        <li>• 법령 또는 수사 기관의 영장이 있는 경우</li>
+      </ul>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl" style="font-weight:700">6. 쿠키 (Cookie) 사용</h2>
+      <p class="mt-2 text-sm" style="line-height:1.7">
+        본 사이트는 다음 쿠키를 사용합니다:
+      </p>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• <strong>필수 쿠키</strong>: 다크/라이트 테마 저장 · 언어 선택</li>
+        <li>• <strong>분석 쿠키</strong>: Google Analytics 4 (IP 익명화 처리)</li>
+        <li>• <strong>광고 쿠키</strong>: 광고 노출 시 사용 (현재 미운영)</li>
+      </ul>
+      <p class="mt-3 text-sm" style="line-height:1.7">
+        브라우저 설정에서 쿠키를 거부할 수 있으나, 일부 기능이 제한될 수 있습니다.
+      </p>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl" style="font-weight:700">7. 이용자 권리</h2>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• 개인정보 <strong>열람·정정·삭제 요청</strong> 가능 (이메일 통해)</li>
+        <li>• 수집·이용 동의 철회 가능</li>
+        <li>• 처리 정지·제3자 제공 거부 가능</li>
+        <li>• 미성년자 (만 14세 미만) 정보는 법정 대리인 동의 필수</li>
+      </ul>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl" style="font-weight:700">8. 안전 조치</h2>
+      <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
+        <li>• HTTPS 암호화 통신 (Cloudflare SSL)</li>
+        <li>• 운영자 본인만 개인정보 접근 (직원 없음)</li>
+        <li>• 정기적 보안 점검 · 의심 활동 모니터링</li>
+        <li>• 백업 데이터는 암호화 보관</li>
+      </ul>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl" style="font-weight:700">9. 변경 안내</h2>
+      <p class="mt-2 text-sm" style="line-height:1.7">
+        본 방침은 법령 · 운영 정책 변경에 따라 갱신됩니다. 중요 변경 시 사이트 공지 · 이메일 안내합니다.
+        마지막 갱신: <strong>2026-05-21</strong>.
+      </p>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-xl" style="font-weight:700">10. 문의</h2>
+      <p class="mt-2 text-sm" style="line-height:1.7">
+        개인정보 관련 문의 · 권리 행사: <a href="/ko/contact/" class="text-primary-700 underline">/ko/contact/</a> 또는 카카오톡 · 이메일.
+        본 방침에 동의하지 않으시면 사이트 이용을 중단해 주세요.
+      </p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">관련 페이지</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/ko/terms/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">이용약관</div></a>
+        <a href="/ko/editorial-policy/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">편집 원칙</div></a>
+        <a href="/ko/about/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">운영자 소개</div></a>
+        <a href="/ko/contact/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">연락처</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
