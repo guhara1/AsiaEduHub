@@ -1,0 +1,128 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { MM2H_PAGES, MM2H_KEYS } from '~/lib/mm2h-pages-info';
+
+export async function getStaticPaths() {
+  return MM2H_KEYS.map((topic) => ({ params: { topic }, props: { topic } }));
+}
+
+const { topic } = Astro.props as { topic: string };
+const info = MM2H_PAGES[topic];
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = `${info.name_ko} — 자격 · 신청 절차 · 자녀 학교 영향 2026 | AsiaEduHub`;
+const description = info.tagline_ko;
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: 'MM2H · 이주', item: siteRoot + 'ko/mm2h/' },
+    { '@type': 'ListItem', position: 3, name: info.name_ko },
+  ],
+};
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: info.faqs.map((f) => ({
+    '@type': 'Question', name: f.q_ko,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_ko },
+  })),
+};
+---
+<BaseLayout title={title} description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · <a href="/ko/mm2h/">MM2H · 이주</a> · <span style="color: var(--color-text-primary)">{info.name_ko}</span>
+      </nav>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">{info.emoji} {info.name_ko}</h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">{info.tagline_ko}</p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="각국 정부 공식 자료 · 운영자 KL 거주 1차 경험 · 학부모 카카오톡·WeChat 커뮤니티 청취" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 핵심 요약</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">{info.summary_ko}</p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">핵심 요건</h2>
+      <div class="mt-5 grid gap-3 sm:grid-cols-2">
+        {info.requirements_ko.map((r) => (
+          <div class="rounded-xl border p-4" style="border-color: var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+            <div class="text-xs uppercase tracking-wide" style="color: var(--color-text-tertiary); font-weight:700; letter-spacing:0.05em">{r.label}</div>
+            <div class="mt-1 text-sm" style="font-weight:600; color: var(--color-primary-900); line-height:1.6">{r.value}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">신청 절차</h2>
+      <ol class="mt-5 space-y-3 text-sm" style="line-height:1.7">
+        {info.process_ko.map((p) => <li>{p}</li>)}
+      </ol>
+    </section>
+
+    <section class="mt-10 grid gap-5 md:grid-cols-2">
+      <div class="rounded-xl p-5" style="border:1px solid rgba(4, 120, 87, 0.20); background: linear-gradient(135deg, #ECFDF5 0%, #fff 100%)">
+        <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-success)">장점</div>
+        <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">{info.pros_ko.map((p) => <li>✓ {p}</li>)}</ul>
+      </div>
+      <div class="rounded-xl p-5" style="border:1px solid rgba(220, 38, 38, 0.20); background: linear-gradient(135deg, #FEF2F2 0%, #fff 100%)">
+        <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-danger)">단점 · 주의</div>
+        <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">{info.cons_ko.map((p) => <li>⚠ {p}</li>)}</ul>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자녀 교육 영향</h2>
+      <div class="mt-4 rounded-xl p-5" style="background: var(--color-primary-50); border-left: 4px solid var(--color-primary-700)">
+        <p class="text-sm" style="color: var(--color-primary-900); line-height:1.7; font-weight:500">{info.education_impact_ko}</p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자주 묻는 질문</h2>
+      <div class="mt-5 space-y-3">
+        {info.faqs.map((f) => (
+          <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.q_ko}</summary>
+            <p class="mt-3 text-sm" style="line-height:1.7">{f.a_ko}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">{info.name_ko} 1:1 상담</h2>
+      <p class="mt-3 text-sm">자녀 학년 · 거주 의향 · 예산 · 자산 상황을 알려주시면 가족 비자 옵션 1:1 답변.</p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">관련 정보</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/ko/mm2h/malaysia-mm2h/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇲🇾 말레이시아 MM2H</div></a>
+        <a href="/ko/mm2h/thai-visa/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇹🇭 태국 Elite · LTR</div></a>
+        <a href="/ko/mm2h/singapore-pr/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇸🇬 싱가포르 PR · EP</div></a>
+        <a href="/ko/mm2h/housing/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🏠 부동산 · 거주지 가이드</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

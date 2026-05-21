@@ -1,0 +1,122 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
+import { GUIDE_PAGES, GUIDE_KEYS } from '~/lib/guide-pages-info';
+
+export async function getStaticPaths() {
+  return GUIDE_KEYS.map((category) => ({ params: { category }, props: { category } }));
+}
+
+const { category } = Astro.props as { category: string };
+const info = GUIDE_PAGES[category];
+
+const allGuides = await getCollection('guides', (e) => e.data.locale === 'zh');
+const categoryGuides = allGuides
+  .filter((g) => g.data.category === category)
+  .sort((a, b) => b.data.last_updated.getTime() - a.data.last_updated.getTime());
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = categoryGuides.length > 0 ? categoryGuides[0].data.last_updated : publishedAt;
+
+const title = `${info.name_zh} — 综合指南 + 家长常见问题 | AsiaEduHub`;
+const description = info.tagline_zh;
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '指南', item: siteRoot + 'zh/guide/' },
+    { '@type': 'ListItem', position: 3, name: info.name_zh },
+  ],
+};
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: info.faqs.map((f) => ({
+    '@type': 'Question', name: f.q_zh,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_zh },
+  })),
+};
+---
+<BaseLayout title={title} description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/zh/">首页</a> · <a href="/zh/guide/">指南</a> · <span style="color: var(--color-text-primary)">{info.name_zh}</span>
+      </nav>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">{info.emoji} {info.name_zh}</h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">{info.tagline_zh}</p>
+      <div class="mt-5"><AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt} sources="各国官方 · 学校官方 · 站长亲历 · 家长社群" /></div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 类别介绍</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">{info.intro_zh}</p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">本类别核心要点</h2>
+      <ul class="mt-5 space-y-2 text-sm" style="line-height:1.75">
+        {info.key_points_zh.map((p) => <li>✓ {p}</li>)}
+      </ul>
+    </section>
+
+    {categoryGuides.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">本类别指南文 ({categoryGuides.length} 篇)</h2>
+        <div class="mt-5 grid gap-3">
+          {categoryGuides.map((g) => {
+            const slug = g.slug.replace(/-zh$/, '');
+            return (
+              <a href={`/zh/guide/${slug}/`} class="rounded-xl border p-4 hover:border-primary-700 transition-colors block" style="border-color: var(--color-border-light)">
+                <div class="text-primary-900" style="font-weight:600">{g.data.title}</div>
+                <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.6">{g.data.summary}</p>
+                <div class="mt-2 text-xs" style="color: var(--color-text-tertiary)">{formatDate(g.data.last_updated, 'zh')} · {g.data.author}</div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">常见问题</h2>
+      <div class="mt-5 space-y-3">
+        {info.faqs.map((f) => (
+          <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.q_zh}</summary>
+            <p class="mt-3 text-sm" style="line-height:1.7">{f.a_zh}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">{info.name_zh} 1:1 咨询</h2>
+      <p class="mt-3 text-sm">告知子女年级 · 关注学校 · 优先级,获按类别定制答复。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">WeChat 咨询<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">其他指南类别</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {GUIDE_KEYS.filter((k) => k !== category).map((k) => {
+          const p = GUIDE_PAGES[k];
+          return (
+            <a href={`/zh/guide/${k}/`} class="card text-sm block">
+              <div class="text-primary-900" style="font-weight:500">{p.emoji} {p.name_zh}</div>
+              <div class="mt-1 text-xs" style="color: var(--color-text-secondary); line-height:1.5">{p.tagline_zh.slice(0, 70)}…</div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  </article>
+</BaseLayout>

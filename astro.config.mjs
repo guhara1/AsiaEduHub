@@ -54,8 +54,8 @@ export default defineConfig({
           item.priority = 0.9;
           item.changefreq = 'weekly';
         }
-        // 영어유치원 · 입학 자격 · 영미권 · 학교 유형 — high-intent SEO 페이지
-        else if (/\/domestic\/(kindergarten|admission-guide)\/|\/abroad\/(anglosphere|types)\//.test(url)) {
+        // 영어유치원 · 입학 자격 · 영미권 · 학교 유형 · MM2H 토픽 · 가이드 카테고리 — high-intent SEO 페이지
+        else if (/\/domestic\/(kindergarten|admission-guide)\/|\/abroad\/(anglosphere|types)\/|\/mm2h\/[^/]+\/|\/guide\/(admission|tuition-scholarship|visa-residence|curriculum-compare|track-reviews)\//.test(url)) {
           item.priority = 0.85;
           item.changefreq = 'monthly';
         }

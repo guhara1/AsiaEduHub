@@ -239,13 +239,13 @@ const compareChildren: DropdownChild[] = COMPARE_TOOLS.map((t) => ({
 const mm2hChildren: DropdownChild[] = MM2H_TOPICS.map((t) => ({
   kind: 'link',
   label: locale === 'ko' ? t.ko : t.zh,
-  href: `/${locale}/mm2h/#${t.id}`,
+  href: `/${locale}/mm2h/${t.id}/`,
 }));
 
 const guideChildren: DropdownChild[] = GUIDE_CATEGORIES.map((g) => ({
   kind: 'link',
   label: locale === 'ko' ? g.ko : g.zh,
-  href: g.id === 'expert-columns' ? `/${locale}/experts/` : `/${locale}/guide/#${g.id}`,
+  href: g.id === 'expert-columns' ? `/${locale}/experts/` : `/${locale}/guide/${g.id}/`,
 }));
 
 const menu: MenuItem[] = [

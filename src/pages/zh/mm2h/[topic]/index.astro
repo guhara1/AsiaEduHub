@@ -1,0 +1,122 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { MM2H_PAGES, MM2H_KEYS } from '~/lib/mm2h-pages-info';
+
+export async function getStaticPaths() {
+  return MM2H_KEYS.map((topic) => ({ params: { topic }, props: { topic } }));
+}
+
+const { topic } = Astro.props as { topic: string };
+const info = MM2H_PAGES[topic];
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = `${info.name_zh} — 资格 · 申请 · 子女学校影响 2026 | AsiaEduHub`;
+const description = info.tagline_zh;
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: 'MM2H · 移居', item: siteRoot + 'zh/mm2h/' },
+    { '@type': 'ListItem', position: 3, name: info.name_zh },
+  ],
+};
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: info.faqs.map((f) => ({
+    '@type': 'Question', name: f.q_zh,
+    acceptedAnswer: { '@type': 'Answer', text: f.a_zh },
+  })),
+};
+---
+<BaseLayout title={title} description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/zh/">首页</a> · <a href="/zh/mm2h/">MM2H · 移居</a> · <span style="color: var(--color-text-primary)">{info.name_zh}</span>
+      </nav>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">{info.emoji} {info.name_zh}</h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">{info.tagline_zh}</p>
+      <div class="mt-5"><AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt} sources="各国政府官方 · 站长居 KL 第一手 · 家长社群" /></div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 核心要点</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">{info.summary_zh}</p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">核心要求</h2>
+      <div class="mt-5 grid gap-3 sm:grid-cols-2">
+        {info.requirements_zh.map((r) => (
+          <div class="rounded-xl border p-4" style="border-color: var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+            <div class="text-xs uppercase tracking-wide" style="color: var(--color-text-tertiary); font-weight:700; letter-spacing:0.05em">{r.label}</div>
+            <div class="mt-1 text-sm" style="font-weight:600; color: var(--color-primary-900); line-height:1.6">{r.value}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">申请流程</h2>
+      <ol class="mt-5 space-y-3 text-sm" style="line-height:1.7">
+        {info.process_zh.map((p) => <li>{p}</li>)}
+      </ol>
+    </section>
+
+    <section class="mt-10 grid gap-5 md:grid-cols-2">
+      <div class="rounded-xl p-5" style="border:1px solid rgba(4, 120, 87, 0.20); background: linear-gradient(135deg, #ECFDF5 0%, #fff 100%)">
+        <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-success)">优势</div>
+        <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">{info.pros_zh.map((p) => <li>✓ {p}</li>)}</ul>
+      </div>
+      <div class="rounded-xl p-5" style="border:1px solid rgba(220, 38, 38, 0.20); background: linear-gradient(135deg, #FEF2F2 0%, #fff 100%)">
+        <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-danger)">劣势 · 注意</div>
+        <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">{info.cons_zh.map((p) => <li>⚠ {p}</li>)}</ul>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">子女教育影响</h2>
+      <div class="mt-4 rounded-xl p-5" style="background: var(--color-primary-50); border-left: 4px solid var(--color-primary-700)">
+        <p class="text-sm" style="color: var(--color-primary-900); line-height:1.7; font-weight:500">{info.education_impact_zh}</p>
+      </div>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">常见问题</h2>
+      <div class="mt-5 space-y-3">
+        {info.faqs.map((f) => (
+          <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.q_zh}</summary>
+            <p class="mt-3 text-sm" style="line-height:1.7">{f.a_zh}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">{info.name_zh} 1:1 咨询</h2>
+      <p class="mt-3 text-sm">告知子女年级 · 居住意向 · 预算 · 资产状况,可获家庭签证选项 1:1 答复。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">WeChat 咨询<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">相关信息</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/zh/mm2h/malaysia-mm2h/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇲🇾 马来西亚 MM2H</div></a>
+        <a href="/zh/mm2h/thai-visa/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇹🇭 泰国 Elite · LTR</div></a>
+        <a href="/zh/mm2h/singapore-pr/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇸🇬 新加坡 PR · EP</div></a>
+        <a href="/zh/mm2h/housing/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🏠 房产 · 居住地指南</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
