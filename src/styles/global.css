@@ -669,16 +669,32 @@
   /* card-cta 안 텍스트 — opacity 대신 명시적 색상으로 가독성 보장 */
   .card-cta h1, .card-cta h2, .card-cta h3 { color: #fff; font-weight: 700; letter-spacing: -0.022em; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
   .card-cta p { color: rgba(255, 255, 255, 0.94); font-weight: 450; }
-  /* card-cta 안 eyebrow / 라벨 — 어떤 클래스든 강제 밝게 (가시성 보호) */
-  .card-cta .uppercase,
-  .card-cta [class*="text-xs"],
-  .card-cta [class*="text-accent-7"],
-  .card-cta [class*="text-primary-9"],
-  .card-cta [class*="text-text-tertiary"] {
+  /* card-cta 안 eyebrow / 라벨 — 어떤 클래스든 강제 밝게 (가시성 보호)
+     단, 흰색 배경 버튼은 예외 (text-primary-900 유지) */
+  .card-cta .uppercase:not(.bg-white),
+  .card-cta [class*="text-xs"]:not(.bg-white),
+  .card-cta [class*="text-accent-7"]:not(.bg-white),
+  .card-cta [class*="text-primary-9"]:not(.bg-white):not([class*="bg-white"]),
+  .card-cta [class*="text-text-tertiary"]:not(.bg-white) {
     color: rgba(255, 255, 255, 0.78) !important;
   }
-  .card-cta a { color: #fff; text-decoration: underline; text-decoration-color: rgba(255,255,255,0.45); text-underline-offset: 3px; }
-  .card-cta a:hover { text-decoration-color: #fff; }
+  /* 일반 anchor 는 흰색 — 흰 배경 버튼은 제외 */
+  .card-cta a:not([class*="bg-white"]) {
+    color: #fff;
+    text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.45);
+    text-underline-offset: 3px;
+  }
+  .card-cta a:not([class*="bg-white"]):hover { text-decoration-color: #fff; }
+  /* 흰 배경 CTA 버튼은 네이비 텍스트 강제 유지 */
+  .card-cta a[class*="bg-white"] {
+    color: var(--color-primary-900) !important;
+    text-decoration: none;
+  }
+  .card-cta a[class*="bg-white"]:hover {
+    background: #f8fafc !important;
+    text-decoration: none;
+  }
 
   /* ─── bg-primary-900 / bg-primary-700 컨텍스트 — 모든 지역·학교 페이지 하단 CTA 자동 강화 ─── */
   .bg-primary-900, .bg-primary-700 {
