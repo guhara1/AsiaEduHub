@@ -1,0 +1,200 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import TuitionCalculator from '~/components/react/TuitionCalculator.tsx';
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = '국제학교 학비 계산기 — 환율 · 기숙 · 항공권 · 부대 비용 포함 총비용 시뮬레이션 | AsiaEduHub';
+const description =
+  '학비뿐 아니라 등록비 · 보증금 · 교복 · 셔틀 · CCA · 점심 · 시험비 · 한국 왕복 항공권까지 포함한 가족 총비용 시뮬레이션. MYR · KRW · USD 환율 변동 반영. 한국 영어유치원 vs 동남아 국제학교 비교 가능.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '비교 / 도구' },
+    { '@type': 'ListItem', position: 3, name: '학비 계산기' },
+  ],
+};
+const webApp = {
+  '@context': 'https://schema.org', '@type': 'WebApplication',
+  name: '국제학교 학비 계산기',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'Web',
+  inLanguage: 'ko-KR',
+  offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: '학비 외 진짜 들어가는 비용은?', acceptedAnswer: { '@type': 'Answer', text: '학비 외 9가지 항목 — 지원료(환불 불가, $200~500), 등록금(연 학비의 10~30%, 일시불), 환불 가능 보증금(졸업 시 환불), 시설 분담금, 교복, 교재, 셔틀(월 KRW 15만원~), 점심(월 USD $150~300), CCA 외부 강사(텀당 $100~600), 시험 응시료(IGCSE·A-Level·IB·SAT), 한국 왕복 항공권(연 $3K~5K). 보통 학비의 15~25% 추가 예산 필요.' } },
+    { '@type': 'Question', name: '환율 변동이 가족 부담에 얼마나 영향?', acceptedAnswer: { '@type': 'Answer', text: 'MYR/KRW 환율은 1년 사이 ±10% 변동 가능. 학비 USD $20,000 = MYR 90,000(2024년) ~ MYR 100,000(2026년 시점). 한국 원으로 환산 시 약 ±200만원 변동. 학비 결제 시점에 따라 가족 부담이 크게 달라짐.' } },
+    { '@type': 'Question', name: '보딩 vs 데이스쿨 총비용 차이?', acceptedAnswer: { '@type': 'Answer', text: '보딩 = 학비 + 기숙비 (학비의 30~50% 추가). 미국 보딩 USD $50K~80K, 영국 보딩 GBP £40K~60K. 데이스쿨은 가족 거주비 별도이지만 보딩 기숙비보다 비용이 적은 경우 있음. 단, 부모 직장·소득 손실 고려 시 데이스쿨이 비싸지는 경우도 있음.' } },
+    { '@type': 'Question', name: '한국 영어유치원 vs 동남아 국제학교 총비용?', acceptedAnswer: { '@type': 'Answer', text: '한국 영어유치원 월 200~350만원 = 연 2,400~4,200만원. 동남아 국제학교 학비 USD $10K~$20K = 약 1,300~2,700만원. 단, 동남아는 가족 이주 시 거주비·항공권·이주 행정 비용 추가. 5년 거주 기준 동남아가 더 저렴한 경우 다수.' } },
+  ],
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, webApp, faqSchema]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · 비교 / 도구 · <span style="color: var(--color-text-primary)">학비 계산기</span>
+      </nav>
+      <div class="mt-4"><span class="badge-navy">💰 인터랙티브 계산기</span></div>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">
+        국제학교 학비 계산기 — 환율·기숙·항공권 포함
+      </h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">
+        학비뿐 아니라 부대 비용 9가지 + 환율 변동 + 가족 항공권까지 포함한 가족 총비용 시뮬레이션.
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="운영자 자녀 2명 학비·부대 비용 실제 결제 내역 + 학부모 카카오톡 시세 청취" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 핵심 포인트</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
+        학교 공식 학비는 <strong>전체 비용의 70~80%</strong>입니다. 등록비·보증금·셔틀·CCA·항공권 등이 나머지 20~30%. 가족 예산 계산 시 학비의 <strong>1.2~1.3배</strong>를 안전선으로 두세요.
+      </p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">학비 계산기</h2>
+      <TuitionCalculator client:visible locale="ko" />
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">학비 외 9가지 항목 — 운영자 실제 결제 기준</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">운영자 자녀 2명 UCSI 첫 학기 실제 결제 내역 기준 (자녀 2명 합산, USD):</p>
+
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">항목</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">금액 (USD)</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">연 학비 (자녀 2)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$14,000</td><td class="p-3" style="border:1px solid var(--color-border-light)">Year 6 + Year 4</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">지원료</td><td class="p-3" style="border:1px solid var(--color-border-light)">$300</td><td class="p-3" style="border:1px solid var(--color-border-light)">환불 불가, 1회성</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">등록금</td><td class="p-3" style="border:1px solid var(--color-border-light)">$2,200</td><td class="p-3" style="border:1px solid var(--color-border-light)">입학 시 1회 (학비의 ~15%)</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">환불 가능 보증금</td><td class="p-3" style="border:1px solid var(--color-border-light)">$1,500</td><td class="p-3" style="border:1px solid var(--color-border-light)">졸업·전학 시 환불</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">시설 분담금 (연)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$800</td><td class="p-3" style="border:1px solid var(--color-border-light)">매년</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">교복 (자녀 2)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$420</td><td class="p-3" style="border:1px solid var(--color-border-light)">초기 1회</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">교재 (학년별)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$280</td><td class="p-3" style="border:1px solid var(--color-border-light)">매년</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">셔틀 (1명, 연)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$1,100</td><td class="p-3" style="border:1px solid var(--color-border-light)">월 KRW 15만원 × 10개월</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">점심 식대 (월)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$180/월</td><td class="p-3" style="border:1px solid var(--color-border-light)">학교 카페테리아 패키지</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">CCA 외부 강사 (1과목/텀)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$250</td><td class="p-3" style="border:1px solid var(--color-border-light)">한 텀 1회 비용</td></tr>
+            <tr style="background: #FFFBF0"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:700">첫 학기 결제 합계</td><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:700">≈ $21,000</td><td class="p-3" style="border:1px solid var(--color-border-light)">환불 가능 보증금 포함</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-4 text-sm" style="color: var(--color-text-secondary); line-height: 1.7">
+        학교 공식 안내의 연 학비는 USD $14,000이지만, <strong>실제 첫 학기 결제는 그 1.5배</strong>. 두 번째 학기부터는 1회성 항목 빠져서 학비 + 시설비 + 식대 + CCA 정도로 안정화.
+      </p>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">환율 변동 시뮬레이션</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">학비는 학교가 현지 통화로 청구합니다. USD 환산값은 환율 변동에 따라 차이.</p>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">국가</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">통화</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">USD 1 환율 범위</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">한국 원 환산 변동</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">말레이시아</td><td class="p-3" style="border:1px solid var(--color-border-light)">MYR</td><td class="p-3" style="border:1px solid var(--color-border-light)">4.3 ~ 4.7</td><td class="p-3" style="border:1px solid var(--color-border-light)">±10%</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">한국</td><td class="p-3" style="border:1px solid var(--color-border-light)">KRW</td><td class="p-3" style="border:1px solid var(--color-border-light)">1,300 ~ 1,400</td><td class="p-3" style="border:1px solid var(--color-border-light)">±8%</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">태국</td><td class="p-3" style="border:1px solid var(--color-border-light)">THB</td><td class="p-3" style="border:1px solid var(--color-border-light)">35 ~ 37</td><td class="p-3" style="border:1px solid var(--color-border-light)">±6%</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">베트남</td><td class="p-3" style="border:1px solid var(--color-border-light)">VND</td><td class="p-3" style="border:1px solid var(--color-border-light)">24,000 ~ 25,500</td><td class="p-3" style="border:1px solid var(--color-border-light)">±6%</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">싱가포르</td><td class="p-3" style="border:1px solid var(--color-border-light)">SGD</td><td class="p-3" style="border:1px solid var(--color-border-light)">1.32 ~ 1.38</td><td class="p-3" style="border:1px solid var(--color-border-light)">±5%</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">영국</td><td class="p-3" style="border:1px solid var(--color-border-light)">GBP</td><td class="p-3" style="border:1px solid var(--color-border-light)">£1 ≈ $1.20~$1.30</td><td class="p-3" style="border:1px solid var(--color-border-light)">±8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 text-sm" style="color: var(--color-text-secondary); line-height: 1.7">
+        💡 <strong>실용 팁:</strong> 학비 결제는 학기 시작 직전이 일반이지만, 학교에 따라 1년치 일시불 옵션 (3~5% 할인 + 환율 고정) 있음. 환율 변동 위험 회피하고 싶다면 일시불 협상 가능.
+      </p>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">가족 생활비 포함 총비용</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">학비만 보지 마세요. 이주 시 가족 생활비도 함께 계산해야 진짜 부담이 보입니다.</p>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">국가</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">월 가족 생활비 (USD)</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">한국 대비</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">한국 (서울 강남)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$5,500~$8,000</td><td class="p-3" style="border:1px solid var(--color-border-light)">100% (기준)</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">말레이시아 (KL)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$3,000~$5,000</td><td class="p-3" style="border:1px solid var(--color-border-light)">~60%</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">태국 (방콕)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$3,500~$5,500</td><td class="p-3" style="border:1px solid var(--color-border-light)">~70%</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">베트남 (호치민·하노이)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$2,500~$4,000</td><td class="p-3" style="border:1px solid var(--color-border-light)">~55%</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">싱가포르</td><td class="p-3" style="border:1px solid var(--color-border-light)">$7,000~$10,000</td><td class="p-3" style="border:1px solid var(--color-border-light)">~120%</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">호주 (시드니·멜번)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$6,000~$9,000</td><td class="p-3" style="border:1px solid var(--color-border-light)">~115%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 text-sm" style="color: var(--color-text-secondary); line-height: 1.7">
+        ※ 4인 가족 기준 (콘도 임대료·차량·식비·의료·자녀 활동 비용 포함). 학부모 동반 비자 가능 국가 위주.
+      </p>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자주 묻는 질문</h2>
+      <div class="mt-5 space-y-3">
+        {faqSchema.mainEntity.map((f: any) => (
+          <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.name}</summary>
+            <p class="mt-3 text-sm" style="line-height:1.7">{f.acceptedAnswer.text}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">학비 + 가족 생활비 시뮬레이션 1:1</h2>
+      <p class="mt-3 text-sm">자녀 학년 · 후보 학교 · 가족 구성 · 거주 희망 지역을 알려주시면 5년 총비용 시뮬레이션 답변.</p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">관련 도구</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/ko/tools/compare/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">⭐ 학교 비교 도구 (4개 동시)</div></a>
+        <a href="/ko/tools/track-simulator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🎯 진학 트랙 시뮬레이터</div></a>
+        <a href="/ko/tools/curriculum-guide/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">📚 IB vs AP vs A-Level</div></a>
+        <a href="/ko/tools/calendar/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">📅 입학 일정 캘린더</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

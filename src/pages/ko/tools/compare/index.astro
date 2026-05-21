@@ -1,22 +1,18 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import TrackSimulator from '~/components/react/TrackSimulator.tsx';
-import TuitionCalculator from '~/components/react/TuitionCalculator.tsx';
+import AuthorByline from '~/components/AuthorByline.astro';
 import SchoolCompare from '~/components/react/SchoolCompare.tsx';
 import { loadSchools, schoolUrl, COUNTRY_LABEL, BUDGET_LABEL } from '~/lib/schools';
-import { COMPARE_TOOLS } from '~/lib/locations';
 
 const schools = await loadSchools('ko');
 const compareRows = schools.map((s) => ({
-  slug: s.slug,
-  name: s.data.name,
+  slug: s.slug, name: s.data.name,
   country: COUNTRY_LABEL.ko[s.data.country] ?? s.data.country,
   city: s.data.city,
   tuition_annual_usd: s.data.tuition_annual_usd,
   budget_tier: BUDGET_LABEL.ko[s.data.budget_tier],
   curriculum: s.data.curriculum.primary_curriculum,
-  grade_low: s.data.grade_range[0],
-  grade_high: s.data.grade_range[1],
+  grade_low: s.data.grade_range[0], grade_high: s.data.grade_range[1],
   boarding: s.data.boarding === 'day-only' ? '통학' : s.data.boarding === 'boarding-optional' ? '선택 기숙' : '기숙 전용',
   korean_ratio: s.data.student_nationality?.korean_ratio,
   chinese_mainland_ratio: s.data.student_nationality?.chinese_mainland_ratio,
@@ -25,75 +21,191 @@ const compareRows = schools.map((s) => ({
   href: schoolUrl(s),
 }));
 
-const title = '학교 비교 · 학비 계산기 · 진학 트랙 시뮬레이터 | AsiaEduHub';
-const description =
-  '국제학교 비교 도구 모음. 학교 4개 동시 비교, 환율·기숙·항공권 포함 총비용 계산기, 제주 NLCS → 옥스브리지 같은 진학 트랙 시뮬레이터.';
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
 
-const webAppSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: '진학 트랙 시뮬레이터',
+const title = '국제학교 비교 도구 — 최대 4개 동시 비교 (학비 · 한국인 비율 · 커리큘럼) | AsiaEduHub';
+const description =
+  '국제학교 최대 4개를 한 화면에서 비교. 학비 · 한국인 비율 · 커리큘럼 · 보딩 옵션 · 운영자 검증 여부를 표로 정리. ISKL vs Alice Smith, UCSI vs APIS, NLCS Jeju vs BHA 같은 핵심 조합을 자녀 학년 · 예산 · 우선순위 기준으로 선택.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '비교 / 도구' },
+    { '@type': 'ListItem', position: 3, name: '학교 비교 도구' },
+  ],
+};
+
+const webApp = {
+  '@context': 'https://schema.org', '@type': 'WebApplication',
+  name: '국제학교 비교 도구',
   applicationCategory: 'EducationalApplication',
   operatingSystem: 'Web',
   inLanguage: 'ko-KR',
   offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
 };
+
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: '학교 비교 시 가장 중요한 항목은?', acceptedAnswer: { '@type': 'Answer', text: '운영자 두 자녀 옮긴 경험상 1순위 = 자녀 학년의 한국인 반 단위 비율, 2순위 = 통학 시간 (30분 이내 권장), 3순위 = 학비 인상률 추이 (연 5~7% 안정 학교 vs 10%+ 변동 학교), 4순위 = 커리큘럼 정통성, 5순위 = 캠퍼스 시설. 학비 절대값보다 학비 인상 패턴이 더 중요.' } },
+    { '@type': 'Question', name: 'ISKL vs Alice Smith 비교 핵심은?', acceptedAnswer: { '@type': 'Answer', text: 'ISKL = 미국식 K-12 + AP, Alice Smith = 영국식 IGCSE + A-Level. 자녀 미국 대학 목표 → ISKL, 옥스브리지·Russell Group 목표 → Alice Smith. 학비 둘 다 $25K~$35K 비슷, ISKL은 Ampang, Alice Smith는 Equine Park(초등) + Jalan Bellamy(중고등) 2캠퍼스.' } },
+    { '@type': 'Question', name: 'UCSI vs APIS 비교는?', acceptedAnswer: { '@type': 'Answer', text: '둘 다 Cheras 지역 한국 학부모 클러스터. UCSI = Cambridge 영국식 정통 + 다국적 환경 (한국인 ~18%), APIS = 한국식 운영 + 한국 적응 우선 (한국인 ~30%+). 영어 환경 우선 → UCSI, 한국 적응 우선 (특히 신규 이주 첫 6개월) → APIS.' } },
+    { '@type': 'Question', name: '학교 4개 비교 후 어떻게 선택하나?', acceptedAnswer: { '@type': 'Answer', text: '비교 표만으로 결정 안 됩니다. 4개 후보 압축 후 (1) 각 학교 입학설명회 직접 참가 (2) 재학 한국 학부모 1명씩 인터뷰 요청 (3) 자녀를 데려가서 캠퍼스 분위기 체감 (4) 최종 1~2개로 압축. 비교 표는 1차 후보 압축용 도구.' } },
+  ],
+};
 ---
-<BaseLayout title={title} description={description} jsonLd={webAppSchema}>
-  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, webApp, faqSchema]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
     <div class="container-content py-10 sm:py-12">
-      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/ko/">홈</a> · 비교 / 도구</nav>
-      <h1 class="mt-3 text-3xl sm:text-4xl text-balance">비교 / 도구 <span class="badge-gold ml-2 align-middle text-xs">⭐ 인터랙티브</span></h1>
-      <p class="mt-4 max-w-2xl text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
-        정보가 아닌 직접 입력 · 시뮬레이션할 수 있는 인터랙티브 도구. 진학 트랙 시뮬레이터는 사이트 차별화의 핵심.
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · 비교 / 도구 · <span style="color: var(--color-text-primary)">학교 비교 도구</span>
+      </nav>
+      <div class="mt-4"><span class="badge-navy">⭐ 인터랙티브 도구</span></div>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">
+        국제학교 비교 도구 — 최대 4개 동시 비교
+      </h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">
+        학비 · 한국인 비율 · 커리큘럼 · 보딩 옵션 · 운영자 검증 여부를 한 화면 표로 정리. 자녀 학년 · 예산 · 우선순위 기준으로 후보 4개 압축.
       </p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="각 학교 공식 사이트, 운영자 두 자녀 학교 옮긴 1차 경험, 학부모 카카오톡 커뮤니티 청취" />
+      </div>
     </div>
   </section>
 
-  <section class="container-content py-10">
+  <article class="container-content py-10 max-w-5xl">
 
-    <div class="mt-6 flex flex-wrap gap-2">
-      {COMPARE_TOOLS.map((tool) => (
-        <a href={`#${tool.id}`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
-          {tool.ko}
-        </a>
-      ))}
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 핵심 요약</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
+        학교 비교는 <strong>1차 후보 압축 용도</strong>이지 최종 결정 도구가 아닙니다.
+        4개 후보 압축 → 입학설명회 직접 참가 → 재학 학부모 인터뷰 → 자녀 캠퍼스 체감 → 최종 결정 순서가 안전합니다.
+      </p>
     </div>
 
-    {/* 1. 진학 트랙 시뮬레이터 (킬러) */}
-    <section id="track-simulator" class="mt-12 scroll-mt-24">
-      <TrackSimulator client:visible locale="ko" />
-    </section>
-
-    {/* 2. 학교 비교 도구 */}
-    <section id="compare" class="mt-12 scroll-mt-24">
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">비교 도구</h2>
       <SchoolCompare client:visible locale="ko" schools={compareRows} />
     </section>
 
-    {/* 3. 학비 계산기 */}
-    <section id="calculator" class="mt-12 scroll-mt-24">
-      <TuitionCalculator client:visible locale="ko" />
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">학교 비교 시 가장 중요한 5가지 항목</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">운영자가 자녀 두 명 옮긴 1차 경험상 우선순위는 이 순서입니다.</p>
+      <ol class="mt-5 space-y-4 text-sm" style="line-height:1.7">
+        <li>
+          <strong class="text-primary-900">1. 자녀 학년 반 단위 한국인 비율</strong>
+          <p class="mt-1" style="color:var(--color-text-secondary)">학년 전체 비율보다 반 단위가 핵심. 반 친구 3~5명이 한국인 = 정서 안정 + 영어 노출 균형 (골든존). 1~2명 = 외로움 위기, 6명+ = 한국인끼리 어울리는 패턴.</p>
+        </li>
+        <li>
+          <strong class="text-primary-900">2. 통학 시간 (30분 이내 권장)</strong>
+          <p class="mt-1" style="color:var(--color-text-secondary)">매일 등하원 1시간+ 부담은 자녀 컨디션·가족 시간에 누적. 학교 인근 콘도 거주가 셔틀보다 자녀 컨디션에 좋은 경우 많음.</p>
+        </li>
+        <li>
+          <strong class="text-primary-900">3. 학비 인상률 추이 (절대값보다 중요)</strong>
+          <p class="mt-1" style="color:var(--color-text-secondary)">학비 $14K 학교가 연 12% 인상하면 3년 후 $20K, 학비 $18K 학교가 연 5% 인상하면 3년 후 $21K. 인상 패턴 직접 학교에 물어보는 게 핵심.</p>
+        </li>
+        <li>
+          <strong class="text-primary-900">4. 커리큘럼 정통성 (자녀 대학 목표와 매칭)</strong>
+          <p class="mt-1" style="color:var(--color-text-secondary)">옥스브리지 = A-Level + UCAS, 아이비리그 = AP + SAT, 전 세계 옵션 = IB. 자녀 진학 국가 결정 후 커리큘럼 결정. 자녀 7~8학년 시점 결정 권장.</p>
+        </li>
+        <li>
+          <strong class="text-primary-900">5. 캠퍼스 시설</strong>
+          <p class="mt-1" style="color:var(--color-text-secondary)">자녀가 스포츠·예술에 본격 시간 투자할 경우만 결정적. 학업 중심이면 시설 차이가 학습 결과에 큰 영향 X.</p>
+        </li>
+      </ol>
     </section>
 
-    {/* 4. 커리큘럼 가이드 (콘텐츠 누적 예정) */}
-    <section id="curriculum-guide" class="mt-12 scroll-mt-24">
-      <div class="rounded-lg border bg-white p-5" style="border-color: var(--color-border-light)">
-        <h3 class="text-lg text-primary-900" style="font-weight:500">커리큘럼 가이드 (IB vs AP vs A-Level)</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
-          세 커리큘럼의 학년 진행·시험 형식·대학 진학 적합성 비교 가이드는 운영자가 별도 가이드 글로 누적합니다.
-        </p>
-        <a href="/ko/guide/#curriculum-compare" class="cta-secondary mt-3 inline-flex text-sm">관련 가이드 →</a>
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자주 비교되는 학교 조합 5가지</h2>
+      <div class="mt-5 grid gap-4 md:grid-cols-2">
+        <div class="rounded-xl border p-5" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:700">ISKL vs Alice Smith</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.6">
+            미국식 vs 영국식. 학비 비슷 ($25K~$35K). 미국 대학 → ISKL, 옥스브리지 → Alice Smith. Ampang vs Bukit Tunku 위치 차이.
+          </p>
+        </div>
+        <div class="rounded-xl border p-5" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:700">UCSI vs APIS</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.6">
+            둘 다 Cheras 한국 학부모 클러스터. UCSI = Cambridge 영국식, APIS = 한국식 운영. 영어 환경 vs 한국 적응 우선순위로 결정.
+          </p>
+        </div>
+        <div class="rounded-xl border p-5" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:700">NLCS Jeju vs BHA</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.6">
+            둘 다 제주 영어교육도시. NLCS = 영국 자매학교·IB 36+, BHA = 미국식 + 캐나다 Branksome. 영국 vs 미국·캐나다 대학 목표 결정.
+          </p>
+        </div>
+        <div class="rounded-xl border p-5" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:700">Shrewsbury Bangkok vs BIS Hanoi</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.6">
+            방콕 vs 하노이 영국식. 학비 비슷. 방콕 = 도시 인프라·한식당 풍부, 하노이 = 생활비 저렴·가족 비자 더 부드러움.
+          </p>
+        </div>
+        <div class="rounded-xl border p-5" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:700">UWC SEA vs HCIS (싱가포르)</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.6">
+            UWC = IB 평균 36.3 + 글로벌 네트워크, HCIS = 화총 100년 명문 + IB 평균 37.9 (싱가포르 최고). 학비 UWC 더 높음.
+          </p>
+        </div>
+        <div class="rounded-xl border p-5" style="border-color: var(--color-border-light)">
+          <div class="text-primary-900" style="font-weight:700">EIS HCMC vs ISHCMC</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.6">
+            둘 다 호치민 District 2 Thao Dien 외국인 클러스터. EIS = 유럽 가족 다수, ISHCMC = Cognita 그룹 최고·60+ 국적. 학비 비슷.
+          </p>
+        </div>
       </div>
     </section>
 
-    {/* 5. 입학 일정 캘린더 (콘텐츠 누적 예정) */}
-    <section id="calendar" class="mt-12 scroll-mt-24">
-      <div class="rounded-lg border bg-white p-5" style="border-color: var(--color-border-light)">
-        <h3 class="text-lg text-primary-900" style="font-weight:500">입학 일정 캘린더</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
-          학교별 원서 마감·시험 일정 캘린더는 학교 데이터 누적과 함께 자동 생성됩니다.
-        </p>
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">비교 도구 사용법 — 4개 후보 압축 방법</h2>
+      <ol class="mt-5 space-y-3 text-sm" style="line-height:1.7">
+        <li><strong>1단계:</strong> 자녀 학년·예산·거주 가능 지역 결정</li>
+        <li><strong>2단계:</strong> 본 사이트 카탈로그(말레이시아 34곳·태국 15곳 등)에서 1차 5~7곳 후보 압축</li>
+        <li><strong>3단계:</strong> 비교 도구에 4개 선택 → 학비·한국인 비율·커리큘럼·보딩 한 화면 정리</li>
+        <li><strong>4단계:</strong> 비교 표에서 2~3개로 압축 → 각 학교 상세 페이지 + 주변 콘도 정보 확인</li>
+        <li><strong>5단계:</strong> 입학설명회 참가 + 재학 학부모 인터뷰 → 최종 1개 결정</li>
+      </ol>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자주 묻는 질문</h2>
+      <div class="mt-5 space-y-3">
+        {faqSchema.mainEntity.map((f: any) => (
+          <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.name}</summary>
+            <p class="mt-3 text-sm" style="line-height:1.7">{f.acceptedAnswer.text}</p>
+          </details>
+        ))}
       </div>
     </section>
-  </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">학교 비교 1:1 상담</h2>
+      <p class="mt-3 text-sm">자녀 학년 · 영어 수준 · 예산 · 거주 가능 지역을 알려주시면 후보 학교 4~5곳을 추려서 1:1 답변.</p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">관련 도구</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/ko/tools/calculator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">💰 학비 계산기 (환율·기숙·항공권 포함)</div></a>
+        <a href="/ko/tools/curriculum-guide/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">📚 커리큘럼 가이드 (IB vs AP vs A-Level)</div></a>
+        <a href="/ko/tools/track-simulator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🎯 진학 트랙 시뮬레이터</div></a>
+        <a href="/ko/tools/calendar/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">📅 입학 일정 캘린더</div></a>
+      </div>
+    </section>
+  </article>
 </BaseLayout>

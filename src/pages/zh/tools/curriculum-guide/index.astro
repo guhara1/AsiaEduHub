@@ -1,0 +1,53 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+const title = 'IB vs AP vs A-Level 课程完整对比 — 评分 · 升学适配 · 学习强度 | AsiaEduHub';
+const description = '国际学校三大课程 (IB Diploma · American AP · British A-Level) 的评分 · 学习强度 · 英美亚大学升学适配 · 学习风格匹配完全对比。';
+---
+<BaseLayout title={title} description={description} author={{ name: 'David', url: '/zh/about/' }} publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · 对比 / 工具 · <span style="color: var(--color-text-primary)">课程指南</span></nav>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">IB vs AP vs A-Level 完整对比</h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">三大课程的评分 · 学习强度 · 英美亚大学升学适配 · 学习风格匹配。</p>
+      <div class="mt-5"><AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt} sources="IBO · Cambridge International · College Board 官方,牛剑 · 常春藤入学标准" /></div>
+    </div>
+  </section>
+  <article class="container-content py-10 max-w-3xl">
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 一句话总结</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500"><strong>IB</strong> = 6 门均衡 + 全球大学。<strong>AP</strong> = 美国大学 + 学生选择。<strong>A-Level</strong> = 3-4 门集中 + 牛剑直通。</p>
+    </div>
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">三大课程一表对比</h2>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead><tr style="background: var(--color-bg-soft)"><th class="p-3 text-left" style="border:1px solid var(--color-border-light)">项目</th><th class="p-3 text-left" style="border:1px solid var(--color-border-light)">IB Diploma</th><th class="p-3 text-left" style="border:1px solid var(--color-border-light)">American AP</th><th class="p-3 text-left" style="border:1px solid var(--color-border-light)">British A-Level</th></tr></thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">起源</td><td class="p-3" style="border:1px solid var(--color-border-light)">瑞士 (1968)</td><td class="p-3" style="border:1px solid var(--color-border-light)">美国 (1955)</td><td class="p-3" style="border:1px solid var(--color-border-light)">英国 (1951)</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">门数</td><td class="p-3" style="border:1px solid var(--color-border-light)">6 + 3 (TOK·EE·CAS)</td><td class="p-3" style="border:1px solid var(--color-border-light)">5-12 选修</td><td class="p-3" style="border:1px solid var(--color-border-light)">3-4 集中</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">评分</td><td class="p-3" style="border:1px solid var(--color-border-light)">满分 45 (平均 30-32)</td><td class="p-3" style="border:1px solid var(--color-border-light)">每门 1-5</td><td class="p-3" style="border:1px solid var(--color-border-light)">A*·A·B·C·D·E</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">牛剑</td><td class="p-3" style="border:1px solid var(--color-border-light)">38+ 认可</td><td class="p-3" style="border:1px solid var(--color-border-light)">需补 SAT/AP</td><td class="p-3" style="border:1px solid var(--color-border-light)">A*AA 标准</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">常春藤</td><td class="p-3" style="border:1px solid var(--color-border-light)">38+ + SAT</td><td class="p-3" style="border:1px solid var(--color-border-light)">AP 5-7 + 综合</td><td class="p-3" style="border:1px solid var(--color-border-light)">A*AA + SAT</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">子女课程 1:1 咨询</h2>
+      <p class="mt-3 text-sm">告知子女年级 · 学习风格 · 大学目标,获得 IB · AP · A-Level 哪个适合 1:1 答复。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">WeChat 咨询<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
+    </section>
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">相关工具 · 信息</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/zh/abroad/types/ib/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🌍 IB 学校综合指南</div></a>
+        <a href="/zh/abroad/types/british/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇬🇧 英式 (A-Level · GCSE)</div></a>
+        <a href="/zh/abroad/types/american/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇺🇸 美式 (American · AP)</div></a>
+        <a href="/zh/tools/track-simulator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🎯 升学路径模拟器</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

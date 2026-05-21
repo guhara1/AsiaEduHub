@@ -1,0 +1,43 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import TuitionCalculator from '~/components/react/TuitionCalculator.tsx';
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+const title = '国际学校学费计算器 — 汇率 · 寄宿 · 机票 · 附加费用一站式模拟 | AsiaEduHub';
+const description = '不仅学费,还含注册费 · 保证金 · 校服 · 校车 · CCA · 餐费 · 考试费 · 韩国往返机票的家庭总成本模拟。MYR · KRW · USD 汇率波动反映。';
+---
+<BaseLayout title={title} description={description} author={{ name: 'David', url: '/zh/about/' }} publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · 对比 / 工具 · <span style="color: var(--color-text-primary)">学费计算器</span></nav>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">国际学校学费计算器</h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">学费 + 附加费用 9 项 + 汇率波动 + 家庭机票的总成本模拟。</p>
+      <div class="mt-5"><AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt} sources="站长亲身缴费明细 + 家长社群信息" /></div>
+    </div>
+  </section>
+  <article class="container-content py-10 max-w-3xl">
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 核心要点</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">学校公布学费仅占 <strong>总成本 70-80%</strong>。注册费 · 保证金 · 校车 · CCA · 机票占余下 20-30%。家庭预算建议按学费 <strong>1.2-1.3 倍</strong> 估算。</p>
+    </div>
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">学费计算器</h2>
+      <TuitionCalculator client:visible locale="zh" />
+    </section>
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">学费 + 生活费 1:1 模拟</h2>
+      <p class="mt-3 text-sm">告知子女年级 · 候选学校 · 家庭构成 · 居住区,可获 5 年总成本模拟答复。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">WeChat 咨询<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
+    </section>
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">相关工具</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/zh/tools/compare/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">⭐ 学校对比工具</div></a>
+        <a href="/zh/tools/track-simulator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🎯 升学路径模拟器</div></a>
+        <a href="/zh/tools/curriculum-guide/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">📚 IB vs AP vs A-Level</div></a>
+        <a href="/zh/tools/calendar/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">📅 入学日历</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

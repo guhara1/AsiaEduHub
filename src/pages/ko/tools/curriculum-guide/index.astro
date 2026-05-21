@@ -1,0 +1,191 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = 'IB vs AP vs A-Level 커리큘럼 완전 비교 — 점수 · 진학 적합성 · 학습 강도 | AsiaEduHub';
+const description =
+  '국제학교 3대 커리큘럼 (IB Diploma · American AP · British A-Level) 의 점수 시스템 · 학습 강도 · 영국·미국·아시아 대학 진학 적합성 · 자녀 학습 성향별 추천을 완전 비교. 운영자 1차 경험 + 글로벌 대학 입학 기준 정리.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '비교 / 도구' },
+    { '@type': 'ListItem', position: 3, name: '커리큘럼 가이드' },
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: 'IB · AP · A-Level 중 어느 게 가장 어렵나?', acceptedAnswer: { '@type': 'Answer', text: 'IB Diploma 평균 부담이 가장 큼 (6과목 + TOK + EE + CAS). A-Level 은 3~4과목 집중이지만 깊이가 깊음. AP는 학교가 정한 과목 5~12개 선택적 수강 — 학생이 부담 조절 가능. 절대 난이도보다 자녀 학습 성향 매칭이 더 중요.' } },
+    { '@type': 'Question', name: '옥스브리지 진학에 어느 게 더 유리?', acceptedAnswer: { '@type': 'Answer', text: 'A-Level 이 전통적으로 옥스브리지 진학에 가장 직결. UCAS predicted grade A*AA 이상 + 추가 시험 + 인터뷰. IB Diploma 점수 38+ 도 옥스브리지 정식 인정. AP 만으로 옥스브리지 지원은 보통 SAT/AP 점수 추가 + 특별 평가.' } },
+    { '@type': 'Question', name: '아이비리그·MIT·Stanford 진학에는?', acceptedAnswer: { '@type': 'Answer', text: 'AP가 가장 직결. AP 5~7과목 + 평균 4.5점 + SAT/ACT + GPA + Essay + 활동 종합 평가. IB Diploma 38+ 도 동등 인정. A-Level 도 인정되지만 미국 대학 입학에는 SAT 추가 응시 일반적.' } },
+    { '@type': 'Question', name: '자녀가 한국 대학 갈 수도 있는데?', acceptedAnswer: { '@type': 'Answer', text: '세 커리큘럼 모두 한국 대학 특례 전형 인정. 서울대·연세대·고려대 모두 IB·AP·A-Level 점수로 지원 가능. 단, 한국 정시(수능)와 별도 트랙. 특례 합격이 정시보다 경쟁률 낮은 학과도 있음. 검정고시 추가 응시 필요한 경우 있음.' } },
+    { '@type': 'Question', name: '자녀 학년이 6학년인데 언제 결정해야?', acceptedAnswer: { '@type': 'Answer', text: '본격 결정은 자녀 8~9학년 (한국 중2~중3) 시점. 그 전에는 학교가 PYP·MYP·KS3·Middle School 등 공통 단계 운영. 9학년 = IGCSE/MYP/AP 진입, 11학년 = A-Level/DP/AP 본격. 8학년까지 자녀 학습 성향 관찰 후 결정 권장.' } },
+  ],
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, faqSchema]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · 비교 / 도구 · <span style="color: var(--color-text-primary)">커리큘럼 가이드</span>
+      </nav>
+      <div class="mt-4"><span class="badge-navy">📚 커리큘럼 비교</span></div>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">
+        IB vs AP vs A-Level — 완전 비교
+      </h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">
+        3개 커리큘럼의 점수 시스템 · 학습 강도 · 영국·미국·아시아 대학 진학 적합성 · 자녀 학습 성향별 추천.
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="IBO · Cambridge International · College Board 공식 자료, 옥스브리지·아이비 입학 기준 공시, 학부모 커뮤니티 청취" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 한 줄 정리</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
+        <strong>IB</strong> = 6과목 균형 + 전 세계 대학. <strong>AP</strong> = 미국 대학 + 학생 선택. <strong>A-Level</strong> = 3~4과목 집중 + 옥스브리지 직결. 자녀 학습 성향과 대학 목표가 결정 기준.
+      </p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">3개 커리큘럼 한눈에 비교</h2>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">항목</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">IB Diploma</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">American AP</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">British A-Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">국가 기원</td><td class="p-3" style="border:1px solid var(--color-border-light)">스위스 (1968)</td><td class="p-3" style="border:1px solid var(--color-border-light)">미국 (1955)</td><td class="p-3" style="border:1px solid var(--color-border-light)">영국 (1951)</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">학년</td><td class="p-3" style="border:1px solid var(--color-border-light)">Grade 11~12 (DP)</td><td class="p-3" style="border:1px solid var(--color-border-light)">Grade 10~12</td><td class="p-3" style="border:1px solid var(--color-border-light)">Year 12~13</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">과목 수</td><td class="p-3" style="border:1px solid var(--color-border-light)">6 + 3 (TOK·EE·CAS)</td><td class="p-3" style="border:1px solid var(--color-border-light)">선택 5~12 (학교별)</td><td class="p-3" style="border:1px solid var(--color-border-light)">3~4 집중</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">점수 시스템</td><td class="p-3" style="border:1px solid var(--color-border-light)">만점 45 (평균 30~32)</td><td class="p-3" style="border:1px solid var(--color-border-light)">과목당 1~5</td><td class="p-3" style="border:1px solid var(--color-border-light)">A*·A·B·C·D·E·U</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">학업 폭</td><td class="p-3" style="border:1px solid var(--color-border-light)">넓음 (6과목 균형)</td><td class="p-3" style="border:1px solid var(--color-border-light)">중간 (학생 선택)</td><td class="p-3" style="border:1px solid var(--color-border-light)">좁고 깊음 (3~4과목)</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">평가 방식</td><td class="p-3" style="border:1px solid var(--color-border-light)">시험 + 내부 평가</td><td class="p-3" style="border:1px solid var(--color-border-light)">시험 + GPA + 활동</td><td class="p-3" style="border:1px solid var(--color-border-light)">시험 중심</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">에세이·연구</td><td class="p-3" style="border:1px solid var(--color-border-light)">EE 4,000자 + TOK</td><td class="p-3" style="border:1px solid var(--color-border-light)">없음 (대학에서 작성)</td><td class="p-3" style="border:1px solid var(--color-border-light)">EPQ 옵션 (5,000자)</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">옥스브리지</td><td class="p-3" style="border:1px solid var(--color-border-light)">38+ 인정</td><td class="p-3" style="border:1px solid var(--color-border-light)">SAT/AP 추가</td><td class="p-3" style="border:1px solid var(--color-border-light)">A*AA 표준</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">아이비리그</td><td class="p-3" style="border:1px solid var(--color-border-light)">38+ + SAT</td><td class="p-3" style="border:1px solid var(--color-border-light)">AP 5~7 + 활동 종합</td><td class="p-3" style="border:1px solid var(--color-border-light)">A*AA + SAT</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">한국 대학 (특례)</td><td class="p-3" style="border:1px solid var(--color-border-light)">인정</td><td class="p-3" style="border:1px solid var(--color-border-light)">인정</td><td class="p-3" style="border:1px solid var(--color-border-light)">인정</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자녀 학습 성향별 추천</h2>
+      <div class="mt-5 grid gap-4 md:grid-cols-3">
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-primary-700)">IB Diploma</div>
+          <ul class="mt-3 space-y-2 text-sm" style="line-height:1.65">
+            <li>✓ 융합·탐구·자기 주도</li>
+            <li>✓ 다양한 과목 균형 즐김</li>
+            <li>✓ 글로벌 대학 옵션 열어두기</li>
+            <li>✓ 연구·글쓰기 강점</li>
+            <li>✓ 학업 강도 높아도 OK</li>
+          </ul>
+        </div>
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-primary-700)">American AP</div>
+          <ul class="mt-3 space-y-2 text-sm" style="line-height:1.65">
+            <li>✓ 학업 + 스포츠·예술·리더십</li>
+            <li>✓ 미국 대학 직접 진학</li>
+            <li>✓ 학생 페이스 조절 가능</li>
+            <li>✓ 시험 + 활동 종합 평가 선호</li>
+            <li>✓ GPA 꾸준한 관리 가능</li>
+          </ul>
+        </div>
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-primary-700)">British A-Level</div>
+          <ul class="mt-3 space-y-2 text-sm" style="line-height:1.65">
+            <li>✓ 3~4과목 깊이 파고드는 타입</li>
+            <li>✓ 특정 분야 진로 명확</li>
+            <li>✓ 옥스브리지·Russell Group 목표</li>
+            <li>✓ 시험 중심 평가 선호</li>
+            <li>✓ 16세까지 진로 결정 가능</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">동남아 학교별 IB Diploma 평균 점수</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">IB 운영 학교 중 동남아 IB 평균 점수 상위 학교 (학교 공식 발표 기준):</p>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead>
+            <tr style="background: var(--color-bg-soft)">
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">학교</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">위치</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">IB 평균</th>
+              <th class="p-3 text-left" style="border:1px solid var(--color-border-light)">합격률</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">HCIS (Hwa Chong)</td><td class="p-3" style="border:1px solid var(--color-border-light)">싱가포르</td><td class="p-3" style="border:1px solid var(--color-border-light)">37.9</td><td class="p-3" style="border:1px solid var(--color-border-light)">~95%</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">UWC SEA</td><td class="p-3" style="border:1px solid var(--color-border-light)">싱가포르</td><td class="p-3" style="border:1px solid var(--color-border-light)">36.3</td><td class="p-3" style="border:1px solid var(--color-border-light)">98.7%</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">CIS</td><td class="p-3" style="border:1px solid var(--color-border-light)">싱가포르</td><td class="p-3" style="border:1px solid var(--color-border-light)">35</td><td class="p-3" style="border:1px solid var(--color-border-light)">~95%</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">NEXUS</td><td class="p-3" style="border:1px solid var(--color-border-light)">싱가포르</td><td class="p-3" style="border:1px solid var(--color-border-light)">35</td><td class="p-3" style="border:1px solid var(--color-border-light)">~93%</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">XCL World Academy</td><td class="p-3" style="border:1px solid var(--color-border-light)">싱가포르</td><td class="p-3" style="border:1px solid var(--color-border-light)">35</td><td class="p-3" style="border:1px solid var(--color-border-light)">~92%</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">SAIS</td><td class="p-3" style="border:1px solid var(--color-border-light)">싱가포르</td><td class="p-3" style="border:1px solid var(--color-border-light)">34.2</td><td class="p-3" style="border:1px solid var(--color-border-light)">97%</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">AIS</td><td class="p-3" style="border:1px solid var(--color-border-light)">싱가포르</td><td class="p-3" style="border:1px solid var(--color-border-light)">33.3</td><td class="p-3" style="border:1px solid var(--color-border-light)">~90%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 text-sm" style="color: var(--color-text-secondary); line-height: 1.7">
+        💡 <strong>참고:</strong> 글로벌 IB 평균 약 30~31점. <strong>32+ = 우수, 35+ = 명문 대학 가능, 38+ = 옥스브리지·아이비 후보, 40+ = 글로벌 최상위.</strong>
+      </p>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자주 묻는 질문</h2>
+      <div class="mt-5 space-y-3">
+        {faqSchema.mainEntity.map((f: any) => (
+          <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.name}</summary>
+            <p class="mt-3 text-sm" style="line-height:1.7">{f.acceptedAnswer.text}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">자녀 커리큘럼 1:1 상담</h2>
+      <p class="mt-3 text-sm">자녀 학년 · 학습 성향 · 대학 목표를 알려주시면 IB · AP · A-Level 중 어느 게 맞는지 1:1 답변.</p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">관련 도구·정보</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/ko/abroad/types/ib/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🌍 IB 학교 종합 가이드</div></a>
+        <a href="/ko/abroad/types/british/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇬🇧 영국식 (A-Level · GCSE)</div></a>
+        <a href="/ko/abroad/types/american/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇺🇸 미국식 (American · AP)</div></a>
+        <a href="/ko/tools/track-simulator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🎯 진학 트랙 시뮬레이터</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

@@ -1,0 +1,57 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+const title = '国际学校入学日历 2026 — 各国学年 · 截止日 · 12 个月时间线 | AsiaEduHub';
+const description = '韩 · 马 · 泰 · 新 · 英 · 美 · 澳学年开始时点对比。入学说明会 · 考试 · 录取 · 注册 · 签证 12 个月时间线。';
+---
+<BaseLayout title={title} description={description} author={{ name: 'David', url: '/zh/about/' }} publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · 对比 / 工具 · <span style="color: var(--color-text-primary)">入学日历</span></nav>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">国际学校入学日历 2026</h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">各国学年开始时点对比 · 12 个月入学准备时间线。</p>
+      <div class="mt-5"><AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt} sources="各校官方学年日历,家长社群信息" /></div>
+    </div>
+  </section>
+  <article class="container-content py-10 max-w-3xl">
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 核心要点</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">多数国际学校 <strong>9 月开学</strong> — 申请准备应在 <strong>12 个月前 (前年 9 月)</strong> 开始。澳大利亚 1 月开学。</p>
+    </div>
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">各国学年开始时点</h2>
+      <div class="mt-5 overflow-x-auto">
+        <table class="w-full text-sm border-collapse" style="border:1px solid var(--color-border-light)">
+          <thead><tr style="background: var(--color-bg-soft)"><th class="p-3 text-left" style="border:1px solid var(--color-border-light)">国家</th><th class="p-3 text-left" style="border:1px solid var(--color-border-light)">学年开始</th><th class="p-3 text-left" style="border:1px solid var(--color-border-light)">学年结束</th></tr></thead>
+          <tbody>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">韩国外国人学校</td><td class="p-3" style="border:1px solid var(--color-border-light)">8 月末-9 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">6 月</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">马来西亚</td><td class="p-3" style="border:1px solid var(--color-border-light)">8 月末-9 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">6 月</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">泰国</td><td class="p-3" style="border:1px solid var(--color-border-light)">8 月末-9 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">6 月</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">越南</td><td class="p-3" style="border:1px solid var(--color-border-light)">8 月末-9 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">6 月</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">新加坡国际学校</td><td class="p-3" style="border:1px solid var(--color-border-light)">8 月末-9 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">6 月</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">英国</td><td class="p-3" style="border:1px solid var(--color-border-light)">9 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">7 月</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">美国</td><td class="p-3" style="border:1px solid var(--color-border-light)">8 月末-9 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">5-6 月</td></tr>
+            <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">加拿大</td><td class="p-3" style="border:1px solid var(--color-border-light)">9 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">6 月</td></tr>
+            <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">澳大利亚 (南半球)</td><td class="p-3" style="border:1px solid var(--color-border-light)">1 月末-2 月</td><td class="p-3" style="border:1px solid var(--color-border-light)">12 月</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">我家入学日程 1:1 咨询</h2>
+      <p class="mt-3 text-sm">告知子女当前年级 · 目标入学时点 · 候选学校,获 12 个月定制时间线。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">WeChat 咨询<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
+    </section>
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">相关工具 · 信息</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/zh/domestic/admission-guide/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">📋 入学资格 · 文件指南</div></a>
+        <a href="/zh/tools/compare/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">⭐ 学校对比工具</div></a>
+        <a href="/zh/tools/track-simulator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🎯 升学路径模拟器</div></a>
+        <a href="/zh/tools/calculator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">💰 学费计算器</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

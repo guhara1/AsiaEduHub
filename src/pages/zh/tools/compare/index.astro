@@ -1,94 +1,53 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import TrackSimulator from '~/components/react/TrackSimulator.tsx';
-import TuitionCalculator from '~/components/react/TuitionCalculator.tsx';
+import AuthorByline from '~/components/AuthorByline.astro';
 import SchoolCompare from '~/components/react/SchoolCompare.tsx';
 import { loadSchools, schoolUrl, COUNTRY_LABEL, BUDGET_LABEL } from '~/lib/schools';
-import { COMPARE_TOOLS } from '~/lib/locations';
 
 const schools = await loadSchools('zh');
 const compareRows = schools.map((s) => ({
-  slug: s.slug,
-  name: s.data.name,
+  slug: s.slug, name: s.data.name,
   country: COUNTRY_LABEL.zh[s.data.country] ?? s.data.country,
-  city: s.data.city,
-  tuition_annual_usd: s.data.tuition_annual_usd,
+  city: s.data.city, tuition_annual_usd: s.data.tuition_annual_usd,
   budget_tier: BUDGET_LABEL.zh[s.data.budget_tier],
   curriculum: s.data.curriculum.primary_curriculum,
-  grade_low: s.data.grade_range[0],
-  grade_high: s.data.grade_range[1],
-  boarding: s.data.boarding === 'day-only' ? '走读' : s.data.boarding === 'boarding-optional' ? '可选寄宿' : '全寄宿',
+  grade_low: s.data.grade_range[0], grade_high: s.data.grade_range[1],
+  boarding: s.data.boarding === 'day-only' ? '走读' : s.data.boarding === 'boarding-optional' ? '可寄宿' : '仅寄宿',
   korean_ratio: s.data.student_nationality?.korean_ratio,
   chinese_mainland_ratio: s.data.student_nationality?.chinese_mainland_ratio,
   chinese_overseas_ratio: s.data.student_nationality?.chinese_overseas_ratio,
   visited_by_operator: s.data.visited_by_operator,
   href: schoolUrl(s),
 }));
-
-const title = '学校对比 · 学费计算器 · 升学路径模拟 | AsiaEduHub';
-const description =
-  '国际学校对比工具集合。4 所学校同时对比、含汇率·寄宿·机票的总费用计算器、济州 NLCS → 牛剑 等升学路径模拟器。';
-
-const webAppSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: '升学路径模拟器',
-  applicationCategory: 'EducationalApplication',
-  operatingSystem: 'Web',
-  inLanguage: 'zh-CN',
-  offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
-};
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+const title = '国际学校对比工具 — 最多 4 所同时对比(学费 · 韩中比例 · 课程)| AsiaEduHub';
+const description = '国际学校最多 4 所一屏对比。学费 · 韩中学生比例 · 课程 · 寄宿 · 站长核实状态表格整理。';
 ---
-<BaseLayout title={title} description={description} jsonLd={webAppSchema}>
-  <section class="hero-gradient border-b" style="border-color: var(--color-border-light)">
+<BaseLayout title={title} description={description} author={{ name: 'David', url: '/zh/about/' }} publishedAt={publishedAt} updatedAt={updatedAt}>
+  <section class="hero-gradient">
     <div class="container-content py-10 sm:py-12">
-      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · 对比 / 工具</nav>
-      <h1 class="mt-3 text-3xl sm:text-4xl text-balance">对比 / 工具 <span class="badge-gold ml-2 align-middle text-xs">⭐ 交互</span></h1>
-      <p class="mt-4 max-w-2xl text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
-        不是单纯信息,而是家长可亲手输入·模拟的交互工具。升学路径模拟器是本站差异化的核心。
-      </p>
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · 对比 / 工具 · <span style="color: var(--color-text-primary)">学校对比工具</span></nav>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">国际学校对比工具 — 最多 4 所</h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">学费 · 韩中比例 · 课程 · 寄宿一屏对比。按子女年级 · 预算 · 优先级筛选 4 所候选。</p>
+      <div class="mt-5"><AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt} sources="各校官网,站长亲历,家长社群" /></div>
     </div>
   </section>
-
-  <section class="container-content py-10">
-
-    <div class="mt-6 flex flex-wrap gap-2">
-      {COMPARE_TOOLS.map((tool) => (
-        <a href={`#${tool.id}`} class="rounded-full border px-3 py-1 text-xs hover:border-primary-700 hover:text-primary-700" style="border-color: var(--color-border-light)">
-          {tool.zh}
-        </a>
-      ))}
-    </div>
-
-    <section id="track-simulator" class="mt-12 scroll-mt-24">
-      <TrackSimulator client:visible locale="zh" />
+  <article class="container-content py-10 max-w-5xl">
+    <SchoolCompare client:visible locale="zh" schools={compareRows} />
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">学校对比 1:1 咨询</h2>
+      <p class="mt-3 text-sm">告知子女年级 · 英语水平 · 预算 · 居住意向,可获 4-5 所候选学校 1:1 答复。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">WeChat 咨询<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
     </section>
-
-    <section id="compare" class="mt-12 scroll-mt-24">
-      <SchoolCompare client:visible locale="zh" schools={compareRows} />
-    </section>
-
-    <section id="calculator" class="mt-12 scroll-mt-24">
-      <TuitionCalculator client:visible locale="zh" />
-    </section>
-
-    <section id="curriculum-guide" class="mt-12 scroll-mt-24">
-      <div class="rounded-lg border bg-white p-5" style="border-color: var(--color-border-light)">
-        <h3 class="text-lg text-primary-900" style="font-weight:500">课程指南(IB vs AP vs A-Level)</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
-          三大课程的年级进度·考试形式·大学申请适配性对比,作为独立指南文章累积。
-        </p>
-        <a href="/zh/guide/#curriculum-compare" class="cta-secondary mt-3 inline-flex text-sm">相关指南 →</a>
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">相关工具</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/zh/tools/calculator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">💰 学费计算器</div></a>
+        <a href="/zh/tools/curriculum-guide/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">📚 IB vs AP vs A-Level</div></a>
+        <a href="/zh/tools/track-simulator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🎯 升学路径模拟器</div></a>
+        <a href="/zh/tools/calendar/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">📅 入学日历</div></a>
       </div>
     </section>
-
-    <section id="calendar" class="mt-12 scroll-mt-24">
-      <div class="rounded-lg border bg-white p-5" style="border-color: var(--color-border-light)">
-        <h3 class="text-lg text-primary-900" style="font-weight:500">入学日历</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-text-secondary)]">
-          各学校申请截止·考试日历将随学校数据累积自动生成。
-        </p>
-      </div>
-    </section>
-  </section>
+  </article>
 </BaseLayout>

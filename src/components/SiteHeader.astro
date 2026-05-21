@@ -232,7 +232,8 @@ for (const t of SCHOOL_TYPES) {
 const compareChildren: DropdownChild[] = COMPARE_TOOLS.map((t) => ({
   kind: 'link',
   label: locale === 'ko' ? t.ko : t.zh,
-  href: `/${locale}/tools/compare/#${t.id}`,
+  // 도구별 개별 페이지로 분리. id 가 'compare' = 메인 페이지, 나머지는 /tools/{id}/
+  href: t.id === 'compare' ? `/${locale}/tools/compare/` : `/${locale}/tools/${t.id}/`,
 }));
 
 const mm2hChildren: DropdownChild[] = MM2H_TOPICS.map((t) => ({

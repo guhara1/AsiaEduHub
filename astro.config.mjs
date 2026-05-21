@@ -73,7 +73,11 @@ export default defineConfig({
         else if (/\/(guide|domestic|abroad|mm2h)\//.test(url)) {
           item.priority = 0.8;
         }
-        // 도구·계산기
+        // 도구·계산기 (커리큘럼 가이드·진학 시뮬레이터·캘린더는 high-intent SEO)
+        else if (/\/tools\/(curriculum-guide|track-simulator|calendar|calculator)\//.test(url)) {
+          item.priority = 0.85;
+          item.changefreq = 'monthly';
+        }
         else if (/\/(tools|experts)\//.test(url)) {
           item.priority = 0.7;
         }

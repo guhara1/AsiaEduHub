@@ -1,0 +1,178 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import TrackSimulator from '~/components/react/TrackSimulator.tsx';
+
+const publishedAt = new Date('2026-05-21');
+const updatedAt = new Date('2026-05-21');
+
+const title = '진학 트랙 시뮬레이터 — 제주 NLCS → 옥스브리지, 동남아 IB → 미국 Top 30 시나리오 | AsiaEduHub';
+const description =
+  '자녀 학년 · 영어 수준 · 목표 대학 · 예산 입력 → 학년별 단계 · 시험 · 총비용 자동 계산. 제주 NLCS → 옥스브리지, 말레이시아 IB → 호주 Top 8, 미국 보딩 → 아이비리그 등 7개 핵심 진학 트랙 시나리오 비교.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'ko/' },
+    { '@type': 'ListItem', position: 2, name: '비교 / 도구' },
+    { '@type': 'ListItem', position: 3, name: '진학 트랙 시뮬레이터' },
+  ],
+};
+const webApp = {
+  '@context': 'https://schema.org', '@type': 'WebApplication',
+  name: '진학 트랙 시뮬레이터',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'Web',
+  inLanguage: 'ko-KR',
+  offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: '진학 트랙은 언제 결정해야?', acceptedAnswer: { '@type': 'Answer', text: '본격 트랙 결정 = 자녀 7~8학년 시점 (한국 중1~중2). 그 전에는 모든 학교가 공통 단계 (PYP·MYP·KS3·Middle School). 8학년까지 자녀 학습 성향·관심 분야 관찰 → 9학년부터 IB·AP·A-Level 본격 트랙 선택. 단, 명문 보딩 입학은 11+, 13+, 16+ 시점에 따라 결정.' } },
+    { '@type': 'Question', name: '학년 중간에 트랙 변경 가능한가?', acceptedAnswer: { '@type': 'Answer', text: '9학년까지는 비교적 부드러움. 10학년부터 IGCSE/MYP 본격 시작 후에는 변경 시 1년 학년 손실 가능성. 11학년부터 A-Level/DP/AP 본격 시작 — 이 시점 변경은 사실상 1년 추가 학업 필요. 트랙 결정은 신중하게.' } },
+    { '@type': 'Question', name: '제주 NLCS → 옥스브리지 트랙은 현실적인가?', acceptedAnswer: { '@type': 'Answer', text: 'NLCS Jeju IB 평균 36~38점 — 옥스브리지 합격 가능 범위. 단, 옥스브리지는 IB 38+ + 추가 시험 + 인터뷰 + 강력한 Personal Statement 필요. NLCS Jeju 졸업생 중 매년 1~3명 옥스브리지 합격 사례. 가능하지만 자녀 학업 성취도가 학년 상위 10% 이상이어야.' } },
+    { '@type': 'Question', name: '동남아 IB → 미국 아이비리그도 가능한가?', acceptedAnswer: { '@type': 'Answer', text: '가능. UWC SEA (싱가포르) · ISHCMC (호치민) 졸업생 중 아이비 합격 매년 다수. IB 38+ + SAT 1450+ + AP 추가 (선택) + 강력한 활동 포트폴리오 + Essay. 동남아 IB 학교가 미국 보딩보다 학비 1/2~1/3 수준이라 가성비 매우 우수.' } },
+  ],
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, webApp, faqSchema]}
+  author={{ name: '데이비드', url: '/ko/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/ko/">홈</a> · 비교 / 도구 · <span style="color: var(--color-text-primary)">진학 트랙 시뮬레이터</span>
+      </nav>
+      <div class="mt-4"><span class="badge-navy">🎯 킬러 도구</span></div>
+      <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.022em">
+        진학 트랙 시뮬레이터
+      </h1>
+      <p class="mt-4 max-w-2xl text-base sm:text-lg" style="color: var(--color-text-secondary); line-height: 1.7;">
+        자녀 학년 · 영어 수준 · 목표 대학 · 예산 입력 → 학년별 단계 · 시험 · 총비용 자동 계산.
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="ko" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="각 학교 진학 결과 공시, 옥스브리지·아이비·호주 Top 8 입학 기준, 운영자 학부모 커뮤니티 청취" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-3xl">
+
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+      <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 핵심 포인트</div>
+      <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
+        같은 자녀라도 진학 트랙에 따라 <strong>총비용 4배 + 결과 차이</strong> 가 발생합니다.
+        명문 보딩·동남아 IB·한국 국제학교 → 옥스브리지/아이비/호주 Top 8/한국 SKY 시뮬레이션 비교.
+      </p>
+    </div>
+
+    <section class="mt-10">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">시뮬레이터</h2>
+      <TrackSimulator client:visible locale="ko" />
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">7개 핵심 진학 트랙 시나리오</h2>
+
+      <div class="mt-5 space-y-5">
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-primary-900" style="font-weight:700">트랙 1. 제주 NLCS → 옥스브리지</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.65">
+            한국 국적 자녀가 한국 학적 유지하며 영국식 IB → 옥스브리지. NLCS Jeju IB 평균 36~38 → 옥스브리지 합격 가능. 6년 총비용 약 USD $200K~$240K. 한국 베이스 유지 + 가족 결속 + 영국 명문 진학 가능. 단, 학년 상위 10% 이상 학업 성취 필수.
+          </p>
+        </div>
+
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-primary-900" style="font-weight:700">트랙 2. 말레이시아 ISKL/Alice Smith → 미국 Top 30</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.65">
+            KL 거주 + 말레이시아 미국식·영국식 명문 → AP·A-Level + SAT → 미국 Top 30. 6년 총비용 USD $180K~$220K + 가족 KL 생활비. 가족 동반 가능 (학부모 MM2H 비자) + 학비 미국 보딩보다 1/2 저렴.
+          </p>
+        </div>
+
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-primary-900" style="font-weight:700">트랙 3. 미국 보딩 (Andover·Exeter) → 아이비리그</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.65">
+            가장 직접적인 아이비리그 트랙. AP 5~7과목 + SAT 1450+ + 활동 포트폴리오. 4년 총비용 USD $280K~$360K (보딩비 포함). 자녀 9학년부터 단독 거주 — 가족 결속 약화 트레이드오프.
+          </p>
+        </div>
+
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-primary-900" style="font-weight:700">트랙 4. 호주 590 비자 + 시드니 → 호주 Top 8</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.65">
+            한국 학부모에게 가장 매력적인 트랙. 학부모 1명 동반 비자 (Subclass 590) 가능. HSC + 일부 학교 IB → Sydney·Melbourne·ANU·UNSW. 6년 총비용 USD $200K~$280K + 가족 호주 거주비. 영주권(PR) 트랙 연결 가능.
+          </p>
+        </div>
+
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-primary-900" style="font-weight:700">트랙 5. 싱가포르 UWC/HCIS → 글로벌 명문</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.65">
+            UWC SEA (IB 36.3) · HCIS (IB 37.9 동남아 최고) → 옥스브리지·아이비·호주·한국 SKY 모두 가능. 4년 총비용 USD $150K~$200K + 싱가포르 거주비. 싱가포르 외국인 학교 입학 자격 제한 주의.
+          </p>
+        </div>
+
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-primary-900" style="font-weight:700">트랙 6. 캐나다 BC 공립 → 캐나다 대학 + 영주권</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.65">
+            가장 가성비 트랙. BC 공립 연 USD $10K~12K + 학부모 Visitor Record 동반 + 캐나다 대학 진학 + 영주권(PR) 가능. 6년 총비용 USD $80K~$120K + 캐나다 거주비. 트랙 중 가장 합리적 + 가족 안정.
+          </p>
+        </div>
+
+        <div class="rounded-xl p-5" style="border:1px solid var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+          <div class="text-primary-900" style="font-weight:700">트랙 7. 베트남 BVIS/ISHCMC → 동남아 + 글로벌 대학</div>
+          <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height:1.65">
+            가장 가성비 동남아 트랙. 베트남 IB 명문 → 호주·UK·미국 대학. 6년 총비용 USD $100K~$140K + 가족 베트남 거주비 (월 USD $2,500~$4,000). 시차 한국과 동일 — 가족 연결 용이.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">트랙 결정 5분 가이드</h2>
+      <ol class="mt-5 space-y-3 text-sm" style="line-height:1.7">
+        <li><strong>1. 목표 대학 국가?</strong> 영국 → 트랙 1·5, 미국 → 트랙 2·3·5, 호주 → 트랙 4, 캐나다 → 트랙 6, 글로벌 다국 옵션 → 트랙 5·7</li>
+        <li><strong>2. 가족 동반 의향?</strong> 동반 필수 → 트랙 2·4·6·7 (가족 비자 가능), 자녀 단독 OK → 트랙 1·3·5</li>
+        <li><strong>3. 예산?</strong> 최저($100K~) → 트랙 6·7, 중간($150K~$220K) → 트랙 1·2·4·5, 최고($280K+) → 트랙 3</li>
+        <li><strong>4. 자녀 학년?</strong> 초등 → 트랙 1·2·4·6·7 (이주 시점), 중1~중3 → 모든 트랙, 고1~고3 → 트랙 3·5 (보딩 또는 IB)</li>
+        <li><strong>5. 한국 학적 유지?</strong> 유지 필요 → 트랙 1 (제주·송도), 미유지 → 모든 트랙</li>
+      </ol>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">자주 묻는 질문</h2>
+      <div class="mt-5 space-y-3">
+        {faqSchema.mainEntity.map((f: any) => (
+          <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.name}</summary>
+            <p class="mt-3 text-sm" style="line-height:1.7">{f.acceptedAnswer.text}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">자녀 진학 트랙 1:1 컨설팅</h2>
+      <p class="mt-3 text-sm">자녀 학년 · 영어 수준 · 목표 대학 · 가족 우선순위 · 예산을 알려주시면 7개 트랙 중 최적 트랙 답변.</p>
+      <a href="/ko/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3" style="font-weight:500">
+        카카오톡 · 이메일 상담
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl" style="font-weight:700">관련 도구·정보</h2>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="/ko/tools/curriculum-guide/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">📚 IB vs AP vs A-Level</div></a>
+        <a href="/ko/tools/calculator/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">💰 학비 계산기 (총비용)</div></a>
+        <a href="/ko/abroad/anglosphere/usa/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇺🇸 미국 보딩스쿨</div></a>
+        <a href="/ko/abroad/anglosphere/uk/" class="card text-sm block"><div class="text-primary-900" style="font-weight:500">🇬🇧 영국 옥스브리지 트랙</div></a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
