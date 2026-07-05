@@ -1,0 +1,664 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import TableOfContents from '~/components/TableOfContents.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', (e) => e.data.locale === 'zh');
+  return posts.map((entry) => ({
+    params: { slug: entry.slug.replace(/-zh$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+
+const title = `${entry.data.title} | AsiaEduHub`;
+const description = entry.data.summary;
+
+const siteRoot = Astro.site?.toString() ?? '';
+const slug = entry.slug.replace(/-zh$/, '');
+
+// 읽기 시간 추정 — 한국어 약 500자/분
+const wordCount = entry.body.length;
+const readingTimeMin = Math.max(1, Math.round(wordCount / 500));
+
+// 본문 핵심 H2 3개를 추출 — "이 글을 정리한 기준" 칩으로 활용
+const sectionChips = headings
+  .filter((h) => h.depth === 2)
+  .slice(0, 6)
+  .map((h) => h.text.replace(/^[#\s—·]+/, '').slice(0, 18));
+
+const CATEGORY_LABEL: Record<string, { label: string; emoji: string; tone: string }> = {
+  'school-visits': { label: '学校访问记', emoji: '🏫', tone: 'primary' },
+  'transfers': { label: '两次转学的家长', emoji: '⭐', tone: 'accent' },
+  'news': { label: '新闻 · 更新', emoji: '📰', tone: 'primary' },
+  'analysis': { label: '站长分析', emoji: '📊', tone: 'primary' },
+  'interviews': { label: '家长访谈', emoji: '💬', tone: 'primary' },
+};
+const cat = CATEGORY_LABEL[entry.data.category] ?? { label: entry.data.category, emoji: '📝', tone: 'primary' };
+
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '博客', item: siteRoot + 'zh/blog/' },
+    { '@type': 'ListItem', position: 3, name: entry.data.title },
+  ],
+};
+
+const allPosts = await getCollection('blog', (e) => e.data.locale === 'zh');
+const relatedPosts = allPosts
+  .filter((p) => p.slug !== entry.slug && p.data.category === entry.data.category)
+  .slice(0, 3);
+
+const sourcesText = entry.data.sources && entry.data.sources.length > 0
+  ? entry.data.sources.map((s) => s.label).join(' / ')
+  : undefined;
+
+const shareUrl = siteRoot + `zh/blog/${slug}/`;
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={breadcrumb}
+  author={{ name: entry.data.author, url: '/zh/about/' }}
+  publishedAt={entry.data.published_at}
+  updatedAt={entry.data.last_updated}
+  articleType="BlogPosting"
+>
+  {/* 상단 스크롤 진행률 바 */}
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
+
+  {/* Hero */}
+  <section class="hero-gradient blog-hero">
+    <div class="container-content py-12 sm:py-16 max-w-3xl">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/zh/">首页</a> · <a href="/zh/blog/">博客</a> · <span style="color: var(--color-text-primary)">{cat.label}</span>
+      </nav>
+
+      <div class="mt-5 flex flex-wrap items-center gap-2">
+        <span class={cat.tone === 'accent' ? 'blog-cat-pill accent' : 'blog-cat-pill primary'}>
+          <span aria-hidden="true">{cat.emoji}</span>
+          {cat.label}
+        </span>
+        <span class="blog-meta-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          {readingTimeMin} 分钟阅读
+        </span>
+        <span class="blog-meta-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          {formatDate(entry.data.published_at, 'zh')}
+        </span>
+      </div>
+
+      <h1 class="mt-6 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.025em; line-height:1.18">
+        {entry.data.title}
+      </h1>
+
+      <div class="mt-7">
+        <AuthorByline locale="zh"
+          publishedAt={entry.data.published_at}
+          updatedAt={entry.data.last_updated}
+          sources={sourcesText} />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content pb-12 max-w-3xl">
+
+    {/* 핵심 요약 카드 — Hero 위로 오버랩 매거진 스타일 */}
+    <div class="blog-summary-overlap">
+      <div class="blog-summary-card">
+        <div class="blog-summary-tag">
+          <span aria-hidden="true">✦</span> 核心摘要
+        </div>
+        <p class="blog-summary-text">{entry.data.summary}</p>
+        {entry.data.related_school_slugs && entry.data.related_school_slugs.length > 0 && (
+          <div class="blog-summary-related">
+            <span class="blog-summary-related-label">相关学校</span>
+            {entry.data.related_school_slugs.map((s) => (
+              <a href={`/zh/abroad/malaysia/${s}/`} class="blog-summary-school-chip">{s.replace(/-/g, ' ').toUpperCase()}</a>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+
+    {/* 공유 + 본문 그리드 (데스크톱: 좌측 sticky 공유 + 우측 본문) */}
+    <div class="blog-body-layout mt-8">
+      {/* 좌측: sticky 공유 */}
+      <aside class="blog-share-rail">
+        <div class="blog-share-rail-sticky">
+          <div class="blog-share-rail-label">分享</div>
+          <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(entry.data.title)}&url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener" class="blog-share-btn" aria-label="X (Twitter)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2H21.5l-7.34 8.39L22.81 22h-6.756l-5.29-6.916L4.71 22H1.453l7.852-8.97L1 2h6.91l4.78 6.317L18.244 2zm-1.187 18h1.873L7.03 4H5.022l12.035 16z"/></svg>
+          </a>
+          <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener" class="blog-share-btn" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+          </a>
+          <button type="button" class="blog-share-btn blog-copy-btn" data-url={shareUrl} aria-label="复制链接">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
+        </div>
+      </aside>
+
+      {/* 우측: 본문 */}
+      <div class="blog-body">
+        {headings.length >= 3 && <TableOfContents headings={headings} locale="zh" />}
+
+        <div class="blog-prose mt-8">
+          <Content />
+        </div>
+
+        {/* 이 글을 정리한 기준 — 매거진 푸터 메타 */}
+        <section class="blog-meta-card mt-12">
+          <h2 class="blog-meta-card-title">本文整理依据</h2>
+          <p class="blog-meta-card-body">
+            本文以站长(David)的一手经验为基础,聚焦家长在入学·移居决定前可自行核实的项目。
+            并非学校官方资料中随处可见的通用信息,而是综合了中文家长社群(WeChat)的实际反馈与站长亲自缴费·实地观察的数据。
+          </p>
+          {sectionChips.length > 0 && (
+            <div class="blog-meta-chips">
+              {sectionChips.map((s) => <span class="blog-meta-chip">{s}</span>)}
+            </div>
+          )}
+          {entry.data.sources && entry.data.sources.length > 0 && (
+            <div class="blog-meta-sources">
+              <div class="blog-meta-sources-label">来源</div>
+              <ul>
+                {entry.data.sources.map((s) => (
+                  <li>{s.url ? <a href={s.url} target="_blank" rel="noopener">{s.label}</a> : s.label}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+
+        {/* long-tail 태그 */}
+        {entry.data.tags && entry.data.tags.length > 0 && (
+          <section class="mt-8">
+            <div class="text-xs uppercase tracking-wide mb-3" style="color: var(--color-text-tertiary); font-weight:600; letter-spacing:0.08em">本文搜索关键词</div>
+            <div class="flex flex-wrap gap-1.5">
+              {entry.data.tags.map((t) => (
+                <span class="blog-tag-chip">#{t}</span>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* 작가 카드 */}
+        <section class="blog-author-card mt-10">
+          <div class="blog-author-monogram" aria-hidden="true">D</div>
+          <div class="blog-author-info">
+            <div class="blog-author-name">David</div>
+            <div class="blog-author-tagline">居住马来西亚吉隆坡 · 两个孩子就读 UCSI · 两次转学的家长 · 12年+ 在线营销</div>
+            <p class="blog-author-bio">
+              因不堪英语幼儿园的费用,2024年从韩国移居吉隆坡。
+              综合两次转学的一手经验、中文家长社群(WeChat)的反馈与吉隆坡当地房产行情,
+              整理其他网站无法获得的信息。
+            </p>
+            <div class="blog-author-links">
+              <a href="/zh/about/">站长介绍 →</a>
+              <a href="/zh/contact/">1:1 咨询</a>
+              <a href="/zh/blog/">其他文章</a>
+            </div>
+          </div>
+        </section>
+
+        {relatedPosts.length > 0 && (
+          <section class="mt-10">
+            <h2 class="text-xl" style="font-weight:700; letter-spacing:-0.01em">同类其他文章</h2>
+            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+              {relatedPosts.map((p) => {
+                const pSlug = p.slug.replace(/-zh$/, '');
+                return (
+                  <a href={`/zh/blog/${pSlug}/`} class="block rounded-xl border p-4 hover:border-primary-700 transition-colors" style="border-color: var(--color-border-light)">
+                    <div class="text-primary-900" style="font-weight:600">{p.data.title}</div>
+                    <div class="mt-2 text-xs" style="color: var(--color-text-secondary); line-height:1.55">{p.data.summary.slice(0, 110)}…</div>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        <section class="mt-12 card-cta">
+          <h2 class="text-xl text-white" style="font-weight:500">对本文还有疑问?</h2>
+          <p class="mt-3 text-sm">直接问站长 — 告诉我孩子年级 · 居住地区 · 预算,即可获得 1:1 解答。</p>
+          <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+            WeChat · 邮箱咨询
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+        </section>
+
+        <p class="mt-8 text-xs text-[color:var(--color-text-tertiary)]">
+          ※ 本文为站长(David)的一手经验·观察记录。学校政策·学费·国籍比例每年变动 — 最新信息请以学校官方网站与招生说明会为准。
+        </p>
+      </div>
+    </div>
+  </article>
+
+  {/* 스크롤 진행률 + 링크 복사 스크립트 */}
+  <script>
+    (function () {
+      // 진행률 바
+      const bar = document.querySelector<HTMLElement>('.reading-progress span');
+      if (bar) {
+        const onScroll = () => {
+          const h = document.documentElement;
+          const scrolled = h.scrollTop;
+          const max = h.scrollHeight - h.clientHeight;
+          const p = max > 0 ? (scrolled / max) * 100 : 0;
+          bar.style.width = p + '%';
+        };
+        document.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+      }
+      // 복사 버튼
+      document.querySelectorAll<HTMLButtonElement>('.blog-copy-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const url = btn.getAttribute('data-url') || window.location.href;
+          try {
+            await navigator.clipboard.writeText(url);
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<span style="font-size:11px; font-weight:700">已复制</span>';
+            setTimeout(() => { btn.innerHTML = orig; }, 1400);
+          } catch (e) {}
+        });
+      });
+    })();
+  </script>
+</BaseLayout>
+
+<style is:global>
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     블로그 글 페이지 — 매거진 스타일
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+  /* 진행률 바 */
+  .reading-progress {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 3px; z-index: 100;
+    background: rgba(30, 58, 138, 0.06);
+    pointer-events: none;
+  }
+  .reading-progress span {
+    display: block; height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--color-primary-700) 0%, var(--color-accent-500) 100%);
+    transition: width 80ms linear;
+  }
+
+  /* Hero */
+  .blog-hero { padding-bottom: 3rem; }
+  @media (min-width: 640px) { .blog-hero { padding-bottom: 4rem; } }
+
+  /* 카테고리 pill */
+  .blog-cat-pill {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 0.375rem 0.75rem; border-radius: 999px;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: -0.01em;
+  }
+  .blog-cat-pill.primary {
+    background: var(--color-primary-100); color: var(--color-primary-900);
+  }
+  .blog-cat-pill.accent {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    color: var(--color-accent-700);
+    box-shadow: inset 0 -1px 0 rgba(146, 64, 14, 0.10);
+  }
+  .blog-meta-pill {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 0.375rem 0.625rem; border-radius: 999px;
+    font-size: 0.75rem; font-weight: 500;
+    background: rgba(255,255,255,0.7); color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-light);
+  }
+
+  /* 핵심 요약 카드 — Hero 위로 오버랩 (매거진 스타일) */
+  .blog-summary-overlap {
+    position: relative; z-index: 2;
+    margin-top: -2.5rem;
+  }
+  @media (min-width: 640px) { .blog-summary-overlap { margin-top: -3rem; } }
+  .blog-summary-card {
+    padding: 1.5rem 1.75rem;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%);
+    border: 1px solid #FCD34D;
+    box-shadow:
+      0 2px 4px rgba(146, 64, 14, 0.06),
+      0 12px 32px -8px rgba(146, 64, 14, 0.12);
+    position: relative; overflow: hidden;
+  }
+  .blog-summary-card::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle at 100% 0%, rgba(245, 158, 11, 0.18) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .blog-summary-tag {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 0.25rem 0.625rem; border-radius: 6px;
+    background: var(--color-accent-700); color: #fff;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .blog-summary-text {
+    margin-top: 0.75rem;
+    font-size: 1.0625rem; line-height: 1.7;
+    color: var(--color-accent-700);
+    font-weight: 500;
+    position: relative;
+  }
+  .blog-summary-related {
+    margin-top: 1rem;
+    padding-top: 0.875rem;
+    border-top: 1px dashed rgba(146, 64, 14, 0.2);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem;
+  }
+  .blog-summary-related-label {
+    font-size: 0.7rem; font-weight: 600; color: var(--color-accent-700);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-right: 0.25rem;
+  }
+  .blog-summary-school-chip {
+    display: inline-flex; padding: 0.25rem 0.625rem;
+    border-radius: 999px; background: #fff;
+    border: 1px solid rgba(146, 64, 14, 0.25);
+    font-size: 0.75rem; font-weight: 600; color: var(--color-accent-700);
+    text-decoration: none;
+  }
+  .blog-summary-school-chip:hover { background: var(--color-accent-700); color: #fff; }
+  :root[data-theme="dark"] .blog-summary-card {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.10) 0%, rgba(245, 158, 11, 0.04) 100%);
+  }
+  :root[data-theme="dark"] .blog-summary-text { color: #FCD34D; }
+
+  /* 본문 레이아웃 (좌측 공유 + 우측 본문) */
+  .blog-body-layout {
+    display: grid; gap: 2rem;
+  }
+  @media (min-width: 1024px) {
+    .blog-body-layout { grid-template-columns: 64px 1fr; gap: 2.5rem; }
+  }
+  .blog-share-rail { display: none; }
+  @media (min-width: 1024px) { .blog-share-rail { display: block; } }
+  .blog-share-rail-sticky {
+    position: sticky; top: 6rem;
+    display: flex; flex-direction: column; gap: 0.5rem; align-items: center;
+  }
+  .blog-share-rail-label {
+    font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--color-text-tertiary); font-weight: 600; margin-bottom: 0.25rem;
+  }
+  .blog-share-btn {
+    width: 36px; height: 36px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 10px; background: #fff;
+    border: 1px solid var(--color-border-light);
+    color: var(--color-text-secondary);
+    transition: all 200ms var(--ease-out);
+    cursor: pointer;
+  }
+  .blog-share-btn:hover {
+    color: var(--color-primary-900);
+    border-color: var(--color-primary-700);
+    background: var(--color-primary-50);
+    transform: translateY(-1px);
+  }
+
+  /* 본문 prose */
+  .blog-prose {
+    font-size: 1.075rem;
+    line-height: 1.85;
+    color: var(--color-text-primary);
+    font-weight: 450;
+  }
+  .blog-prose > p:first-of-type {
+    font-size: 1.15rem; line-height: 1.75;
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+  /* 첫 문단 첫 글자 큰 글자 (드롭 캡) — 한글에서는 보수적 적용 */
+  .blog-prose > p:first-of-type::first-letter {
+    font-size: 2.4em; font-weight: 800; line-height: 0.9;
+    color: var(--color-primary-900);
+    float: left; padding-right: 0.5rem; padding-top: 0.25rem;
+    font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  }
+  .blog-prose p { margin: 1.4rem 0; word-break: keep-all; overflow-wrap: break-word; }
+
+  .blog-prose h2 {
+    margin: 3.25rem 0 1rem;
+    padding-top: 1.25rem;
+    font-size: 1.75rem; font-weight: 800; letter-spacing: -0.022em;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+    border-top: 1px solid var(--color-border-light);
+    position: relative;
+  }
+  .blog-prose h2::before {
+    content: '';
+    position: absolute; top: -1px; left: 0;
+    width: 40px; height: 3px;
+    background: linear-gradient(90deg, var(--color-primary-700) 0%, var(--color-accent-500) 100%);
+    border-radius: 2px;
+  }
+  .blog-prose h3 {
+    margin: 2.25rem 0 0.75rem;
+    font-size: 1.3rem; font-weight: 700; letter-spacing: -0.014em;
+    color: var(--color-text-primary);
+  }
+  .blog-prose h4 { margin: 1.5rem 0 0.5rem; font-size: 1.075rem; font-weight: 600; color: var(--color-text-primary); }
+
+  .blog-prose a {
+    color: var(--color-primary-700);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: rgba(29, 78, 216, 0.35);
+    text-underline-offset: 4px;
+    transition: text-decoration-color 200ms;
+  }
+  .blog-prose a:hover { color: var(--color-primary-900); text-decoration-color: var(--color-primary-900); }
+  .blog-prose strong { font-weight: 700; color: var(--color-primary-900); }
+
+  .blog-prose ul, .blog-prose ol { margin: 1.4rem 0; padding-left: 1.625rem; }
+  .blog-prose ul li { list-style: disc; margin: 0.55rem 0; line-height: 1.75; word-break: keep-all; }
+  .blog-prose ol li { list-style: decimal; margin: 0.55rem 0; line-height: 1.75; word-break: keep-all; }
+  .blog-prose li::marker { color: var(--color-primary-700); font-weight: 700; }
+
+  /* 매거진 스타일 인용구 — 풀 쿼트 */
+  .blog-prose blockquote {
+    margin: 2rem -0.5rem;
+    padding: 1.25rem 1.5rem 1.25rem 2.5rem;
+    background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%);
+    border-left: 4px solid var(--color-accent-500);
+    border-radius: 0 12px 12px 0;
+    color: var(--color-accent-700);
+    font-size: 1.05rem; line-height: 1.75;
+    font-style: normal;
+    font-weight: 500;
+    position: relative;
+  }
+  .blog-prose blockquote::before {
+    content: '"';
+    position: absolute; top: 0.25rem; left: 0.625rem;
+    font-size: 3rem; font-weight: 800;
+    color: var(--color-accent-500);
+    opacity: 0.3;
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .blog-prose blockquote p { margin: 0.5rem 0; }
+  .blog-prose blockquote strong { color: var(--color-accent-700); }
+  :root[data-theme="dark"] .blog-prose blockquote {
+    background: rgba(245, 158, 11, 0.08);
+    color: #FCD34D;
+  }
+
+  /* 매거진 스타일 표 */
+  .blog-prose table {
+    width: 100%; margin: 2rem 0;
+    border-collapse: separate; border-spacing: 0;
+    font-size: 0.925rem;
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    border: 1px solid var(--color-border-light);
+  }
+  .blog-prose thead th {
+    background: linear-gradient(180deg, var(--color-primary-50) 0%, #fff 100%);
+    color: var(--color-primary-900);
+    font-weight: 700; font-size: 0.825rem;
+    letter-spacing: -0.01em;
+    text-align: left;
+    padding: 0.875rem 1rem;
+    border-bottom: 2px solid var(--color-primary-200);
+  }
+  .blog-prose td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border-light);
+    color: var(--color-text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+  .blog-prose tr:nth-child(even) td { background: var(--color-bg-soft); }
+  .blog-prose tr:last-child td { border-bottom: 0; }
+  .blog-prose tr:last-child td { background: linear-gradient(135deg, var(--color-accent-50) 0%, #fff 100%); font-weight: 700; }
+  .blog-prose tr:last-child td:first-child { color: var(--color-accent-700); }
+
+  .blog-prose hr {
+    margin: 3rem auto;
+    border: 0;
+    height: 1px;
+    width: 60%;
+    background: linear-gradient(90deg, transparent 0%, var(--color-border-medium) 50%, transparent 100%);
+  }
+  .blog-prose code {
+    padding: 0.125rem 0.375rem; border-radius: 4px;
+    background: var(--color-bg-tertiary); color: var(--color-primary-900);
+    font-size: 0.88em;
+    font-family: 'JetBrains Mono', Menlo, monospace;
+  }
+
+  /* 이 글을 정리한 기준 메타 카드 */
+  .blog-meta-card {
+    padding: 1.75rem 2rem;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #F5F2E8 0%, #FAF6EB 100%);
+    border: 1px solid #E5DDC4;
+  }
+  :root[data-theme="dark"] .blog-meta-card {
+    background: var(--color-bg-elevated);
+    border-color: var(--color-border-medium);
+  }
+  .blog-meta-card-title {
+    font-size: 1.75rem; font-weight: 800; letter-spacing: -0.022em;
+    color: var(--color-text-primary);
+    line-height: 1.25;
+  }
+  .blog-meta-card-body {
+    margin-top: 0.75rem;
+    font-size: 0.95rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+  .blog-meta-chips {
+    margin-top: 1.25rem;
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .blog-meta-chip {
+    display: inline-flex; align-items: center;
+    padding: 0.375rem 0.875rem; border-radius: 999px;
+    background: #fff; border: 1px solid #DDD3B5;
+    font-size: 0.8rem; font-weight: 600;
+    color: var(--color-text-primary);
+  }
+  :root[data-theme="dark"] .blog-meta-chip {
+    background: var(--color-bg-secondary);
+    border-color: var(--color-border-medium);
+  }
+  .blog-meta-sources {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #DDD3B5;
+  }
+  .blog-meta-sources-label {
+    font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 0.08em; font-weight: 700;
+    color: var(--color-text-tertiary);
+  }
+  .blog-meta-sources ul { margin-top: 0.5rem; padding-left: 1.25rem; }
+  .blog-meta-sources li { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0.25rem 0; }
+  .blog-meta-sources a { color: var(--color-primary-700); text-decoration: underline; }
+
+  /* long-tail 태그 칩 */
+  .blog-tag-chip {
+    display: inline-flex; padding: 0.375rem 0.75rem;
+    border-radius: 999px;
+    background: var(--color-bg-soft);
+    border: 1px solid var(--color-border-light);
+    font-size: 0.8rem; font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  /* 작가 카드 */
+  .blog-author-card {
+    display: flex; gap: 1.25rem;
+    padding: 1.5rem; border-radius: 20px;
+    background: linear-gradient(135deg, var(--color-primary-50) 0%, #fff 100%);
+    border: 1px solid var(--color-primary-100);
+  }
+  :root[data-theme="dark"] .blog-author-card { background: var(--color-bg-elevated); border-color: var(--color-border-medium); }
+  .blog-author-monogram {
+    flex-shrink: 0;
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 100%);
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.625rem; font-weight: 800; letter-spacing: -0.02em;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.20);
+  }
+  .blog-author-info { min-width: 0; flex: 1; }
+  .blog-author-name {
+    font-size: 1.125rem; font-weight: 800; letter-spacing: -0.01em;
+    color: var(--color-primary-900);
+  }
+  .blog-author-tagline {
+    margin-top: 0.25rem;
+    font-size: 0.78rem; color: var(--color-text-secondary);
+    font-weight: 500; line-height: 1.5;
+  }
+  .blog-author-bio {
+    margin-top: 0.75rem;
+    font-size: 0.9rem; line-height: 1.65;
+    color: var(--color-text-primary);
+  }
+  .blog-author-links {
+    margin-top: 0.875rem;
+    display: flex; flex-wrap: wrap; gap: 0.625rem;
+  }
+  .blog-author-links a {
+    font-size: 0.8rem; font-weight: 600;
+    color: var(--color-primary-700);
+    text-decoration: none;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    background: rgba(29, 78, 216, 0.06);
+    transition: background 200ms;
+  }
+  .blog-author-links a:hover { background: rgba(29, 78, 216, 0.12); }
+
+  @media (max-width: 640px) {
+    .blog-author-card { flex-direction: column; gap: 1rem; }
+    .blog-author-monogram { width: 56px; height: 56px; font-size: 1.5rem; }
+    .blog-meta-card { padding: 1.25rem; }
+    .blog-meta-card-title { font-size: 1.375rem; }
+    .blog-summary-card { padding: 1.25rem; }
+    .blog-prose { font-size: 1.0125rem; }
+    .blog-prose > p:first-of-type::first-letter { font-size: 2.2em; }
+    .blog-prose h2 { font-size: 1.5rem; }
+  }
+</style>
