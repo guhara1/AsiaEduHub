@@ -43,7 +43,12 @@ export default defineConfig({
       //  - /advertise/ : 광고주 영업용, 학부모 검색 노출 불필요
       //  - /experts/   : 콘텐츠 0건 시 빈 인덱스 (콘텐츠 누적 후 제외 패턴에서 제거)
       filter: (page) => {
-        return !/\/(advertise|experts)\/?$/.test(page);
+        // 광고주용·빈 컬렉션 페이지 제외
+        if (/\/(advertise|experts)\/?$/.test(page)) return false;
+        // 학교 1곳뿐이라 noindex 처리된 지역 인덱스 페이지는 사이트맵에서도 제외
+        // (GSC "제출된 URL이 noindex" 경고 방지). 학교 상세 페이지(/…/phuket/<slug>/)는 유지.
+        if (/\/(phuket|chiang-mai|da-nang|hai-phong)\/$/.test(page)) return false;
+        return true;
       },
       // URL 별 priority 차등 — 학교·가이드 페이지가 가장 중요
       serialize: (item) => {
