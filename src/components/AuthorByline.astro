@@ -1,5 +1,5 @@
 ---
-import type { Locale } from '~/lib/i18n';
+import { localePrefix, type Locale } from '~/lib/i18n';
 
 export interface Props {
   locale: Locale;
@@ -22,7 +22,8 @@ const fmt = new Intl.DateTimeFormat(locale === 'ko' ? 'ko-KR' : 'zh-CN', {
 });
 
 const authorName = locale === 'ko' ? '데이비드' : 'David';
-const authorUrl = `/${locale}/about/`;
+const lp = localePrefix(locale);
+const authorUrl = `${lp}/about/`;
 ---
 <div class="not-prose">
   <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[color:var(--color-text-tertiary)]">

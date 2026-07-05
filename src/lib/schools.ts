@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import type { Locale } from './i18n';
+import { localePrefix, type Locale } from './i18n';
 
 export type SchoolEntry = CollectionEntry<'schools'>;
 export type Region = 'southeast-asia' | 'anglosphere' | 'domestic';
@@ -106,7 +106,7 @@ export function basePairKey(entry: SchoolEntry): string {
  */
 export function schoolUrl(entry: SchoolEntry): string {
   const region = getRegion(entry.data.country);
-  return `/${entry.data.locale}/abroad/${region}/${entry.data.country}/${entry.data.city}/${entry.slug}/`;
+  return `${localePrefix(entry.data.locale)}/abroad/${region}/${entry.data.country}/${entry.data.city}/${entry.slug}/`;
 }
 
 export function formatUsd(amount: number, locale: Locale): string {

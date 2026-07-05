@@ -19,7 +19,8 @@ export default defineConfig({
     defaultLocale: 'ko',
     locales: ['ko', 'zh'],
     routing: {
-      prefixDefaultLocale: true,
+      // 기본 언어(한국어)는 접두사 없이 루트에서 제공 (/about/), 중국어만 /zh/ 접두사.
+      prefixDefaultLocale: false,
       redirectToDefaultLocale: false,
     },
   },
@@ -47,8 +48,8 @@ export default defineConfig({
       // URL 별 priority 차등 — 학교·가이드 페이지가 가장 중요
       serialize: (item) => {
         const url = item.url;
-        // 메인 페이지 — 최고 우선순위
-        if (/\/(ko|zh)\/?$/.test(url)) {
+        // 메인 페이지 — 최고 우선순위 (한국어 루트 `/` · 중국어 `/zh/`)
+        if (/^https?:\/\/[^/]+\/(zh\/)?$/.test(url)) {
           item.priority = 1.0;
           item.changefreq = 'daily';
         }

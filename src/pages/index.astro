@@ -1,0 +1,382 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getMessages } from '~/lib/i18n';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
+
+const t = getMessages('ko');
+
+const title = '동남아 국제학교 안내 | 말레이시아 유학 전문 아시아에듀허브';
+const description =
+  '말레이시아·싱가포르·태국·베트남·인도네시아 국제학교를 학부모 실제 경험으로 비교 분석합니다.';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const websiteSchema = {
+  '@context': 'https://schema.org', '@type': 'WebSite',
+  name: t.site.name, url: siteRoot, inLanguage: 'ko-KR',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: siteRoot + '?q={search_term_string}' },
+    'query-input': 'required name=search_term_string',
+  },
+};
+const orgSchema = {
+  '@context': 'https://schema.org', '@type': 'Organization',
+  name: 'AsiaEduHub', url: siteRoot,
+  logo: { '@type': 'ImageObject', url: siteRoot + 'favicon.svg' },
+  founder: {
+    '@type': 'Person', name: '데이비드', url: siteRoot + 'about/',
+    jobTitle: '말레이시아 국제학교 학부모·온라인 마케터',
+    nationality: 'KR',
+    homeLocation: { '@type': 'Place', name: 'Kuala Lumpur, Malaysia' },
+    knowsLanguage: ['ko', 'zh', 'en'],
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    availableLanguage: ['Korean', 'Chinese', 'English'],
+    url: siteRoot + 'contact/',
+  },
+  areaServed: ['KR', 'MY', 'TH', 'SG', 'VN', 'CN', 'TW', 'HK'],
+};
+
+const recentGuides = (await getCollection('guides', (e) => e.data.locale === 'ko'))
+  .sort((a, b) => b.data.last_updated.getTime() - a.data.last_updated.getTime())
+  .slice(0, 3);
+const recentExperts = (await getCollection('experts', (e) => e.data.locale === 'ko'))
+  .sort((a, b) => b.data.published_at.getTime() - a.data.published_at.getTime())
+  .slice(0, 2);
+
+const heroCards = [
+  { href: '/domestic/', title: '외국인학교 vs 국제학교 차이', desc: '법적 자격·학력 인정·학비 차이. SFS·YISS·NLCS·BHA·채드윅 송도 등 주요 학교 정리.', icon: 'M3 21h18M3 10l9-7 9 7M5 21V10m14 11V10M9 21v-6h6v6', tone: 'primary' },
+  { href: '/abroad/malaysia/', title: '말레이시아 국제학교 22곳', desc: 'Alice Smith · ISKL · MKIS · GIS · Epsom · Nexus · UCSI 등 KL·셀랑고르·푸트라자야 전체 학교.', icon: 'M12 3l9 4.5v9L12 21l-9-4.5v-9L12 3zm0 0v18M3 7.5l9 4.5 9-4.5', tone: 'primary' },
+  { href: '/mm2h/', title: 'MM2H · Thailand · Singapore 비자', desc: '2024 MM2H 개정 포함. 학부모 비자 5종을 자격·비용·자녀 교육 영향으로 비교.', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', tone: 'primary' },
+  { href: '/abroad/', title: '동남아 가성비 vs 영미권 프리미엄', desc: '학비 1/3~1/2 차이. 동남아 IB 트랙으로 옥스브리지·아이비 진학 가능.', icon: 'M3 12h18M3 12l4-4M3 12l4 4M21 12l-4-4M21 12l-4 4', tone: 'primary' },
+  { href: '/tools/compare/#track-simulator', title: '진학 트랙 시뮬레이터', desc: '자녀 학년·목표 대학·예산 입력 → 학년별 단계·시험·총비용 자동 계산.', icon: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z', tone: 'accent', badge: '⭐ 킬러 도구' },
+  { href: '/experts/', title: '전문가 칼럼', desc: '현직 교사·입학사정관·유학 컨설턴트 인터뷰. 운영자 신원 확인.', icon: 'M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-3.13a4 4 0 11-8 0 4 4 0 018 0zm6 0a4 4 0 11-8 0 4 4 0 018 0z', tone: 'primary' },
+];
+
+const personaCards = [
+  { grade: '유치원 ~ 초3', label: '저학년', color: 'sky', title: '환경·시설·식사·한국인 비율', emoji: '🧒',
+    links: [
+      { label: '말레이시아 가성비 학교', href: '/abroad/malaysia/' },
+      { label: '영어유치원 정보', href: '/domestic/#kindergarten' },
+      { label: '입학 시험·인터뷰 준비', href: '/guide/#admission' },
+    ] },
+  { grade: '초4 ~ 중2', label: '중학년', color: 'amber', title: '학업 환경 + 커리큘럼 진입', emoji: '🎒',
+    links: [
+      { label: 'IB · A-Level · AP 비교', href: '/guide/ib-vs-alevel-vs-ap/' },
+      { label: '동남아 IB 학교 정리', href: '/abroad/' },
+      { label: '학비 계산기', href: '/tools/compare/#calculator' },
+    ] },
+  { grade: '중3 ~ 고등', label: '고학년', color: 'rose', title: '시험 결과 + 대학 진학', emoji: '🎓',
+    links: [
+      { label: '진학 트랙 시뮬레이터', href: '/tools/compare/#track-simulator' },
+      { label: '옥스브리지·아이비 합격 사례', href: '/guide/#track-reviews' },
+      { label: '영미권 보딩스쿨', href: '/abroad/#usa' },
+    ] },
+];
+
+const budgetCards = [
+  { href: '/tools/budget/budget-friendly/', title: '가성비', sub: '연 1,000만원 이하', color: 'emerald' },
+  { href: '/tools/budget/mid-range/', title: '중간 예산', sub: '1,000~2,000만원', color: 'sky' },
+  { href: '/tools/budget/premium/', title: '프리미엄', sub: '2,000~3,500만원', color: 'violet' },
+  { href: '/tools/budget/top-tier/', title: '최상위', sub: '3,500만원+', color: 'rose' },
+];
+
+const operatorFacts = [
+  { num: '2024', label: '한국 → 쿠알라룸푸르 이주' },
+  { num: '2', label: '자녀, UCSI 국제학교 재학' },
+  { num: '2회', label: '학교 이전 — 1차 경험', highlight: true },
+  { num: '3', label: '한국어·중국어·영어' },
+  { num: '12+', label: '온라인 마케팅 경력 (년)' },
+  { num: 'KL', label: '쿠알라룸푸르 현지 거주' },
+];
+---
+<BaseLayout title={title} description={description} jsonLd={[websiteSchema, orgSchema]}>
+  {/* 검색엔진 사이트 소유권 확인 — 루트(메인) 페이지에만 등록 */}
+  <Fragment slot="head">
+    <meta name="naver-site-verification" content="85f43806ccec89bafa1e7c397b8e4e829394915e" />
+    <meta name="google-site-verification" content="ymKPTukb2F9uWfn6I0MaszLLeaJTd2DdMcIIlkjOh98" />
+    {/* Google AdSense — 메인 페이지 등록 (사이트 검수용) */}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1960947052820601" crossorigin="anonymous"></script>
+  </Fragment>
+
+  {/* ─── Hero (재설계) ─── */}
+  <section class="hero-gradient relative overflow-hidden">
+    {/* 우측 데코 블롭 */}
+    <div aria-hidden="true" class="absolute -right-32 -top-32 h-96 w-96 rounded-full" style="background: radial-gradient(circle, rgba(245,158,11,0.10) 0%, transparent 70%); filter: blur(40px);"></div>
+    <div aria-hidden="true" class="absolute -left-32 bottom-0 h-96 w-96 rounded-full" style="background: radial-gradient(circle, rgba(59,130,246,0.10) 0%, transparent 70%); filter: blur(40px);"></div>
+
+    <div class="container-content section-xl">
+      <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+        {/* 좌측 — 메시지 */}
+        <div>
+          <span class="badge-gold mb-6 inline-flex">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.8 6.6L22 10l-5.5 4.8 1.7 7.2L12 18l-6.2 4 1.7-7.2L2 10l7.2-1.4z"/></svg>
+            {t.badges.two_school_switches}
+          </span>
+          <h1 class="text-balance" style="font-size: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); line-height: 1.04; letter-spacing: -0.04em; font-weight: 800;">
+            <span style="color: var(--color-text-primary)">외국인학교·제주 국제학교,</span><br />
+            <span class="text-gradient-accent" style="position: relative; display: inline-block;">동남아 유학</span><span style="color: var(--color-text-primary)">의 진짜 정보</span>
+          </h1>
+          <p class="mt-7 max-w-xl text-pretty" style="color: var(--color-text-secondary); font-size: 1.0625rem; line-height: 1.7;">
+            말레이시아 거주 학부모 <strong style="color: var(--color-primary-900); font-weight: 600;">데이비드</strong>가
+            자녀 2명·학교 두 번 옮긴 1차 경험을 바탕으로 학비·비자·커리큘럼·진학 트랙을 학부모 관점에서 검증·정리합니다.
+          </p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="/abroad/malaysia/" class="cta-primary" style="padding: 0.875rem 1.5rem; font-size: 0.9375rem;">
+              <span aria-hidden="true" style="font-family: 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji', emoji;">🇲🇾</span>
+              말레이시아 국제학교 22곳
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </a>
+            <a href="/domestic/" class="cta-secondary" style="padding: 0.875rem 1.5rem; font-size: 0.9375rem;">
+              국내 국제학교
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+            </a>
+          </div>
+
+          {/* 신뢰 신호 */}
+          <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-xs" style="color: var(--color-text-tertiary)">
+            <li class="inline-flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              운영자 직접 검수
+            </li>
+            <li class="inline-flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              출처·업데이트 날짜 표기
+            </li>
+            <li class="inline-flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              운영자 1차 경험 우선
+            </li>
+          </ul>
+        </div>
+
+        {/* 우측 — 운영자 정체성 카드 (재설계) */}
+        <aside class="relative">
+          {/* 강조 통계 카드 (큰) */}
+          <div class="rounded-3xl bg-white p-7 lg:p-8" style="border: 1px solid var(--color-border-light); box-shadow: var(--shadow-xl); position: relative; overflow: hidden;">
+            {/* 카드 우상단 데코 */}
+            <div aria-hidden="true" class="absolute -right-6 -top-6 h-24 w-24 rounded-full" style="background: linear-gradient(135deg, rgba(245,158,11,0.16) 0%, transparent 70%);"></div>
+
+            {/* 헤더 */}
+            <div class="flex items-center gap-4">
+              <span aria-hidden="true" class="inline-flex h-16 w-16 items-center justify-center rounded-2xl text-white text-2xl" style="background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-700) 100%); box-shadow: var(--shadow-md); font-weight: 600;">D</span>
+              <div>
+                <div class="text-xl text-primary-900" style="font-weight: 600; letter-spacing: -0.01em;">데이비드</div>
+                <div class="mt-0.5 text-xs" style="color: var(--color-text-tertiary)">쿠알라룸푸르 · 두 번 옮긴 학부모</div>
+              </div>
+            </div>
+
+            {/* 메인 강조: 학교 2회 이전 */}
+            <div class="mt-6 rounded-2xl p-5" style="background: linear-gradient(135deg, var(--color-accent-100) 0%, var(--color-accent-50) 100%); border: 1px solid rgba(245,158,11,0.30);">
+              <div class="flex items-baseline gap-2">
+                <span class="text-4xl" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: -0.03em;">2회</span>
+                <span class="text-xs" style="color: var(--color-accent-700); font-weight: 500;">⭐ 사이트 핵심 차별점</span>
+              </div>
+              <div class="mt-2 text-sm" style="color: var(--color-accent-700); font-weight: 500;">학교 이전 — 1차 경험</div>
+              <p class="mt-2 text-[11px]" style="color: var(--color-accent-700); opacity: 0.8;">학비 + 한국인 비율 폭증으로 옮긴 진짜 경험</p>
+            </div>
+
+            {/* 보조 통계 — 4셀 */}
+            <div class="mt-4 grid grid-cols-2 gap-2.5">
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">2024</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">한국 → KL 이주</div>
+              </div>
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">UCSI</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">자녀 2명 재학</div>
+              </div>
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">한·중·영</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">3개 언어</div>
+              </div>
+              <div class="rounded-xl p-3" style="background: var(--color-bg-soft);">
+                <div class="text-base text-primary-900" style="font-weight: 600;">12년+</div>
+                <div class="mt-0.5 text-[10px]" style="color: var(--color-text-tertiary)">온라인 마케팅</div>
+              </div>
+            </div>
+
+            {/* 푸터 링크 */}
+            <a href="/about/" class="mt-5 inline-flex items-center gap-1.5 text-sm" style="color: var(--color-primary-700); font-weight: 500;">
+              운영자 소개 자세히
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  {/* ─── 핵심 정보 카드 6개 ─── */}
+  <section class="container-content section-md">
+    <div class="mb-8" data-reveal>
+      <h2 class="text-2xl sm:text-3xl">학부모가 가장 많이 묻는 주제</h2>
+      <p class="mt-2 text-sm" style="color: var(--color-text-secondary)">정보 · 도구 · 실제 인터뷰가 카테고리별로 누적되는 정보 허브</p>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {heroCards.map((c) => (
+        <a href={c.href} class:list={[c.tone === 'accent' ? 'card-feature' : 'card-info', 'group block']}>
+          <div class="flex items-start gap-3">
+            <div class:list={[c.tone === 'accent' ? 'icon-circle-accent' : 'icon-circle']}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d={c.icon} stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+              {c.badge && <span class="badge-gold mb-2 text-[10px]">{c.badge}</span>}
+              <h3 class="text-base sm:text-lg leading-snug">{c.title}</h3>
+              <p class="mt-2 text-sm" style="color: var(--color-text-secondary); line-height: 1.6;">{c.desc}</p>
+            </div>
+          </div>
+          <div class="mt-4 inline-flex items-center gap-1 text-xs text-primary-700 transition-transform group-hover:translate-x-1" style="font-weight:500">
+            자세히 보기
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  {/* ─── 자녀 학년별 진입 (페르소나) ─── */}
+  <section class="container-content section-md">
+    <div class="mb-8" data-reveal>
+      <h2 class="text-2xl sm:text-3xl">자녀 학년에 맞는 시작점</h2>
+      <p class="mt-2 text-sm" style="color: var(--color-text-secondary)">학년별로 학부모가 봐야 할 정보가 다릅니다</p>
+    </div>
+    <div class="grid gap-5 md:grid-cols-3">
+      {personaCards.map((p) => (
+        <div class="card flex flex-col">
+          <div class="flex items-start justify-between">
+            <span class="text-4xl" aria-hidden="true">{p.emoji}</span>
+            <span class:list={[
+              'rounded-full px-3 py-1 text-xs',
+              p.color === 'sky' && 'bg-sky-100 text-sky-700',
+              p.color === 'amber' && 'bg-amber-100 text-amber-700',
+              p.color === 'rose' && 'bg-rose-100 text-rose-700',
+            ]} style="font-weight:500">{p.label}</span>
+          </div>
+          <div class="mt-3 text-xs uppercase tracking-wide" style="color: var(--color-text-tertiary)">{p.grade}</div>
+          <h3 class="mt-1 text-base">{p.title}</h3>
+          <ul class="mt-4 space-y-2 text-sm">
+            {p.links.map((l) => (
+              <li>
+                <a href={l.href} class="inline-flex items-center gap-1 hover:underline" style="color: var(--color-text-primary)">
+                  <span class="text-primary-700">▸</span> {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {/* ─── 예산별 진입 ─── */}
+  <section class="container-content section-md">
+    <div class="mb-8" data-reveal>
+      <h2 class="text-2xl sm:text-3xl">예산별 학교 추천</h2>
+      <p class="mt-2 text-sm" style="color: var(--color-text-secondary)">연 학비 + 부대 비용 종합 기준</p>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {budgetCards.map((b) => (
+        <a href={b.href} class="card-outline group flex flex-col" data-tone={b.color}>
+          <div class:list={[
+            'inline-flex h-11 w-11 items-center justify-center rounded-xl',
+            b.color === 'emerald' && 'bg-emerald-100 text-emerald-700',
+            b.color === 'sky' && 'bg-sky-100 text-sky-700',
+            b.color === 'violet' && 'bg-violet-100 text-violet-700',
+            b.color === 'rose' && 'bg-rose-100 text-rose-700',
+          ]} style="box-shadow: inset 0 -1px 0 rgba(0,0,0,0.04);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 6v12m-3-9h6m-6 6h6M5 6a2 2 0 012-2h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </div>
+          <div class="mt-4 text-lg" style="font-weight:600; color: var(--color-text-primary); letter-spacing: -0.01em;">{b.title}</div>
+          <div class="mt-1 text-sm" style="color: var(--color-text-secondary)">{b.sub}</div>
+          <div class="mt-3 inline-flex items-center gap-1 text-xs text-primary-700 transition-transform group-hover:translate-x-1" style="font-weight:500">
+            학교 보기
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  {/* ─── 최근 콘텐츠 ─── */}
+  {(recentGuides.length > 0 || recentExperts.length > 0) && (
+    <section class="container-content section-md">
+      <div class="mb-8" data-reveal>
+        <h2 class="text-2xl sm:text-3xl">최근 발행 · 업데이트</h2>
+        <p class="mt-2 text-sm" style="color: var(--color-text-secondary)">운영자 검수 후 발행되는 가이드와 전문가 인터뷰</p>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {recentGuides.map((g) => (
+          <a href={`/guide/${g.slug.replace(/-ko$/, '')}/`} class="card-outline group flex flex-col" data-tone="primary">
+            <div class="badge-navy text-[10px] self-start">📘 가이드</div>
+            <h3 class="mt-3 text-base leading-snug" style="font-weight: 600; letter-spacing: -0.01em; color: var(--color-text-primary);">{g.data.title}</h3>
+            <p class="mt-2 text-sm flex-1" style="color: var(--color-text-secondary); line-height: 1.6;">{g.data.summary}</p>
+            <div class="mt-4 flex items-center justify-between border-t pt-3" style="border-color: var(--color-border-light)">
+              <span class="text-xs" style="color: var(--color-text-tertiary)">{formatDate(g.data.last_updated, 'ko')}</span>
+              <span class="inline-flex items-center gap-1 text-xs text-primary-700 transition-transform group-hover:translate-x-1" style="font-weight:500">
+                자세히
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+            </div>
+          </a>
+        ))}
+        {recentExperts.map((e) => (
+          <a href={`/experts/${e.slug.replace(/-ko$/, '')}/`} class="card-outline group flex flex-col" data-tone="amber">
+            <div class="flex flex-wrap items-center gap-1">
+              <span class="badge-gold text-[10px]">🎤 전문가 칼럼</span>
+              {e.data.expert.verified && <span class="badge-gold text-[10px]">⭐ 검증</span>}
+            </div>
+            <h3 class="mt-3 text-base leading-snug" style="font-weight: 600; letter-spacing: -0.01em; color: var(--color-text-primary);">{e.data.title}</h3>
+            <p class="mt-2 text-sm flex-1" style="color: var(--color-text-secondary); line-height: 1.6;">{e.data.summary}</p>
+            <div class="mt-4 flex items-center justify-between border-t pt-3" style="border-color: var(--color-border-light)">
+              <span class="text-xs" style="color: var(--color-text-tertiary)">{e.data.expert.affiliation}</span>
+              <span class="inline-flex items-center gap-1 text-xs text-primary-700 transition-transform group-hover:translate-x-1" style="font-weight:500">
+                자세히
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* ─── 사이트 신뢰 신호 / CTA ─── */}
+  <section class="container-content section-md">
+    <div class="card-cta">
+      <div class="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <h2 class="text-2xl sm:text-3xl">왜 AsiaEduHub 인가</h2>
+          <p class="mt-3 text-sm max-w-2xl">
+            유학원 영업이 아닌, 같은 학부모가 직접 다니며 검증한 진짜 정보를 정리합니다.
+          </p>
+          <div class="mt-6 grid gap-5 sm:grid-cols-3 text-sm">
+            <div>
+              <div class="card-cta-label">두 번 옮긴 학부모</div>
+              <p class="mt-1.5">자녀 2명을 데리고 한국 → 말레이시아 이주. 학교 두 번 옮기며 배운 진짜 경험.</p>
+            </div>
+            <div>
+              <div class="card-cta-label">현지 거주 검증</div>
+              <p class="mt-1.5">쿠알라룸푸르 현지 거주. 직접 방문·확인한 학교 정보를 우선 등록.</p>
+            </div>
+            <div>
+              <div class="card-cta-label">광고 ≠ 정보</div>
+              <p class="mt-1.5">광고는 SPONSORED 배지로 분리 표시. 광고비 받은 학교라도 단점은 그대로 기록. <a href="/editorial-policy/">편집 원칙</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="md:text-right">
+          <a href="/contact/" class="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-primary-900" style="font-weight: 600; box-shadow: var(--shadow-md)">
+            1:1 상담 신청
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

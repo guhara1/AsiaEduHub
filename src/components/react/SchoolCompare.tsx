@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import type { Locale } from '../../lib/i18n';
+import { localePrefix, type Locale } from '../../lib/i18n';
 
 interface SchoolRow {
   slug: string;
@@ -76,6 +76,7 @@ const fmtUsd = (n: number, locale: Locale) =>
 
 export default function SchoolCompare({ locale, schools }: Props) {
   const t = T[locale];
+  const lp = localePrefix(locale);
   const [selected, setSelected] = useState<string[]>([]);
   const [query, setQuery] = useState('');
 
@@ -107,7 +108,7 @@ export default function SchoolCompare({ locale, schools }: Props) {
       <div className="rounded-lg border bg-white p-6" style={{ borderColor: 'var(--color-border-light)' }}>
         <h3 className="text-lg text-primary-900" style={{ fontWeight: 500 }}>{t.h}</h3>
         <p className="mt-2 text-sm text-[color:var(--color-text-secondary)]">{t.empty}</p>
-        <a href={`/${locale}/abroad/`} className="cta-secondary mt-4 inline-flex text-sm">
+        <a href={`${lp}/abroad/`} className="cta-secondary mt-4 inline-flex text-sm">
           {locale === 'ko' ? '학교 목록 보기' : '查看学校列表'}
         </a>
       </div>
