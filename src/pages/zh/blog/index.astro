@@ -1,0 +1,113 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '~/lib/schools';
+
+const posts = (await getCollection('blog', (e) => e.data.locale === 'zh'))
+  .sort((a, b) => b.data.published_at.getTime() - a.data.published_at.getTime());
+
+const publishedAt = new Date('2026-05-20');
+const updatedAt = posts.length > 0 ? posts[0].data.last_updated : publishedAt;
+
+const title = '站长博客 — 学校访问记 · 两次转学家长的招牌系列 | AsiaEduHub';
+const description =
+  '居住马来西亚的家长 David 的一手经验记录。学校访问记 · 转学经历 · 站长分析 · 家长访谈。其他地方无法获得的真实当地评测。';
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '博客' },
+  ],
+};
+
+const itemList = {
+  '@context': 'https://schema.org', '@type': 'ItemList',
+  name: '站长博客',
+  numberOfItems: posts.length,
+  itemListElement: posts.map((p, i) => ({
+    '@type': 'ListItem', position: i + 1, name: p.data.title,
+    url: siteRoot + `zh/blog/${p.slug.replace(/-zh$/, '')}/`,
+  })),
+};
+
+const CATEGORY_LABEL: Record<string, { label: string; emoji: string }> = {
+  'school-visits': { label: '学校访问记', emoji: '🏫' },
+  'transfers': { label: '两次转学的家长', emoji: '⭐' },
+  'news': { label: '新闻 · 更新', emoji: '📰' },
+  'analysis': { label: '站长分析', emoji: '📊' },
+  'interviews': { label: '家长访谈', emoji: '💬' },
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, itemList]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)"><a href="/zh/">首页</a> · 博客</nav>
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.02em">
+        站长博客
+      </h1>
+      <p class="mt-3 max-w-2xl text-base sm:text-lg text-pretty" style="color: var(--color-text-secondary); line-height: 1.7;">
+        居住马来西亚的家长 <strong style="font-weight:600">David</strong> 的一手经验记录。学校访问记 · 转学经历 · 站长分析 · 家长访谈。
+        <br/>持续累积其他地方无法获得的真实当地评测。
+      </p>
+      <div class="mt-5">
+        <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="站长一手经验 + 家长社群(WeChat)反馈" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-4xl">
+    {posts.length === 0 ? (
+      <div class="rounded-xl border-l-4 border-accent-500 bg-accent-100 p-6 text-accent-700">
+        <p class="text-sm" style="font-weight:500">首篇文章准备中。</p>
+        <p class="mt-2 text-sm">站长会在实地走访学校 · 访谈后持续累积文章。</p>
+      </div>
+    ) : (
+      <div class="grid gap-5">
+        {posts.map((p) => {
+          const slug = p.slug.replace(/-zh$/, '');
+          const cat = CATEGORY_LABEL[p.data.category] ?? { label: p.data.category, emoji: '📝' };
+          return (
+            <a href={`/zh/blog/${slug}/`} class="block rounded-xl border p-5 sm:p-6 transition-all hover:border-primary-700 hover:shadow-md" style="border-color: var(--color-border-light); background: linear-gradient(180deg, #fff 0%, var(--color-bg-soft) 100%)">
+              <div class="flex items-center gap-2 text-xs">
+                <span class="badge-navy">{cat.emoji} {cat.label}</span>
+                <span style="color: var(--color-text-tertiary)">{formatDate(p.data.published_at, 'zh')}</span>
+              </div>
+              <h2 class="mt-3 text-xl sm:text-2xl text-balance" style="font-weight:700; letter-spacing:-0.01em; color: var(--color-primary-900)">
+                {p.data.title}
+              </h2>
+              <p class="mt-2 text-sm sm:text-base text-pretty" style="color: var(--color-text-secondary); line-height: 1.65;">
+                {p.data.summary}
+              </p>
+              {p.data.tags && p.data.tags.length > 0 && (
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                  {p.data.tags.slice(0, 4).map((t) => (
+                    <span class="rounded-full bg-[color:var(--color-bg-tertiary)] px-2.5 py-0.5 text-xs" style="color: var(--color-text-secondary)">#{t}</span>
+                  ))}
+                </div>
+              )}
+              <div class="mt-4 text-sm text-primary-700" style="font-weight:500">阅读 →</div>
+            </a>
+          );
+        })}
+      </div>
+    )}
+
+    <section class="mt-12 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">直接问站长</h2>
+      <p class="mt-3 text-sm">博客未收录的细节 · 按孩子年级·预算的定制学校推荐等,均可 1:1 解答。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        WeChat · 邮箱咨询
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+  </article>
+</BaseLayout>
