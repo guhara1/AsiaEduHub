@@ -35,6 +35,64 @@ const description = '国际学校最多 4 所一屏对比。学费 · 韩中学�
   </section>
   <article class="container-content py-10 max-w-5xl">
     <SchoolCompare client:visible locale="zh" schools={compareRows} />
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">对比学校时该看什么 — 不只是学费</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">很多家长第一眼只比学费,但学费高不等于学校好。作为在马来西亚亲历两次转学的家长,我(David)建议把下面几项放在一张表里一起看,而不是单看某一项。</p>
+      <ul class="mt-5 space-y-4 text-sm" style="line-height:1.7">
+        <li>
+          <strong class="text-primary-900">1. 华人与本地学生比例(要拆开看)</strong>
+          <p class="mt-1" style="color:var(--color-text-secondary)">中国大陆学生与本地华人(马来西亚、新加坡华裔)完全不同,务必分开看。想要纯英语环境,就找大陆学生比例较低的学校;想要中文学习氛围,本地华人比例高的学校反而更自然。华人比例高不等于负面,关键看你的目标。</p>
+        </li>
+        <li>
+          <strong class="text-primary-900">2. 课程体系(IB / 英式 / 美式)</strong>
+          <p class="mt-1" style="color:var(--color-text-secondary)">目标牛剑与罗素集团 → 英式 IGCSE + A-Level;目标美国大学 → 美式 + AP + SAT;想保留全球选择 → IB。建议在子女 7-8 年级前定下升学国家,再倒推课程。</p>
+        </li>
+        <li>
+          <strong class="text-primary-900">3. 教师国籍构成</strong>
+          <p class="mt-1" style="color:var(--color-text-secondary)">"外教"每所学校定义不同。要分清英语母语国家(美英澳加新)与英语可教学的亚洲国家(印度、菲律宾等)教师比例,并看正式教师资格证持有率,而不是只信"全外教"宣传。</p>
+        </li>
+        <li>
+          <strong class="text-primary-900">4. 校园设施与新旧程度</strong>
+          <p class="mt-1" style="color:var(--color-text-secondary)">游泳池、体育馆、实验室是自有、共用还是租用要分清。若子女认真投入体育或艺术,设施才是决定性因素;以学业为主时,设施差异对成绩影响有限。</p>
+        </li>
+        <li>
+          <strong class="text-primary-900">5. 通学时间(建议 30 分钟以内)</strong>
+          <p class="mt-1" style="color:var(--color-text-secondary)">每天往返一小时以上会累积影响子女状态和家庭时间。住在学校周边公寓,往往比长途校车更利于子女的日常状态。</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">对比工具使用方法 — 最多选 4 所</h2>
+      <p class="mt-3 text-base" style="line-height:1.75">这个工具的作用是把候选压缩到一屏,方便横向比较,而不是替你做最终决定。</p>
+      <ol class="mt-5 space-y-3 text-sm" style="line-height:1.7">
+        <li><strong>第 1 步:</strong> 先定下子女年级、预算与可居住区域。</li>
+        <li><strong>第 2 步:</strong> 在本站目录(马来西亚、泰国、新加坡、越南等)先筛出 5-7 所初步候选。</li>
+        <li><strong>第 3 步:</strong> 在对比工具中最多选 4 所,把学费、韩中学生比例、课程、寄宿等一屏对齐。</li>
+        <li><strong>第 4 步:</strong> 从表中压缩到 2-3 所,再进入各校详情页查看周边公寓与设施。</li>
+        <li><strong>第 5 步:</strong> 参加招生说明会 + 访谈在读家长 → 最终确定 1 所。</li>
+      </ol>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">常见问题</h2>
+      <div class="mt-5 space-y-3">
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">学费越贵学校就越好吗?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">不是。学费与教育质量并不成正比。我亲自走访过一些学费中等却课程扎实、师资稳定的学校,也见过学费高但校舍老旧、外教流动大的学校。比起学费的绝对值,学费的年涨幅趋势(每年 5-7% 稳定 vs 10%+ 波动)对家庭预算的影响往往更大。</p>
+        </details>
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">最重要的指标是哪一个?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">没有单一答案,取决于子女年级和目标。低年级更看重环境、饮食、通学和班级里的同语言同伴比例;高年级则以课程体系、考试成绩和大学升学为核心。建议按"班级单位"的华人/本地比例来看,而不是只看全校平均。</p>
+        </details>
+        <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
+          <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">对比完 4 所之后怎么做决定?</summary>
+          <p class="mt-3 text-sm" style="line-height:1.7">对比表只用于压缩初步候选。压缩到 2-3 所后,建议逐一参加招生说明会、访谈至少一位在读家长、带子女实地感受校园氛围,再定最终 1-2 所。有中文沟通需求的家长,也可以通过 WeChat 找我(David)一对一咨询。</p>
+        </details>
+      </div>
+    </section>
+
     <section class="mt-12 card-cta">
       <h2 class="text-xl text-white" style="font-weight:500">学校对比 1:1 咨询</h2>
       <p class="mt-3 text-sm">告知子女年级 · 英语水平 · 预算 · 居住意向,可获 4-5 所候选学校 1:1 答复。</p>
