@@ -1,0 +1,112 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AuthorByline from '~/components/AuthorByline.astro';
+import { BUDGET_TIERS, TIER_META, budgetSchoolsByTier, formatUsdRange, type BudgetTier } from '~/lib/budget';
+
+export async function getStaticPaths() {
+  return BUDGET_TIERS.map((tier) => ({ params: { tier }, props: { tier } }));
+}
+
+const { tier } = Astro.props as { tier: BudgetTier };
+const meta = TIER_META[tier];
+const schools = budgetSchoolsByTier(tier);
+
+const publishedAt = new Date('2026-07-05');
+const updatedAt = new Date('2026-07-05');
+
+const title = `${meta.zh}国际学校 — ${meta.range_zh} | 东南亚按预算推荐 · AsiaEduHub`;
+const description = `${meta.range_zh}区间的东南亚国际学校 ${schools.length} 所。马来西亚·泰国·越南·新加坡学校按学费整理 — 各校详情可查课程·华人比例。`;
+
+const siteRoot = Astro.site?.toString() ?? '';
+const breadcrumb = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'AsiaEduHub', item: siteRoot + 'zh/' },
+    { '@type': 'ListItem', position: 2, name: '按预算选校', item: siteRoot + 'zh/tools/budget/budget-friendly/' },
+    { '@type': 'ListItem', position: 3, name: `${meta.zh} (${meta.range_zh})` },
+  ],
+};
+const itemList = {
+  '@context': 'https://schema.org', '@type': 'ItemList',
+  name: `${meta.zh} 东南亚国际学校`,
+  numberOfItems: schools.length,
+  itemListElement: schools.map((s, i) => ({
+    '@type': 'ListItem', position: i + 1, name: s.name_zh, item: siteRoot + 'zh' + s.url.replace(/^\//, '/'),
+  })),
+};
+---
+<BaseLayout
+  title={title} description={description}
+  jsonLd={[breadcrumb, itemList]}
+  author={{ name: 'David', url: '/zh/about/' }}
+  publishedAt={publishedAt} updatedAt={updatedAt}
+>
+  <section class="hero-gradient">
+    <div class="container-content py-10 sm:py-12">
+      <nav class="text-sm" style="color: var(--color-text-secondary)">
+        <a href="/zh/">首页</a> · 按预算选校 · <span style="color: var(--color-text-primary)">{meta.zh}</span>
+      </nav>
+      <h1 class="mt-4 text-3xl sm:text-4xl lg:text-5xl text-balance" style="font-weight:800; letter-spacing:-0.02em">
+        {meta.emoji} {meta.zh}国际学校
+      </h1>
+      <p class="mt-2 text-lg" style="color: var(--color-primary-700); font-weight:600">{meta.range_zh}</p>
+      <p class="mt-3 max-w-2xl text-base" style="color: var(--color-text-secondary); line-height: 1.7;">{meta.intro_zh}</p>
+      <div class="mt-5">
+        <AuthorByline locale="zh" publishedAt={publishedAt} updatedAt={updatedAt}
+          sources="学校官方学费资料 + 站长核实(东南亚四国综合)" />
+      </div>
+    </div>
+  </section>
+
+  <article class="container-content py-10 max-w-4xl">
+    <div class="flex flex-wrap gap-2 mb-8">
+      {BUDGET_TIERS.map((t) => (
+        <a href={`/zh/tools/budget/${t}/`}
+          class={t === tier ? 'badge-navy' : 'rounded-full border px-3 py-1 text-xs'}
+          style={t === tier ? '' : 'border-color: var(--color-border-medium); color: var(--color-text-secondary)'}>
+          {TIER_META[t].emoji} {TIER_META[t].zh}
+        </a>
+      ))}
+    </div>
+
+    {schools.length === 0 ? (
+      <p class="text-sm" style="color: var(--color-text-secondary)">该区间学校数据准备中。</p>
+    ) : (
+      <div class="grid gap-3 sm:grid-cols-2">
+        {schools.map((s) => (
+          <a href={`/zh${s.url}`} class="block rounded-xl border p-4 transition-colors hover:border-primary-700" style="border-color: var(--color-border-light)">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs" style="color: var(--color-text-tertiary)">{s.flag} {s.country_zh}</span>
+              <span class="text-xs" style="color: var(--color-primary-700); font-weight:600; font-variant-numeric: tabular-nums">{formatUsdRange(s.tuition)}</span>
+            </div>
+            <div class="mt-1.5 text-primary-900" style="font-weight:600; letter-spacing:-0.01em">{s.name_zh}</div>
+          </a>
+        ))}
+      </div>
+    )}
+
+    <p class="mt-6 text-xs" style="color: var(--color-text-tertiary)">
+      ※ 学费为学校官方资料的年度区间(USD),随年级·汇率变动。申请费·注册费·通勤等附加费用另计 —
+      <a href="/zh/blog/2026-07-hidden-school-costs/" class="underline">参见隐形费用 7 项</a>。
+    </p>
+
+    <section class="mt-10 card-cta">
+      <h2 class="text-xl text-white" style="font-weight:500">按预算选校咨询</h2>
+      <p class="mt-3 text-sm">告诉我预算 · 孩子年级 · 意向地区,我会在这一区间为你 1:1 筛选合适的学校。</p>
+      <a href="/zh/contact/" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white px-5 py-3 text-primary-900" style="font-weight:500">
+        WeChat · 邮箱咨询
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </a>
+    </section>
+
+    <section class="mt-8">
+      <div class="text-xs uppercase tracking-wide mb-3" style="color: var(--color-text-tertiary); font-weight:600">一起看</div>
+      <div class="grid gap-2 sm:grid-cols-2 text-sm">
+        <a href="/zh/tools/calculator/" class="card text-sm block">学费计算器 — 总费用·汇率</a>
+        <a href="/zh/blog/2026-07-hidden-school-costs/" class="card text-sm block">国际学校隐形费用 7 项</a>
+        <a href="/zh/blog/2026-07-what-is-international-school/" class="card text-sm block">什么是国际学校?三类区别</a>
+        <a href="/zh/abroad/malaysia/" class="card text-sm block">马来西亚国际学校对比</a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

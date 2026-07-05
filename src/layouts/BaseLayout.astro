@@ -20,9 +20,12 @@ export interface Props {
   updatedAt?: Date;
   /** Article schema 타입. 기본 'Article'. */
   articleType?: 'Article' | 'NewsArticle' | 'BlogPosting';
+  /** 실제 번역본이 존재하는 언어 목록. 지정 시 해당 언어만 hreflang 출력(없는 번역 404 방지).
+   *  미지정 시 ko·zh 양쪽 모두 출력(기본, 좌우 미러 페이지용). */
+  hreflangLocales?: ('ko' | 'zh')[];
 }
 
-const { title, description, ogImage, noindex = false, jsonLd, author, publishedAt, updatedAt, articleType = 'Article' } = Astro.props;
+const { title, description, ogImage, noindex = false, jsonLd, author, publishedAt, updatedAt, articleType = 'Article', hreflangLocales } = Astro.props;
 
 const pathname = Astro.url.pathname;
 const locale = resolveLocale(Astro.currentLocale, pathname);
@@ -33,6 +36,9 @@ const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
 const canonical = siteUrl + pathname;
 const altKo = siteUrl + alternateUrlFor(pathname, 'ko');
 const altZh = siteUrl + alternateUrlFor(pathname, 'zh');
+const showKoAlt = !hreflangLocales || hreflangLocales.includes('ko');
+const showZhAlt = !hreflangLocales || hreflangLocales.includes('zh');
+const xDefaultAlt = showKoAlt ? altKo : altZh;
 const ogImageUrl = ogImage ? (ogImage.startsWith('http') ? ogImage : siteUrl + ogImage) : siteUrl + '/og-default.png';
 
 const jsonLdArray: object[] = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
@@ -97,10 +103,10 @@ if (author && publishedAt) {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
 
-    {/* hreflang — 사양상 ko/zh 상호 매칭 필수 */}
-    <link rel="alternate" hreflang="ko-KR" href={altKo} />
-    <link rel="alternate" hreflang="zh-CN" href={altZh} />
-    <link rel="alternate" hreflang="x-default" href={altKo} />
+    {/* hreflang — 실제 번역본이 있는 언어만 출력(없는 번역 404 방지) */}
+    {showKoAlt && <link rel="alternate" hreflang="ko-KR" href={altKo} />}
+    {showZhAlt && <link rel="alternate" hreflang="zh-CN" href={altZh} />}
+    <link rel="alternate" hreflang="x-default" href={xDefaultAlt} />
 
     {noindex && <meta name="robots" content="noindex,nofollow" />}
 
