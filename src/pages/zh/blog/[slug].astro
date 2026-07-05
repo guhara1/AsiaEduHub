@@ -16,6 +16,12 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
 
+// 한국어 원문이 실제로 있는 글만 ko hreflang 출력 (없는 번역 404 방지)
+const baseSlug = entry.slug.replace(/-zh$/, '');
+const koPosts = await getCollection('blog', (e) => e.data.locale === 'ko');
+const hreflangLocales: ('ko' | 'zh')[] = koPosts.some((k) => k.slug.replace(/-ko$/, '') === baseSlug)
+  ? ['ko', 'zh'] : ['zh'];
+
 const title = `${entry.data.title} | AsiaEduHub`;
 const description = entry.data.summary;
 
@@ -64,6 +70,7 @@ const shareUrl = siteRoot + `zh/blog/${slug}/`;
 <BaseLayout
   title={title} description={description}
   jsonLd={breadcrumb}
+  hreflangLocales={hreflangLocales}
   author={{ name: entry.data.author, url: '/zh/about/' }}
   publishedAt={entry.data.published_at}
   updatedAt={entry.data.last_updated}
