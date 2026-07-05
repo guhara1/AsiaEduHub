@@ -45,11 +45,19 @@ export interface VietnamSchool extends FinanceOverride {
   operator_note_zh?: string;
 }
 
-export const VN_REGION_LABELS: Record<VnRegion, { ko: string; zh: string }> = {
-  'hanoi': { ko: '하노이', zh: '河内' },
-  'ho-chi-minh': { ko: '호치민', zh: '胡志明市' },
-  'hai-phong': { ko: '하이퐁', zh: '海防' },
-  'da-nang': { ko: '다낭', zh: '岘港' },
+export const VN_REGION_LABELS: Record<VnRegion, { ko: string; zh: string; blurb_ko: string; blurb_zh: string }> = {
+  'hanoi': { ko: '하노이', zh: '河内',
+    blurb_ko: '하노이는 베트남의 행정 수도로, 떠이호(서호)와 미딩 신도시를 중심으로 국제학교가 분포합니다. 이중언어 학교부터 명문 국제학교까지 학비 스펙트럼이 넓어 예산대별 선택이 가능합니다. 차분한 행정도시 분위기를 선호하는 가정에 어울립니다.',
+    blurb_zh: '河内是越南行政首都,国际学校集中在西湖(Tay Ho)与美亭新城。从双语学校到名校,学费跨度大,可按预算选择。适合偏好沉稳行政城市氛围的家庭。' },
+  'ho-chi-minh': { ko: '호치민', zh: '胡志明市',
+    blurb_ko: '호치민은 베트남 최대 상업도시로, 서양 주재원촌인 2군(투득)과 한국·아시아 가족이 많은 7군(푸미흥)에 국제학교가 밀집합니다. 선택지가 베트남에서 가장 넓어, 학군 위치가 통학과 커뮤니티를 좌우합니다.',
+    blurb_zh: '胡志明市是越南最大商业城市,国际学校集中在西方外派聚居的第 2 郡(Thu Duc)与韩亚家庭较多的第 7 郡(Phu My Hung)。选择为越南最多,学区位置决定通学与社群。' },
+  'hai-phong': { ko: '하이퐁', zh: '海防',
+    blurb_ko: '하이퐁은 베트남 북부의 항구도시로, 국제학교 선택지가 매우 제한적입니다. 하노이 접근성과 함께, 장기 거주 시 의료·국제 접근성을 함께 확인하는 것이 좋습니다.',
+    blurb_zh: '海防是越南北部港口城市,国际学校选择非常有限。建议结合河内的可达性,并在长期居住时一并确认医疗与国际交通。' },
+  'da-nang': { ko: '다낭', zh: '岘港',
+    blurb_ko: '다낭은 해변을 낀 중부 도시로, 국제학교 수가 적습니다. 여유로운 해안 라이프스타일이 매력이지만, 선택지와 고학년 진학 인프라는 대도시 대비 제한적입니다.',
+    blurb_zh: '岘港是中部海滨城市,国际学校数量少。海岸生活方式有吸引力,但选择与高年级升学资源相对大城市有限。' },
 };
 
 export const VIETNAM_SCHOOLS: VietnamSchool[] = [
