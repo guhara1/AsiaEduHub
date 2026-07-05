@@ -114,7 +114,7 @@ export const GET: APIRoute = ({ site }) => {
     '',
     '# ── 4. 사이트맵 · RSS (검색엔진 발견 가속) ───────────────',
     `Sitemap: ${base}/sitemap-index.xml`,
-    `Sitemap: ${base}/ko/rss.xml`,
+    `Sitemap: ${base}/rss.xml`,
     `Sitemap: ${base}/zh/rss.xml`,
     '',
     `Host: ${base.replace(/^https?:\/\//, '')}`,

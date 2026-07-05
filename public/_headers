@@ -25,7 +25,7 @@
   Cache-Control: public, max-age=300, s-maxage=300
   Content-Type: text/plain; charset=utf-8
 
-/ko/rss.xml
+/rss.xml
   Cache-Control: public, max-age=600, s-maxage=600
   Content-Type: application/rss+xml; charset=utf-8
 

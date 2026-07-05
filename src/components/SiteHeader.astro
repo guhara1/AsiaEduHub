@@ -1,5 +1,5 @@
 ---
-import { resolveLocale, alternateUrlFor, getMessages, type Locale } from '../lib/i18n';
+import { resolveLocale, alternateUrlFor, getMessages, localePrefix, type Locale } from '../lib/i18n';
 import {
   SOUTHEAST_ASIA,
   ANGLOSPHERE,
@@ -19,6 +19,7 @@ import { VIETNAM_SCHOOLS, VN_REGION_LABELS } from '../lib/vietnam-schools';
 
 const pathname = Astro.url.pathname;
 const locale: Locale = resolveLocale(Astro.currentLocale, pathname);
+const lp = localePrefix(locale);
 const t = getMessages(locale);
 
 type ChildLink = { kind: 'link'; label: string; href: string };
@@ -55,7 +56,7 @@ for (const g of DOMESTIC_KOREA) {
       const allSchools = g.id === 'foreign-schools' ? FOREIGN_SCHOOLS : INTERNATIONAL_SCHOOLS;
       const schoolsInRegion = allSchools.filter((s) => s.region === r.id);
       const regionLabel = locale === 'ko' ? r.ko : r.zh;
-      const regionHref = `/${locale}/domestic/${g.id}/${r.id}/`;
+      const regionHref = `${lp}/domestic/${g.id}/${r.id}/`;
 
       if (schoolsInRegion.length > 0) {
         domesticChildren.push({
@@ -65,7 +66,7 @@ for (const g of DOMESTIC_KOREA) {
           children: [
             ...schoolsInRegion.map((s) => ({
               label: locale === 'ko' ? s.name_ko : s.name_zh,
-              href: `/${locale}/domestic/${g.id}/${r.id}/${s.slug}/`,
+              href: `${lp}/domestic/${g.id}/${r.id}/${s.slug}/`,
             })),
             {
               label: locale === 'ko' ? `${regionLabel} 전체 →` : `${regionLabel} 全部 →`,
@@ -84,8 +85,8 @@ for (const g of DOMESTIC_KOREA) {
   } else {
     // kindergarten · admission-guide 등 카테고리: 별도 페이지로 링크
     const dedicatedHref = (g.id === 'kindergarten' || g.id === 'admission-guide')
-      ? `/${locale}/domestic/${g.id}/`
-      : `/${locale}/domestic/#${g.id}`;
+      ? `${lp}/domestic/${g.id}/`
+      : `${lp}/domestic/#${g.id}`;
     domesticChildren.push({
       kind: 'link',
       label: locale === 'ko' ? g.ko : g.zh,
@@ -107,15 +108,15 @@ for (const c of SOUTHEAST_ASIA) {
     countryChildren.push({
       kind: 'submenu',
       label: `${c.flag} ${countryName(c, locale)}`,
-      href: `/${locale}/abroad/malaysia/`,
+      href: `${lp}/abroad/malaysia/`,
       children: [
         ...MALAYSIA_SCHOOLS.map((s) => ({
           label: locale === 'ko' ? s.name_ko : s.name_zh,
-          href: `/${locale}/abroad/malaysia/${s.slug}/`,
+          href: `${lp}/abroad/malaysia/${s.slug}/`,
         })),
         {
           label: locale === 'ko' ? '🇲🇾 말레이시아 전체 →' : '🇲🇾 马来西亚全部 →',
-          href: `/${locale}/abroad/malaysia/`,
+          href: `${lp}/abroad/malaysia/`,
         },
       ],
     });
@@ -129,23 +130,23 @@ for (const c of SOUTHEAST_ASIA) {
       // 지역 헤더 (구분용)
       thaiChildren.push({
         label: `── ${locale === 'ko' ? THAI_REGIONS[r].ko : THAI_REGIONS[r].zh} (${regionSchools.length}) ──`,
-        href: `/${locale}/abroad/thailand/${r}/`,
+        href: `${lp}/abroad/thailand/${r}/`,
       });
       for (const s of regionSchools) {
         thaiChildren.push({
           label: `   ${locale === 'ko' ? s.name_ko : s.name_zh}`,
-          href: `/${locale}/abroad/thailand/${r}/${s.slug}/`,
+          href: `${lp}/abroad/thailand/${r}/${s.slug}/`,
         });
       }
     }
     thaiChildren.push({
       label: locale === 'ko' ? '🇹🇭 태국 전체 →' : '🇹🇭 泰国全部 →',
-      href: `/${locale}/abroad/thailand/`,
+      href: `${lp}/abroad/thailand/`,
     });
     countryChildren.push({
       kind: 'submenu',
       label: `${c.flag} ${countryName(c, locale)}`,
-      href: `/${locale}/abroad/thailand/`,
+      href: `${lp}/abroad/thailand/`,
       children: thaiChildren,
     });
   } else if (c.id === 'singapore') {
@@ -153,15 +154,15 @@ for (const c of SOUTHEAST_ASIA) {
     countryChildren.push({
       kind: 'submenu',
       label: `${c.flag} ${countryName(c, locale)}`,
-      href: `/${locale}/abroad/singapore/`,
+      href: `${lp}/abroad/singapore/`,
       children: [
         ...SINGAPORE_SCHOOLS.map((s) => ({
           label: locale === 'ko' ? s.name_ko : s.name_zh,
-          href: `/${locale}/abroad/singapore/${s.slug}/`,
+          href: `${lp}/abroad/singapore/${s.slug}/`,
         })),
         {
           label: locale === 'ko' ? '🇸🇬 싱가포르 전체 →' : '🇸🇬 新加坡全部 →',
-          href: `/${locale}/abroad/singapore/`,
+          href: `${lp}/abroad/singapore/`,
         },
       ],
     });
@@ -174,23 +175,23 @@ for (const c of SOUTHEAST_ASIA) {
       if (regionSchools.length === 0) continue;
       vnChildren.push({
         label: `── ${locale === 'ko' ? VN_REGION_LABELS[r].ko : VN_REGION_LABELS[r].zh} (${regionSchools.length}) ──`,
-        href: `/${locale}/abroad/vietnam/${r}/`,
+        href: `${lp}/abroad/vietnam/${r}/`,
       });
       for (const s of regionSchools) {
         vnChildren.push({
           label: `   ${locale === 'ko' ? s.name_ko : s.name_zh}`,
-          href: `/${locale}/abroad/vietnam/${r}/${s.slug}/`,
+          href: `${lp}/abroad/vietnam/${r}/${s.slug}/`,
         });
       }
     }
     vnChildren.push({
       label: locale === 'ko' ? '🇻🇳 베트남 전체 →' : '🇻🇳 越南全部 →',
-      href: `/${locale}/abroad/vietnam/`,
+      href: `${lp}/abroad/vietnam/`,
     });
     countryChildren.push({
       kind: 'submenu',
       label: `${c.flag} ${countryName(c, locale)}`,
-      href: `/${locale}/abroad/vietnam/`,
+      href: `${lp}/abroad/vietnam/`,
       children: vnChildren,
     });
   } else {
@@ -200,7 +201,7 @@ for (const c of SOUTHEAST_ASIA) {
     countryChildren.push({
       kind: 'link',
       label: `${c.flag} ${countryName(c, locale)}${cityTrail}`,
-      href: `/${locale}/abroad/#${c.id}`,
+      href: `${lp}/abroad/#${c.id}`,
     });
   }
 }
@@ -213,7 +214,7 @@ for (const c of ANGLOSPHERE) {
   countryChildren.push({
     kind: 'link',
     label: `${c.flag} ${countryName(c, locale)}`,
-    href: `/${locale}/abroad/anglosphere/${c.id}/`,
+    href: `${lp}/abroad/anglosphere/${c.id}/`,
   });
 }
 // 3) 학교 유형별
@@ -225,7 +226,7 @@ for (const t of SCHOOL_TYPES) {
   countryChildren.push({
     kind: 'link',
     label: locale === 'ko' ? t.ko : t.zh,
-    href: `/${locale}/abroad/types/${t.id}/`,
+    href: `${lp}/abroad/types/${t.id}/`,
   });
 }
 
@@ -233,19 +234,19 @@ const compareChildren: DropdownChild[] = COMPARE_TOOLS.map((t) => ({
   kind: 'link',
   label: locale === 'ko' ? t.ko : t.zh,
   // 도구별 개별 페이지로 분리. id 가 'compare' = 메인 페이지, 나머지는 /tools/{id}/
-  href: t.id === 'compare' ? `/${locale}/tools/compare/` : `/${locale}/tools/${t.id}/`,
+  href: t.id === 'compare' ? `${lp}/tools/compare/` : `${lp}/tools/${t.id}/`,
 }));
 
 const mm2hChildren: DropdownChild[] = MM2H_TOPICS.map((t) => ({
   kind: 'link',
   label: locale === 'ko' ? t.ko : t.zh,
-  href: `/${locale}/mm2h/${t.id}/`,
+  href: `${lp}/mm2h/${t.id}/`,
 }));
 
 const guideChildren: DropdownChild[] = GUIDE_CATEGORIES.map((g) => ({
   kind: 'link',
   label: locale === 'ko' ? g.ko : g.zh,
-  href: g.id === 'expert-columns' ? `/${locale}/experts/` : `/${locale}/guide/${g.id}/`,
+  href: g.id === 'expert-columns' ? `${lp}/experts/` : `${lp}/guide/${g.id}/`,
 }));
 
 const menu: MenuItem[] = [
@@ -256,7 +257,7 @@ const menu: MenuItem[] = [
     viewAll: {
       kind: 'link',
       label: locale === 'ko' ? '국내 학교 전체 →' : '查看全部 →',
-      href: `/${locale}/domestic/`,
+      href: `${lp}/domestic/`,
     },
   },
   {
@@ -266,7 +267,7 @@ const menu: MenuItem[] = [
     viewAll: {
       kind: 'link',
       label: locale === 'ko' ? '해외 학교 전체 →' : '查看全部 →',
-      href: `/${locale}/abroad/`,
+      href: `${lp}/abroad/`,
     },
   },
   {
@@ -276,7 +277,7 @@ const menu: MenuItem[] = [
     viewAll: {
       kind: 'link',
       label: locale === 'ko' ? '비교 도구 전체 →' : '查看全部对比工具 →',
-      href: `/${locale}/tools/compare/`,
+      href: `${lp}/tools/compare/`,
     },
   },
   {
@@ -286,7 +287,7 @@ const menu: MenuItem[] = [
     viewAll: {
       kind: 'link',
       label: locale === 'ko' ? '전체 보기 →' : '查看全部 →',
-      href: `/${locale}/mm2h/`,
+      href: `${lp}/mm2h/`,
     },
   },
   {
@@ -296,11 +297,11 @@ const menu: MenuItem[] = [
     viewAll: {
       kind: 'link',
       label: locale === 'ko' ? '전체 가이드 보기 →' : '查看全部指南 →',
-      href: `/${locale}/guide/`,
+      href: `${lp}/guide/`,
     },
   },
-  { type: 'link', label: locale === 'ko' ? '블로그' : '博客', href: `/${locale}/blog/` },
-  { type: 'link', label: locale === 'ko' ? '상담신청' : '免费咨询', href: `/${locale}/contact/` },
+  { type: 'link', label: locale === 'ko' ? '블로그' : '博客', href: `${lp}/blog/` },
+  { type: 'link', label: locale === 'ko' ? '상담신청' : '免费咨询', href: `${lp}/contact/` },
 ];
 
 const koUrl = alternateUrlFor(pathname, 'ko');
@@ -311,7 +312,7 @@ const langLabel = locale === 'ko' ? '언어' : '语言';
 ---
 <header class="border-b bg-white" style="border-color: var(--color-border-light)">
   <div class="container-content flex h-16 items-center justify-between gap-3">
-    <a href={`/${locale}/`} class="flex items-center gap-2 text-primary-900 shrink-0" style="font-weight:500" aria-label="AsiaEduHub">
+    <a href={`${lp}/`} class="flex items-center gap-2 text-primary-900 shrink-0" style="font-weight:500" aria-label="AsiaEduHub">
       <svg aria-hidden="true" width="32" height="32" viewBox="0 0 64 64" class="shrink-0">
         <rect width="64" height="64" rx="14" fill="#1E3A8A"/>
         <path d="M32 14 L56 25 L32 36 L8 25 Z" fill="#FFFFFF"/>
@@ -400,7 +401,7 @@ const langLabel = locale === 'ko' ? '언어' : '语言';
     <div class="flex items-center gap-2">
       {/* 모바일 상담 CTA — 햄버거 밖 항상 노출 (전환율 ↑) */}
       <a
-        href={`/${locale}/contact/`}
+        href={`${lp}/contact/`}
         class="md:hidden inline-flex items-center justify-center rounded-md bg-primary-900 px-3 py-1.5 text-xs text-white"
         style="font-weight:500"
         aria-label={locale === 'ko' ? '무료 상담 신청' : '免费咨询'}

@@ -1,8 +1,9 @@
 ---
-import { resolveLocale, getMessages, type Locale } from '../lib/i18n';
+import { resolveLocale, getMessages, localePrefix, type Locale } from '../lib/i18n';
 
 const pathname = Astro.url.pathname;
 const locale: Locale = resolveLocale(Astro.currentLocale, pathname);
+const lp = localePrefix(locale);
 const t = getMessages(locale);
 
 const T = {
@@ -29,28 +30,28 @@ const T = {
 }[locale];
 
 const aboutLinks = [
-  { label: t.footer.about, href: `/${locale}/about/` },
-  { label: t.footer.editorial_policy, href: `/${locale}/editorial-policy/` },
-  { label: t.footer.contact, href: `/${locale}/contact/` },
+  { label: t.footer.about, href: `${lp}/about/` },
+  { label: t.footer.editorial_policy, href: `${lp}/editorial-policy/` },
+  { label: t.footer.contact, href: `${lp}/contact/` },
 ];
 
 const siteLinks = [
-  { label: locale === 'ko' ? '국내 국제학교' : '韩国国际学校', href: `/${locale}/domestic/` },
-  { label: locale === 'ko' ? '해외 유학' : '海外留学', href: `/${locale}/abroad/` },
-  { label: locale === 'ko' ? '비교 / 도구' : '对比 / 工具', href: `/${locale}/tools/compare/` },
-  { label: locale === 'ko' ? 'MM2H · 이주' : 'MM2H · 移居', href: `/${locale}/mm2h/` },
-  { label: locale === 'ko' ? '가이드' : '指南', href: `/${locale}/guide/` },
-  { label: locale === 'ko' ? '전문가 칼럼' : '专家专栏', href: `/${locale}/experts/` },
+  { label: locale === 'ko' ? '국내 국제학교' : '韩国国际学校', href: `${lp}/domestic/` },
+  { label: locale === 'ko' ? '해외 유학' : '海外留学', href: `${lp}/abroad/` },
+  { label: locale === 'ko' ? '비교 / 도구' : '对比 / 工具', href: `${lp}/tools/compare/` },
+  { label: locale === 'ko' ? 'MM2H · 이주' : 'MM2H · 移居', href: `${lp}/mm2h/` },
+  { label: locale === 'ko' ? '가이드' : '指南', href: `${lp}/guide/` },
+  { label: locale === 'ko' ? '전문가 칼럼' : '专家专栏', href: `${lp}/experts/` },
   { label: T.sitemap, href: '/sitemap-index.xml' },
 ];
 
 const advertiseLinks = [
-  { label: t.footer.advertise, href: `/${locale}/advertise/` },
+  { label: t.footer.advertise, href: `${lp}/advertise/` },
 ];
 
 const legalLinks = [
-  { label: t.footer.privacy, href: `/${locale}/privacy/` },
-  { label: t.footer.terms, href: `/${locale}/terms/` },
+  { label: t.footer.privacy, href: `${lp}/privacy/` },
+  { label: t.footer.terms, href: `${lp}/terms/` },
 ];
 
 // SNS — 운영자 결정 시 href 채움. 빈 상태에선 비활성 표시.

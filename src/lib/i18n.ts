@@ -32,14 +32,24 @@ export function resolveLocale(currentLocale: string | undefined, pathname: strin
 }
 
 /**
+ * 언어별 경로 접두사. 기본 언어(한국어)는 접두사 없음(''), 그 외는 `/{locale}`.
+ * 링크 생성 시 `${localePrefix(locale)}/about/` 형태로 사용.
+ */
+export function localePrefix(locale: Locale): string {
+  return locale === DEFAULT_LOCALE ? '' : `/${locale}`;
+}
+
+/**
  * 현재 경로의 다른 언어 버전 URL 을 생성. hreflang 태그에 사용.
+ * 기본 언어는 접두사 없이(/about/), 그 외는 접두사 포함(/zh/about/).
  */
 export function alternateUrlFor(pathname: string, target: Locale): string {
   const parts = pathname.split('/').filter(Boolean);
-  if (parts.length === 0) return `/${target}/`;
-  if (isLocale(parts[0])) parts[0] = target;
-  else parts.unshift(target);
-  return '/' + parts.join('/') + (pathname.endsWith('/') ? '/' : '');
+  // 기존 언어 접두사가 있으면 제거 후 대상 언어 접두사로 재구성.
+  if (isLocale(parts[0])) parts.shift();
+  const prefix = localePrefix(target);
+  if (parts.length === 0) return prefix + '/';
+  return prefix + '/' + parts.join('/') + '/';
 }
 
 export const HTML_LANG: Record<Locale, string> = {

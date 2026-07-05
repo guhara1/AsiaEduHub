@@ -1,5 +1,5 @@
 ---
-import type { Locale } from '~/lib/i18n';
+import { localePrefix, type Locale } from '~/lib/i18n';
 import type { AdCreative } from '~/lib/ads';
 
 export interface Props {
@@ -11,6 +11,7 @@ export interface Props {
 }
 
 const { type, locale, creative } = Astro.props;
+const lp = localePrefix(locale);
 
 const SIZE = {
   sky: { w: 160, h: 300 },
@@ -63,7 +64,7 @@ const T = {
     </a>
   ) : (
     <a
-      href={`/${locale}/advertise/`}
+      href={`${lp}/advertise/`}
       class="flex items-center justify-center rounded-md border text-xs text-[color:var(--color-text-tertiary)] transition-colors hover:border-primary-700 hover:text-primary-700"
       style={`width:${w}px; height:${h}px; border-color: var(--color-border-light); background: var(--color-bg-secondary)`}
     >

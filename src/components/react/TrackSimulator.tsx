@@ -8,7 +8,7 @@ import {
   type StartRegion,
   type BudgetTier,
 } from '../../lib/track-scenarios';
-import type { Locale } from '../../lib/i18n';
+import { localePrefix, type Locale } from '../../lib/i18n';
 
 interface Props {
   locale: Locale;
@@ -83,6 +83,7 @@ const fmt = (n: number, locale: Locale) =>
 
 export default function TrackSimulator({ locale }: Props) {
   const t = T[locale];
+  const lp = localePrefix(locale);
   const [grade, setGrade] = useState<number>(3);
   const [target, setTarget] = useState<TargetUniversity>('uk-oxbridge');
   const [start, setStart] = useState<StartRegion>('sea-malaysia');
@@ -178,7 +179,7 @@ export default function TrackSimulator({ locale }: Props) {
 
           <p className="mt-6 text-xs text-[color:var(--color-text-tertiary)]">{t.note}</p>
           <div className="mt-3">
-            <a href={`/${locale}/contact/`} className="cta-primary text-sm">{t.cta}</a>
+            <a href={`${lp}/contact/`} className="cta-primary text-sm">{t.cta}</a>
           </div>
         </div>
       )}
