@@ -43,11 +43,19 @@ export interface ThailandSchool extends FinanceOverride {
   operator_note_zh?: string;
 }
 
-export const REGION_LABELS: Record<ThaiRegion, { ko: string; zh: string; flag?: string }> = {
-  'bangkok': { ko: '방콕', zh: '曼谷' },
-  'pattaya': { ko: '파타야', zh: '芭提雅' },
-  'phuket': { ko: '푸켓', zh: '普吉' },
-  'chiang-mai': { ko: '치앙마이', zh: '清迈' },
+export const REGION_LABELS: Record<ThaiRegion, { ko: string; zh: string; flag?: string; blurb_ko: string; blurb_zh: string }> = {
+  'bangkok': { ko: '방콕', zh: '曼谷',
+    blurb_ko: '방콕은 태국 국제학교의 중심입니다. 영국식·미국식·IB 명문이 한 도시에 밀집해 선택지가 태국에서 가장 넓습니다. 대신 출퇴근 시간대 교통 정체가 심해, 학교와 거주지의 통학 동선을 반드시 함께 따져야 합니다. 진지한 학업·명문 진학을 목표하는 가정에 가장 무난한 선택지입니다.',
+    blurb_zh: '曼谷是泰国国际学校的中心,英式·美式·IB 名校集中,选择最多。但高峰时段交通拥堵严重,选校务必连同居住地的通学动线一起考量。适合以学业·名校升学为目标的家庭。' },
+  'pattaya': { ko: '파타야', zh: '芭提雅',
+    blurb_ko: '파타야는 관광지 이미지와 달리 Rugby School Thailand·Regents 등 탄탄한 국제학교가 있는 지역입니다. 방콕과 차로 약 2시간 거리라 대도시 인프라를 필요할 때 활용할 수 있습니다. 다만 관광지 특유의 밤 문화·유동 인구가 자녀 양육 환경에 맞는지는 별도로 확인하는 것이 좋습니다.',
+    blurb_zh: '芭提雅并非只是旅游地——Rugby School Thailand·Regents 等实力国际学校都在此。距曼谷车程约 2 小时,可按需借助大城市资源。但旅游地特有的夜生活·流动人口是否适合育儿环境,建议另行确认。' },
+  'phuket': { ko: '푸켓', zh: '普吉',
+    blurb_ko: '푸켓은 섬 특유의 독립된 생활권을 가진 휴양지입니다. British International School Phuket 등 인지도 있는 학교가 있으나, 학교 절대 수는 방콕보다 훨씬 적어 선택지가 제한적입니다. 라이프스타일과 국제 항공 접근성을 중시하는 가정에 어울립니다.',
+    blurb_zh: '普吉是拥有海岛独立生活圈的度假地。有 British International School Phuket 等知名学校,但学校数量远少于曼谷,选择有限。适合重视生活方式与国际航班便利的家庭。' },
+  'chiang-mai': { ko: '치앙마이', zh: '清迈',
+    blurb_ko: '치앙마이는 낮은 물가와 자연 환경을 갖춘 태국의 대표적 저비용 유학 도시입니다. 오래 자리 잡은 국제학교들이 있으나 선택지가 방콕보다 적고, 고학년 진학 인프라는 상대적으로 얇습니다. 비용과 삶의 질을 최우선으로 두는 가정에 적합합니다.',
+    blurb_zh: '清迈物价低、自然环境好,是泰国代表性的低成本留学城市。有历史悠久的国际学校,但选择少于曼谷,高年级升学资源相对薄弱。适合以成本与生活质量为先的家庭。' },
 };
 
 export const THAILAND_SCHOOLS: ThailandSchool[] = [
