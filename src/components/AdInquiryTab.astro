@@ -1,12 +1,11 @@
 ---
 /**
- * 좌측 고정 광고 슬롯 (표준 스카이스크래퍼 160×600) — '광고문의' 텔레그램 연결.
+ * 좌측 고정 광고 슬롯 (표준 스카이스크래퍼 160×600) + 좁은 화면용 컴팩트 탭 — '광고문의' 텔레그램 연결.
  *
  * - 실제 광고주 소재를 동일 규격(160×600)으로 그대로 교체 가능.
- *   creative 넘기면 배너, 없으면 '광고문의' 폴백.
- * - 폭 160px → 콘텐츠 컬럼(1152px) 좌측 여백에 여유롭게 들어가 본문 안 가림(≥1500px 노출).
- * - 그 이하·모바일: 컴팩트 세로 탭으로 대체(동일 링크).
- * - 슬롯 크기 항상 160×600 고정(box-border) → CLS=0, 광고주 소재 규격 일관.
+ * - ≥1500px: 160×600 스카이스크래퍼(좌측 여백, 본문 안 가림).
+ * - 그 이하·모바일: 컴팩트 세로 탭(스크롤하며 읽을 수 있음).
+ * - 다크모드: ad-navy/ad-surface 클래스로 배경 대비 확보(네이비가 어두운 배경에 묻히지 않게 밝은 블루로).
  */
 import { resolveLocale, type Locale } from '../lib/i18n';
 import type { AdCreative } from '../lib/ads';
@@ -55,7 +54,7 @@ const plane =
       href={creative.href}
       target="_blank"
       rel="sponsored noopener"
-      class="block overflow-hidden rounded-xl border shadow-lg"
+      class="ad-surface block overflow-hidden rounded-xl border shadow-lg"
       style="box-sizing:border-box;width:160px;height:600px;border-color:var(--color-border-light);background:#fff"
       aria-label={creative.alt}
     >
@@ -75,10 +74,10 @@ const plane =
       target="_blank"
       rel="noopener"
       aria-label={T.aria}
-      class="group flex flex-col overflow-hidden rounded-xl border bg-white shadow-lg transition-shadow hover:shadow-xl"
+      class="ad-surface group flex flex-col overflow-hidden rounded-xl border bg-white shadow-lg transition-shadow hover:shadow-xl"
       style="box-sizing:border-box;width:160px;height:600px;border-color:var(--color-border-light)"
     >
-      <div class="flex items-center justify-center gap-1.5 px-2 py-3 text-white" style="background:var(--color-primary-900)">
+      <div class="ad-navy flex items-center justify-center gap-1.5 px-2 py-3">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="shrink-0"><path d={plane} /></svg>
         <span class="text-xs tracking-wide" style="font-weight:500">{T.badge}</span>
       </div>
@@ -89,10 +88,7 @@ const plane =
           <li class="flex gap-1.5"><span style="color:var(--color-accent-500)">●</span><span>{T.p1}</span></li>
           <li class="flex gap-1.5"><span style="color:var(--color-accent-500)">●</span><span>{T.p2}</span></li>
         </ul>
-        <span
-          class="mt-6 inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-xs text-white transition-transform group-hover:-translate-y-0.5"
-          style="background:var(--color-primary-900);font-weight:500"
-        >
+        <span class="ad-navy mt-6 inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-xs transition-transform group-hover:-translate-y-0.5" style="font-weight:500">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={plane} /></svg>
           {T.cta}
         </span>
@@ -101,8 +97,14 @@ const plane =
   )}
 </aside>
 
-{/*
-  좁은 화면·모바일에는 좌측 고정 요소를 두지 않는다.
-  (좌측 세로 탭이 본문 글자를 가려 시인성 저하 → 제거)
-  모바일 광고문의 CTA 는 상단 728×150 리더보드(AdLeaderboard)와 푸터 텔레그램 링크가 담당.
-*/}
+{/* 좁은 화면·모바일 — 컴팩트 세로 탭 (스크롤하며 읽기 가능, 동일 링크). 다크모드 대비는 ad-navy 로 확보 */}
+<a
+  href={TG}
+  target="_blank"
+  rel="noopener"
+  aria-label={T.aria}
+  class="ad-inquiry-tab ad-navy min-[1500px]:hidden fixed left-0 top-1/2 z-40 -translate-y-1/2 flex flex-col items-center gap-1.5 rounded-r-xl px-1.5 py-3 shadow-lg transition-transform hover:translate-x-1"
+>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="shrink-0"><path d={plane} /></svg>
+  <span class="text-xs tracking-wide" style="writing-mode: vertical-rl; font-weight: 500; letter-spacing: 0.05em">{T.tab}</span>
+</a>
