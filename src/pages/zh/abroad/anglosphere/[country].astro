@@ -66,7 +66,7 @@ const faqSchema = {
   </section>
 
   <article class="container-content py-10 max-w-3xl">
-    <div class="rounded-2xl p-6 mt-2" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+    <div class="rounded-2xl p-6 mt-2" style="background: linear-gradient(135deg, var(--tint-warning) 0%, var(--tint-warning) 100%); border: 1px solid #FCD34D">
       <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 核心要点</div>
       <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
         {info.tagline_zh} <strong>学费 {info.tuition_local}</strong>。{info.destinations_zh}
@@ -87,8 +87,8 @@ const faqSchema = {
 
     <section class="mt-10">
       <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">签证信息</h2>
-      <div class="mt-4 rounded-xl p-5" style="background: var(--color-primary-50); border-left: 4px solid var(--color-primary-700)">
-        <p class="text-sm" style="color: var(--color-primary-900); line-height:1.7; font-weight:500">{info.visa_zh}</p>
+      <div class="mt-4 rounded-xl p-5" style="background: var(--tint-primary); border-left: 4px solid var(--color-primary-700)">
+        <p class="text-sm" style="color: var(--val-strong); line-height:1.7; font-weight:500">{info.visa_zh}</p>
       </div>
     </section>
 
@@ -132,7 +132,7 @@ const faqSchema = {
       <div class="mt-5 space-y-3">
         {info.faqs.map((f) => (
           <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
-            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.q_zh}</summary>
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--val-strong)">{f.q_zh}</summary>
             <p class="mt-3 text-sm" style="line-height:1.7">{f.a_zh}</p>
           </details>
         ))}

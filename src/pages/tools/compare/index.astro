@@ -84,7 +84,7 @@ const faqSchema = {
 
   <article class="container-content py-10 max-w-5xl">
 
-    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, var(--tint-warning) 0%, var(--tint-warning) 100%); border: 1px solid #FCD34D">
       <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 핵심 요약</div>
       <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
         학교 비교는 <strong>1차 후보 압축 용도</strong>이지 최종 결정 도구가 아닙니다.
@@ -182,7 +182,7 @@ const faqSchema = {
       <div class="mt-5 space-y-3">
         {faqSchema.mainEntity.map((f: any) => (
           <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
-            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.name}</summary>
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--val-strong)">{f.name}</summary>
             <p class="mt-3 text-sm" style="line-height:1.7">{f.acceptedAnswer.text}</p>
           </details>
         ))}

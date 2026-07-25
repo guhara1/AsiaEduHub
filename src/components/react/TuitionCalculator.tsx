@@ -94,7 +94,7 @@ export default function TuitionCalculator({ locale }: Props) {
   };
 
   return (
-    <div className="rounded-lg border bg-white" style={{ borderColor: 'var(--color-border-light)' }}>
+    <div className="rounded-lg border" style={{ borderColor: 'var(--color-border-light)', background: 'var(--color-bg-elevated)' }}>
       <div className="border-b px-5 py-4" style={{ borderColor: 'var(--color-border-light)' }}>
         <h3 className="text-lg text-primary-900" style={{ fontWeight: 500 }}>{t.h}</h3>
         <p className="mt-1 text-sm text-[color:var(--color-text-secondary)]">{t.sub}</p>

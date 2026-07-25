@@ -65,7 +65,7 @@ const faqSchema = {
 
   <article class="container-content py-10 max-w-3xl">
 
-    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, var(--tint-warning) 0%, var(--tint-warning) 100%); border: 1px solid #FCD34D">
       <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 핵심 포인트</div>
       <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
         학교 공식 학비는 <strong>전체 비용의 70~80%</strong>입니다. 등록비·보증금·셔틀·CCA·항공권 등이 나머지 20~30%. 가족 예산 계산 시 학비의 <strong>1.2~1.3배</strong>를 안전선으로 두세요.
@@ -101,7 +101,7 @@ const faqSchema = {
             <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">셔틀 (1명, 연)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$1,100</td><td class="p-3" style="border:1px solid var(--color-border-light)">월 KRW 15만원 × 10개월</td></tr>
             <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">점심 식대 (월)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$180/월</td><td class="p-3" style="border:1px solid var(--color-border-light)">학교 카페테리아 패키지</td></tr>
             <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">CCA 외부 강사 (1과목/텀)</td><td class="p-3" style="border:1px solid var(--color-border-light)">$250</td><td class="p-3" style="border:1px solid var(--color-border-light)">한 텀 1회 비용</td></tr>
-            <tr style="background: #FFFBF0"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:700">첫 학기 결제 합계</td><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:700">≈ $21,000</td><td class="p-3" style="border:1px solid var(--color-border-light)">환불 가능 보증금 포함</td></tr>
+            <tr style="background: var(--tint-warning)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:700">첫 학기 결제 합계</td><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:700">≈ $21,000</td><td class="p-3" style="border:1px solid var(--color-border-light)">환불 가능 보증금 포함</td></tr>
           </tbody>
         </table>
       </div>
@@ -171,7 +171,7 @@ const faqSchema = {
       <div class="mt-5 space-y-3">
         {faqSchema.mainEntity.map((f: any) => (
           <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
-            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.name}</summary>
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--val-strong)">{f.name}</summary>
             <p class="mt-3 text-sm" style="line-height:1.7">{f.acceptedAnswer.text}</p>
           </details>
         ))}

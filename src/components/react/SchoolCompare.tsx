@@ -105,7 +105,7 @@ export default function SchoolCompare({ locale, schools }: Props) {
 
   if (schools.length === 0) {
     return (
-      <div className="rounded-lg border bg-white p-6" style={{ borderColor: 'var(--color-border-light)' }}>
+      <div className="rounded-lg border p-6" style={{ borderColor: 'var(--color-border-light)', background: 'var(--color-bg-elevated)' }}>
         <h3 className="text-lg text-primary-900" style={{ fontWeight: 500 }}>{t.h}</h3>
         <p className="mt-2 text-sm text-[color:var(--color-text-secondary)]">{t.empty}</p>
         <a href={`${lp}/abroad/`} className="cta-secondary mt-4 inline-flex text-sm">
@@ -116,7 +116,7 @@ export default function SchoolCompare({ locale, schools }: Props) {
   }
 
   return (
-    <div className="rounded-lg border bg-white" style={{ borderColor: 'var(--color-border-light)' }}>
+    <div className="rounded-lg border" style={{ borderColor: 'var(--color-border-light)', background: 'var(--color-bg-elevated)' }}>
       <div className="border-b px-5 py-4" style={{ borderColor: 'var(--color-border-light)' }}>
         <h3 className="text-lg text-primary-900" style={{ fontWeight: 500 }}>{t.h}</h3>
         <p className="mt-1 text-sm text-[color:var(--color-text-secondary)]">{t.sub}</p>
