@@ -20,7 +20,9 @@
   --tint-success: rgba(4, 120, 87, 0.16);
   --tint-danger:  rgba(220, 38, 38, 0.16);
   --tint-warning: rgba(245, 158, 11, 0.12);
+  --tint-gold:    rgba(245, 158, 11, 0.16);
   --val-strong:   #BFDBFE;
+  --val-warm:     #FBBF24;
 
   --color-bg-primary: #0B1220;
   --color-bg-soft: #111827;
@@ -173,7 +175,9 @@
   --tint-success: #ECFDF5;   /* 연한 초록 박스 */
   --tint-danger:  #FEF2F2;   /* 연한 빨강 박스 */
   --tint-warning: #FFFBF0;   /* 연한 앰버 박스 */
+  --tint-gold:    #FEF3C7;   /* accent-100 앰버 박스 배경 */
   --val-strong:   #1E3A8A;   /* 네이비 강조 텍스트(값·제목) */
+  --val-warm:     #92400E;   /* 골드 강조 텍스트(accent-700) */
 
   /* ─── 그림자 — 4단계 + 강조 ─── */
   --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
