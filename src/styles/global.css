@@ -68,6 +68,11 @@
   background: var(--color-bg-elevated);
   border-color: var(--color-border-light);
 }
+/* card-outline 은 bg-white 하드코딩 → 다크모드에서 흰 배경+밝은 글씨로 안 보이던 문제 수정 */
+:root[data-theme="dark"] .card-outline {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border-strong);
+}
 :root[data-theme="dark"] .card-info {
   background: linear-gradient(135deg, rgba(96, 165, 250, 0.06) 0%, var(--color-bg-elevated) 60%);
   border-color: rgba(96, 165, 250, 0.20);
