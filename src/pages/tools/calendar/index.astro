@@ -56,7 +56,7 @@ const faqSchema = {
 
   <article class="container-content py-10 max-w-3xl">
 
-    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+    <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, var(--tint-warning) 0%, var(--tint-warning) 100%); border: 1px solid #FCD34D">
       <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 핵심 포인트</div>
       <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">
         대부분 국제학교는 <strong>9월 시작</strong> — 지원 준비는 <strong>12개월 전(전년 9월)</strong>부터. 호주는 1월 시작 — 6개월 갭 활용 가능. 학년 중간 옮기기는 자녀 부담 크므로 학년 사이 (6~8월) 권장.
@@ -113,7 +113,7 @@ const faqSchema = {
             <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">5~6월 (-3~4개월)</td><td class="p-3" style="border:1px solid var(--color-border-light)">학생 비자 갱신 + 이전 학교 성적표·서류 정리. 가족 이사 준비.</td></tr>
             <tr style="background: var(--color-bg-soft)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">7월 (-2개월)</td><td class="p-3" style="border:1px solid var(--color-border-light)">교복·교재 구입. 셔틀·점심·CCA 신청.</td></tr>
             <tr><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:600">8월 (-1개월)</td><td class="p-3" style="border:1px solid var(--color-border-light)">오리엔테이션 참석. 새 거주지 정착.</td></tr>
-            <tr style="background: #FFFBF0"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:700">9월 (D-Day)</td><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:700">학년 시작</td></tr>
+            <tr style="background: var(--tint-warning)"><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:700">9월 (D-Day)</td><td class="p-3" style="border:1px solid var(--color-border-light); font-weight:700">학년 시작</td></tr>
           </tbody>
         </table>
       </div>
@@ -172,7 +172,7 @@ const faqSchema = {
       <div class="mt-5 space-y-3">
         {faqSchema.mainEntity.map((f: any) => (
           <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
-            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.name}</summary>
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--val-strong)">{f.name}</summary>
             <p class="mt-3 text-sm" style="line-height:1.7">{f.acceptedAnswer.text}</p>
           </details>
         ))}

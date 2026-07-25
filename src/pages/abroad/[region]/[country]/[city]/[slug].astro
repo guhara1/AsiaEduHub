@@ -106,7 +106,7 @@ const stud = d.student_nationality;
           <span class="page-nav-sep">·</span>
           <span>업데이트 {stud.last_updated ? formatDate(stud.last_updated, 'ko') : '미표기'}</span>
         </p>
-        <div class="mt-5 rounded-xl border p-5" style="border-color: var(--color-border-light); background: linear-gradient(135deg, #fff 0%, var(--color-bg-soft) 100%);">
+        <div class="mt-5 rounded-xl border p-5" style="border-color: var(--color-border-light); background: linear-gradient(135deg, var(--color-bg-elevated) 0%, var(--color-bg-soft) 100%);">
           <BarChart rows={[
             stud.korean_ratio !== undefined ? { label: '🇰🇷 한국', value: stud.korean_ratio, tone: 'primary' as const } : null,
             stud.chinese_mainland_ratio !== undefined ? { label: '🇨🇳 중국 본토', value: stud.chinese_mainland_ratio, tone: 'rose' as const } : null,
@@ -128,7 +128,7 @@ const stud = d.student_nationality;
           <span class="page-nav-sep">·</span>
           <span>업데이트 {teach.last_updated ? formatDate(teach.last_updated, 'ko') : '미표기'}</span>
         </p>
-        <div class="mt-5 rounded-xl border p-5" style="border-color: var(--color-border-light); background: linear-gradient(135deg, #fff 0%, var(--color-bg-soft) 100%);">
+        <div class="mt-5 rounded-xl border p-5" style="border-color: var(--color-border-light); background: linear-gradient(135deg, var(--color-bg-elevated) 0%, var(--color-bg-soft) 100%);">
           <BarChart rows={[
             teach.native_english_speakers?.subtotal_ratio !== undefined ? { label: '🇺🇸 영어 모국어', value: teach.native_english_speakers.subtotal_ratio, tone: 'primary' as const, note: '미·영·캐·호·뉴·아일랜드' } : null,
             teach.asian_english_teachers?.subtotal_ratio !== undefined ? { label: '🌏 영어 가능 아시아', value: teach.asian_english_teachers.subtotal_ratio, tone: 'accent' as const, note: '인·필·싱·말 등' } : null,

@@ -63,7 +63,7 @@ const faqSchema = {
 
   <article class="container-content py-10 max-w-3xl">
     {/* 핵심 요약 */}
-    <div class="rounded-2xl p-6 mt-2" style="background: linear-gradient(135deg, #FFFBF0 0%, #FEF9E7 100%); border: 1px solid #FCD34D">
+    <div class="rounded-2xl p-6 mt-2" style="background: linear-gradient(135deg, var(--tint-warning) 0%, var(--tint-warning) 100%); border: 1px solid #FCD34D">
       <div class="text-xs uppercase tracking-wider" style="color: var(--color-accent-700); font-weight: 700; letter-spacing: 0.08em">✦ 한 줄 추천</div>
       <p class="mt-3 text-base" style="color: var(--color-accent-700); line-height: 1.7; font-weight: 500">{info.recommendation_ko}</p>
     </div>
@@ -81,13 +81,13 @@ const faqSchema = {
     </section>
 
     <section class="mt-10 grid gap-5 md:grid-cols-2">
-      <div class="rounded-xl p-5" style="border:1px solid rgba(4, 120, 87, 0.20); background: linear-gradient(135deg, #ECFDF5 0%, #fff 100%)">
+      <div class="rounded-xl p-5" style="border:1px solid rgba(4, 120, 87, 0.20); background: linear-gradient(135deg, var(--tint-success) 0%, var(--color-bg-elevated) 100%)">
         <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-success)">장점</div>
         <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
           {info.pros_ko.map((p) => <li>✓ {p}</li>)}
         </ul>
       </div>
-      <div class="rounded-xl p-5" style="border:1px solid rgba(220, 38, 38, 0.20); background: linear-gradient(135deg, #FEF2F2 0%, #fff 100%)">
+      <div class="rounded-xl p-5" style="border:1px solid rgba(220, 38, 38, 0.20); background: linear-gradient(135deg, var(--tint-danger) 0%, var(--color-bg-elevated) 100%)">
         <div class="text-xs uppercase tracking-wide" style="font-weight:700; color: var(--color-danger)">단점 · 주의</div>
         <ul class="mt-3 space-y-2 text-sm" style="line-height:1.7">
           {info.cons_ko.map((p) => <li>⚠ {p}</li>)}
@@ -97,8 +97,8 @@ const faqSchema = {
 
     <section class="mt-10">
       <h2 class="text-2xl" style="font-weight:800; letter-spacing:-0.02em">학비 · 비용</h2>
-      <div class="mt-4 rounded-xl p-5" style="background: var(--color-primary-50); border-left: 4px solid var(--color-primary-700)">
-        <p class="text-sm" style="color: var(--color-primary-900); line-height:1.7; font-weight:500">{info.cost_ko}</p>
+      <div class="mt-4 rounded-xl p-5" style="background: var(--tint-primary); border-left: 4px solid var(--color-primary-700)">
+        <p class="text-sm" style="color: var(--val-strong); line-height:1.7; font-weight:500">{info.cost_ko}</p>
       </div>
     </section>
 
@@ -112,7 +112,7 @@ const faqSchema = {
       <div class="mt-5 space-y-3">
         {info.faqs.map((f) => (
           <details class="rounded-xl p-4" style="border:1px solid var(--color-border-light)">
-            <summary class="cursor-pointer" style="font-weight:600; color: var(--color-primary-900)">{f.q_ko}</summary>
+            <summary class="cursor-pointer" style="font-weight:600; color: var(--val-strong)">{f.q_ko}</summary>
             <p class="mt-3 text-sm" style="line-height:1.7">{f.a_ko}</p>
           </details>
         ))}

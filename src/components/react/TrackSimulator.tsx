@@ -98,7 +98,7 @@ export default function TrackSimulator({ locale }: Props) {
   const labelKo = (a: { ko: string; zh: string }) => (locale === 'ko' ? a.ko : a.zh);
 
   return (
-    <div className="rounded-lg border bg-white" style={{ borderColor: 'var(--color-border-light)' }}>
+    <div className="rounded-lg border" style={{ borderColor: 'var(--color-border-light)', background: 'var(--color-bg-elevated)' }}>
       <div className="border-b px-5 py-4" style={{ borderColor: 'var(--color-border-light)' }}>
         <div className="flex items-center gap-2">
           <span className="badge-gold">⭐ {locale === 'ko' ? '킬러 도구' : '核心工具'}</span>

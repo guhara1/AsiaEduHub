@@ -80,7 +80,7 @@ const ibRanked = [...SINGAPORE_SCHOOLS]
               <div class="text-xs" style="color: var(--color-text-secondary)">{s.abbreviation} · {s.curriculum.type}</div>
             </span>
             <span class="flex-shrink-0 text-right">
-              <div style="font-weight:700; font-size: 1.125rem; color: var(--color-primary-900); font-variant-numeric: tabular-nums">{s.ib_stats?.average}</div>
+              <div style="font-weight:700; font-size: 1.125rem; color: var(--val-strong); font-variant-numeric: tabular-nums">{s.ib_stats?.average}</div>
               {s.ib_stats?.max && <div class="text-xs" style="color: var(--color-text-tertiary)">最高 {s.ib_stats.max}</div>}
             </span>
           </a>
