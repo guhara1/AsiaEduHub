@@ -5,6 +5,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import AdRail from '../components/AdRail.astro';
 import MobileStickyAd from '../components/MobileStickyAd.astro';
 import AdInquiryTab from '../components/AdInquiryTab.astro';
+import AdLeaderboard from '../components/AdLeaderboard.astro';
 import { resolveLocale, alternateUrlFor, HTML_LANG, getMessages } from '../lib/i18n';
 
 export interface Props {
@@ -152,6 +153,8 @@ if (author && publishedAt) {
     <AdRail side="right" locale={locale} />
     */}
     <main>
+      {/* 본문 최상단 리더보드 광고 슬롯 (728×150, 모바일 자동 리사이징) */}
+      <AdLeaderboard />
       <slot />
     </main>
     <SiteFooter />
