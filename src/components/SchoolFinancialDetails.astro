@@ -300,6 +300,15 @@ const levelRows: Array<[string, [number, number]]> = [
   }
   .school-finance .finance-mini-label { font-size: 0.85rem; color: var(--color-text-secondary); font-weight: 500; }
   .school-finance .finance-mini-value { font-size: 1.05rem; color: var(--color-primary-900); font-weight: 700; font-variant-numeric: tabular-nums; }
+  /* 다크모드: primary-50 배경 박스 + 네이비 값 텍스트가 어두운 화면에서 안 보이던 문제 수정 */
+  :root[data-theme="dark"] .school-finance .finance-mini {
+    background: rgba(255,255,255,0.03);
+    border-color: var(--color-border-medium);
+  }
+  :root[data-theme="dark"] .school-finance .finance-mini-value,
+  :root[data-theme="dark"] .school-finance .finance-row-value {
+    color: var(--color-primary-200);
+  }
   .school-finance .finance-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem;
   }
