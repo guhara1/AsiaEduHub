@@ -12,6 +12,9 @@
   --color-text-tertiary: #94A3B8;
   --color-text-muted: #64748B;
 
+  /* 다크모드 제목 색 — 네이비 대신 밝은 브랜드 블루로 시인성 확보 */
+  --color-heading: #BFDBFE;
+
   --color-bg-primary: #0B1220;
   --color-bg-soft: #111827;
   --color-bg-secondary: #131C2F;
@@ -211,7 +214,9 @@
   .text-sm { line-height: 1.65; }
 
   h1, h2, h3, h4, h5, h6 {
-    color: var(--color-primary-900);
+    /* 라이트: 네이비 / 다크: --color-heading(밝은 블루)로 자동 전환 → 다크 배경 시인성 확보.
+       특수 케이스(.card-cta·.bg-primary-900 위 흰 제목)는 더 높은 specificity 규칙이 그대로 유지됨. */
+    color: var(--color-heading, var(--color-primary-900));
     line-height: 1.25;
     word-break: keep-all;
   }
