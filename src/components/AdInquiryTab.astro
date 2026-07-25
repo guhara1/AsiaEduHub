@@ -101,15 +101,8 @@ const plane =
   )}
 </aside>
 
-{/* 좁은 화면·모바일 — 컴팩트 세로 탭 (본문 가림 최소화, 동일 링크) */}
-<a
-  href={TG}
-  target="_blank"
-  rel="noopener"
-  aria-label={T.aria}
-  class="ad-inquiry-tab min-[1500px]:hidden fixed left-0 top-1/2 z-40 -translate-y-1/2 flex flex-col items-center gap-1.5 rounded-r-xl px-1.5 py-3 text-white shadow-lg transition-transform hover:translate-x-1"
-  style="background: var(--color-primary-900)"
->
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="shrink-0"><path d={plane} /></svg>
-  <span class="text-xs tracking-wide" style="writing-mode: vertical-rl; font-weight: 500; letter-spacing: 0.05em">{T.tab}</span>
-</a>
+{/*
+  좁은 화면·모바일에는 좌측 고정 요소를 두지 않는다.
+  (좌측 세로 탭이 본문 글자를 가려 시인성 저하 → 제거)
+  모바일 광고문의 CTA 는 상단 728×150 리더보드(AdLeaderboard)와 푸터 텔레그램 링크가 담당.
+*/}
