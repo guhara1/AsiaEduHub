@@ -85,6 +85,13 @@
 :root[data-theme="dark"] .cta-secondary:hover { background: rgba(96, 165, 250, 0.08); border-color: #60A5FA; color: var(--color-text-primary); }
 :root[data-theme="dark"] ::-webkit-scrollbar-thumb { background: var(--color-border-medium); background-clip: content-box; }
 
+/* ─── 광고 슬롯 표면 (다크모드 가독성 보정) ─── */
+/* 네이비 표면(탭·CTA·헤더)은 라이트에선 네이비, 다크에선 밝은 블루로 띄워 배경과 대비 확보 */
+.ad-navy { background: var(--color-primary-900); color: #fff; }
+:root[data-theme="dark"] .ad-navy { background: #2563EB; color: #fff; }
+/* 폴백 카드 표면: 다크에선 페이지보다 한 톤 밝게 + 테두리로 분리 */
+:root[data-theme="dark"] .ad-surface { background: var(--color-bg-elevated); border-color: var(--color-border-strong); }
+
 :root {
   /* ─── 메인 컬러 시스템 ─── */
   --color-primary-50:  #EFF6FF;
