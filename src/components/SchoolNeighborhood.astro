@@ -150,6 +150,12 @@ const fmtRange = (r: [number, number]) =>
     transition: border-color 200ms var(--ease-out), transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
   }
   :root[data-theme="dark"] .school-neighborhood .nh-condo-card { background: rgba(255,255,255,0.02); }
+  /* 다크모드: 네이비 제목·값 텍스트가 어두운 화면에서 저대비이던 문제 수정 */
+  :root[data-theme="dark"] .school-neighborhood .nh-area-title,
+  :root[data-theme="dark"] .school-neighborhood .nh-condo-name,
+  :root[data-theme="dark"] .school-neighborhood .nh-rent-cell dd {
+    color: var(--color-primary-200);
+  }
   .school-neighborhood .nh-condo-card:hover {
     border-color: var(--color-primary-400); transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(30, 58, 138, 0.08);
