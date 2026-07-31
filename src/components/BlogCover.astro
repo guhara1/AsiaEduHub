@@ -1,0 +1,123 @@
+---
+/**
+ * BlogCover — 블로그 "이미지텍스트 썸네일"
+ * 사진 미사용 정책(운영자 얼굴·스톡 이미지 지양)에 맞춰,
+ * 제목·카테고리·브랜드를 네이비 그래픽 커버로 렌더한다.
+ * 폰트 임베딩 문제 없음(페이지 폰트 사용), 다크모드·반응형 안전.
+ */
+interface Props {
+  title: string;
+  catLabel: string;
+  emoji: string;
+  dateText: string;
+  tone?: 'primary' | 'accent';
+  compact?: boolean;
+}
+const { title, catLabel, emoji, dateText, tone = 'primary', compact = false } = Astro.props;
+---
+<div class:list={['blog-cover', `blog-cover-${tone}`, compact && 'blog-cover-compact']} aria-hidden="true">
+  <div class="blog-cover-grid"></div>
+  <div class="blog-cover-top">
+    <span class="blog-cover-cat">{emoji} {catLabel}</span>
+    <span class="blog-cover-date">{dateText}</span>
+  </div>
+  <div class="blog-cover-title">{title}</div>
+  <div class="blog-cover-brand">
+    <span class="blog-cover-mono">D</span>
+    <span class="blog-cover-wordmark">AsiaEduHub · 데이비드</span>
+  </div>
+</div>
+
+<style>
+  .blog-cover {
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+    padding: 1.125rem 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 168px;
+    color: #fff;
+    background:
+      radial-gradient(120% 140% at 100% 0%, rgba(37, 99, 235, 0.55) 0%, transparent 55%),
+      linear-gradient(135deg, #1E3A8A 0%, #172B6B 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  .blog-cover-compact { min-height: 132px; padding: 0.875rem 1rem; }
+
+  /* 골드 톤 (transfers — 시그니처 시리즈) */
+  .blog-cover-accent {
+    background:
+      radial-gradient(120% 140% at 100% 0%, rgba(245, 158, 11, 0.5) 0%, transparent 52%),
+      linear-gradient(135deg, #1E3A8A 0%, #4A2E0B 120%);
+  }
+
+  /* 좌상단 미세 그리드 텍스처 */
+  .blog-cover-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(120% 120% at 0% 100%, #000 0%, transparent 62%);
+    -webkit-mask-image: radial-gradient(120% 120% at 0% 100%, #000 0%, transparent 62%);
+    pointer-events: none;
+  }
+
+  .blog-cover-top {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+  }
+  .blog-cover-cat {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.25rem 0.6rem; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 0.72rem; font-weight: 600; letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .blog-cover-accent .blog-cover-cat {
+    background: rgba(245, 158, 11, 0.22);
+    border-color: rgba(245, 158, 11, 0.42);
+    color: #FDE68A;
+  }
+  .blog-cover-date {
+    font-size: 0.7rem; font-weight: 500;
+    color: rgba(255, 255, 255, 0.62);
+    white-space: nowrap;
+  }
+
+  .blog-cover-title {
+    position: relative; z-index: 1;
+    margin: 0.75rem 0;
+    font-size: 1.28rem; line-height: 1.32;
+    font-weight: 800; letter-spacing: -0.025em;
+    word-break: keep-all; overflow-wrap: break-word;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.18);
+  }
+  .blog-cover-compact .blog-cover-title { font-size: 1.12rem; margin: 0.5rem 0; -webkit-line-clamp: 2; }
+
+  .blog-cover-brand {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .blog-cover-mono {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #fff; color: #1E3A8A;
+    font-size: 0.78rem; font-weight: 800; letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+  .blog-cover-accent .blog-cover-mono { background: #F59E0B; color: #3B1E03; }
+  .blog-cover-wordmark {
+    font-size: 0.74rem; font-weight: 600; letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.86);
+  }
+
+  @media (min-width: 640px) {
+    .blog-cover-title { font-size: 1.38rem; }
+  }
+</style>
